@@ -203,7 +203,7 @@ export function TiltCard({
       el.style.willChange = "";
       el.style.touchAction = "";
     };
-  }, [max, perspective, scale]);
+  }, [max, perspective, scale, enabled]);
 
   return (
     <div ref={ref} className={className} style={{ transition: "transform 0.4s cubic-bezier(0.32, 0.72, 0, 1)" }}>
