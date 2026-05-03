@@ -145,6 +145,26 @@ function AdminApplications() {
     );
   }
 
+  const minBytes = minKB.trim() === "" ? null : Math.max(0, Number(minKB)) * 1024;
+  const maxBytes = maxKB.trim() === "" ? null : Math.max(0, Number(maxKB)) * 1024;
+  const q = query.trim().toLowerCase();
+  const filtered = (items ?? []).filter((a) => {
+    if (kind !== "all" && classifyResume(a) !== kind) return false;
+    if (minBytes !== null && !Number.isNaN(minBytes) && a.resume_size < minBytes) return false;
+    if (maxBytes !== null && !Number.isNaN(maxBytes) && a.resume_size > maxBytes) return false;
+    if (q) {
+      const hay = `${a.full_name} ${a.email} ${a.job_title} ${a.resume_name}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const clearFilters = () => {
+    setQuery("");
+    setKind("all");
+    setMinKB("");
+    setMaxKB("");
+  };
+
   return (
     <>
       <PageHero
