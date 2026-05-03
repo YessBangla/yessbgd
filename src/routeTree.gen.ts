@@ -21,6 +21,7 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 
 const TermsRoute = TermsRouteImport.update({
@@ -83,6 +84,11 @@ const VenturesSlugRoute = VenturesSlugRouteImport.update({
   path: '/ventures/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => InsightsRoute,
+} as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -96,12 +102,13 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
 }
 export interface FileRoutesByTo {
@@ -111,12 +118,13 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
 }
 export interface FileRoutesById {
@@ -127,12 +135,13 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/industries': typeof IndustriesRoute
-  '/insights': typeof InsightsRoute
+  '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/careers/$slug'
+    | '/insights/$slug'
     | '/ventures/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/careers/$slug'
+    | '/insights/$slug'
     | '/ventures/$slug'
   id:
     | '__root__'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/careers/$slug'
+    | '/insights/$slug'
     | '/ventures/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -190,7 +202,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   IndustriesRoute: typeof IndustriesRoute
-  InsightsRoute: typeof InsightsRoute
+  InsightsRoute: typeof InsightsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRoute
@@ -284,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VenturesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
+    }
     '/careers/$slug': {
       id: '/careers/$slug'
       path: '/$slug'
@@ -305,6 +324,18 @@ const CareersRouteChildren: CareersRouteChildren = {
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
+interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
+}
+
+const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
+}
+
+const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
+  InsightsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -312,7 +343,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   IndustriesRoute: IndustriesRoute,
-  InsightsRoute: InsightsRoute,
+  InsightsRoute: InsightsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRoute,

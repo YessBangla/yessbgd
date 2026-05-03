@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Calendar, Mail } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { insights } from "@/data/insights";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
@@ -14,23 +15,8 @@ export const Route = createFileRoute("/insights")({
   component: Insights,
 });
 
-const featured = {
-  tag: "Featured",
-  date: "April 28, 2026",
-  title: "Digital transformation roadmap for SMEs in Bangladesh",
-  excerpt: "A practical, budget-aware framework Bangladeshi small and mid-sized businesses can use to digitise operations — without overspending or over-engineering.",
-  readTime: "8 min read",
-};
-
-const posts = [
-  { tag: "Technology", date: "April 14, 2026", title: "Building OTT platforms for emerging markets", excerpt: "Lessons from launching Akash OTT — infrastructure, content, and the user experience that matters." },
-  { tag: "E-commerce", date: "March 30, 2026", title: "Scaling last-mile delivery across all 64 districts", excerpt: "How a hybrid logistics model unlocked nationwide e-commerce reach for our retail clients." },
-  { tag: "Leadership", date: "March 12, 2026", title: "Why customer-centricity beats every other strategy", excerpt: "Our managing director on the operating principles behind a decade of repeat clients." },
-  { tag: "IT Services", date: "February 22, 2026", title: "When to build, buy or integrate enterprise software", excerpt: "A decision framework for CTOs evaluating the make-vs-buy question in regulated industries." },
-  { tag: "Design", date: "February 5, 2026", title: "Designing trust into financial products", excerpt: "Visual and interaction patterns that drive higher conversion in fintech apps." },
-  { tag: "Strategy", date: "January 18, 2026", title: "Picking the right tech partner — a buyer's guide", excerpt: "What to look for (and what to avoid) when shortlisting an IT or consulting partner." },
-];
-
+const featured = insights[0];
+const posts = insights.slice(1);
 const categories = ["All", "Strategy", "Technology", "E-commerce", "Leadership", "IT Services", "Design"];
 
 function Insights() {
@@ -61,14 +47,18 @@ function Insights() {
 
       <section className="py-10">
         <div className="container-tight">
-          <article className="group grid gap-8 overflow-hidden rounded-3xl glass-card p-8 transition-all hover:border-primary/40 hover:shadow-elegant md:grid-cols-2 md:p-10">
+          <Link
+            to="/insights/$slug"
+            params={{ slug: featured.slug }}
+            className="group grid gap-8 overflow-hidden rounded-3xl glass-card p-8 transition-all hover:border-primary/40 hover:shadow-elegant md:grid-cols-2 md:p-10"
+          >
             <div className="relative grid h-56 place-items-center overflow-hidden rounded-2xl bg-gradient-primary md:h-full">
               <div className="absolute inset-0 grid-pattern opacity-30" />
               <span className="relative font-display text-5xl font-semibold text-primary-foreground">YB</span>
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-3 text-xs">
-                <span className="rounded-full bg-gradient-primary px-3 py-1 font-semibold text-primary-foreground">{featured.tag}</span>
+                <span className="rounded-full bg-gradient-primary px-3 py-1 font-semibold text-primary-foreground">Featured</span>
                 <span className="inline-flex items-center gap-1.5 text-muted-foreground"><Calendar className="h-3.5 w-3.5" /> {featured.date}</span>
                 <span className="text-muted-foreground">· {featured.readTime}</span>
               </div>
@@ -78,14 +68,19 @@ function Insights() {
                 Read featured article <ArrowRight className="h-4 w-4" />
               </span>
             </div>
-          </article>
+          </Link>
         </div>
       </section>
 
       <section className="py-10">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
-            <article key={p.title} className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <Link
+              key={p.slug}
+              to="/insights/$slug"
+              params={{ slug: p.slug }}
+              className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
+            >
               <div className="flex items-center justify-between text-xs">
                 <span className="rounded-full bg-secondary px-3 py-1 font-medium text-primary">{p.tag}</span>
                 <span className="inline-flex items-center gap-1.5 text-muted-foreground">
@@ -97,7 +92,7 @@ function Insights() {
               <div className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
                 Read article <ArrowRight className="h-4 w-4" />
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
