@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import logo from "@/assets/yess-bangla-logo.jpeg";
@@ -42,6 +42,10 @@ const MobilePanel = memo(function MobilePanel({
       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
       transition={panelTransition(reduceMotion)}
       style={{ transformOrigin: "top", willChange: "transform, opacity" }}
+      id="mobile-nav-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation"
       className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto glass-strong border-t border-glass-border lg:hidden"
     >
       <div className="container-tight flex flex-col gap-1 py-3">
@@ -138,6 +142,7 @@ export function Header() {
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
   const reduceMotion = useReducedMotion() ?? false;
+  const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -147,6 +152,19 @@ export function Header() {
     return () => {
       document.body.style.overflow = prev;
     };
+  }, [open]);
+
+  // Close on Escape and restore focus to the toggle
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleBtnRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   const closeMenu = useCallback(() => setOpen(false), []);
@@ -160,6 +178,10 @@ export function Header() {
           <img
             src={logo}
             alt="YESS Bangla logo"
+            width={44}
+            height={44}
+            decoding="async"
+            fetchPriority="high"
             className="h-11 w-11 rounded-lg object-contain bg-white p-0.5 shadow-sm"
           />
           <div className="leading-tight">
@@ -260,10 +282,14 @@ export function Header() {
         </div>
 
         <button
-          aria-label="Toggle menu"
+          ref={toggleBtnRef}
+          type="button"
+          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={open}
+          aria-controls="mobile-nav-panel"
+          aria-haspopup="menu"
           onClick={toggleMenu}
-          className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden"
+          className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <AnimatePresence initial={false} mode="wait">
             <motion.span
