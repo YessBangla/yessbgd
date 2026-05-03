@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
+import { TiltCard } from "@/components/TiltCard";
+import { HeroThreeOrb } from "@/components/HeroThreeOrb";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
