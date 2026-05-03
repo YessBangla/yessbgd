@@ -17,7 +17,7 @@ const nav = [
 export function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-50 glass-nav">
       <div className="container-tight flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5">
           <img
@@ -50,7 +50,7 @@ export function Header() {
         <div className="hidden lg:block">
           <Link
             to="/contact"
-            className="inline-flex items-center rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
+            className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
           >
             Let's Talk
           </Link>
@@ -66,7 +66,7 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-background lg:hidden">
+        <div className="glass-strong border-t border-glass-border lg:hidden">
           <div className="container-tight flex flex-col gap-1 py-3">
             {nav.map((n) => (
               <Link
@@ -83,7 +83,7 @@ export function Header() {
             <Link
               to="/contact"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-gradient-primary px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground"
+              className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-center text-sm font-semibold text-background"
             >
               Let's Talk
             </Link>

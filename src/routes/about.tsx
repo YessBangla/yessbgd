@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -16,18 +18,11 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Who we are</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Building Bangladesh's most trusted consulting & IT partner.
-          </h1>
-          <p className="mt-5 text-primary-foreground/80">
-            For over 11 years, YESS Bangla Private Limited has helped businesses convert data into
-            strategy and ideas into world-class digital experiences.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Who we are"
+        title="Building Bangladesh's most trusted consulting & IT partner."
+        subtitle="For over 11 years, YESS Bangla Private Limited has helped businesses convert data into strategy and ideas into world-class digital experiences."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-3">
@@ -36,7 +31,7 @@ function About() {
             { icon: Eye, title: "Our Vision", desc: "To become the most trusted partner for businesses transitioning into the digital era — locally and globally." },
             { icon: Heart, title: "Our Values", desc: "Integrity, craftsmanship, customer focus and a relentless pursuit of quality in every engagement." },
           ].map((c) => (
-            <div key={c.title} className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+            <div key={c.title} className="rounded-2xl glass-card p-8 shadow-sm">
               <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <c.icon className="h-6 w-6" />
               </div>
@@ -47,7 +42,7 @@ function About() {
         </div>
       </section>
 
-      <section className="bg-surface/50 py-20">
+      <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Why choose us</p>
@@ -74,7 +69,7 @@ function About() {
             </ul>
           </div>
 
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-elegant">
+          <div className="rounded-3xl glass-strong p-8 shadow-elegant">
             <div className="flex items-center gap-4">
               <div className="grid h-16 w-16 place-items-center rounded-full bg-gradient-primary font-display text-xl font-bold text-primary-foreground">
                 EH
@@ -114,7 +109,7 @@ function About() {
               { name: "Arif Khan", role: "Head of Engineering", initials: "AK" },
               { name: "Mahfuza Akter", role: "Head of Design", initials: "MA" },
             ].map((m) => (
-              <div key={m.name} className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
+              <div key={m.name} className="rounded-2xl glass-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
                 <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-primary font-display text-2xl font-bold text-primary-foreground shadow-glow">
                   {m.initials}
                 </div>
@@ -127,7 +122,7 @@ function About() {
       </section>
 
       {/* MILESTONES */}
-      <section className="border-t border-border bg-surface/40 py-20">
+      <section className="py-20">
         <div className="container-tight">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our journey</p>

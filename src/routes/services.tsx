@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag, ArrowRight } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -25,25 +28,18 @@ const services = [
 function Services() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">What we offer</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            A full portfolio of business & IT services.
-          </h1>
-          <p className="mt-5 text-primary-foreground/80">
-            From media platforms to web engineering — we deliver the full spectrum of digital and
-            consulting services your business needs.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="What we offer"
+        title="A full portfolio of business & IT services."
+        subtitle="From media platforms to web engineering — we deliver the full spectrum of digital and consulting services your business needs."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2">
           {services.map((s) => (
             <article
               key={s.title}
-              className="group rounded-2xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
+              className="group rounded-2xl glass-card p-8 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
             >
               <div className="grid h-14 w-14 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <s.icon className="h-7 w-7" />

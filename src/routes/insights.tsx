@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Calendar } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
@@ -25,22 +26,16 @@ const posts = [
 function Insights() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Insights</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Thinking, research & stories from the field.
-          </h1>
-          <p className="mt-5 text-primary-foreground/80">
-            Practical perspectives on strategy, technology and design from our consultants and engineers.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Insights"
+        title="Thinking, research & stories from the field."
+        subtitle="Practical perspectives on strategy, technology and design from our consultants and engineers."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
-            <article key={p.title} className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <article key={p.title} className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
               <div className="flex items-center justify-between text-xs">
                 <span className="rounded-full bg-secondary px-3 py-1 font-medium text-primary">{p.tag}</span>
                 <span className="inline-flex items-center gap-1.5 text-muted-foreground">

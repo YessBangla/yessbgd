@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Briefcase, MapPin, Clock, ArrowRight, Sparkles, Users, GraduationCap, Heart } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -31,18 +32,11 @@ const perks = [
 function Careers() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Careers</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Build a career that builds Bangladesh.
-          </h1>
-          <p className="mt-5 text-primary-foreground/80">
-            Join a team of consultants, engineers and creators shaping the next decade of business
-            and technology in South Asia.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Careers"
+        title="Build a career that builds Bangladesh."
+        subtitle="Join a team of consultants, engineers and creators shaping the next decade of business and technology in South Asia."
+      />
 
       <section className="py-20">
         <div className="container-tight">
@@ -54,7 +48,7 @@ function Careers() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {perks.map((p) => (
-              <div key={p.title} className="rounded-2xl border border-border bg-card p-6">
+              <div key={p.title} className="rounded-2xl glass-card p-6">
                 <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                   <p.icon className="h-5 w-5" />
                 </div>
@@ -66,12 +60,12 @@ function Careers() {
         </div>
       </section>
 
-      <section className="border-t border-border bg-surface/50 py-20">
+      <section className="border-t border-border py-20">
         <div className="container-tight">
           <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Open positions</h2>
           <p className="mt-3 text-muted-foreground">We're hiring across multiple teams. Don't see your role? Send us your CV.</p>
 
-          <div className="mt-10 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="mt-10 divide-y divide-border overflow-hidden rounded-2xl glass-card">
             {openings.map((o) => (
               <div key={o.title} className="flex flex-col gap-4 p-6 transition-colors hover:bg-secondary/40 sm:flex-row sm:items-center sm:justify-between">
                 <div>

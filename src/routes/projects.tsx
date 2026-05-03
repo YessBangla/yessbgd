@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -23,23 +24,16 @@ const projects = [
 function Projects() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Our projects</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Recent client work that drove real outcomes.
-          </h1>
-          <p className="mt-5 text-primary-foreground/80">
-            Discover a selection of engagements where strategy met execution — and our clients
-            achieved measurable growth.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Our projects"
+        title="Recent client work that drove real outcomes."
+        subtitle="Discover a selection of engagements where strategy met execution — and our clients achieved measurable growth."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2">
           {projects.map((p) => (
-            <article key={p.title} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-elegant">
+            <article key={p.title} className="group overflow-hidden rounded-2xl glass-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-elegant">
               <div className={`relative h-56 bg-gradient-to-br ${p.color}`}>
                 <div className="absolute inset-0 grid-pattern opacity-30" />
                 <div className="absolute inset-0 grid place-items-center">
