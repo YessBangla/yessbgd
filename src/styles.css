@@ -130,11 +130,13 @@
   }
   html {
     scroll-behavior: smooth;
-  }
-  body {
     background-color: var(--color-background);
     background-image: var(--gradient-mesh);
     background-attachment: fixed;
+  }
+  body {
+    /* Transparent so the WaterBackground canvas shows through globally */
+    background-color: transparent;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
