@@ -15,6 +15,7 @@ export function DevHydrationProbe() {
 function ProbeInner() {
   const [hydrated, setHydrated] = useState(false);
   const [open, setOpen] = useState(true);
+  const [forceReduce, setForceReduce] = useState(false);
   const [report, setReport] = useState({
     heroH1: "",
     heroH1Visible: false,
@@ -24,6 +25,10 @@ function ProbeInner() {
     viewport: "?",
     dpr: 1,
   });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("force-reduce-motion", forceReduce);
+  }, [forceReduce]);
 
   useEffect(() => {
     setHydrated(true);
