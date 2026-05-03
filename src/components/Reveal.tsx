@@ -1,4 +1,4 @@
-import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps, type Variants } from "framer-motion";
 import { type ReactNode } from "react";
 
 const variants: Variants = {
@@ -13,6 +13,12 @@ interface RevealProps extends Omit<HTMLMotionProps<"div">, "children"> {
 }
 
 export function Reveal({ children, delay = 0, className, ...rest }: RevealProps) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return (
+      <div className={className}>{children}</div>
+    );
+  }
   return (
     <motion.div
       initial="hidden"
@@ -37,6 +43,10 @@ export function Stagger({
   className?: string;
   stagger?: number;
 }) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
       initial="hidden"
@@ -60,6 +70,10 @@ export function StaggerItem({
   children: ReactNode;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
       variants={variants}
