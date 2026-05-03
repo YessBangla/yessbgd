@@ -59,6 +59,7 @@ export type Database = {
           resume_path: string
           resume_size: number
           resume_type: string
+          status: Database["public"]["Enums"]["application_status"]
         }
         Insert: {
           cover_letter: string
@@ -74,6 +75,7 @@ export type Database = {
           resume_path: string
           resume_size: number
           resume_type: string
+          status?: Database["public"]["Enums"]["application_status"]
         }
         Update: {
           cover_letter?: string
@@ -89,6 +91,7 @@ export type Database = {
           resume_path?: string
           resume_size?: number
           resume_type?: string
+          status?: Database["public"]["Enums"]["application_status"]
         }
         Relationships: []
       }
@@ -128,6 +131,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      application_status: "New" | "Reviewed" | "Rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -256,6 +260,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      application_status: ["New", "Reviewed", "Rejected"],
     },
   },
 } as const

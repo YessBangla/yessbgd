@@ -4,6 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/PageHero";
 import { Download, LogOut, Mail, Phone, Linkedin, FileText, Trash2, RefreshCw } from "lucide-react";
 
+type Status = "New" | "Reviewed" | "Rejected";
+const STATUSES: Status[] = ["New", "Reviewed", "Rejected"];
+const STATUS_STYLES: Record<Status, string> = {
+  New: "bg-primary/15 text-primary border-primary/30",
+  Reviewed: "bg-accent/15 text-accent-foreground border-accent/30",
+  Rejected: "bg-destructive/10 text-destructive border-destructive/30",
+};
+
 export const Route = createFileRoute("/admin/applications")({
   head: () => ({
     meta: [
@@ -28,6 +36,7 @@ type Application = {
   resume_size: number;
   resume_type: string;
   created_at: string;
+  status: Status;
 };
 
 function AdminApplications() {
@@ -88,6 +97,19 @@ function AdminApplications() {
       return;
     }
     setItems((prev) => prev?.filter((x) => x.id !== app.id) ?? null);
+  };
+
+  const updateStatus = async (app: Application, status: Status) => {
+    const prev = app.status;
+    setItems((list) => list?.map((x) => (x.id === app.id ? { ...x, status } : x)) ?? null);
+    const { error: e } = await supabase
+      .from("job_applications")
+      .update({ status })
+      .eq("id", app.id);
+    if (e) {
+      alert(e.message);
+      setItems((list) => list?.map((x) => (x.id === app.id ? { ...x, status: prev } : x)) ?? null);
+    }
   };
 
   const signOut = async () => {
@@ -164,6 +186,25 @@ function AdminApplications() {
                     <p className="text-xs text-muted-foreground">
                       {new Date(a.created_at).toLocaleString()}
                     </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span
+                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_STYLES[a.status]}`}
+                      >
+                        {a.status}
+                      </span>
+                      <select
+                        value={a.status}
+                        onChange={(e) => updateStatus(a, e.target.value as Status)}
+                        className="rounded-full border border-border bg-background px-2.5 py-1 text-xs font-medium"
+                        aria-label="Update status"
+                      >
+                        {STATUSES.map((s) => (
+                          <option key={s} value={s}>
+                            Mark {s}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button
