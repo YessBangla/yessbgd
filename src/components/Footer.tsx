@@ -4,7 +4,7 @@ import logo from "@/assets/yess-bangla-logo.jpeg";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-border bg-gradient-to-b from-background to-secondary/40">
+    <footer className="mt-24 border-t border-glass-border-soft bg-gradient-to-b from-transparent to-secondary/30 backdrop-blur-xl">
       <div className="container-tight py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
