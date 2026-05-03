@@ -82,18 +82,28 @@ const testimonials = [
 
 const clients = ["Akash TV", "Akash News", "Akash OTT", "One Stop", "Yess Shop", "Bangla Media", "BD Logistics", "EduConnect"];
 
-const ventures = [
-  { icon: Tv, name: "Akash TV", tag: "Broadcast", desc: "Flagship satellite & digital television channel reaching millions across Bangladesh." },
-  { icon: Tv2, name: "Akash OTT", tag: "Streaming", desc: "Premium on-demand streaming platform with original Bangla entertainment." },
-  { icon: Newspaper, name: "Akash News", tag: "Digital Media", desc: "Modern, mobile-first Bangladeshi digital news platform." },
-  { icon: ShoppingBag, name: "Yess Bangla Shop", tag: "E-commerce", desc: "End-to-end commerce — websites, apps, payments and last-mile delivery." },
-  { icon: Code2, name: "Yess Tech Labs", tag: "Software", desc: "Custom web & enterprise software engineering for ambitious teams." },
-  { icon: Palette, name: "Yess Studio", tag: "Design", desc: "Brand, product and motion design for digital-first companies." },
-  { icon: Smartphone, name: "Yess Mobile", tag: "Apps", desc: "Native and cross-platform mobile apps engineered for scale." },
-  { icon: Megaphone, name: "Yess Marketing", tag: "Growth", desc: "Performance marketing, SEO and paid media that compound." },
-  { icon: GraduationCap, name: "Yess Academy", tag: "Education", desc: "Industry-led training in tech, design and digital business." },
-  { icon: Briefcase, name: "Yess Consulting", tag: "Strategy", desc: "Management & digital consulting for enterprises and SMEs." },
-  { icon: LayoutGrid, name: "One Stop Solution", tag: "Services", desc: "Centralised IT support and home services under one trusted roof." },
+type Venture = {
+  icon: typeof Tv;
+  name: string;
+  tag: string;
+  desc: string;
+  long: string;
+  highlights: string[];
+  cta: { label: string; to?: string; href?: string };
+};
+
+const ventures: Venture[] = [
+  { icon: Tv, name: "Akash TV", tag: "Broadcast", desc: "Flagship satellite & digital television channel reaching millions across Bangladesh.", long: "Akash TV is YESS Bangla's flagship broadcast channel, delivering news, entertainment and lifestyle programming to millions of households across Bangladesh through satellite and digital distribution.", highlights: ["Nationwide satellite reach", "24/7 original programming", "Premium ad inventory"], cta: { label: "Partner with Akash TV", to: "/contact" } },
+  { icon: Tv2, name: "Akash OTT", tag: "Streaming", desc: "Premium on-demand streaming platform with original Bangla entertainment.", long: "Akash OTT brings Bangla cinema, drama, sports and originals to mobile, web and smart TV — built on a scalable streaming stack with subscription and ad-supported tiers.", highlights: ["Mobile, web & smart TV apps", "Originals & licensed catalogue", "SVOD + AVOD monetisation"], cta: { label: "Explore OTT solutions", to: "/services" } },
+  { icon: Newspaper, name: "Akash News", tag: "Digital Media", desc: "Modern, mobile-first Bangladeshi digital news platform.", long: "Akash News is a modern, mobile-first newsroom platform delivering breaking news, analysis and multimedia journalism with a fast, accessible reader experience.", highlights: ["Mobile-first newsroom CMS", "Live & multimedia coverage", "High-performance delivery"], cta: { label: "Advertise with us", to: "/contact" } },
+  { icon: ShoppingBag, name: "Yess Bangla Shop", tag: "E-commerce", desc: "End-to-end commerce — websites, apps, payments and last-mile delivery.", long: "Yess Bangla Shop is a full-stack commerce venture covering storefronts, mobile apps, payments, fulfilment and doorstep delivery — for brands and marketplaces alike.", highlights: ["Storefront + mobile apps", "Local payments & COD", "Last-mile delivery network"], cta: { label: "Launch your store", to: "/services" } },
+  { icon: Code2, name: "Yess Tech Labs", tag: "Software", desc: "Custom web & enterprise software engineering for ambitious teams.", long: "Yess Tech Labs builds custom web platforms, internal tools and enterprise software with modern stacks — from MVP to scale, with security and performance baked in.", highlights: ["Web & backend engineering", "Cloud-native architecture", "DevOps & observability"], cta: { label: "Discuss a project", to: "/contact" } },
+  { icon: Palette, name: "Yess Studio", tag: "Design", desc: "Brand, product and motion design for digital-first companies.", long: "Yess Studio is our in-house design practice — brand identity, product UI/UX and motion design for digital-first companies that care about craft.", highlights: ["Brand & identity systems", "Product UI/UX design", "Motion & 3D"], cta: { label: "Start a design sprint", to: "/contact" } },
+  { icon: Smartphone, name: "Yess Mobile", tag: "Apps", desc: "Native and cross-platform mobile apps engineered for scale.", long: "Yess Mobile delivers native iOS, Android and cross-platform apps engineered for performance, offline-first experiences and seamless release pipelines.", highlights: ["iOS, Android & cross-platform", "Offline-first architecture", "Push, payments & analytics"], cta: { label: "Build your app", to: "/services" } },
+  { icon: Megaphone, name: "Yess Marketing", tag: "Growth", desc: "Performance marketing, SEO and paid media that compound.", long: "Yess Marketing runs performance marketing, SEO, content and paid media campaigns engineered to compound — with transparent reporting and clear ROAS targets.", highlights: ["Paid search & social", "SEO & content engines", "Analytics & attribution"], cta: { label: "Grow with us", to: "/contact" } },
+  { icon: GraduationCap, name: "Yess Academy", tag: "Education", desc: "Industry-led training in tech, design and digital business.", long: "Yess Academy trains the next generation of Bangladeshi technologists, designers and digital operators with industry-led, project-based programmes.", highlights: ["Tech, design & business tracks", "Industry mentors", "Job-ready portfolios"], cta: { label: "View programmes", to: "/services" } },
+  { icon: Briefcase, name: "Yess Consulting", tag: "Strategy", desc: "Management & digital consulting for enterprises and SMEs.", long: "Yess Consulting partners with enterprises and SMEs on strategy, digital transformation and operating-model design — turning ambition into measurable outcomes.", highlights: ["Strategy & transformation", "Operating-model design", "Change & enablement"], cta: { label: "Book a consultation", to: "/contact" } },
+  { icon: LayoutGrid, name: "One Stop Solution", tag: "Services", desc: "Centralised IT support and home services under one trusted roof.", long: "One Stop Solution centralises IT support, smart-home installations and trusted home services — one number, one team, one accountable partner.", highlights: ["IT & device support", "Smart-home installations", "Trusted technicians"], cta: { label: "Request a service", to: "/contact" } },
 ];
 
 const impactMetrics = [
