@@ -99,6 +99,19 @@ function AdminApplications() {
     setItems((prev) => prev?.filter((x) => x.id !== app.id) ?? null);
   };
 
+  const updateStatus = async (app: Application, status: Status) => {
+    const prev = app.status;
+    setItems((list) => list?.map((x) => (x.id === app.id ? { ...x, status } : x)) ?? null);
+    const { error: e } = await supabase
+      .from("job_applications")
+      .update({ status })
+      .eq("id", app.id);
+    if (e) {
+      alert(e.message);
+      setItems((list) => list?.map((x) => (x.id === app.id ? { ...x, status: prev } : x)) ?? null);
+    }
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     navigate({ to: "/admin/login" });
