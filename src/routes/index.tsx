@@ -13,6 +13,12 @@ import {
   Users,
   TrendingUp,
   Award,
+  Search,
+  Lightbulb,
+  Rocket,
+  LineChart,
+  Quote,
+  Star,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -49,6 +55,21 @@ const features = [
   { icon: Users, title: "Customer-Centric", desc: "We design every engagement around your goals and your customers." },
   { icon: TrendingUp, title: "Scalable Solutions", desc: "From startup MVPs to enterprise platforms — built to grow with you." },
 ];
+
+const process = [
+  { icon: Search, title: "Discover", desc: "We listen, audit and understand your business, customers and constraints." },
+  { icon: Lightbulb, title: "Strategise", desc: "We design a clear, prioritised roadmap with measurable outcomes." },
+  { icon: Rocket, title: "Build & Launch", desc: "Our cross-functional team executes with speed, quality and transparency." },
+  { icon: LineChart, title: "Grow", desc: "We measure, iterate and scale what works — together with you." },
+];
+
+const testimonials = [
+  { name: "Tanvir Ahmed", role: "CEO, Retail Group", quote: "YESS Bangla rebuilt our e-commerce platform end-to-end. Sales grew 3x in nine months and our team finally has tools we love using." },
+  { name: "Nusrat Jahan", role: "Director, EdTech Startup", quote: "Their consulting clarified our strategy and their engineers shipped faster than any agency we've worked with. Easy partnership." },
+  { name: "Rakib Hasan", role: "Head of Operations, Logistics", quote: "From discovery to launch they treated our business as their own. Reliable, transparent and genuinely strategic." },
+];
+
+const clients = ["Akash TV", "Akash News", "Akash OTT", "One Stop", "Yess Shop", "Bangla Media", "BD Logistics", "EduConnect"];
 
 function Index() {
   return (
@@ -192,6 +213,85 @@ function Index() {
                   </Link>
                 </div>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="bg-gradient-hero py-16 text-primary-foreground">
+        <div className="container-tight grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <div className="font-display text-4xl font-bold text-accent sm:text-5xl">{s.value}</div>
+              <div className="mt-2 text-sm text-primary-foreground/80">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PROCESS */}
+      <section className="border-y border-border bg-surface/40 py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">How we work</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">A proven, four-step delivery process</h2>
+            <p className="mt-4 text-muted-foreground">Clarity at every stage — from first conversation to long-term growth.</p>
+          </div>
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {process.map((p, i) => (
+              <div key={p.title} className="relative rounded-2xl border border-border bg-card p-6">
+                <div className="absolute right-5 top-5 font-display text-4xl font-bold text-primary/10">0{i + 1}</div>
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                  <p.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Client stories</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Loved by ambitious teams</h2>
+          </div>
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <figure key={t.name} className="relative rounded-2xl border border-border bg-card p-7 shadow-sm">
+                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/10" />
+                <div className="flex gap-0.5 text-accent">
+                  {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+                </div>
+                <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90">"{t.quote}"</blockquote>
+                <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
+                  <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary font-display text-sm font-bold text-primary-foreground">
+                    {t.name.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold">{t.name}</div>
+                    <div className="text-xs text-muted-foreground">{t.role}</div>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CLIENTS */}
+      <section className="border-t border-border bg-surface/30 py-12">
+        <div className="container-tight">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Trusted by leading organisations across Bangladesh</p>
+          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4 lg:grid-cols-8">
+            {clients.map((c) => (
+              <div key={c} className="text-center font-display text-sm font-bold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary">
+                {c}
+              </div>
             ))}
           </div>
         </div>

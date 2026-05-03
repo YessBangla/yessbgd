@@ -41,8 +41,10 @@ export function Footer() {
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Company</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
-              <li><Link to="/services" className="hover:text-primary">Services</Link></li>
+              <li><Link to="/industries" className="hover:text-primary">Industries</Link></li>
               <li><Link to="/projects" className="hover:text-primary">Projects</Link></li>
+              <li><Link to="/insights" className="hover:text-primary">Insights</Link></li>
+              <li><Link to="/careers" className="hover:text-primary">Careers</Link></li>
               <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
             </ul>
           </div>
@@ -50,11 +52,12 @@ export function Footer() {
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Services</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              <li>Akash OTT</li>
-              <li>Akash News</li>
-              <li>One Stop Solution</li>
-              <li>Web Development</li>
-              <li>E-commerce</li>
+              <li><Link to="/services" className="hover:text-primary">Akash OTT</Link></li>
+              <li><Link to="/services" className="hover:text-primary">Akash News</Link></li>
+              <li><Link to="/services" className="hover:text-primary">One Stop Solution</Link></li>
+              <li><Link to="/services" className="hover:text-primary">Web Development</Link></li>
+              <li><Link to="/services" className="hover:text-primary">E-commerce</Link></li>
+              <li><Link to="/faq" className="hover:text-primary">FAQ</Link></li>
             </ul>
           </div>
 
@@ -74,12 +77,35 @@ export function Footer() {
                 <a href="mailto:yessbangla.bd@gmail.com" className="hover:text-primary">yessbangla.bd@gmail.com</a>
               </li>
             </ul>
+
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="mt-5 flex overflow-hidden rounded-full border border-border bg-card"
+            >
+              <input
+                type="email"
+                required
+                placeholder="Your email"
+                aria-label="Email for newsletter"
+                className="flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground"
+              />
+              <button
+                type="submit"
+                className="bg-gradient-primary px-4 text-sm font-semibold text-primary-foreground"
+              >
+                Subscribe
+              </button>
+            </form>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
           <p>© {new Date().getFullYear()} YESS Bangla Private Limited. All rights reserved.</p>
-          <p>Crafted with care in Dhaka, Bangladesh.</p>
+          <div className="flex items-center gap-5">
+            <Link to="/privacy" className="hover:text-primary">Privacy</Link>
+            <Link to="/terms" className="hover:text-primary">Terms</Link>
+            <Link to="/faq" className="hover:text-primary">FAQ</Link>
+          </div>
         </div>
       </div>
     </footer>
