@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { CountUp } from "@/components/CountUp";
 import {
   ArrowRight,
   Tv,
@@ -368,7 +369,7 @@ function Index() {
                     </div>
                     <div>
                       <div className="font-display text-3xl font-semibold leading-none text-foreground">
-                        {m.value}
+                        <CountUp value={m.value} />
                       </div>
                       <div className="mt-1 text-sm font-medium text-foreground/80">{m.label}</div>
                     </div>
