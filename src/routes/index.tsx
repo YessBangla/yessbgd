@@ -175,7 +175,7 @@ function Index() {
             </motion.p>
             <motion.div
               initial={false}
-              className="mt-8 flex flex-wrap gap-3"
+              className="mt-10 flex flex-wrap items-center gap-3"
             >
               <Link
                 to="/contact"
@@ -188,6 +188,12 @@ function Index() {
                 className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold text-foreground transition-all hover:scale-[1.03]"
               >
                 Explore services
+              </Link>
+              <Link
+                to="/insights"
+                className="group inline-flex items-center gap-1.5 px-2 py-3 text-sm font-semibold text-primary transition-all hover:gap-2.5"
+              >
+                View insights <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
 

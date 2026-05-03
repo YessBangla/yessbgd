@@ -9,6 +9,7 @@ export const Route = createFileRoute("/insights/$slug")({
     const post = getInsight(params.slug);
     const title = post ? `${post.title} — YESS Bangla Insights` : "Article — YESS Bangla";
     const description = post?.excerpt ?? "Read the latest insight from YESS Bangla.";
+    const url = post ? `https://yessbangla.com/insights/${post.slug}` : "https://yessbangla.com/insights";
     return {
       meta: [
         { title },
@@ -16,7 +17,30 @@ export const Route = createFileRoute("/insights/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
+        ...(post ? [
+          { property: "article:published_time", content: post.date },
+          { property: "article:author", content: post.author.name },
+          { property: "article:section", content: post.tag },
+        ] : []),
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
       ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: post ? [{
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          description: post.excerpt,
+          author: { "@type": "Person", name: post.author.name },
+          datePublished: post.date,
+          articleSection: post.tag,
+          mainEntityOfPage: url,
+        }),
+      }] : undefined,
     };
   },
   loader: ({ params }) => {

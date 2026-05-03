@@ -10,7 +10,11 @@ export const Route = createFileRoute("/insights")({
       { name: "description", content: "Articles, case studies and industry insights from YESS Bangla's consultants and engineers." },
       { property: "og:title", content: "Insights — YESS Bangla" },
       { property: "og:description", content: "Latest thinking on business strategy and technology in Bangladesh." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://yessbangla.com/insights" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://yessbangla.com/insights" }],
   }),
   component: Insights,
 });
