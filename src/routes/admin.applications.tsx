@@ -36,6 +36,7 @@ type Application = {
   resume_size: number;
   resume_type: string;
   created_at: string;
+  status: Status;
 };
 
 function AdminApplications() {
