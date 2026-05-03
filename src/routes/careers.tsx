@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Briefcase, MapPin, Clock, ArrowRight, Sparkles, Users, GraduationCap, Heart } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { openings } from "@/data/openings";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -13,14 +14,6 @@ export const Route = createFileRoute("/careers")({
   }),
   component: Careers,
 });
-
-const openings = [
-  { title: "Senior Full-Stack Engineer", type: "Full-time", location: "Dhaka / Remote", dept: "Engineering" },
-  { title: "Product Designer (UI/UX)", type: "Full-time", location: "Dhaka", dept: "Design" },
-  { title: "Business Analyst", type: "Full-time", location: "Dhaka", dept: "Consulting" },
-  { title: "Digital Marketing Specialist", type: "Full-time", location: "Dhaka / Hybrid", dept: "Marketing" },
-  { title: "Customer Success Executive", type: "Full-time", location: "Dhaka", dept: "Operations" },
-];
 
 const perks = [
   { icon: Heart, title: "Health & wellness", desc: "Comprehensive medical coverage for you and your family." },
@@ -79,9 +72,13 @@ function Careers() {
                     <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {o.type}</span>
                   </div>
                 </div>
-                <a href="mailto:yessbangla.bd@gmail.com?subject=Application" className="inline-flex items-center gap-2 self-start rounded-full border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-primary hover:text-primary-foreground sm:self-center">
+                <Link
+                  to="/careers/$slug"
+                  params={{ slug: o.slug }}
+                  className="inline-flex items-center gap-2 self-start rounded-full border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-primary hover:text-primary-foreground sm:self-center"
+                >
                   Apply <ArrowRight className="h-4 w-4" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>
