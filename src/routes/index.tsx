@@ -500,22 +500,6 @@ function Index() {
         </div>
       </section>
 
-      {/* STATS — glass band */}
-      <section className="py-12">
-        <div className="container-tight">
-          <Stagger className="grid gap-px overflow-hidden rounded-3xl glass-strong sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((s) => (
-              <StaggerItem key={s.label} className="bg-transparent p-8 text-center">
-                <div className="bg-gradient-to-br from-primary to-accent bg-clip-text font-display text-4xl font-semibold text-transparent sm:text-5xl">
-                  {s.value}
-                </div>
-                <div className="mt-2 text-sm text-muted-foreground">{s.label}</div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-20">
         <div className="container-tight">
