@@ -39,11 +39,31 @@ type Application = {
   status: Status;
 };
 
+type ResumeKind = "all" | "pdf" | "doc" | "other";
+
+function classifyResume(a: Application): Exclude<ResumeKind, "all"> {
+  const t = (a.resume_type || "").toLowerCase();
+  const n = (a.resume_name || "").toLowerCase();
+  if (t.includes("pdf") || n.endsWith(".pdf")) return "pdf";
+  if (
+    t.includes("msword") ||
+    t.includes("wordprocessingml") ||
+    n.endsWith(".doc") ||
+    n.endsWith(".docx")
+  )
+    return "doc";
+  return "other";
+}
+
 function AdminApplications() {
   const navigate = useNavigate();
   const [items, setItems] = useState<Application[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const [query, setQuery] = useState("");
+  const [kind, setKind] = useState<ResumeKind>("all");
+  const [minKB, setMinKB] = useState<string>("");
+  const [maxKB, setMaxKB] = useState<string>("");
 
   const load = async () => {
     setError(null);
