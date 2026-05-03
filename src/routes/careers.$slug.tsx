@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft,
   Briefcase,
