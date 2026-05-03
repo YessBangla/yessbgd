@@ -125,6 +125,7 @@ const impactMetrics = [
 ];
 
 function Index() {
+  const [openVenture, setOpenVenture] = useState<Venture | null>(null);
   return (
     <>
       {/* HERO — light, airy, Apple-style glass */}
