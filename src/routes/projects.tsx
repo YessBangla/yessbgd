@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -23,18 +24,11 @@ const projects = [
 function Projects() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our projects</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Recent client work that drove real outcomes.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            Discover a selection of engagements where strategy met execution — and our clients
-            achieved measurable growth.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Our projects"
+        title="Recent client work that drove real outcomes."
+        subtitle="Discover a selection of engagements where strategy met execution — and our clients achieved measurable growth."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2">
