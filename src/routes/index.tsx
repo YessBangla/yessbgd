@@ -233,6 +233,9 @@ function Index() {
                 alt="YESS Bangla consulting team meeting"
                 width={1600}
                 height={1024}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
                 className="block rounded-2xl"
               />
             </TiltCard>

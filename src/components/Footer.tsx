@@ -13,6 +13,10 @@ export function Footer() {
               <img
                 src={logo}
                 alt="YESS Bangla logo"
+                loading="lazy"
+                decoding="async"
+                width={44}
+                height={44}
                 className="h-11 w-11 rounded-lg object-contain bg-white p-0.5"
               />
               <div className="font-display text-lg font-bold">YESS Bangla</div>
