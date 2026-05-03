@@ -115,13 +115,23 @@ const ventures: Venture[] = [
   { icon: LayoutGrid, name: "One Stop Solution", tag: "Services", desc: "Centralised IT support and home services under one trusted roof.", long: "One Stop Solution centralises IT support, smart-home installations and trusted home services — one number, one team, one accountable partner.", highlights: ["IT & device support", "Smart-home installations", "Trusted technicians"], cta: { label: "Request a service", to: "/contact" } },
 ];
 
-const impactMetrics = [
-  { icon: Briefcase, value: "250+", label: "Projects delivered", note: "Across 12 industries" },
-  { icon: Users, value: "180K+", label: "End users served", note: "Monthly active reach" },
-  { icon: Building2, value: "120+", label: "Enterprise clients", note: "From startups to groups" },
-  { icon: Globe, value: "64", label: "Districts covered", note: "Nationwide footprint" },
-  { icon: Award, value: "11+", label: "Years of expertise", note: "Trusted since 2014" },
-  { icon: HeartHandshake, value: "98%", label: "Client retention", note: "Long-term partnerships" },
+type ImpactMetric = {
+  id: string;
+  icon: typeof Briefcase;
+  /** Raw numeric target — drives the counter. */
+  target: number;
+  label: string;
+  note: string;
+  format?: import("@/components/CountUp").CountFormat;
+};
+
+const impactMetrics: ImpactMetric[] = [
+  { id: "projects",  icon: Briefcase,      target: 250,    label: "Projects delivered",  note: "Across 12 industries",     format: { plus: true } },
+  { id: "users",     icon: Users,          target: 180000, label: "End users served",    note: "Monthly active reach",     format: { compact: true, plus: true } },
+  { id: "clients",   icon: Building2,      target: 120,    label: "Enterprise clients",  note: "From startups to groups",  format: { plus: true } },
+  { id: "districts", icon: Globe,          target: 64,     label: "Districts covered",   note: "Nationwide footprint" },
+  { id: "years",     icon: Award,          target: 11,     label: "Years of expertise",  note: "Trusted since 2014",       format: { plus: true } },
+  { id: "retention", icon: HeartHandshake, target: 98,     label: "Client retention",    note: "Long-term partnerships",   format: { percent: true } },
 ];
 
 function Index() {
