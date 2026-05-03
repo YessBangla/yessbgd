@@ -339,10 +339,13 @@ function Index() {
           <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {ventures.map((v) => (
               <StaggerItem key={v.name}>
-                <motion.article
+                <motion.button
+                  type="button"
+                  onClick={() => setOpenVenture(v)}
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-6"
+                  className="group relative h-full w-full overflow-hidden rounded-2xl glass-card p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label={`Open details for ${v.name}`}
                 >
                   <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
                   <div className="relative flex items-start gap-4">
@@ -357,9 +360,12 @@ function Index() {
                         </span>
                       </div>
                       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{v.desc}</p>
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5">
+                        View details <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
                     </div>
                   </div>
-                </motion.article>
+                </motion.button>
               </StaggerItem>
             ))}
           </Stagger>
