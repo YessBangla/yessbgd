@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import logo from "@/assets/yess-bangla-logo.jpeg";
 import { ventures } from "@/data/ventures";
 
@@ -15,25 +15,147 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
+// ---- Memoized mobile panel ----------------------------------------------
+interface MobilePanelProps {
+  onClose: () => void;
+  mobileVenturesOpen: boolean;
+  toggleMobileVentures: () => void;
+  reduceMotion: boolean;
+}
+
+const panelTransition = (reduce: boolean): Transition =>
+  reduce
+    ? { duration: 0 }
+    : { duration: 0.26, ease: [0.32, 0.72, 0, 1] };
+
+const MobilePanel = memo(function MobilePanel({
+  onClose,
+  mobileVenturesOpen,
+  toggleMobileVentures,
+  reduceMotion,
+}: MobilePanelProps) {
+  return (
+    <motion.div
+      key="mobile-menu"
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+      animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+      transition={panelTransition(reduceMotion)}
+      style={{ transformOrigin: "top", willChange: "transform, opacity" }}
+      className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto glass-strong border-t border-glass-border lg:hidden"
+    >
+      <div className="container-tight flex flex-col gap-1 py-3">
+        {nav.slice(0, 3).map((n) => (
+          <Link
+            key={n.to}
+            to={n.to}
+            preload="intent"
+            onClick={onClose}
+            className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary active:bg-secondary"
+            activeProps={{ className: "text-primary bg-secondary" }}
+            activeOptions={{ exact: n.to === "/" }}
+          >
+            {n.label}
+          </Link>
+        ))}
+
+        <button
+          type="button"
+          onClick={toggleMobileVentures}
+          aria-expanded={mobileVenturesOpen}
+          className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+        >
+          <span>Ventures</span>
+          <ChevronDown
+            className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+
+        {/* Pre-rendered list — no height:auto measure; uses CSS grid 0fr→1fr trick + transform for GPU-friendly anim */}
+        <div
+          className="grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 ease-out"
+          style={{
+            gridTemplateRows: mobileVenturesOpen ? "1fr" : "0fr",
+            opacity: mobileVenturesOpen ? 1 : 0,
+          }}
+          aria-hidden={!mobileVenturesOpen}
+        >
+          <div className="min-h-0">
+            <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3 py-1">
+              {ventures.map((v) => (
+                <Link
+                  key={v.slug}
+                  to="/ventures/$slug"
+                  params={{ slug: v.slug }}
+                  preload="intent"
+                  onClick={onClose}
+                  tabIndex={mobileVenturesOpen ? 0 : -1}
+                  className="rounded-md px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary"
+                >
+                  {v.title}
+                </Link>
+              ))}
+              <Link
+                to="/projects"
+                preload="intent"
+                onClick={onClose}
+                tabIndex={mobileVenturesOpen ? 0 : -1}
+                className="rounded-md px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-secondary"
+              >
+                View all ventures →
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {nav.slice(3).map((n) => (
+          <Link
+            key={n.to}
+            to={n.to}
+            preload="intent"
+            onClick={onClose}
+            className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+            activeProps={{ className: "text-primary bg-secondary" }}
+          >
+            {n.label}
+          </Link>
+        ))}
+        <Link
+          to="/contact"
+          preload="intent"
+          onClick={onClose}
+          className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-center text-sm font-semibold text-background transition-transform active:scale-[0.98]"
+        >
+          Let's Talk
+        </Link>
+      </div>
+    </motion.div>
+  );
+});
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
+  const reduceMotion = useReducedMotion() ?? false;
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [open]);
+
+  const closeMenu = useCallback(() => setOpen(false), []);
+  const toggleMenu = useCallback(() => setOpen((v) => !v), []);
+  const toggleMobileVentures = useCallback(() => setMobileVenturesOpen((v) => !v), []);
 
   return (
     <header className="sticky top-0 z-50 glass-nav">
-      <div className="container-tight flex h-16 items-center justify-between">
+      <div className="container-tight relative flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5">
           <img
             src={logo}
@@ -72,7 +194,6 @@ export function Header() {
             Services
           </Link>
 
-          {/* Ventures dropdown */}
           <div
             className="relative"
             onMouseEnter={() => setVenturesOpen(true)}
@@ -96,6 +217,7 @@ export function Header() {
                           key={v.slug}
                           to="/ventures/$slug"
                           params={{ slug: v.slug }}
+                          preload="intent"
                           onClick={() => setVenturesOpen(false)}
                           className="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
                         >
@@ -122,34 +244,10 @@ export function Header() {
             )}
           </div>
 
-          <Link
-            to="/industries"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            Industries
-          </Link>
-          <Link
-            to="/insights"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            Insights
-          </Link>
-          <Link
-            to="/careers"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            Careers
-          </Link>
-          <Link
-            to="/contact"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            Contact
-          </Link>
+          <Link to="/industries" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Industries</Link>
+          <Link to="/insights" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Insights</Link>
+          <Link to="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Careers</Link>
+          <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Contact</Link>
         </nav>
 
         <div className="hidden lg:block">
@@ -164,113 +262,34 @@ export function Header() {
         <button
           aria-label="Toggle menu"
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggleMenu}
           className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden"
         >
           <AnimatePresence initial={false} mode="wait">
             <motion.span
               key={open ? "x" : "menu"}
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
+              initial={reduceMotion ? { opacity: 0 } : { rotate: -90, opacity: 0 }}
+              animate={reduceMotion ? { opacity: 1 } : { rotate: 0, opacity: 1 }}
+              exit={reduceMotion ? { opacity: 0 } : { rotate: 90, opacity: 0 }}
+              transition={{ duration: reduceMotion ? 0 : 0.16, ease: "easeOut" }}
               className="absolute inset-0 grid place-items-center"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </motion.span>
           </AnimatePresence>
         </button>
+
+        <AnimatePresence initial={false}>
+          {open && (
+            <MobilePanel
+              onClose={closeMenu}
+              mobileVenturesOpen={mobileVenturesOpen}
+              toggleMobileVentures={toggleMobileVentures}
+              reduceMotion={reduceMotion}
+            />
+          )}
+        </AnimatePresence>
       </div>
-
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
-            className="glass-strong border-t border-glass-border lg:hidden overflow-hidden will-change-[height,opacity]"
-          >
-            <div className="container-tight flex flex-col gap-1 py-3">
-              {nav.slice(0, 3).map((n) => (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  onClick={() => setOpen(false)}
-                  className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
-                  activeProps={{ className: "text-primary bg-secondary" }}
-                  activeOptions={{ exact: n.to === "/" }}
-                >
-                  {n.label}
-                </Link>
-              ))}
-
-              {/* Mobile Ventures collapsible */}
-              <button
-                onClick={() => setMobileVenturesOpen((v) => !v)}
-                aria-expanded={mobileVenturesOpen}
-                className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
-              >
-                <span>Ventures</span>
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`} />
-              </button>
-              <AnimatePresence initial={false}>
-                {mobileVenturesOpen && (
-                  <motion.div
-                    key="mobile-ventures"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.24, ease: [0.32, 0.72, 0, 1] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3">
-                      {ventures.map((v) => (
-                        <Link
-                          key={v.slug}
-                          to="/ventures/$slug"
-                          params={{ slug: v.slug }}
-                          onClick={() => setOpen(false)}
-                          className="rounded-md px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary"
-                        >
-                          {v.title}
-                        </Link>
-                      ))}
-                      <Link
-                        to="/projects"
-                        onClick={() => setOpen(false)}
-                        className="rounded-md px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-secondary"
-                      >
-                        View all ventures →
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {nav.slice(3).map((n) => (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  onClick={() => setOpen(false)}
-                  className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
-                  activeProps={{ className: "text-primary bg-secondary" }}
-                >
-                  {n.label}
-                </Link>
-              ))}
-              <Link
-                to="/contact"
-                onClick={() => setOpen(false)}
-                className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-center text-sm font-semibold text-background transition-transform active:scale-[0.98]"
-              >
-                Let's Talk
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 }
