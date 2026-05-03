@@ -268,4 +268,5 @@
 }
 .force-reduce-motion .orb { animation: none !important; }
 .force-reduce-motion .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
+.force-reduce-motion .marquee { animation: none !important; }
 
