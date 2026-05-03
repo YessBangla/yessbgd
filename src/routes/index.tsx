@@ -218,7 +218,10 @@ function Index() {
 
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 to-accent/20 opacity-60 blur-2xl" />
-            <TiltCard className="relative overflow-hidden rounded-3xl glass-strong p-2">
+            <TiltCard
+              enabled={tilt.hydrated && tilt.enabled}
+              className="relative overflow-hidden rounded-3xl glass-strong p-2"
+            >
               <img
                 src={heroImg}
                 alt="YESS Bangla consulting team meeting"
@@ -227,6 +230,19 @@ function Index() {
                 className="block rounded-2xl"
               />
             </TiltCard>
+
+            {/* 3D tilt toggle — persists in localStorage */}
+            <button
+              type="button"
+              onClick={tilt.toggle}
+              aria-pressed={tilt.enabled}
+              aria-label={tilt.enabled ? "Disable 3D tilt effect" : "Enable 3D tilt effect"}
+              title={tilt.enabled ? "Disable 3D tilt" : "Enable 3D tilt"}
+              className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full glass-strong px-2.5 py-1.5 text-[11px] font-medium text-foreground/80 shadow-sm backdrop-blur transition hover:text-foreground"
+            >
+              <Move3d className={`h-3.5 w-3.5 ${tilt.enabled ? "text-primary" : "text-muted-foreground"}`} />
+              <span className="hidden sm:inline">3D {tilt.enabled ? "On" : "Off"}</span>
+            </button>
 
             {/* Three.js 3D ornament — fixed-size to prevent layout shift */}
             <ClientOnly fallback={<div aria-hidden className="pointer-events-none absolute -top-8 -right-6 hidden h-32 w-32 lg:block" />}>
