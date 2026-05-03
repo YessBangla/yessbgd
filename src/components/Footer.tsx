@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import logo from "@/assets/yess-bangla-logo.jpeg";
 
 export function Footer() {
   return (
@@ -7,10 +8,12 @@ export function Footer() {
       <div className="container-tight py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-primary font-display text-base font-bold text-primary-foreground">
-                Y
-              </span>
+            <div className="flex items-center gap-2.5">
+              <img
+                src={logo}
+                alt="YESS Bangla logo"
+                className="h-11 w-11 rounded-lg object-contain bg-white p-0.5"
+              />
               <div className="font-display text-lg font-bold">YESS Bangla</div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/yess-bangla-logo.jpeg";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -18,10 +19,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
       <div className="container-tight flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-primary font-display text-base font-bold text-primary-foreground shadow-glow">
-            Y
-          </span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src={logo}
+            alt="YESS Bangla logo"
+            className="h-11 w-11 rounded-lg object-contain bg-white p-0.5 shadow-sm"
+          />
           <div className="leading-tight">
             <div className="font-display text-base font-bold tracking-tight">YESS Bangla</div>
             <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
