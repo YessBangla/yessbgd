@@ -135,6 +135,7 @@ const impactMetrics: ImpactMetric[] = [
 function Index() {
   const [openVenture, setOpenVenture] = useState<Venture | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const tilt = useTiltPreference();
   useEffect(() => {
     setHydrated(true);
   }, []);
