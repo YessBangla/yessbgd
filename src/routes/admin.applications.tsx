@@ -154,9 +154,12 @@ function AdminApplications() {
       />
       <section className="pb-24">
         <div className="container-tight">
+          {(() => null)()}
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-muted-foreground">
-              {items ? `${items.length} application${items.length === 1 ? "" : "s"}` : "Loading…"}
+              {items
+                ? `${filtered.length} of ${items.length} application${items.length === 1 ? "" : "s"}`
+                : "Loading…"}
             </div>
             <div className="flex gap-2">
               <button
