@@ -59,7 +59,7 @@ function VenturePage() {
 
               <h3 className="mt-8 font-display text-lg font-semibold">What we offer</h3>
               <ul className="mt-4 space-y-3">
-                {v.highlights.map((h) => (
+                {v.highlights.map((h: string) => (
                   <li key={h} className="flex items-start gap-3 text-sm">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                     <span className="text-foreground/80">{h}</span>
@@ -74,7 +74,7 @@ function VenturePage() {
               <div className="glass-card rounded-3xl p-7">
                 <p className="text-xs font-semibold uppercase tracking-wider text-primary">Services</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {v.services.map((s) => (
+                  {v.services.map((s: string) => (
                     <span key={s} className="rounded-full border border-border bg-background/60 px-3 py-1.5 text-xs font-medium">
                       {s}
                     </span>
