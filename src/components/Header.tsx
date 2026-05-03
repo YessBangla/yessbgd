@@ -163,81 +163,114 @@ export function Header() {
 
         <button
           aria-label="Toggle menu"
+          aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden"
+          className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden"
         >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <AnimatePresence initial={false} mode="wait">
+            <motion.span
+              key={open ? "x" : "menu"}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="absolute inset-0 grid place-items-center"
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </motion.span>
+          </AnimatePresence>
         </button>
       </div>
 
-      {open && (
-        <div className="glass-strong border-t border-glass-border lg:hidden">
-          <div className="container-tight flex flex-col gap-1 py-3">
-            {nav.slice(0, 3).map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-secondary"
-                activeProps={{ className: "text-primary bg-secondary" }}
-                activeOptions={{ exact: n.to === "/" }}
-              >
-                {n.label}
-              </Link>
-            ))}
-
-            {/* Mobile Ventures collapsible */}
-            <button
-              onClick={() => setMobileVenturesOpen((v) => !v)}
-              className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium hover:bg-secondary"
-            >
-              <span>Ventures</span>
-              <ChevronDown className={`h-4 w-4 transition-transform ${mobileVenturesOpen ? "rotate-180" : ""}`} />
-            </button>
-            {mobileVenturesOpen && (
-              <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3">
-                {ventures.map((v) => (
-                  <Link
-                    key={v.slug}
-                    to="/ventures/$slug"
-                    params={{ slug: v.slug }}
-                    onClick={() => setOpen(false)}
-                    className="rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-secondary"
-                  >
-                    {v.title}
-                  </Link>
-                ))}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+            className="glass-strong border-t border-glass-border lg:hidden overflow-hidden will-change-[height,opacity]"
+          >
+            <div className="container-tight flex flex-col gap-1 py-3">
+              {nav.slice(0, 3).map((n) => (
                 <Link
-                  to="/projects"
+                  key={n.to}
+                  to={n.to}
                   onClick={() => setOpen(false)}
-                  className="rounded-md px-3 py-2 text-sm font-semibold text-primary hover:bg-secondary"
+                  className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+                  activeProps={{ className: "text-primary bg-secondary" }}
+                  activeOptions={{ exact: n.to === "/" }}
                 >
-                  View all ventures →
+                  {n.label}
                 </Link>
-              </div>
-            )}
+              ))}
 
-            {nav.slice(3).map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-secondary"
-                activeProps={{ className: "text-primary bg-secondary" }}
+              {/* Mobile Ventures collapsible */}
+              <button
+                onClick={() => setMobileVenturesOpen((v) => !v)}
+                aria-expanded={mobileVenturesOpen}
+                className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
               >
-                {n.label}
+                <span>Ventures</span>
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence initial={false}>
+                {mobileVenturesOpen && (
+                  <motion.div
+                    key="mobile-ventures"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.24, ease: [0.32, 0.72, 0, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3">
+                      {ventures.map((v) => (
+                        <Link
+                          key={v.slug}
+                          to="/ventures/$slug"
+                          params={{ slug: v.slug }}
+                          onClick={() => setOpen(false)}
+                          className="rounded-md px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary"
+                        >
+                          {v.title}
+                        </Link>
+                      ))}
+                      <Link
+                        to="/projects"
+                        onClick={() => setOpen(false)}
+                        className="rounded-md px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-secondary"
+                      >
+                        View all ventures →
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {nav.slice(3).map((n) => (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+                  activeProps={{ className: "text-primary bg-secondary" }}
+                >
+                  {n.label}
+                </Link>
+              ))}
+              <Link
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-center text-sm font-semibold text-background transition-transform active:scale-[0.98]"
+              >
+                Let's Talk
               </Link>
-            ))}
-            <Link
-              to="/contact"
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-center text-sm font-semibold text-background"
-            >
-              Let's Talk
-            </Link>
-          </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
