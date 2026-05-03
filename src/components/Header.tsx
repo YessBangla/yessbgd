@@ -142,6 +142,7 @@ export function Header() {
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
   const reduceMotion = useReducedMotion() ?? false;
+  const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -151,6 +152,19 @@ export function Header() {
     return () => {
       document.body.style.overflow = prev;
     };
+  }, [open]);
+
+  // Close on Escape and restore focus to the toggle
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleBtnRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   const closeMenu = useCallback(() => setOpen(false), []);
@@ -268,10 +282,14 @@ export function Header() {
         </div>
 
         <button
-          aria-label="Toggle menu"
+          ref={toggleBtnRef}
+          type="button"
+          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={open}
+          aria-controls="mobile-nav-panel"
+          aria-haspopup="menu"
           onClick={toggleMenu}
-          className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden"
+          className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <AnimatePresence initial={false} mode="wait">
             <motion.span
