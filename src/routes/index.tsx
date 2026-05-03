@@ -62,12 +62,6 @@ const services = [
   { icon: ShoppingBag, title: "Yess Bangla Shop", desc: "End-to-end e-commerce — websites, mobile apps, payments and doorstep delivery." },
 ];
 
-const stats = [
-  { value: "250+", label: "Projects Delivered" },
-  { value: "100%", label: "Client Satisfaction" },
-  { value: "64", label: "Districts Covered" },
-  { value: "11+", label: "Years of Experience" },
-];
 
 const features = [
   { icon: ShieldCheck, title: "Trusted & Reliable", desc: "Long-term guarantees and a proven track record across industries." },
