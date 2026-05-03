@@ -1,0 +1,218 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { PageHero } from "@/components/PageHero";
+import { Download, LogOut, Mail, Phone, Linkedin, FileText, Trash2, RefreshCw } from "lucide-react";
+
+export const Route = createFileRoute("/admin/applications")({
+  head: () => ({
+    meta: [
+      { title: "Job applications — Admin" },
+      { name: "robots", content: "noindex,nofollow" },
+    ],
+  }),
+  component: AdminApplications,
+});
+
+type Application = {
+  id: string;
+  job_slug: string;
+  job_title: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  linkedin: string | null;
+  cover_letter: string;
+  resume_path: string;
+  resume_name: string;
+  resume_size: number;
+  resume_type: string;
+  created_at: string;
+};
+
+function AdminApplications() {
+  const navigate = useNavigate();
+  const [items, setItems] = useState<Application[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  const load = async () => {
+    setError(null);
+    const { data, error: e } = await supabase
+      .from("job_applications")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (e) {
+      setError(e.message);
+      setItems([]);
+      return;
+    }
+    setItems((data ?? []) as Application[]);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!data.user) {
+        navigate({ to: "/admin/login" });
+        return;
+      }
+      setAuthChecked(true);
+      await load();
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const downloadResume = async (path: string, name: string) => {
+    const { data, error: e } = await supabase.storage.from("resumes").createSignedUrl(path, 60);
+    if (e || !data) {
+      alert(e?.message || "Failed to create download link");
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = data.signedUrl;
+    a.download = name;
+    a.target = "_blank";
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  const removeItem = async (app: Application) => {
+    if (!confirm(`Delete application from ${app.full_name}? This also removes their CV.`)) return;
+    await supabase.storage.from("resumes").remove([app.resume_path]);
+    const { error: e } = await supabase.from("job_applications").delete().eq("id", app.id);
+    if (e) {
+      alert(e.message);
+      return;
+    }
+    setItems((prev) => prev?.filter((x) => x.id !== app.id) ?? null);
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/admin/login" });
+  };
+
+  if (!authChecked) {
+    return (
+      <section className="py-24">
+        <div className="container-tight">Loading…</div>
+      </section>
+    );
+  }
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Admin"
+        title="Job applications"
+        subtitle="All career form submissions with downloadable CVs."
+      />
+      <section className="pb-24">
+        <div className="container-tight">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <div className="text-sm text-muted-foreground">
+              {items ? `${items.length} application${items.length === 1 ? "" : "s"}` : "Loading…"}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={load}
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold"
+              >
+                <RefreshCw className="h-4 w-4" /> Refresh
+              </button>
+              <button
+                onClick={signOut}
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold"
+              >
+                <LogOut className="h-4 w-4" /> Sign out
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              {error}
+              <div className="mt-2 text-xs">
+                If you see a permission error, your account does not have the <code>admin</code> role yet.
+                Ask the project owner to grant it.
+              </div>
+            </div>
+          )}
+
+          {items && items.length === 0 && !error && (
+            <div className="rounded-2xl glass-card p-10 text-center text-sm text-muted-foreground">
+              No applications yet. Share the{" "}
+              <Link to="/careers" className="text-primary underline">
+                careers page
+              </Link>
+              .
+            </div>
+          )}
+
+          <div className="grid gap-4">
+            {items?.map((a) => (
+              <article key={a.id} className="rounded-2xl glass-card p-6">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                      {a.job_title}
+                    </p>
+                    <h3 className="mt-1 font-display text-lg font-semibold">{a.full_name}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(a.created_at).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => downloadResume(a.resume_path, a.resume_name)}
+                      className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-glow"
+                    >
+                      <Download className="h-3.5 w-3.5" /> Download CV
+                    </button>
+                    <button
+                      onClick={() => removeItem(a)}
+                      className="inline-flex items-center gap-2 rounded-full border border-destructive/40 px-4 py-2 text-xs font-semibold text-destructive"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> Delete
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
+                  <a href={`mailto:${a.email}`} className="inline-flex items-center gap-1.5 hover:text-foreground">
+                    <Mail className="h-3.5 w-3.5" /> {a.email}
+                  </a>
+                  <a href={`tel:${a.phone}`} className="inline-flex items-center gap-1.5 hover:text-foreground">
+                    <Phone className="h-3.5 w-3.5" /> {a.phone}
+                  </a>
+                  {a.linkedin && (
+                    <a
+                      href={a.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 hover:text-foreground"
+                    >
+                      <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+                    </a>
+                  )}
+                  <span className="inline-flex items-center gap-1.5">
+                    <FileText className="h-3.5 w-3.5" />
+                    {a.resume_name} · {(a.resume_size / 1024).toFixed(0)} KB · {a.resume_type || "file"}
+                  </span>
+                </div>
+
+                <details className="mt-4">
+                  <summary className="cursor-pointer text-sm font-semibold">Cover letter</summary>
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/85">{a.cover_letter}</p>
+                </details>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
