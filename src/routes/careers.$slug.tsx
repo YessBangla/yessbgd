@@ -383,7 +383,7 @@ function ApplyPage() {
             <div className="rounded-2xl glass-card p-6">
               <h4 className="font-display text-sm font-semibold">What you'll do</h4>
               <ul className="mt-3 space-y-2 text-sm text-foreground/85">
-                {job.responsibilities.map((r) => (
+                {job.responsibilities.map((r: string) => (
                   <li key={r} className="flex gap-2">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                     {r}
@@ -395,7 +395,7 @@ function ApplyPage() {
             <div className="rounded-2xl glass-card p-6">
               <h4 className="font-display text-sm font-semibold">What we're looking for</h4>
               <ul className="mt-3 space-y-2 text-sm text-foreground/85">
-                {job.requirements.map((r) => (
+                {job.requirements.map((r: string) => (
                   <li key={r} className="flex gap-2">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                     {r}
