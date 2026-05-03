@@ -47,14 +47,18 @@ function Insights() {
 
       <section className="py-10">
         <div className="container-tight">
-          <article className="group grid gap-8 overflow-hidden rounded-3xl glass-card p-8 transition-all hover:border-primary/40 hover:shadow-elegant md:grid-cols-2 md:p-10">
+          <Link
+            to="/insights/$slug"
+            params={{ slug: featured.slug }}
+            className="group grid gap-8 overflow-hidden rounded-3xl glass-card p-8 transition-all hover:border-primary/40 hover:shadow-elegant md:grid-cols-2 md:p-10"
+          >
             <div className="relative grid h-56 place-items-center overflow-hidden rounded-2xl bg-gradient-primary md:h-full">
               <div className="absolute inset-0 grid-pattern opacity-30" />
               <span className="relative font-display text-5xl font-semibold text-primary-foreground">YB</span>
             </div>
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-3 text-xs">
-                <span className="rounded-full bg-gradient-primary px-3 py-1 font-semibold text-primary-foreground">{featured.tag}</span>
+                <span className="rounded-full bg-gradient-primary px-3 py-1 font-semibold text-primary-foreground">Featured</span>
                 <span className="inline-flex items-center gap-1.5 text-muted-foreground"><Calendar className="h-3.5 w-3.5" /> {featured.date}</span>
                 <span className="text-muted-foreground">· {featured.readTime}</span>
               </div>
@@ -64,14 +68,19 @@ function Insights() {
                 Read featured article <ArrowRight className="h-4 w-4" />
               </span>
             </div>
-          </article>
+          </Link>
         </div>
       </section>
 
       <section className="py-10">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
-            <article key={p.title} className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <Link
+              key={p.slug}
+              to="/insights/$slug"
+              params={{ slug: p.slug }}
+              className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
+            >
               <div className="flex items-center justify-between text-xs">
                 <span className="rounded-full bg-secondary px-3 py-1 font-medium text-primary">{p.tag}</span>
                 <span className="inline-flex items-center gap-1.5 text-muted-foreground">
@@ -83,7 +92,7 @@ function Insights() {
               <div className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
                 Read article <ArrowRight className="h-4 w-4" />
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
