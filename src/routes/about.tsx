@@ -42,7 +42,7 @@ function About() {
         </div>
       </section>
 
-      <section className="bg-surface/50 py-20">
+      <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Why choose us</p>
@@ -122,7 +122,7 @@ function About() {
       </section>
 
       {/* MILESTONES */}
-      <section className="border-t border-border bg-surface/40 py-20">
+      <section className="py-20">
         <div className="container-tight">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our journey</p>

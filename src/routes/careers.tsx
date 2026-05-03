@@ -60,7 +60,7 @@ function Careers() {
         </div>
       </section>
 
-      <section className="border-t border-border bg-surface/50 py-20">
+      <section className="border-t border-border py-20">
         <div className="container-tight">
           <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Open positions</h2>
           <p className="mt-3 text-muted-foreground">We're hiring across multiple teams. Don't see your role? Send us your CV.</p>
