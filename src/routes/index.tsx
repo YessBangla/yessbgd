@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import {
   ArrowRight,
   Tv,
@@ -74,62 +76,101 @@ const clients = ["Akash TV", "Akash News", "Akash OTT", "One Stop", "Yess Shop",
 function Index() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-gradient-hero text-primary-foreground">
-        <div className="absolute inset-0 grid-pattern opacity-40" />
-        <div className="absolute -top-40 right-0 h-[500px] w-[500px] rounded-full bg-accent/30 blur-3xl" />
-        <div className="absolute -bottom-40 left-0 h-[500px] w-[500px] rounded-full bg-primary-glow/30 blur-3xl" />
+      {/* HERO — light, airy, Apple-style glass */}
+      <section className="relative overflow-hidden">
+        {/* Ambient floating orbs */}
+        <div className="orb h-[480px] w-[480px] -top-40 -left-32" style={{ background: "oklch(0.78 0.16 188 / 0.55)" }} />
+        <div className="orb h-[420px] w-[420px] top-20 right-0" style={{ background: "oklch(0.82 0.18 28 / 0.45)", animationDelay: "-6s" }} />
+        <div className="orb h-[360px] w-[360px] bottom-0 left-1/3" style={{ background: "oklch(0.85 0.14 250 / 0.45)", animationDelay: "-12s" }} />
 
         <div className="container-tight relative grid gap-12 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-wider backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5 text-accent" />
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+              className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-foreground/80"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
               Experts in Business & IT Solutions
-            </div>
-            <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
+              className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl"
+            >
               Business consulting that turns data into{" "}
-              <span className="bg-gradient-to-r from-accent to-primary-glow bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 strategic growth.
               </span>
-            </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-primary-foreground/80 sm:text-lg">
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.32, 0.72, 0, 1] }}
+              className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+            >
               YESS Bangla helps organisations across Bangladesh modernise, scale and lead — with a
               full suite of consulting, IT, OTT and e-commerce solutions.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+              className="mt-8 flex flex-wrap gap-3"
+            >
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground shadow-accent transition-transform hover:scale-105"
+                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-all hover:scale-[1.03] hover:shadow-lg"
               >
-                Start a project <ArrowRight className="h-4 w-4" />
+                Start a project <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold backdrop-blur transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold text-foreground transition-all hover:scale-[1.03]"
               >
                 Explore services
               </Link>
-            </div>
-            <div className="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8"
+            >
               {stats.slice(0, 3).map((s) => (
                 <div key={s.label}>
-                  <div className="font-display text-2xl font-bold text-accent sm:text-3xl">{s.value}</div>
-                  <div className="mt-1 text-xs text-primary-foreground/70">{s.label}</div>
+                  <div className="font-display text-2xl font-semibold text-foreground sm:text-3xl">{s.value}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{s.label}</div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-accent/40 to-primary-glow/40 opacity-50 blur-2xl" />
-            <img
-              src={heroImg}
-              alt="YESS Bangla consulting team meeting"
-              width={1600}
-              height={1024}
-              className="relative rounded-2xl border border-white/10 shadow-elegant"
-            />
-            <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-border bg-card p-4 shadow-lg sm:block">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.32, 0.72, 0, 1] }}
+            className="relative"
+          >
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 to-accent/20 opacity-60 blur-2xl" />
+            <div className="relative overflow-hidden rounded-3xl glass-strong p-2">
+              <img
+                src={heroImg}
+                alt="YESS Bangla consulting team meeting"
+                width={1600}
+                height={1024}
+                className="rounded-2xl"
+              />
+            </div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="absolute -bottom-6 -left-6 hidden rounded-2xl glass-strong p-4 sm:block"
+            >
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary text-primary-foreground">
                   <Award className="h-5 w-5" />
@@ -139,17 +180,34 @@ function Index() {
                   <div className="text-xs text-muted-foreground">of trusted expertise</div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="absolute -top-4 -right-4 hidden rounded-2xl glass-strong p-3 lg:block"
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  {["EH", "SR", "AK"].map((i) => (
+                    <div key={i} className="grid h-8 w-8 place-items-center rounded-full bg-gradient-primary text-[10px] font-semibold text-primary-foreground ring-2 ring-white">
+                      {i}
+                    </div>
+                  ))}
+                </div>
+                <div className="pr-1 text-xs font-medium text-foreground">250+ clients</div>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* ABOUT STRIP */}
-      <section className="border-b border-border bg-surface/50 py-16">
+      <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div>
+          <Reveal>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Simply know about us</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
               We help people take their businesses to the next level.
             </h2>
             <p className="mt-4 text-muted-foreground">
@@ -159,193 +217,200 @@ function Index() {
             </p>
             <Link
               to="/about"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all"
+              className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
             >
-              Read more <ArrowRight className="h-4 w-4" />
+              Read more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
+          </Reveal>
+
+          <Stagger className="grid grid-cols-2 gap-4">
             {features.map((f) => (
-              <div key={f.title} className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
-                <div className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-primary text-primary-foreground">
-                  <f.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-4 font-display text-base font-semibold">{f.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
-              </div>
+              <StaggerItem key={f.title}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.3 }}
+                  className="glass-card h-full rounded-2xl p-5"
+                >
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                    <f.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-4 font-display text-base font-semibold">{f.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
+                </motion.div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
       {/* SERVICES */}
       <section className="py-20">
         <div className="container-tight">
-          <div className="mx-auto max-w-2xl text-center">
+          <Reveal className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we offer</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
               Effective, wide-area business solutions
             </h2>
             <p className="mt-4 text-muted-foreground">
               From media platforms to enterprise software — a portfolio of services built for
               ambitious organisations.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
-              <article
-                key={s.title}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
-              >
-                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/5 transition-transform group-hover:scale-125" />
-                <div className="relative">
-                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                    <s.icon className="h-6 w-6" />
+              <StaggerItem key={s.title}>
+                <motion.article
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-7"
+                >
+                  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/8 transition-transform group-hover:scale-125" />
+                  <div className="relative">
+                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <s.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="mt-5 font-display text-xl font-semibold">{s.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+                    <Link
+                      to="/services"
+                      className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5"
+                    >
+                      Learn more <ArrowRight className="h-4 w-4" />
+                    </Link>
                   </div>
-                  <h3 className="mt-5 font-display text-xl font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-                  <Link
-                    to="/services"
-                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5"
-                  >
-                    Learn more <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </article>
+                </motion.article>
+              </StaggerItem>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* STATS */}
-      <section className="bg-gradient-hero py-16 text-primary-foreground">
-        <div className="container-tight grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-display text-4xl font-bold text-accent sm:text-5xl">{s.value}</div>
-              <div className="mt-2 text-sm text-primary-foreground/80">{s.label}</div>
-            </div>
-          ))}
+          </Stagger>
         </div>
       </section>
 
       {/* PROCESS */}
-      <section className="border-y border-border bg-surface/40 py-20">
+      <section className="py-20">
         <div className="container-tight">
-          <div className="mx-auto max-w-2xl text-center">
+          <Reveal className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">How we work</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">A proven, four-step delivery process</h2>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">A proven, four-step delivery process</h2>
             <p className="mt-4 text-muted-foreground">Clarity at every stage — from first conversation to long-term growth.</p>
-          </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          </Reveal>
+          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
-              <div key={p.title} className="relative rounded-2xl border border-border bg-card p-6">
-                <div className="absolute right-5 top-5 font-display text-4xl font-bold text-primary/10">0{i + 1}</div>
-                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                  <p.icon className="h-5 w-5" />
+              <StaggerItem key={p.title}>
+                <div className="relative h-full rounded-2xl glass-card p-6">
+                  <div className="absolute right-5 top-5 font-display text-4xl font-semibold text-primary/10">0{i + 1}</div>
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                    <p.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">{p.desc}</p>
                 </div>
-                <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{p.desc}</p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
       {/* TESTIMONIALS */}
       <section className="py-20">
         <div className="container-tight">
-          <div className="mx-auto max-w-2xl text-center">
+          <Reveal className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Client stories</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Loved by ambitious teams</h2>
-          </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">Loved by ambitious teams</h2>
+          </Reveal>
+          <Stagger className="mt-14 grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
-              <figure key={t.name} className="relative rounded-2xl border border-border bg-card p-7 shadow-sm">
-                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/10" />
-                <div className="flex gap-0.5 text-accent">
-                  {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-                </div>
-                <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90">"{t.quote}"</blockquote>
-                <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
-                  <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary font-display text-sm font-bold text-primary-foreground">
-                    {t.name.split(" ").map((n) => n[0]).join("")}
+              <StaggerItem key={t.name}>
+                <figure className="relative h-full rounded-2xl glass-card p-7">
+                  <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" />
+                  <div className="flex gap-0.5 text-accent">
+                    {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
-                  </div>
-                </figcaption>
-              </figure>
+                  <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90">"{t.quote}"</blockquote>
+                  <figcaption className="mt-5 flex items-center gap-3 border-t border-border/60 pt-4">
+                    <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary font-display text-sm font-semibold text-primary-foreground">
+                      {t.name.split(" ").map((n) => n[0]).join("")}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.role}</div>
+                    </div>
+                  </figcaption>
+                </figure>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
       {/* CLIENTS */}
-      <section className="border-t border-border bg-surface/30 py-12">
+      <section className="py-12">
         <div className="container-tight">
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Trusted by leading organisations across Bangladesh</p>
-          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4 lg:grid-cols-8">
-            {clients.map((c) => (
-              <div key={c} className="text-center font-display text-sm font-bold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary">
-                {c}
-              </div>
-            ))}
-          </div>
+          <Reveal>
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Trusted by leading organisations across Bangladesh</p>
+            <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4 lg:grid-cols-8">
+              {clients.map((c) => (
+                <div key={c} className="text-center font-display text-sm font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary">
+                  {c}
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="bg-gradient-hero py-16 text-primary-foreground">
-        <div className="container-tight grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-display text-4xl font-bold text-accent sm:text-5xl">{s.value}</div>
-              <div className="mt-2 text-sm text-primary-foreground/80">{s.label}</div>
-            </div>
-          ))}
+      {/* STATS — glass band */}
+      <section className="py-12">
+        <div className="container-tight">
+          <Stagger className="grid gap-px overflow-hidden rounded-3xl glass-strong sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((s) => (
+              <StaggerItem key={s.label} className="bg-transparent p-8 text-center">
+                <div className="bg-gradient-to-br from-primary to-accent bg-clip-text font-display text-4xl font-semibold text-transparent sm:text-5xl">
+                  {s.value}
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">{s.label}</div>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 
       {/* CTA */}
       <section className="py-20">
         <div className="container-tight">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-10 shadow-elegant md:p-16">
-            <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gradient-primary opacity-20 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-accent opacity-20 blur-3xl" />
-            <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
-              <div>
-                <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-                  Offering the best experience of business and IT services.
-                </h2>
-                <p className="mt-3 text-muted-foreground">
-                  Tell us about your goals — we'll respond within one business day with a tailored
-                  proposal.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
-                <a
-                  href="tel:+8801805464340"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
-                >
-                  Request a free call
-                </a>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
-                >
-                  Send a message
-                </Link>
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl glass-strong p-10 md:p-16">
+              <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-primary opacity-20 blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-accent opacity-20 blur-3xl" />
+              <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
+                <div>
+                  <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                    Offering the best experience of business and IT services.
+                  </h2>
+                  <p className="mt-3 text-muted-foreground">
+                    Tell us about your goals — we'll respond within one business day with a tailored
+                    proposal.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
+                  <a
+                    href="tel:+8801805464340"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-transform hover:scale-[1.03]"
+                  >
+                    Request a free call
+                  </a>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.03]"
+                  >
+                    Send a message
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </>
   );
 }
-
-function PlaceholderIndex() { return null; }
-void PlaceholderIndex;
