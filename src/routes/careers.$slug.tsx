@@ -117,8 +117,7 @@ const applicationSchema = z.object({
 type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume", string>>;
 
 function ApplyPage() {
-  const loaderData = Route.useLoaderData() as { job: ReturnType<typeof getOpening> & {} };
-  const { job } = loaderData;
+  const { job } = Route.useLoaderData() as { job: NonNullable<ReturnType<typeof getOpening>> };
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
