@@ -81,6 +81,29 @@ const testimonials = [
 
 const clients = ["Akash TV", "Akash News", "Akash OTT", "One Stop", "Yess Shop", "Bangla Media", "BD Logistics", "EduConnect"];
 
+const ventures = [
+  { icon: Tv, name: "Akash TV", tag: "Broadcast", desc: "Flagship satellite & digital television channel reaching millions across Bangladesh." },
+  { icon: Tv2, name: "Akash OTT", tag: "Streaming", desc: "Premium on-demand streaming platform with original Bangla entertainment." },
+  { icon: Newspaper, name: "Akash News", tag: "Digital Media", desc: "Modern, mobile-first Bangladeshi digital news platform." },
+  { icon: ShoppingBag, name: "Yess Bangla Shop", tag: "E-commerce", desc: "End-to-end commerce — websites, apps, payments and last-mile delivery." },
+  { icon: Code2, name: "Yess Tech Labs", tag: "Software", desc: "Custom web & enterprise software engineering for ambitious teams." },
+  { icon: Palette, name: "Yess Studio", tag: "Design", desc: "Brand, product and motion design for digital-first companies." },
+  { icon: Smartphone, name: "Yess Mobile", tag: "Apps", desc: "Native and cross-platform mobile apps engineered for scale." },
+  { icon: Megaphone, name: "Yess Marketing", tag: "Growth", desc: "Performance marketing, SEO and paid media that compound." },
+  { icon: GraduationCap, name: "Yess Academy", tag: "Education", desc: "Industry-led training in tech, design and digital business." },
+  { icon: Briefcase, name: "Yess Consulting", tag: "Strategy", desc: "Management & digital consulting for enterprises and SMEs." },
+  { icon: LayoutGrid, name: "One Stop Solution", tag: "Services", desc: "Centralised IT support and home services under one trusted roof." },
+];
+
+const impactMetrics = [
+  { icon: Briefcase, value: "250+", label: "Projects delivered", note: "Across 12 industries" },
+  { icon: Users, value: "180K+", label: "End users served", note: "Monthly active reach" },
+  { icon: Building2, value: "120+", label: "Enterprise clients", note: "From startups to groups" },
+  { icon: Globe, value: "64", label: "Districts covered", note: "Nationwide footprint" },
+  { icon: Award, value: "11+", label: "Years of expertise", note: "Trusted since 2014" },
+  { icon: HeartHandshake, value: "98%", label: "Client retention", note: "Long-term partnerships" },
+];
+
 function Index() {
   return (
     <>
