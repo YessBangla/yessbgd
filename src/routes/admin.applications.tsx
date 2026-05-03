@@ -217,8 +217,101 @@ function AdminApplications() {
             </div>
           )}
 
-          <div className="grid gap-4">
-            {items?.map((a) => (
+          <div className="mb-6 grid gap-3 rounded-2xl glass-card p-4 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Search
+              </label>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Name, email, role, file…"
+                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Resume type
+              </label>
+              <select
+                value={kind}
+                onChange={(e) => setKind(e.target.value as ResumeKind)}
+                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+              >
+                <option value="all">All types</option>
+                <option value="pdf">PDF</option>
+                <option value="doc">Word (DOC/DOCX)</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Min size (KB)
+              </label>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={minKB}
+                onChange={(e) => setMinKB(e.target.value)}
+                placeholder="0"
+                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Max size (KB)
+              </label>
+              <div className="mt-1 flex gap-2">
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  value={maxKB}
+                  onChange={(e) => setMaxKB(e.target.value)}
+                  placeholder="5120"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                />
+                <button
+                  onClick={clearFilters}
+                  className="shrink-0 rounded-lg border border-border px-3 text-xs font-semibold"
+                  type="button"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {error && (
+            <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              {error}
+              <div className="mt-2 text-xs">
+                If you see a permission error, your account does not have the <code>admin</code> role yet.
+                Ask the project owner to grant it.
+              </div>
+            </div>
+          )}
+
+          {items && items.length === 0 && !error && (
+            <div className="rounded-2xl glass-card p-10 text-center text-sm text-muted-foreground">
+              No applications yet. Share the{" "}
+              <Link to="/careers" className="text-primary underline">
+                careers page
+              </Link>
+              .
+            </div>
+          )}
+
+          {items && items.length > 0 && filtered.length === 0 && (
+            <div className="rounded-2xl glass-card p-10 text-center text-sm text-muted-foreground">
+              No applications match your filters.{" "}
+              <button onClick={clearFilters} className="text-primary underline">
+                Clear filters
+              </button>
+            </div>
+          )}
               <article key={a.id} className="rounded-2xl glass-card p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
