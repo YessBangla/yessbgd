@@ -33,9 +33,9 @@ export function TiltCard({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
-    // Skip on coarse-pointer (touch-only) devices to avoid janky behavior.
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    if (coarse) return;
+    // Reduce intensity on touch so the effect feels subtle and predictable.
+    const touchMax = max * 0.6;
 
     let raf = 0;
     let targetX = 0;
