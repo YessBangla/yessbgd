@@ -25,13 +25,13 @@ const posts = [
 function Insights() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
+      <section className="relative overflow-hidden py-24">
         <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Insights</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Insights</p>
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
             Thinking, research & stories from the field.
           </h1>
-          <p className="mt-5 text-primary-foreground/80">
+          <p className="mt-5 text-muted-foreground">
             Practical perspectives on strategy, technology and design from our consultants and engineers.
           </p>
         </div>

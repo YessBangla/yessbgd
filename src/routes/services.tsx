@@ -25,13 +25,13 @@ const services = [
 function Services() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
+      <section className="relative overflow-hidden py-24">
         <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">What we offer</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we offer</p>
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
             A full portfolio of business & IT services.
           </h1>
-          <p className="mt-5 text-primary-foreground/80">
+          <p className="mt-5 text-muted-foreground">
             From media platforms to web engineering — we deliver the full spectrum of digital and
             consulting services your business needs.
           </p>

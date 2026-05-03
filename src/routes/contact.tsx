@@ -18,13 +18,13 @@ function Contact() {
   const [sent, setSent] = useState(false);
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
+      <section className="relative overflow-hidden py-24">
         <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Contact us</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Contact us</p>
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
             Let's build something great together.
           </h1>
-          <p className="mt-5 text-primary-foreground/80">
+          <p className="mt-5 text-muted-foreground">
             Tell us about your project and our team will get back to you within one business day.
           </p>
         </div>

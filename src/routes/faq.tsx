@@ -28,13 +28,13 @@ const faqs = [
 function FAQ() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
+      <section className="relative overflow-hidden py-24">
         <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Help center</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Help center</p>
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
             Frequently asked questions.
           </h1>
-          <p className="mt-5 text-primary-foreground/80">
+          <p className="mt-5 text-muted-foreground">
             Can't find what you're looking for? <Link to="/contact" className="underline underline-offset-4 hover:text-accent">Get in touch</Link> — we usually reply within one business day.
           </p>
         </div>

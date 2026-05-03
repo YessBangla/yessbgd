@@ -16,13 +16,13 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <section className="bg-gradient-hero py-20 text-primary-foreground">
+      <section className="relative overflow-hidden py-24">
         <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Who we are</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Who we are</p>
           <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
             Building Bangladesh's most trusted consulting & IT partner.
           </h1>
-          <p className="mt-5 text-primary-foreground/80">
+          <p className="mt-5 text-muted-foreground">
             For over 11 years, YESS Bangla Private Limited has helped businesses convert data into
             strategy and ideas into world-class digital experiences.
           </p>
