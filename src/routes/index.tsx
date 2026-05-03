@@ -301,6 +301,86 @@ function Index() {
         </div>
       </section>
 
+      {/* VENTURES SHOWCASE — 11 ventures */}
+      <section className="py-20">
+        <div className="container-tight">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our ventures</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              Eleven ventures. One ecosystem.
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              A connected portfolio of media, technology, commerce and education brands — each
+              built to lead its category in Bangladesh.
+            </p>
+          </Reveal>
+
+          <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {ventures.map((v) => (
+              <StaggerItem key={v.name}>
+                <motion.article
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-6"
+                >
+                  <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
+                  <div className="relative flex items-start gap-4">
+                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <v.icon className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="font-display text-lg font-semibold leading-tight">{v.name}</h3>
+                        <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          {v.tag}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{v.desc}</p>
+                    </div>
+                  </div>
+                </motion.article>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      {/* IMPACT & METRICS */}
+      <section className="py-20">
+        <div className="container-tight">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Impact & metrics</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              Numbers that tell our story
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              A decade of measurable impact for businesses, partners and communities across Bangladesh.
+            </p>
+          </Reveal>
+
+          <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {impactMetrics.map((m) => (
+              <StaggerItem key={m.label}>
+                <div className="relative h-full rounded-2xl glass-card p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-accent">
+                      <m.icon className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <div className="font-display text-3xl font-semibold leading-none text-foreground">
+                        {m.value}
+                      </div>
+                      <div className="mt-1 text-sm font-medium text-foreground/80">{m.label}</div>
+                    </div>
+                  </div>
+                  <p className="mt-4 border-t border-border/60 pt-3 text-xs text-muted-foreground">{m.note}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
       {/* PROCESS */}
       <section className="py-20">
         <div className="container-tight">
