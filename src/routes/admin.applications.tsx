@@ -4,6 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/PageHero";
 import { Download, LogOut, Mail, Phone, Linkedin, FileText, Trash2, RefreshCw } from "lucide-react";
 
+type Status = "New" | "Reviewed" | "Rejected";
+const STATUSES: Status[] = ["New", "Reviewed", "Rejected"];
+const STATUS_STYLES: Record<Status, string> = {
+  New: "bg-primary/15 text-primary border-primary/30",
+  Reviewed: "bg-accent/15 text-accent-foreground border-accent/30",
+  Rejected: "bg-destructive/10 text-destructive border-destructive/30",
+};
+
 export const Route = createFileRoute("/admin/applications")({
   head: () => ({
     meta: [
