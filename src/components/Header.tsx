@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import logo from "@/assets/yess-bangla-logo.jpeg";
@@ -42,6 +42,10 @@ const MobilePanel = memo(function MobilePanel({
       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
       transition={panelTransition(reduceMotion)}
       style={{ transformOrigin: "top", willChange: "transform, opacity" }}
+      id="mobile-nav-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation"
       className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto glass-strong border-t border-glass-border lg:hidden"
     >
       <div className="container-tight flex flex-col gap-1 py-3">
