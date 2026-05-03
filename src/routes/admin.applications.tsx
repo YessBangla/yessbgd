@@ -197,26 +197,6 @@ function AdminApplications() {
             </div>
           </div>
 
-          {error && (
-            <div className="mb-6 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-              {error}
-              <div className="mt-2 text-xs">
-                If you see a permission error, your account does not have the <code>admin</code> role yet.
-                Ask the project owner to grant it.
-              </div>
-            </div>
-          )}
-
-          {items && items.length === 0 && !error && (
-            <div className="rounded-2xl glass-card p-10 text-center text-sm text-muted-foreground">
-              No applications yet. Share the{" "}
-              <Link to="/careers" className="text-primary underline">
-                careers page
-              </Link>
-              .
-            </div>
-          )}
-
           <div className="mb-6 grid gap-3 rounded-2xl glass-card p-4 sm:grid-cols-2 lg:grid-cols-5">
             <div className="lg:col-span-2">
               <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -312,6 +292,9 @@ function AdminApplications() {
               </button>
             </div>
           )}
+
+          <div className="grid gap-4">
+            {filtered.map((a) => (
               <article key={a.id} className="rounded-2xl glass-card p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
