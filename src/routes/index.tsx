@@ -192,17 +192,20 @@ function Index() {
               </Link>
             </motion.div>
 
-            <motion.div
-              initial={false}
-              className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8"
-            >
-              {stats.slice(0, 3).map((s) => (
+            <div className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8">
+              {[
+                { target: 250, label: "Projects", format: { plus: true } as const },
+                { target: 11,  label: "Years", format: { plus: true } as const },
+                { target: 64,  label: "Districts" },
+              ].map((s) => (
                 <div key={s.label}>
-                  <div className="font-display text-2xl font-semibold text-foreground sm:text-3xl">{s.value}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{s.label}</div>
+                  <div className="font-display text-2xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:text-3xl">
+                    {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
+                  </div>
+                  <div className="mt-2 text-xs text-muted-foreground">{s.label}</div>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           <motion.div
