@@ -160,6 +160,10 @@ export function Header() {
           <img
             src={logo}
             alt="YESS Bangla logo"
+            width={44}
+            height={44}
+            decoding="async"
+            fetchPriority="high"
             className="h-11 w-11 rounded-lg object-contain bg-white p-0.5 shadow-sm"
           />
           <div className="leading-tight">
