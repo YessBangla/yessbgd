@@ -168,12 +168,35 @@ function ApplyPage() {
     }
 
     setSubmitting(true);
-    // Frontend-only: simulate submission. To persist + email, enable Lovable Cloud
-    // and wire this to a server function that stores the file in storage and
-    // notifies the recruiting inbox.
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitting(false);
-    setSubmitted(true);
+    try {
+      const safeName = (resume!.name || "cv").replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${job.slug}/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+      const { error: upErr } = await supabase.storage
+        .from("resumes")
+        .upload(path, resume!, { contentType: resume!.type || "application/octet-stream", upsert: false });
+      if (upErr) throw upErr;
+
+      const { error: insErr } = await supabase.from("job_applications").insert({
+        job_slug: job.slug,
+        job_title: job.title,
+        full_name: parsed.data.fullName,
+        email: parsed.data.email,
+        phone: parsed.data.phone,
+        linkedin: parsed.data.linkedin || null,
+        cover_letter: parsed.data.coverLetter,
+        resume_path: path,
+        resume_name: resume!.name,
+        resume_size: resume!.size,
+        resume_type: resume!.type || "application/octet-stream",
+      });
+      if (insErr) throw insErr;
+      setSubmitted(true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Submission failed. Please try again.";
+      setErrors({ resume: message });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
