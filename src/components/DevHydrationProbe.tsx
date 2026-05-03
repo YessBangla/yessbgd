@@ -8,6 +8,15 @@ import { useEffect, useState } from "react";
  * on the client and reports any blank/null hero or header content.
  */
 export function DevHydrationProbe() {
+  // Mount strictly on the client to avoid SSR/CSR divergence on
+  // `import.meta.env.DEV` (which can flip between server build and client),
+  // which otherwise causes React to skip hydrating the probe subtree —
+  // leaving every field stuck at its initial (✗ / ?) state.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
   if (!import.meta.env.DEV) return null;
   return <ProbeInner />;
 }
