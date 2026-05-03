@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag, ArrowRight } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -25,18 +28,11 @@ const services = [
 function Services() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we offer</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            A full portfolio of business & IT services.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            From media platforms to web engineering — we deliver the full spectrum of digital and
-            consulting services your business needs.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="What we offer"
+        title="A full portfolio of business & IT services."
+        subtitle="From media platforms to web engineering — we deliver the full spectrum of digital and consulting services your business needs."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2">

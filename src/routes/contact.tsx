@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useState } from "react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -18,17 +19,11 @@ function Contact() {
   const [sent, setSent] = useState(false);
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Contact us</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Let's build something great together.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            Tell us about your project and our team will get back to you within one business day.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Contact us"
+        title="Let's build something great together."
+        subtitle="Tell us about your project and our team will get back to you within one business day."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-5">

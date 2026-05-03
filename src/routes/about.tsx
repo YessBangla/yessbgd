@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -16,18 +18,11 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Who we are</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Building Bangladesh's most trusted consulting & IT partner.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            For over 11 years, YESS Bangla Private Limited has helped businesses convert data into
-            strategy and ideas into world-class digital experiences.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Who we are"
+        title="Building Bangladesh's most trusted consulting & IT partner."
+        subtitle="For over 11 years, YESS Bangla Private Limited has helped businesses convert data into strategy and ideas into world-class digital experiences."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-3">
