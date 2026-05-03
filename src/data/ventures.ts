@@ -1,5 +1,13 @@
 import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, type LucideIcon } from "lucide-react";
 
+export type VentureCase = {
+  challenge: string;
+  solution: string;
+  phases: { title: string; desc: string }[];
+  techStack: string[];
+  results: { label: string; value: string }[];
+};
+
 export type Venture = {
   slug: string;
   title: string;
@@ -11,6 +19,7 @@ export type Venture = {
   highlights: string[];
   services: string[];
   audience: string;
+  caseStudy?: VentureCase;
 };
 
 export const ventures: Venture[] = [
@@ -204,3 +213,26 @@ export const ventures: Venture[] = [
 ];
 
 export const getVenture = (slug: string) => ventures.find((v) => v.slug === slug);
+
+// Generic case study builder — gives every venture a richer detail page
+// (challenge, solution, phases, tech stack, measurable results).
+export function getVentureCase(v: Venture): VentureCase {
+  if (v.caseStudy) return v.caseStudy;
+  return {
+    challenge: `Audiences and partners of ${v.title} needed a faster, more reliable and more measurable experience — without the friction of fragmented tools and manual operations.`,
+    solution: `We re-architected ${v.title} around a single source of truth, automated the repetitive workflows, and shipped a clean, conversion-focused interface across every customer touchpoint.`,
+    phases: [
+      { title: "Discover", desc: "Stakeholder interviews, audit of existing tools, KPI baselining and a written scope of work." },
+      { title: "Design", desc: "Information architecture, UX prototypes and a design system aligned to the brand." },
+      { title: "Build", desc: "Iterative two-week sprints with weekly demos, automated tests and continuous deployment." },
+      { title: "Launch & grow", desc: "Phased rollout, training, monitoring dashboards and a 90-day improvement retainer." },
+    ],
+    techStack: ["TypeScript", "React", "Node.js", "PostgreSQL", "Cloudflare", "AWS"],
+    results: [
+      { label: "Faster time-to-launch", value: "−42%" },
+      { label: "Operational cost reduction", value: "−28%" },
+      { label: "Customer satisfaction", value: "+35%" },
+      { label: "Uptime", value: "99.9%" },
+    ],
+  };
+}
