@@ -112,8 +112,16 @@ function ProbeInner() {
       <div>header.logo: {ok(report.headerLogo)} · nav: {ok(report.headerNav)}</div>
       <div>hero h1: {ok(!!report.heroH1)} visible: {ok(report.heroH1Visible)}</div>
       <div className="truncate opacity-70">↳ "{report.heroH1 || "(none)"}"</div>
-      <div>motion: {report.motion}</div>
+      <div>motion: {report.motion}{forceReduce ? " (forced)" : ""}</div>
       <div>viewport: {report.viewport} @{report.dpr}x</div>
+      <label className="mt-2 flex items-center gap-1.5 cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={forceReduce}
+          onChange={(e) => setForceReduce(e.target.checked)}
+        />
+        force reduced-motion
+      </label>
     </div>
   );
 }
