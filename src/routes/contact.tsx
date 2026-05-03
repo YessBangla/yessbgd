@@ -30,7 +30,7 @@ function Contact() {
           <div className="lg:col-span-2 space-y-4">
             {[
               { icon: MapPin, title: "Office Address", value: "Block A, Road 3, House 127 (Green View), 1st Floor, Mirpur 12, Dhaka 1216" },
-              { icon: Phone, title: "Phone", value: "+880 1805-464340", href: "tel:+8801805464340" },
+              { icon: Phone, title: "Phone", value: "+880 1805-464343", href: "tel:+8801805464343" },
               { icon: Mail, title: "Email", value: "yessbangla.bd@gmail.com", href: "mailto:yessbangla.bd@gmail.com" },
               { icon: Clock, title: "Working Hours", value: "Sat – Thu, 10:00 AM – 6:00 PM" },
             ].map((c) => (
