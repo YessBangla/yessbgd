@@ -23,6 +23,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -94,6 +96,16 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CareersRoute,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
+  id: '/admin/applications',
+  path: '/admin/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -107,6 +119,8 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
@@ -123,6 +137,8 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
@@ -140,6 +156,8 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
@@ -158,6 +176,8 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/admin/applications'
+    | '/admin/login'
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
@@ -174,6 +194,8 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/admin/applications'
+    | '/admin/login'
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
@@ -190,6 +212,8 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/admin/applications'
+    | '/admin/login'
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
@@ -207,6 +231,8 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
+  AdminApplicationsRoute: typeof AdminApplicationsRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   VenturesSlugRoute: typeof VenturesSlugRoute
 }
 
@@ -310,6 +336,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof CareersRoute
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/applications': {
+      id: '/admin/applications'
+      path: '/admin/applications'
+      fullPath: '/admin/applications'
+      preLoaderRoute: typeof AdminApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -348,6 +388,8 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
+  AdminApplicationsRoute: AdminApplicationsRoute,
+  AdminLoginRoute: AdminLoginRoute,
   VenturesSlugRoute: VenturesSlugRoute,
 }
 export const routeTree = rootRouteImport
