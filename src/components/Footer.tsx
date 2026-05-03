@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import logo from "@/assets/yess-bangla-logo.jpeg";
+import { ventures } from "@/data/ventures";
 
 export function Footer() {
   return (
@@ -53,14 +54,16 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Services</h4>
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Our Ventures</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/services" className="hover:text-primary">Akash OTT</Link></li>
-              <li><Link to="/services" className="hover:text-primary">Akash News</Link></li>
-              <li><Link to="/services" className="hover:text-primary">One Stop Solution</Link></li>
-              <li><Link to="/services" className="hover:text-primary">Web Development</Link></li>
-              <li><Link to="/services" className="hover:text-primary">E-commerce</Link></li>
-              <li><Link to="/faq" className="hover:text-primary">FAQ</Link></li>
+              {ventures.slice(0, 8).map((v) => (
+                <li key={v.slug}>
+                  <Link to="/ventures/$slug" params={{ slug: v.slug }} className="hover:text-primary">
+                    {v.title}
+                  </Link>
+                </li>
+              ))}
+              <li><Link to="/projects" className="font-semibold text-primary hover:underline">View all →</Link></li>
             </ul>
           </div>
 
