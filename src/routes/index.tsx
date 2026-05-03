@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
-import { CountUp } from "@/components/CountUp";
+import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
   Dialog,
   DialogContent,
@@ -115,17 +115,31 @@ const ventures: Venture[] = [
   { icon: LayoutGrid, name: "One Stop Solution", tag: "Services", desc: "Centralised IT support and home services under one trusted roof.", long: "One Stop Solution centralises IT support, smart-home installations and trusted home services — one number, one team, one accountable partner.", highlights: ["IT & device support", "Smart-home installations", "Trusted technicians"], cta: { label: "Request a service", to: "/contact" } },
 ];
 
-const impactMetrics = [
-  { icon: Briefcase, value: "250+", label: "Projects delivered", note: "Across 12 industries" },
-  { icon: Users, value: "180K+", label: "End users served", note: "Monthly active reach" },
-  { icon: Building2, value: "120+", label: "Enterprise clients", note: "From startups to groups" },
-  { icon: Globe, value: "64", label: "Districts covered", note: "Nationwide footprint" },
-  { icon: Award, value: "11+", label: "Years of expertise", note: "Trusted since 2014" },
-  { icon: HeartHandshake, value: "98%", label: "Client retention", note: "Long-term partnerships" },
+type ImpactMetric = {
+  id: string;
+  icon: typeof Briefcase;
+  /** Raw numeric target — drives the counter. */
+  target: number;
+  label: string;
+  note: string;
+  format?: import("@/components/CountUp").CountFormat;
+};
+
+const impactMetrics: ImpactMetric[] = [
+  { id: "projects",  icon: Briefcase,      target: 250,    label: "Projects delivered",  note: "Across 12 industries",     format: { plus: true } },
+  { id: "users",     icon: Users,          target: 180000, label: "End users served",    note: "Monthly active reach",     format: { compact: true, plus: true } },
+  { id: "clients",   icon: Building2,      target: 120,    label: "Enterprise clients",  note: "From startups to groups",  format: { plus: true } },
+  { id: "districts", icon: Globe,          target: 64,     label: "Districts covered",   note: "Nationwide footprint" },
+  { id: "years",     icon: Award,          target: 11,     label: "Years of expertise",  note: "Trusted since 2014",       format: { plus: true } },
+  { id: "retention", icon: HeartHandshake, target: 98,     label: "Client retention",    note: "Long-term partnerships",   format: { percent: true } },
 ];
 
 function Index() {
   const [openVenture, setOpenVenture] = useState<Venture | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
   return (
     <>
       {/* HERO — light, airy, Apple-style glass */}
@@ -387,15 +401,20 @@ function Index() {
 
           <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {impactMetrics.map((m) => (
-              <StaggerItem key={m.label}>
+              <StaggerItem key={m.id}>
                 <div className="relative h-full rounded-2xl glass-card p-6">
                   <div className="flex items-center gap-4">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-accent">
+                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-accent">
                       <m.icon className="h-6 w-6" />
                     </div>
-                    <div>
-                      <div className="font-display text-3xl font-semibold leading-none text-foreground">
-                        <CountUp value={m.value} />
+                    <div className="min-w-0">
+                      {/* Fixed-height numeric slot prevents layout shift between skeleton ↔ counter */}
+                      <div className="flex h-9 items-baseline font-display text-3xl font-semibold leading-none tracking-tight text-foreground tabular-nums">
+                        {hydrated ? (
+                          <CountUp target={m.target} format={m.format} />
+                        ) : (
+                          <CountUpSkeleton />
+                        )}
                       </div>
                       <div className="mt-1 text-sm font-medium text-foreground/80">{m.label}</div>
                     </div>
