@@ -175,7 +175,30 @@
   h4 { font-size: clamp(1.0625rem, 0.95rem + 0.6vw, 1.375rem); line-height: 1.3; }
   h5 { font-size: clamp(1rem, 0.92rem + 0.4vw, 1.1875rem); line-height: 1.35; }
   h6 { font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem); line-height: 1.4; }
-  p { line-height: 1.65; }
+  p { line-height: 1.65; overflow-wrap: break-word; }
+
+  /* Long-content guards: prevent horizontal scroll from URLs, code, and tables */
+  a, p, li, dd, dt, span, label, blockquote, figcaption {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  pre, code, kbd, samp {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  pre {
+    max-width: 100%;
+    overflow-x: auto; /* still allow scroll inside the block, never the page */
+  }
+  /* Tables: never push the page wide; scroll inside their own wrapper */
+  table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
 }
 
 @layer utilities {
