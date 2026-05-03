@@ -68,13 +68,13 @@ function Contact() {
               <textarea
                 required
                 rows={5}
-                className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+                className="mt-1.5 w-full rounded-lg border border-glass-border bg-white/60 backdrop-blur px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
                 placeholder="Tell us about your project…"
               />
             </div>
             <button
               type="submit"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-transform hover:scale-[1.03]"
             >
               <Send className="h-4 w-4" /> Send message
             </button>
@@ -99,7 +99,7 @@ function Field({ label, name, type = "text", required }: { label: string; name: 
         name={name}
         type={type}
         required={required}
-        className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+        className="mt-1.5 w-full rounded-lg border border-glass-border bg-white/60 backdrop-blur px-4 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
     </div>
   );
