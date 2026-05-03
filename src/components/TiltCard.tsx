@@ -33,9 +33,9 @@ export function TiltCard({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
-    // Skip on coarse-pointer (touch-only) devices to avoid janky behavior.
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    if (coarse) return;
+    // Reduce intensity on touch so the effect feels subtle and predictable.
+    const touchMax = max * 0.6;
 
     let raf = 0;
     let targetX = 0;
@@ -66,41 +66,64 @@ export function TiltCard({
       }
     };
 
-    const onMove = (e: PointerEvent) => {
+    const setFromPoint = (clientX: number, clientY: number, isTouch: boolean) => {
       const rect = el.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width; // 0..1
-      const py = (e.clientY - rect.top) / rect.height;
-      targetX = (px - 0.5) * 2 * max; // rotateY
-      targetY = -(py - 0.5) * 2 * max; // rotateX
+      const px = (clientX - rect.left) / rect.width;
+      const py = (clientY - rect.top) / rect.height;
+      const m = isTouch ? touchMax : max;
+      targetX = (px - 0.5) * 2 * m;
+      targetY = -(py - 0.5) * 2 * m;
       if (!raf) raf = requestAnimationFrame(apply);
     };
-    const onEnter = () => {
+
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch" && !active) return;
+      setFromPoint(e.clientX, e.clientY, e.pointerType === "touch");
+    };
+    const onEnter = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return; // touch uses pointerdown
       active = true;
       targetScale = scale;
       if (!raf) raf = requestAnimationFrame(apply);
     };
-    const onLeave = () => {
+    const reset = () => {
       active = false;
       targetX = 0;
       targetY = 0;
       targetScale = 1;
       if (!raf) raf = requestAnimationFrame(apply);
     };
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType !== "touch") return;
+      // Do NOT preventDefault or setPointerCapture — preserves vertical scroll.
+      active = true;
+      targetScale = scale;
+      setFromPoint(e.clientX, e.clientY, true);
+    };
 
     el.style.transformStyle = "preserve-3d";
     el.style.willChange = "transform";
+    // Allow the browser to handle vertical scrolling natively.
+    el.style.touchAction = "pan-y";
 
     el.addEventListener("pointerenter", onEnter);
     el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerleave", onLeave);
+    el.addEventListener("pointerleave", reset);
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointerup", reset);
+    el.addEventListener("pointercancel", reset);
 
     return () => {
       el.removeEventListener("pointerenter", onEnter);
       el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("pointerleave", reset);
+      el.removeEventListener("pointerdown", onDown);
+      el.removeEventListener("pointerup", reset);
+      el.removeEventListener("pointercancel", reset);
       if (raf) cancelAnimationFrame(raf);
       el.style.transform = "";
       el.style.willChange = "";
+      el.style.touchAction = "";
     };
   }, [max, perspective, scale]);
 
