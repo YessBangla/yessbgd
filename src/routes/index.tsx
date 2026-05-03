@@ -62,12 +62,6 @@ const services = [
   { icon: ShoppingBag, title: "Yess Bangla Shop", desc: "End-to-end e-commerce — websites, mobile apps, payments and doorstep delivery." },
 ];
 
-const stats = [
-  { value: "250+", label: "Projects Delivered" },
-  { value: "100%", label: "Client Satisfaction" },
-  { value: "64", label: "Districts Covered" },
-  { value: "11+", label: "Years of Experience" },
-];
 
 const features = [
   { icon: ShieldCheck, title: "Trusted & Reliable", desc: "Long-term guarantees and a proven track record across industries." },
@@ -192,17 +186,20 @@ function Index() {
               </Link>
             </motion.div>
 
-            <motion.div
-              initial={false}
-              className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8"
-            >
-              {stats.slice(0, 3).map((s) => (
+            <div className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8">
+              {[
+                { target: 250, label: "Projects", format: { plus: true } as const },
+                { target: 11,  label: "Years", format: { plus: true } as const },
+                { target: 64,  label: "Districts" },
+              ].map((s) => (
                 <div key={s.label}>
-                  <div className="font-display text-2xl font-semibold text-foreground sm:text-3xl">{s.value}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{s.label}</div>
+                  <div className="font-display text-2xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:text-3xl">
+                    {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
+                  </div>
+                  <div className="mt-2 text-xs text-muted-foreground">{s.label}</div>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           <motion.div
@@ -484,35 +481,26 @@ function Index() {
         </div>
       </section>
 
-      {/* CLIENTS */}
-      <section className="py-12">
+      {/* CLIENTS — animated marquee */}
+      <section className="py-14">
         <div className="container-tight">
           <Reveal>
-            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Trusted by leading organisations across Bangladesh</p>
-            <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4 lg:grid-cols-8">
-              {clients.map((c) => (
-                <div key={c} className="text-center font-display text-sm font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Trusted by leading organisations across Bangladesh
+            </p>
+          </Reveal>
+          <div className="marquee-mask mt-8 overflow-hidden">
+            <div className="marquee gap-12 pr-12">
+              {[...clients, ...clients].map((c, i) => (
+                <span
+                  key={`${c}-${i}`}
+                  className="shrink-0 font-display text-base font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary sm:text-lg"
+                >
                   {c}
-                </div>
+                </span>
               ))}
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* STATS — glass band */}
-      <section className="py-12">
-        <div className="container-tight">
-          <Stagger className="grid gap-px overflow-hidden rounded-3xl glass-strong sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((s) => (
-              <StaggerItem key={s.label} className="bg-transparent p-8 text-center">
-                <div className="bg-gradient-to-br from-primary to-accent bg-clip-text font-display text-4xl font-semibold text-transparent sm:text-5xl">
-                  {s.value}
-                </div>
-                <div className="mt-2 text-sm text-muted-foreground">{s.label}</div>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          </div>
         </div>
       </section>
 

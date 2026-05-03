@@ -225,6 +225,23 @@
     animation: hero-fade-in 0.6s cubic-bezier(0.32, 0.72, 0, 1) both;
     will-change: transform, opacity;
   }
+
+  /* Infinite horizontal marquee for client/logo strip */
+  @keyframes marquee-x {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee-x 40s linear infinite;
+    will-change: transform;
+  }
+  .marquee:hover { animation-play-state: paused; }
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
 }
 
 /* Reduce motion: disable non-essential animations across the app */
@@ -237,6 +254,7 @@
   }
   .orb { animation: none !important; }
   .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .marquee { animation: none !important; }
 }
 
 /* Dev-only: force reduced motion via toggle in DevHydrationProbe */
@@ -250,4 +268,5 @@
 }
 .force-reduce-motion .orb { animation: none !important; }
 .force-reduce-motion .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
+.force-reduce-motion .marquee { animation: none !important; }
 
