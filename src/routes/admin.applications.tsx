@@ -39,11 +39,31 @@ type Application = {
   status: Status;
 };
 
+type ResumeKind = "all" | "pdf" | "doc" | "other";
+
+function classifyResume(a: Application): Exclude<ResumeKind, "all"> {
+  const t = (a.resume_type || "").toLowerCase();
+  const n = (a.resume_name || "").toLowerCase();
+  if (t.includes("pdf") || n.endsWith(".pdf")) return "pdf";
+  if (
+    t.includes("msword") ||
+    t.includes("wordprocessingml") ||
+    n.endsWith(".doc") ||
+    n.endsWith(".docx")
+  )
+    return "doc";
+  return "other";
+}
+
 function AdminApplications() {
   const navigate = useNavigate();
   const [items, setItems] = useState<Application[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const [query, setQuery] = useState("");
+  const [kind, setKind] = useState<ResumeKind>("all");
+  const [minKB, setMinKB] = useState<string>("");
+  const [maxKB, setMaxKB] = useState<string>("");
 
   const load = async () => {
     setError(null);
@@ -125,6 +145,26 @@ function AdminApplications() {
     );
   }
 
+  const minBytes = minKB.trim() === "" ? null : Math.max(0, Number(minKB)) * 1024;
+  const maxBytes = maxKB.trim() === "" ? null : Math.max(0, Number(maxKB)) * 1024;
+  const q = query.trim().toLowerCase();
+  const filtered = (items ?? []).filter((a) => {
+    if (kind !== "all" && classifyResume(a) !== kind) return false;
+    if (minBytes !== null && !Number.isNaN(minBytes) && a.resume_size < minBytes) return false;
+    if (maxBytes !== null && !Number.isNaN(maxBytes) && a.resume_size > maxBytes) return false;
+    if (q) {
+      const hay = `${a.full_name} ${a.email} ${a.job_title} ${a.resume_name}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const clearFilters = () => {
+    setQuery("");
+    setKind("all");
+    setMinKB("");
+    setMaxKB("");
+  };
+
   return (
     <>
       <PageHero
@@ -134,9 +174,12 @@ function AdminApplications() {
       />
       <section className="pb-24">
         <div className="container-tight">
+          
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-muted-foreground">
-              {items ? `${items.length} application${items.length === 1 ? "" : "s"}` : "Loading…"}
+              {items
+                ? `${filtered.length} of ${items.length} application${items.length === 1 ? "" : "s"}`
+                : "Loading…"}
             </div>
             <div className="flex gap-2">
               <button
@@ -151,6 +194,73 @@ function AdminApplications() {
               >
                 <LogOut className="h-4 w-4" /> Sign out
               </button>
+            </div>
+          </div>
+
+          <div className="mb-6 grid gap-3 rounded-2xl glass-card p-4 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Search
+              </label>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Name, email, role, file…"
+                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Resume type
+              </label>
+              <select
+                value={kind}
+                onChange={(e) => setKind(e.target.value as ResumeKind)}
+                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+              >
+                <option value="all">All types</option>
+                <option value="pdf">PDF</option>
+                <option value="doc">Word (DOC/DOCX)</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Min size (KB)
+              </label>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={minKB}
+                onChange={(e) => setMinKB(e.target.value)}
+                placeholder="0"
+                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Max size (KB)
+              </label>
+              <div className="mt-1 flex gap-2">
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  value={maxKB}
+                  onChange={(e) => setMaxKB(e.target.value)}
+                  placeholder="5120"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                />
+                <button
+                  onClick={clearFilters}
+                  className="shrink-0 rounded-lg border border-border px-3 text-xs font-semibold"
+                  type="button"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
 
@@ -174,8 +284,17 @@ function AdminApplications() {
             </div>
           )}
 
+          {items && items.length > 0 && filtered.length === 0 && (
+            <div className="rounded-2xl glass-card p-10 text-center text-sm text-muted-foreground">
+              No applications match your filters.{" "}
+              <button onClick={clearFilters} className="text-primary underline">
+                Clear filters
+              </button>
+            </div>
+          )}
+
           <div className="grid gap-4">
-            {items?.map((a) => (
+            {filtered.map((a) => (
               <article key={a.id} className="rounded-2xl glass-card p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
