@@ -211,24 +211,26 @@ function Index() {
             </div>
           </div>
 
-          <motion.div
-            initial={false}
-            className="relative"
-          >
+          <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 to-accent/20 opacity-60 blur-2xl" />
-            <div className="relative overflow-hidden rounded-3xl glass-strong p-2">
+            <TiltCard className="relative overflow-hidden rounded-3xl glass-strong p-2">
               <img
                 src={heroImg}
                 alt="YESS Bangla consulting team meeting"
                 width={1600}
                 height={1024}
-                className="rounded-2xl"
+                className="block rounded-2xl"
               />
-            </div>
-            <motion.div
-              initial={false}
-              className="absolute -bottom-6 -left-6 hidden rounded-2xl glass-strong p-4 sm:block"
-            >
+            </TiltCard>
+
+            {/* Three.js 3D ornament — fixed-size to prevent layout shift */}
+            <ClientOnly fallback={<div aria-hidden className="pointer-events-none absolute -top-8 -right-6 hidden h-32 w-32 lg:block" />}>
+              <div className="pointer-events-auto absolute -top-8 -right-6 hidden h-32 w-32 lg:block">
+                <HeroThreeOrb className="h-full w-full" />
+              </div>
+            </ClientOnly>
+
+            <div className="absolute -bottom-6 -left-6 hidden rounded-2xl glass-strong p-4 sm:block">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary text-primary-foreground">
                   <Award className="h-5 w-5" />
@@ -238,23 +240,8 @@ function Index() {
                   <div className="text-xs text-muted-foreground">of trusted expertise</div>
                 </div>
               </div>
-            </motion.div>
-            <motion.div
-              initial={false}
-              className="absolute -top-4 -right-4 hidden rounded-2xl glass-strong p-3 lg:block"
-            >
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {["EH", "SR", "AK"].map((i) => (
-                    <div key={i} className="grid h-8 w-8 place-items-center rounded-full bg-gradient-primary text-[10px] font-semibold text-primary-foreground ring-2 ring-white">
-                      {i}
-                    </div>
-                  ))}
-                </div>
-                <div className="pr-1 text-xs font-medium text-foreground">250+ clients</div>
-              </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
