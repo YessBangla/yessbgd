@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Calendar, Mail } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { insights } from "@/data/insights";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
@@ -14,23 +15,8 @@ export const Route = createFileRoute("/insights")({
   component: Insights,
 });
 
-const featured = {
-  tag: "Featured",
-  date: "April 28, 2026",
-  title: "Digital transformation roadmap for SMEs in Bangladesh",
-  excerpt: "A practical, budget-aware framework Bangladeshi small and mid-sized businesses can use to digitise operations — without overspending or over-engineering.",
-  readTime: "8 min read",
-};
-
-const posts = [
-  { tag: "Technology", date: "April 14, 2026", title: "Building OTT platforms for emerging markets", excerpt: "Lessons from launching Akash OTT — infrastructure, content, and the user experience that matters." },
-  { tag: "E-commerce", date: "March 30, 2026", title: "Scaling last-mile delivery across all 64 districts", excerpt: "How a hybrid logistics model unlocked nationwide e-commerce reach for our retail clients." },
-  { tag: "Leadership", date: "March 12, 2026", title: "Why customer-centricity beats every other strategy", excerpt: "Our managing director on the operating principles behind a decade of repeat clients." },
-  { tag: "IT Services", date: "February 22, 2026", title: "When to build, buy or integrate enterprise software", excerpt: "A decision framework for CTOs evaluating the make-vs-buy question in regulated industries." },
-  { tag: "Design", date: "February 5, 2026", title: "Designing trust into financial products", excerpt: "Visual and interaction patterns that drive higher conversion in fintech apps." },
-  { tag: "Strategy", date: "January 18, 2026", title: "Picking the right tech partner — a buyer's guide", excerpt: "What to look for (and what to avoid) when shortlisting an IT or consulting partner." },
-];
-
+const featured = insights[0];
+const posts = insights.slice(1);
 const categories = ["All", "Strategy", "Technology", "E-commerce", "Leadership", "IT Services", "Design"];
 
 function Insights() {
