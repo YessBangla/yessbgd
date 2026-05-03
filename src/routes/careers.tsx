@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Briefcase, MapPin, Clock, ArrowRight, Sparkles, Users, GraduationCap, Heart } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -31,18 +32,11 @@ const perks = [
 function Careers() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Careers</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Build a career that builds Bangladesh.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            Join a team of consultants, engineers and creators shaping the next decade of business
-            and technology in South Asia.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Careers"
+        title="Build a career that builds Bangladesh."
+        subtitle="Join a team of consultants, engineers and creators shaping the next decade of business and technology in South Asia."
+      />
 
       <section className="py-20">
         <div className="container-tight">

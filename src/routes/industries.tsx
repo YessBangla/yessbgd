@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageHero } from "@/components/PageHero";
 import {
   Building2, ShoppingCart, GraduationCap, HeartPulse, Landmark,
   Factory, Tv, Truck, ArrowRight,
@@ -30,18 +31,11 @@ const industries = [
 function Industries() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Industries</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Deep expertise across the industries that shape Bangladesh.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            From media and retail to government and healthcare — our team brings sector-specific
-            knowledge to every engagement.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Industries"
+        title="Deep expertise across the industries that shape Bangladesh."
+        subtitle="From media and retail to government and healthcare — our team brings sector-specific knowledge to every engagement."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-4">

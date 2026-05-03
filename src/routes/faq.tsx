@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
@@ -28,17 +29,15 @@ const faqs = [
 function FAQ() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Help center</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Frequently asked questions.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            Can't find what you're looking for? <Link to="/contact" className="underline underline-offset-4 hover:text-accent">Get in touch</Link> — we usually reply within one business day.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Help center"
+        title="Frequently asked questions."
+        subtitle={
+          <>
+            Can't find what you're looking for? <Link to="/contact" className="text-primary underline underline-offset-4">Get in touch</Link> — we usually reply within one business day.
+          </>
+        }
+      />
 
       <section className="py-20">
         <div className="container-tight max-w-3xl">

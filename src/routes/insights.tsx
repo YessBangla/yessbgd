@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Calendar } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
@@ -25,17 +26,11 @@ const posts = [
 function Insights() {
   return (
     <>
-      <section className="relative overflow-hidden py-24">
-        <div className="container-tight max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Insights</p>
-          <h1 className="mt-4 font-display text-4xl font-bold tracking-tight sm:text-5xl">
-            Thinking, research & stories from the field.
-          </h1>
-          <p className="mt-5 text-muted-foreground">
-            Practical perspectives on strategy, technology and design from our consultants and engineers.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Insights"
+        title="Thinking, research & stories from the field."
+        subtitle="Practical perspectives on strategy, technology and design from our consultants and engineers."
+      />
 
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
