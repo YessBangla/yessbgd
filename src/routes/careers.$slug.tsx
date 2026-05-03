@@ -125,11 +125,20 @@ function ApplyPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const validateResume = (file: File | null): string | null => {
-    if (!file) return "Please attach your CV / resume";
-    if (!ALLOWED_TYPES.includes(file.type) && !/\.(pdf|docx?)$/i.test(file.name)) {
-      return "Only PDF or Word documents are accepted";
+    if (!file) return "Please attach your CV / resume (PDF, DOC, or DOCX).";
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+    const extOk = ["pdf", "doc", "docx"].includes(ext);
+    const typeOk = ALLOWED_TYPES.includes(file.type);
+    if (!extOk && !typeOk) {
+      return `Unsupported file type${ext ? ` (.${ext})` : ""}. Please upload a PDF, DOC, or DOCX file.`;
     }
-    if (file.size > MAX_RESUME_BYTES) return "File is larger than 5 MB";
+    if (file.size === 0) {
+      return "This file appears to be empty. Please choose a different file.";
+    }
+    if (file.size > MAX_RESUME_BYTES) {
+      const mb = (file.size / (1024 * 1024)).toFixed(2);
+      return `File is too large (${mb} MB). Maximum allowed size is 5 MB.`;
+    }
     return null;
   };
 
