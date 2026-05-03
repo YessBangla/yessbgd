@@ -136,6 +136,10 @@ const impactMetrics: ImpactMetric[] = [
 
 function Index() {
   const [openVenture, setOpenVenture] = useState<Venture | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
   return (
     <>
       {/* HERO — light, airy, Apple-style glass */}
