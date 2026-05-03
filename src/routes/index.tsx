@@ -487,19 +487,26 @@ function Index() {
         </div>
       </section>
 
-      {/* CLIENTS */}
-      <section className="py-12">
+      {/* CLIENTS — animated marquee */}
+      <section className="py-14">
         <div className="container-tight">
           <Reveal>
-            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Trusted by leading organisations across Bangladesh</p>
-            <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4 lg:grid-cols-8">
-              {clients.map((c) => (
-                <div key={c} className="text-center font-display text-sm font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Trusted by leading organisations across Bangladesh
+            </p>
+          </Reveal>
+          <div className="marquee-mask mt-8 overflow-hidden">
+            <div className="marquee gap-12 pr-12">
+              {[...clients, ...clients].map((c, i) => (
+                <span
+                  key={`${c}-${i}`}
+                  className="shrink-0 font-display text-base font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary sm:text-lg"
+                >
                   {c}
-                </div>
+                </span>
               ))}
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
