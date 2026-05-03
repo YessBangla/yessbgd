@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
-import { CountUp } from "@/components/CountUp";
+import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
   Dialog,
   DialogContent,
