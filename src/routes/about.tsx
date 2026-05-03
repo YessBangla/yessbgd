@@ -98,6 +98,61 @@ function About() {
           </div>
         </div>
       </section>
+
+      {/* LEADERSHIP TEAM */}
+      <section className="py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Leadership</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Meet the people behind YESS Bangla</h2>
+            <p className="mt-4 text-muted-foreground">A multidisciplinary team of strategists, engineers and designers united by craft.</p>
+          </div>
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { name: "Md Enamul Hayder", role: "Managing Director", initials: "EH" },
+              { name: "Sadia Rahman", role: "Chief Operating Officer", initials: "SR" },
+              { name: "Arif Khan", role: "Head of Engineering", initials: "AK" },
+              { name: "Mahfuza Akter", role: "Head of Design", initials: "MA" },
+            ].map((m) => (
+              <div key={m.name} className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
+                <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-primary font-display text-2xl font-bold text-primary-foreground shadow-glow">
+                  {m.initials}
+                </div>
+                <div className="mt-5 font-display text-base font-semibold">{m.name}</div>
+                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{m.role}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MILESTONES */}
+      <section className="border-t border-border bg-surface/40 py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our journey</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Milestones along the way</h2>
+          </div>
+          <div className="mx-auto mt-12 max-w-3xl">
+            <div className="relative space-y-8 border-l-2 border-border pl-8">
+              {[
+                { year: "2014", title: "YESS Bangla founded", desc: "Started as a small consulting firm in Dhaka with a focus on SME modernisation." },
+                { year: "2018", title: "IT services division launched", desc: "Expanded into web, mobile and software engineering for enterprise clients." },
+                { year: "2021", title: "Akash TV partnership", desc: "Launched media operations powering Akash News and digital streaming." },
+                { year: "2024", title: "Akash OTT goes live", desc: "Bangladesh's new digital streaming platform — built and operated by our team." },
+                { year: "2026", title: "Nation-wide footprint", desc: "Active engagements across all 64 districts, with 250+ delivered projects." },
+              ].map((m) => (
+                <div key={m.year} className="relative">
+                  <span className="absolute -left-[42px] grid h-6 w-6 place-items-center rounded-full bg-gradient-primary text-[10px] font-bold text-primary-foreground shadow-glow">●</span>
+                  <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{m.year}</div>
+                  <h3 className="mt-1 font-display text-lg font-semibold">{m.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{m.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
