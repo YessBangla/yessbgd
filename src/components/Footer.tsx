@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import logo from "@/assets/yess-bangla-logo.jpeg";
+import { ventures } from "@/data/ventures";
 
 export function Footer() {
   return (
