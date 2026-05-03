@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Target, Lightbulb, Layers, Cpu } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
-import { getVenture, ventures } from "@/data/ventures";
+import { getVenture, getVentureCase, ventures } from "@/data/ventures";
 
 export const Route = createFileRoute("/ventures/$slug")({
   loader: ({ params }) => {
@@ -41,6 +41,7 @@ export const Route = createFileRoute("/ventures/$slug")({
 function VenturePage() {
   const { venture: v } = Route.useLoaderData();
   const Icon = v.icon;
+  const cs = getVentureCase(v);
   const others = ventures.filter((x) => x.slug !== v.slug).slice(0, 3);
 
   return (
