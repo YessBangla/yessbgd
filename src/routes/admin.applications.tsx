@@ -186,6 +186,25 @@ function AdminApplications() {
                     <p className="text-xs text-muted-foreground">
                       {new Date(a.created_at).toLocaleString()}
                     </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span
+                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STATUS_STYLES[a.status]}`}
+                      >
+                        {a.status}
+                      </span>
+                      <select
+                        value={a.status}
+                        onChange={(e) => updateStatus(a, e.target.value as Status)}
+                        className="rounded-full border border-border bg-background px-2.5 py-1 text-xs font-medium"
+                        aria-label="Update status"
+                      >
+                        {STATUSES.map((s) => (
+                          <option key={s} value={s}>
+                            Mark {s}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button
