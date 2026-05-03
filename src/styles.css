@@ -239,3 +239,15 @@
   .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
 
+/* Dev-only: force reduced motion via toggle in DevHydrationProbe */
+.force-reduce-motion *,
+.force-reduce-motion *::before,
+.force-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+.force-reduce-motion .orb { animation: none !important; }
+.force-reduce-motion .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
+
