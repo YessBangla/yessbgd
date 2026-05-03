@@ -86,18 +86,14 @@ function Index() {
         <div className="container-tight relative grid gap-12 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
           <div>
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+              initial={false}
               className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-foreground/80"
             >
               <Sparkles className="h-3.5 w-3.5 text-primary" />
               Experts in Business & IT Solutions
             </motion.div>
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
+              initial={false}
               className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl"
             >
               Business consulting that turns data into{" "}
@@ -106,18 +102,14 @@ function Index() {
               </span>
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.32, 0.72, 0, 1] }}
+              initial={false}
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
               YESS Bangla helps organisations across Bangladesh modernise, scale and lead — with a
               full suite of consulting, IT, OTT and e-commerce solutions.
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+              initial={false}
               className="mt-8 flex flex-wrap gap-3"
             >
               <Link
@@ -135,9 +127,7 @@ function Index() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              initial={false}
               className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8"
             >
               {stats.slice(0, 3).map((s) => (
@@ -150,9 +140,7 @@ function Index() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.32, 0.72, 0, 1] }}
+            initial={false}
             className="relative"
           >
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 to-accent/20 opacity-60 blur-2xl" />
@@ -166,9 +154,7 @@ function Index() {
               />
             </div>
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              initial={false}
               className="absolute -bottom-6 -left-6 hidden rounded-2xl glass-strong p-4 sm:block"
             >
               <div className="flex items-center gap-3">
@@ -182,9 +168,7 @@ function Index() {
               </div>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 1 }}
+              initial={false}
               className="absolute -top-4 -right-4 hidden rounded-2xl glass-strong p-3 lg:block"
             >
               <div className="flex items-center gap-2">
