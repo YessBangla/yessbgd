@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Calendar } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Calendar, Mail } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/insights")({
@@ -14,14 +14,24 @@ export const Route = createFileRoute("/insights")({
   component: Insights,
 });
 
+const featured = {
+  tag: "Featured",
+  date: "April 28, 2026",
+  title: "Digital transformation roadmap for SMEs in Bangladesh",
+  excerpt: "A practical, budget-aware framework Bangladeshi small and mid-sized businesses can use to digitise operations — without overspending or over-engineering.",
+  readTime: "8 min read",
+};
+
 const posts = [
-  { tag: "Strategy", date: "April 28, 2026", title: "Digital transformation roadmap for SMEs in Bangladesh", excerpt: "A practical framework Bangladeshi small and mid-sized businesses can use to digitise operations without overspending." },
   { tag: "Technology", date: "April 14, 2026", title: "Building OTT platforms for emerging markets", excerpt: "Lessons from launching Akash OTT — infrastructure, content, and the user experience that matters." },
   { tag: "E-commerce", date: "March 30, 2026", title: "Scaling last-mile delivery across all 64 districts", excerpt: "How a hybrid logistics model unlocked nationwide e-commerce reach for our retail clients." },
   { tag: "Leadership", date: "March 12, 2026", title: "Why customer-centricity beats every other strategy", excerpt: "Our managing director on the operating principles behind a decade of repeat clients." },
   { tag: "IT Services", date: "February 22, 2026", title: "When to build, buy or integrate enterprise software", excerpt: "A decision framework for CTOs evaluating the make-vs-buy question in regulated industries." },
   { tag: "Design", date: "February 5, 2026", title: "Designing trust into financial products", excerpt: "Visual and interaction patterns that drive higher conversion in fintech apps." },
+  { tag: "Strategy", date: "January 18, 2026", title: "Picking the right tech partner — a buyer's guide", excerpt: "What to look for (and what to avoid) when shortlisting an IT or consulting partner." },
 ];
+
+const categories = ["All", "Strategy", "Technology", "E-commerce", "Leadership", "IT Services", "Design"];
 
 function Insights() {
   return (
@@ -32,7 +42,47 @@ function Insights() {
         subtitle="Practical perspectives on strategy, technology and design from our consultants and engineers."
       />
 
-      <section className="py-20">
+      <section className="pb-6">
+        <div className="container-tight flex flex-wrap justify-center gap-2">
+          {categories.map((c, i) => (
+            <button
+              key={c}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+                i === 0
+                  ? "bg-gradient-primary text-primary-foreground shadow-glow"
+                  : "glass-card text-muted-foreground hover:text-primary"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-10">
+        <div className="container-tight">
+          <article className="group grid gap-8 overflow-hidden rounded-3xl glass-card p-8 transition-all hover:border-primary/40 hover:shadow-elegant md:grid-cols-2 md:p-10">
+            <div className="relative grid h-56 place-items-center overflow-hidden rounded-2xl bg-gradient-primary md:h-full">
+              <div className="absolute inset-0 grid-pattern opacity-30" />
+              <span className="relative font-display text-5xl font-semibold text-primary-foreground">YB</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-3 text-xs">
+                <span className="rounded-full bg-gradient-primary px-3 py-1 font-semibold text-primary-foreground">{featured.tag}</span>
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground"><Calendar className="h-3.5 w-3.5" /> {featured.date}</span>
+                <span className="text-muted-foreground">· {featured.readTime}</span>
+              </div>
+              <h2 className="mt-4 font-display text-2xl font-semibold leading-snug sm:text-3xl">{featured.title}</h2>
+              <p className="mt-3 text-muted-foreground">{featured.excerpt}</p>
+              <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
+                Read featured article <ArrowRight className="h-4 w-4" />
+              </span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="py-10">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
             <article key={p.title} className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
@@ -49,6 +99,38 @@ function Insights() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="container-tight">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-10 text-center text-primary-foreground shadow-glow md:p-14">
+            <Mail className="mx-auto h-8 w-8 opacity-90" />
+            <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Get insights in your inbox.</h2>
+            <p className="mx-auto mt-3 max-w-xl text-primary-foreground/85">
+              Monthly perspectives on strategy, technology and design — written for leaders building in Bangladesh. No spam.
+            </p>
+            <form
+              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                type="email"
+                required
+                placeholder="you@company.com"
+                className="flex-1 rounded-full border border-primary-foreground/30 bg-background/10 px-5 py-3 text-sm text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary-foreground/40"
+              />
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-semibold text-foreground shadow-elegant transition-all hover:-translate-y-0.5"
+              >
+                Subscribe <ArrowRight className="h-4 w-4" />
+              </button>
+            </form>
+            <p className="mt-6 text-xs text-primary-foreground/70">
+              Or <Link to="/contact" className="underline underline-offset-4">talk to our team</Link> directly.
+            </p>
+          </div>
         </div>
       </section>
     </>

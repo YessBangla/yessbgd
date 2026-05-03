@@ -55,11 +55,40 @@ function Projects() {
             );
           })}
         </div>
-        <div className="container-tight mt-16 text-center">
-          <p className="text-muted-foreground">Eleven ventures. One vision — to deliver world-class quality across every industry we touch.</p>
-          <Link to="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-elegant transition-all hover:-translate-y-0.5">
-            Partner with us <ArrowRight className="h-4 w-4" />
-          </Link>
+      </section>
+
+      <section className="py-16">
+        <div className="container-tight grid grid-cols-2 gap-4 md:grid-cols-4">
+          {[
+            { v: "11", l: "Active ventures" },
+            { v: "10+", l: "Years in market" },
+            { v: "64", l: "Districts reached" },
+            { v: "1M+", l: "End users served" },
+          ].map((s) => (
+            <div key={s.l} className="rounded-2xl glass-card p-6 text-center">
+              <div className="font-display text-3xl font-semibold text-primary">{s.v}</div>
+              <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="pb-24">
+        <div className="container-tight">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-10 text-center text-primary-foreground shadow-glow md:p-14">
+            <h2 className="font-display text-3xl font-semibold sm:text-4xl">Want to build the next venture with us?</h2>
+            <p className="mx-auto mt-3 max-w-xl text-primary-foreground/85">
+              We partner with founders, investors and corporates to launch and scale ambitious products. Let's talk.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-semibold text-foreground shadow-elegant transition-all hover:-translate-y-0.5">
+                Partner with us <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link to="/services" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/40 px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-foreground/10">
+                See our services
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>
