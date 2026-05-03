@@ -397,15 +397,20 @@ function Index() {
 
           <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {impactMetrics.map((m) => (
-              <StaggerItem key={m.label}>
+              <StaggerItem key={m.id}>
                 <div className="relative h-full rounded-2xl glass-card p-6">
                   <div className="flex items-center gap-4">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-accent">
+                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-accent">
                       <m.icon className="h-6 w-6" />
                     </div>
-                    <div>
-                      <div className="font-display text-3xl font-semibold leading-none text-foreground">
-                        <CountUp value={m.value} />
+                    <div className="min-w-0">
+                      {/* Fixed-height numeric slot prevents layout shift between skeleton ↔ counter */}
+                      <div className="flex h-9 items-baseline font-display text-3xl font-semibold leading-none tracking-tight text-foreground tabular-nums">
+                        {hydrated ? (
+                          <CountUp target={m.target} format={m.format} />
+                        ) : (
+                          <CountUpSkeleton />
+                        )}
                       </div>
                       <div className="mt-1 text-sm font-medium text-foreground/80">{m.label}</div>
                     </div>
