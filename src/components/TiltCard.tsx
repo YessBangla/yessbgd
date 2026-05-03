@@ -9,11 +9,14 @@ type Props = {
   perspective?: number;
   /** Scale on hover. */
   scale?: number;
+  /** When false, tilt is disabled and the card renders static. */
+  enabled?: boolean;
 };
 
 /**
  * Subtle pointer-tracking 3D tilt wrapper.
  * - Honors prefers-reduced-motion (renders static).
+ * - Can be disabled via `enabled` prop (user preference).
  * - Pointer events only — touch scrolling is preserved (no preventDefault).
  * - GPU-friendly: writes transforms inside rAF, will-change hint.
  * - No layout shift: only transforms, no size change.
@@ -24,12 +27,17 @@ export function TiltCard({
   max = 8,
   perspective = 1100,
   scale = 1.015,
+  enabled = true,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (!enabled) {
+      el.style.transform = "";
+      return;
+    }
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
