@@ -103,6 +103,78 @@ function VenturePage() {
         </div>
       </section>
 
+      <section className="pb-4">
+        <div className="container-tight">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {cs.results.map((r) => (
+              <div key={r.label} className="rounded-2xl glass-card p-5 text-center">
+                <div className="font-display text-3xl font-semibold text-primary">{r.value}</div>
+                <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{r.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container-tight grid gap-6 md:grid-cols-2">
+          <div className="rounded-3xl glass-card p-8">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+              <Target className="h-5 w-5" />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-semibold">The challenge</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{cs.challenge}</p>
+          </div>
+          <div className="rounded-3xl glass-card p-8">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+              <Lightbulb className="h-5 w-5" />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-semibold">Our solution</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{cs.solution}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10">
+        <div className="container-tight">
+          <div className="flex items-center gap-3">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+              <Layers className="h-5 w-5" />
+            </div>
+            <h2 className="font-display text-2xl font-semibold sm:text-3xl">Delivery phases</h2>
+          </div>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {cs.phases.map((p, i) => (
+              <div key={p.title} className="relative rounded-2xl glass-card p-6">
+                <span className="absolute right-4 top-4 text-xs font-semibold text-primary/60">0{i + 1}</span>
+                <h3 className="font-display text-lg font-semibold">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10">
+        <div className="container-tight">
+          <div className="rounded-3xl glass-card p-8">
+            <div className="flex items-center gap-3">
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                <Cpu className="h-5 w-5" />
+              </div>
+              <h2 className="font-display text-2xl font-semibold">Tech stack</h2>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {cs.techStack.map((t) => (
+                <span key={t} className="rounded-full border border-border bg-background/60 px-3 py-1.5 text-xs font-semibold">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16">
         <div className="container-tight">
           <div className="flex items-end justify-between">
