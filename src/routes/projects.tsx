@@ -1,57 +1,74 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { Reveal } from "@/components/Reveal";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
-      { title: "Projects — YESS Bangla" },
-      { name: "description", content: "Recent projects delivered by YESS Bangla — innovation hubs, leadership programs, accelerators and marketing platforms." },
-      { property: "og:title", content: "Projects — YESS Bangla" },
-      { property: "og:description", content: "Selected client work and case studies." },
+      { title: "Our Ventures — YESS Bangla" },
+      { name: "description", content: "Explore the ventures of Yess Bangla Private Limited — Yess Soft, Akash TV, Akash OTT, The Daily Akash, Yess Organic Haat, Yess Service, Yess Host, Yess Event, Yess Model, Yess Food and Yess All in One Solution." },
+      { property: "og:title", content: "Our Ventures — YESS Bangla" },
+      { property: "og:description", content: "A diversified portfolio of technology, media, lifestyle and service ventures." },
     ],
   }),
   component: Projects,
 });
 
-const projects = [
-  { title: "Innovation Hub: Navigating the Future", category: "Financing Management", color: "from-primary to-primary-glow" },
-  { title: "Leadership Excellence Initiative", category: "Inventory Tracking", color: "from-accent to-primary" },
-  { title: "Startup Accelerator Program", category: "Business Strategy", color: "from-primary-glow to-accent" },
-  { title: "Marketing Mastery Series", category: "Inventory Tracking", color: "from-primary to-accent" },
+const ventures = [
+  { title: "Yess Soft", category: "Software & IT Solutions", desc: "Custom software, web & mobile applications, ERP and enterprise systems built for modern businesses.", icon: Code2, color: "from-primary to-primary-glow" },
+  { title: "Akash TV", category: "Satellite Television", desc: "A modern broadcast channel delivering news, entertainment and cultural programs across the nation.", icon: Tv, color: "from-accent to-primary" },
+  { title: "Akash OTT", category: "Streaming Platform", desc: "On-demand streaming with films, originals, live TV and exclusive premieres on every screen.", icon: PlayCircle, color: "from-primary-glow to-accent" },
+  { title: "The Daily Akash", category: "Digital Newspaper", desc: "Trusted journalism — breaking news, in-depth analysis and stories that matter, every day.", icon: Newspaper, color: "from-primary to-accent" },
+  { title: "Yess Organic Haat", category: "Organic Marketplace", desc: "Farm-to-table organic food and lifestyle products sourced directly from verified local producers.", icon: Leaf, color: "from-accent to-primary-glow" },
+  { title: "Yess Service", category: "Home & Professional Services", desc: "On-demand professional services — from home maintenance to expert consultations, just a tap away.", icon: Wrench, color: "from-primary to-primary-glow" },
+  { title: "Yess Host", category: "Hosting & Cloud", desc: "Reliable web hosting, domains, cloud servers and managed infrastructure for businesses of all sizes.", icon: Server, color: "from-primary-glow to-primary" },
+  { title: "Yess Event", category: "Event Management", desc: "End-to-end event planning, production and management for corporate, cultural and private occasions.", icon: CalendarHeart, color: "from-accent to-primary" },
+  { title: "Yess Model", category: "Modeling & Talent Agency", desc: "Discovering and nurturing fresh talent — connecting models and creators with leading brands.", icon: Sparkles, color: "from-primary to-accent" },
+  { title: "Yess Food", category: "Food & Beverage", desc: "Authentic, quality-driven food experiences — from cloud kitchens to signature dining concepts.", icon: UtensilsCrossed, color: "from-primary-glow to-accent" },
+  { title: "Yess All in One Solution", category: "Integrated Business Solutions", desc: "A unified platform bringing together every YESS service for seamless business and lifestyle needs.", icon: LayoutGrid, color: "from-primary to-primary-glow" },
 ];
 
 function Projects() {
   return (
     <>
       <PageHero
-        eyebrow="Our projects"
-        title="Recent client work that drove real outcomes."
-        subtitle="Discover a selection of engagements where strategy met execution — and our clients achieved measurable growth."
+        eyebrow="Our ventures"
+        title="A diversified portfolio building Bangladesh's future."
+        subtitle="From technology and media to lifestyle and services — Yess Bangla Private Limited operates a growing family of ventures committed to quality, innovation and impact."
       />
 
       <section className="py-20">
-        <div className="container-tight grid gap-6 md:grid-cols-2">
-          {projects.map((p) => (
-            <article key={p.title} className="group overflow-hidden rounded-2xl glass-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-elegant">
-              <div className={`relative h-56 bg-gradient-to-br ${p.color}`}>
-                <div className="absolute inset-0 grid-pattern opacity-30" />
-                <div className="absolute inset-0 grid place-items-center">
-                  <span className="font-display text-2xl font-bold text-primary-foreground/90 px-6 text-center">{p.title}</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary">{p.category}</p>
-                <h3 className="mt-2 font-display text-xl font-semibold">{p.title}</h3>
-                <Link to="/contact" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
-                  View details <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </article>
-          ))}
+        <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {ventures.map((v, i) => {
+            const Icon = v.icon;
+            return (
+              <Reveal key={v.title} delay={i * 0.05}>
+                <article className="group h-full overflow-hidden rounded-2xl glass-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-elegant">
+                  <div className={`relative h-40 bg-gradient-to-br ${v.color}`}>
+                    <div className="absolute inset-0 grid-pattern opacity-30" />
+                    <div className="absolute inset-0 grid place-items-center">
+                      <Icon className="h-14 w-14 text-primary-foreground/95" strokeWidth={1.5} />
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{v.category}</p>
+                    <h3 className="mt-2 font-display text-xl font-semibold">{v.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
+                    <Link to="/contact" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
+                      Learn more <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
-        <div className="container-tight mt-12 text-center">
-          <p className="text-muted-foreground">We successfully cope with tasks of varying complexity and provide long-term guarantees.</p>
+        <div className="container-tight mt-16 text-center">
+          <p className="text-muted-foreground">Eleven ventures. One vision — to deliver world-class quality across every industry we touch.</p>
+          <Link to="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-elegant transition-all hover:-translate-y-0.5">
+            Partner with us <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
     </>
