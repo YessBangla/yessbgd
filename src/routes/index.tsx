@@ -186,17 +186,26 @@ function Index() {
               </Link>
             </motion.div>
 
-            <div className="mt-10 grid grid-cols-3 gap-6 border-t border-border/60 pt-8">
+            <div className="mt-10 grid grid-cols-3 gap-3 border-t border-border/60 pt-6 sm:gap-6 sm:pt-8">
               {[
                 { target: 250, label: "Projects", format: { plus: true } as const },
                 { target: 11,  label: "Years", format: { plus: true } as const },
                 { target: 64,  label: "Districts" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="font-display text-2xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:text-3xl">
+              ].map((s, i) => (
+                <div
+                  key={s.label}
+                  className={
+                    "min-w-0 " +
+                    (i > 0 ? "border-l border-border/60 pl-3 sm:pl-6" : "")
+                  }
+                >
+                  {/* Fixed-height numeric slot prevents skeleton ↔ counter shift */}
+                  <div className="flex h-7 items-baseline font-display text-xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:h-9 sm:text-3xl">
                     {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
                   </div>
-                  <div className="mt-2 text-xs text-muted-foreground">{s.label}</div>
+                  <div className="mt-1.5 truncate text-[11px] text-muted-foreground sm:mt-2 sm:text-xs">
+                    {s.label}
+                  </div>
                 </div>
               ))}
             </div>
