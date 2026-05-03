@@ -31,7 +31,7 @@ function About() {
             { icon: Eye, title: "Our Vision", desc: "To become the most trusted partner for businesses transitioning into the digital era — locally and globally." },
             { icon: Heart, title: "Our Values", desc: "Integrity, craftsmanship, customer focus and a relentless pursuit of quality in every engagement." },
           ].map((c) => (
-            <div key={c.title} className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+            <div key={c.title} className="rounded-2xl glass-card p-8 shadow-sm">
               <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <c.icon className="h-6 w-6" />
               </div>
@@ -69,7 +69,7 @@ function About() {
             </ul>
           </div>
 
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-elegant">
+          <div className="rounded-3xl glass-strong p-8 shadow-elegant">
             <div className="flex items-center gap-4">
               <div className="grid h-16 w-16 place-items-center rounded-full bg-gradient-primary font-display text-xl font-bold text-primary-foreground">
                 EH
@@ -109,7 +109,7 @@ function About() {
               { name: "Arif Khan", role: "Head of Engineering", initials: "AK" },
               { name: "Mahfuza Akter", role: "Head of Design", initials: "MA" },
             ].map((m) => (
-              <div key={m.name} className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
+              <div key={m.name} className="rounded-2xl glass-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
                 <div className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-gradient-primary font-display text-2xl font-bold text-primary-foreground shadow-glow">
                   {m.initials}
                 </div>

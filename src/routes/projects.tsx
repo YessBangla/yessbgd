@@ -33,7 +33,7 @@ function Projects() {
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2">
           {projects.map((p) => (
-            <article key={p.title} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-elegant">
+            <article key={p.title} className="group overflow-hidden rounded-2xl glass-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-elegant">
               <div className={`relative h-56 bg-gradient-to-br ${p.color}`}>
                 <div className="absolute inset-0 grid-pattern opacity-30" />
                 <div className="absolute inset-0 grid place-items-center">

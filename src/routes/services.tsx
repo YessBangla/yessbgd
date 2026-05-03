@@ -39,7 +39,7 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group rounded-2xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
+              className="group rounded-2xl glass-card p-8 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant"
             >
               <div className="grid h-14 w-14 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <s.icon className="h-7 w-7" />

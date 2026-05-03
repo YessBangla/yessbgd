@@ -40,7 +40,7 @@ function Industries() {
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {industries.map((i) => (
-            <div key={i.title} className="rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <div key={i.title} className="rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <i.icon className="h-5 w-5" />
               </div>

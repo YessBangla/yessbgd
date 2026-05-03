@@ -35,7 +35,7 @@ function Insights() {
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
-            <article key={p.title} className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <article key={p.title} className="group flex flex-col rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
               <div className="flex items-center justify-between text-xs">
                 <span className="rounded-full bg-secondary px-3 py-1 font-medium text-primary">{p.tag}</span>
                 <span className="inline-flex items-center gap-1.5 text-muted-foreground">

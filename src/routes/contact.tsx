@@ -34,7 +34,7 @@ function Contact() {
               { icon: Mail, title: "Email", value: "yessbangla.bd@gmail.com", href: "mailto:yessbangla.bd@gmail.com" },
               { icon: Clock, title: "Working Hours", value: "Sat – Thu, 10:00 AM – 6:00 PM" },
             ].map((c) => (
-              <div key={c.title} className="flex gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <div key={c.title} className="flex gap-4 rounded-2xl glass-card p-5 shadow-sm">
                 <div className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-lg bg-gradient-primary text-primary-foreground">
                   <c.icon className="h-5 w-5" />
                 </div>
@@ -51,7 +51,7 @@ function Contact() {
           </div>
 
           <form
-            className="lg:col-span-3 rounded-2xl border border-border bg-card p-8 shadow-elegant"
+            className="lg:col-span-3 rounded-2xl glass-card p-8 shadow-elegant"
             onSubmit={(e) => { e.preventDefault(); setSent(true); }}
           >
             <h2 className="font-display text-2xl font-semibold">Request a callback</h2>
