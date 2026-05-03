@@ -1,5 +1,13 @@
 import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, type LucideIcon } from "lucide-react";
 
+export type VentureCase = {
+  challenge: string;
+  solution: string;
+  phases: { title: string; desc: string }[];
+  techStack: string[];
+  results: { label: string; value: string }[];
+};
+
 export type Venture = {
   slug: string;
   title: string;
@@ -11,6 +19,7 @@ export type Venture = {
   highlights: string[];
   services: string[];
   audience: string;
+  caseStudy?: VentureCase;
 };
 
 export const ventures: Venture[] = [
