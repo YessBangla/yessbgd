@@ -13,6 +13,12 @@ import {
   Users,
   TrendingUp,
   Award,
+  Search,
+  Lightbulb,
+  Rocket,
+  LineChart,
+  Quote,
+  Star,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
