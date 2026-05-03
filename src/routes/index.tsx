@@ -21,6 +21,14 @@ import {
   LineChart,
   Quote,
   Star,
+  Tv2,
+  Globe,
+  Smartphone,
+  Megaphone,
+  GraduationCap,
+  Briefcase,
+  Building2,
+  HeartHandshake,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
