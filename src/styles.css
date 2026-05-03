@@ -127,12 +127,19 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    min-width: 0;
+  }
+  html, body {
+    max-width: 100%;
+    overflow-x: clip;
   }
   html {
     scroll-behavior: smooth;
     background-color: var(--color-background);
     background-image: var(--gradient-mesh);
     background-attachment: fixed;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
     /* Transparent so the WaterBackground canvas shows through globally */
@@ -143,10 +150,16 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  img, svg, video, canvas, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+  canvas { display: block; }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     letter-spacing: -0.022em;
     font-weight: 600;
+    overflow-wrap: break-word;
   }
 }
 
@@ -194,7 +207,13 @@
     width: 100%;
     max-width: 1200px;
     margin-inline: auto;
-    padding-inline: 1.5rem;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-tight { padding-inline: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .container-tight { padding-inline: 2rem; }
   }
   .grid-pattern {
     background-image:
