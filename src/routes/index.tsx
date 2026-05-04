@@ -5,6 +5,8 @@ import heroImg from "@/assets/hero-business.jpg";
 import aboutImg from "@/assets/about-team-bd.jpg";
 import servicesImg from "@/assets/services-tech-bd.jpg";
 import venturesImg from "@/assets/ventures-dhaka-bd.jpg";
+import trustImg from "@/assets/trust-handshake-bd.jpg";
+import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
