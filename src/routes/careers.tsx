@@ -171,6 +171,7 @@ function Careers() {
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
+  const [receipt, setReceipt] = useState<{ id: string | null; createdAt: string; email: string } | null>(null);
 
   const openApplication = useMemo(
     () => ({
@@ -347,21 +348,30 @@ function Careers() {
         });
       if (upErr) throw upErr;
 
-      const { error: insErr } = await supabase.from("job_applications").insert({
-        job_slug: selectedJob.slug,
-        job_title: selectedJob.title,
-        full_name: parsed.data.fullName,
-        email: parsed.data.email,
-        phone: parsed.data.phone,
-        applicant_location: parsed.data.location,
-        linkedin: parsed.data.linkedin || null,
-        cover_letter: parsed.data.coverLetter,
-        resume_path: path,
-        resume_name: resume!.name,
-        resume_size: resume!.size,
-        resume_type: resume!.type || "application/octet-stream",
-      });
+      const { data: insData, error: insErr } = await supabase
+        .from("job_applications")
+        .insert({
+          job_slug: selectedJob.slug,
+          job_title: selectedJob.title,
+          full_name: parsed.data.fullName,
+          email: parsed.data.email,
+          phone: parsed.data.phone,
+          applicant_location: parsed.data.location,
+          linkedin: parsed.data.linkedin || null,
+          cover_letter: parsed.data.coverLetter,
+          resume_path: path,
+          resume_name: resume!.name,
+          resume_size: resume!.size,
+          resume_type: resume!.type || "application/octet-stream",
+        })
+        .select("id, created_at")
+        .single();
       if (insErr) throw insErr;
+      setReceipt({
+        id: insData?.id ?? null,
+        createdAt: insData?.created_at ?? new Date().toISOString(),
+        email: parsed.data.email,
+      });
       setStep(3);
       if (typeof window !== "undefined") {
         window.requestAnimationFrame(() => {
@@ -471,14 +481,16 @@ function Careers() {
             {step === 3 && selectedJob && (
               <StepSuccess
                 job={selectedJob}
+                receipt={receipt}
+                isOpenApplication={selectedJob.slug === "open-application"}
                 onAnother={() => {
                   setStep(1);
                   setSelectedSlug(null);
                   setResume(null);
                   setErrors({});
+                  setReceipt(null);
                 }}
-              />
-            )}
+              />)}
           </div>
         </div>
       </section>
@@ -1216,39 +1228,134 @@ function StepForm({
 
 function StepSuccess({
   job,
+  receipt,
+  isOpenApplication,
   onAnother,
 }: {
   job: (typeof openings)[number];
+  receipt: { id: string | null; createdAt: string; email: string } | null;
+  isOpenApplication: boolean;
   onAnother: () => void;
 }) {
+  const refId = receipt?.id ? receipt.id.slice(0, 8).toUpperCase() : "—";
+  const submittedAt = receipt?.createdAt
+    ? new Date(receipt.createdAt).toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : "Just now";
+
+  const tracker = isOpenApplication
+    ? [
+        { title: "Submitted", desc: "We've received your CV and cover note.", done: true, current: true },
+        { title: "Talent network review", desc: "Within 7–10 business days, our recruiters route your profile to relevant teams." },
+        { title: "Team match", desc: "If a hiring manager wants to connect, we'll email you to schedule an intro call." },
+        { title: "Stay in touch", desc: "We keep your profile on file for 12 months and reach out when a fit opens." },
+      ]
+    : [
+        { title: "Submitted", desc: "We've received your application for this role.", done: true, current: true },
+        { title: "Recruiter screen", desc: "Reviewed within 5–7 business days. You'll hear back either way." },
+        { title: "Interview", desc: "1–2 conversations with the hiring manager and team." },
+        { title: "Decision & offer", desc: "Reference checks, transparent comp talk, and a written offer." },
+      ];
+
   return (
-    <div className="mx-auto max-w-xl rounded-3xl glass-card p-8 text-center">
-      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow">
-        <CheckCircle2 className="h-7 w-7" />
+    <div className="mx-auto max-w-2xl rounded-3xl glass-card p-6 sm:p-8">
+      <div className="flex flex-col items-center text-center">
+        <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow">
+          <CheckCircle2 className="h-7 w-7" />
+        </div>
+        {isOpenApplication ? (
+          <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
+            <Send className="h-3 w-3" /> Open application
+          </span>
+        ) : (
+          <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <Briefcase className="h-3 w-3" /> Role application
+          </span>
+        )}
+        <h2 className="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          {isOpenApplication ? "Thanks — your CV is in!" : "Application received"}
+        </h2>
+        <p className="mt-2 max-w-md text-sm text-muted-foreground">
+          {isOpenApplication ? (
+            <>We'll keep your profile in our talent network and reach out when a matching role opens.</>
+          ) : (
+            <>Thanks for applying to <span className="font-semibold text-foreground">{job.title}</span>. We review every submission carefully.</>
+          )}
+        </p>
       </div>
-      <h2 className="mt-5 font-display text-2xl font-bold tracking-tight">Application received</h2>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Thanks for applying to <span className="font-semibold text-foreground">{job.title}</span>. Our team
-        reviews every submission and will reach out within 5–7 business days if your background is a fit.
-      </p>
-      <p className="mt-3 text-sm text-muted-foreground">
+
+      {/* Receipt */}
+      <dl className="mt-6 grid gap-3 rounded-2xl border border-border bg-secondary/30 p-4 sm:grid-cols-3">
+        <div>
+          <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Reference</dt>
+          <dd className="mt-1 font-mono text-sm font-semibold">{refId}</dd>
+        </div>
+        <div>
+          <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Submitted</dt>
+          <dd className="mt-1 text-sm">{submittedAt}</dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Confirmation to</dt>
+          <dd className="mt-1 truncate text-sm">{receipt?.email ?? "—"}</dd>
+        </div>
+      </dl>
+
+      {/* Tracker */}
+      <div className="mt-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          What happens next
+        </p>
+        <ol className="mt-3 space-y-3">
+          {tracker.map((t, i) => (
+            <li key={t.title} className="flex gap-3">
+              <div className="flex flex-col items-center">
+                <div
+                  className={
+                    "grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[11px] font-bold " +
+                    (t.done
+                      ? "border-primary bg-gradient-primary text-primary-foreground shadow-glow"
+                      : t.current
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-background text-muted-foreground")
+                  }
+                  aria-hidden
+                >
+                  {t.done ? <Check className="h-3.5 w-3.5" /> : i + 1}
+                </div>
+                {i < tracker.length - 1 && (
+                  <div className="mt-1 h-full min-h-[18px] w-px bg-border" aria-hidden />
+                )}
+              </div>
+              <div className="pb-2">
+                <p className="text-sm font-semibold">{t.title}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{t.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <p className="mt-6 text-xs text-muted-foreground">
         Questions? Email{" "}
         <a className="text-primary underline" href="mailto:yessbangla.bd@gmail.com">
           yessbangla.bd@gmail.com
-        </a>
-        .
+        </a>{" "}
+        and quote your reference <span className="font-mono font-semibold text-foreground">{refId}</span>.
       </p>
-      <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+
+      <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
         <button
           type="button"
           onClick={onAnother}
-          className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow"
         >
-          Apply for another role
+          {isOpenApplication ? "Apply to a listed role" : "Apply for another role"}
         </button>
         <Link
           to="/"
-          className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
         >
           Back to home
         </Link>
