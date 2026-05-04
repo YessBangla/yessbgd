@@ -228,28 +228,31 @@ function Index() {
                 wordSpacing: "normal",
               }}
             >
-              <span className="water-text block">Strategy, software</span>
+              {/* Editorial three-line cadence — YESS acronym expanded:
+                  Y outh E ntrepreneurship · S mart S uccess · with our
+                  Excellence & Solutions. */}
+              <span className="water-text block">Youth Entrepreneurship</span>
               <span
                 className="block text-background/95"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
               >
-                &amp;{" "}
+                for{" "}
                 <span
                   className="font-light text-background/90"
                   style={{ letterSpacing: "-0.008em" }}
                 >
-                  storytelling
+                  smart success
                 </span>
               </span>
               <span
                 className="water-text-accent block"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
-                built for{" "}
-                {/* nowrap only ≥sm — keeps "global ambition." together on
-                    tablet/desktop, but allows wrapping on ≤360px to avoid
+                with excellence{" "}
+                {/* nowrap only ≥sm — keeps "& solutions." together on
+                    tablet/desktop, allows wrapping on ≤360px to avoid
                     horizontal overflow on small phones. */}
-                <span className="sm:whitespace-nowrap">global ambition.</span>
+                <span className="sm:whitespace-nowrap">&amp; solutions.</span>
               </span>
             </h1>
 
