@@ -209,7 +209,7 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-4 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
+              className="hero-fade mt-3 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
                 /* Refined editorial scale: 26px floor → 56px ceiling.
