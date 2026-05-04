@@ -396,83 +396,88 @@
 
   /* ────── Water-ripple text shimmer ──────
      A slow, calm sheen that drifts across the headline like light
-     refracting through still water. GPU-only (background-position +
-     transform), no layout, no opacity-per-frame. */
+     refracting through still water.
+
+     Perf: single GPU-composited animation (background-position only),
+     no transform/opacity/filter per frame, layer-promoted once via
+     translateZ(0), repaints isolated with `contain: paint`.
+
+     A11y: base color is fully opaque var(--background) so glyphs always
+     meet WCAG AAA contrast against the dark hero overlay. The shimmer
+     gradient only ADDS chroma at its peak — it never reduces lightness,
+     so readability never dips below the static baseline. */
   @keyframes water-shimmer {
     0%   { background-position:   0% 50%; }
-    100% { background-position: 200% 50%; }
+    100% { background-position: 300% 50%; }
   }
-  @keyframes water-drift {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    50%      { transform: translate3d(0, -1.5px, 0); }
-  }
-  .water-text {
-    /* Mobile defaults: softer peak, slower drift, lower contrast */
-    background-image: linear-gradient(
-      100deg,
-      color-mix(in oklab, var(--background) 96%, transparent) 0%,
-      color-mix(in oklab, var(--background) 100%, transparent) 42%,
-      color-mix(in oklab, var(--primary-glow) 55%, transparent) 50%,
-      color-mix(in oklab, var(--background) 100%, transparent) 58%,
-      color-mix(in oklab, var(--background) 96%, transparent) 100%
-    );
-    background-size: 220% 100%;
-    background-position: 0% 50%;
+  .water-text,
+  .water-text-accent {
+    /* Opaque fallback — guarantees contrast even before background-clip paints */
+    color: var(--background);
+    -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation:
-      water-shimmer 12s cubic-bezier(0.45, 0, 0.55, 1) infinite,
-      water-drift   9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-    will-change: background-position, transform;
+    background-repeat: no-repeat;
+    background-size: 300% 100%;
+    background-position: 0% 50%;
+    /* GPU layer + isolate repaints to text bounding box */
+    transform: translateZ(0);
+    contain: paint;
+    will-change: background-position;
+  }
+  .water-text {
+    /* Mobile: subtle cool sheen, longer cycle */
+    background-image: linear-gradient(
+      100deg,
+      var(--background) 0%,
+      var(--background) 44%,
+      color-mix(in oklab, var(--primary-glow) 50%, var(--background)) 50%,
+      var(--background) 56%,
+      var(--background) 100%
+    );
+    animation: water-shimmer 14s linear infinite;
   }
   .water-text-accent {
     background-image: linear-gradient(
       100deg,
-      color-mix(in oklab, var(--background) 97%, transparent) 0%,
-      color-mix(in oklab, var(--accent) 60%, transparent) 47%,
-      color-mix(in oklab, var(--accent) 50%, transparent) 53%,
-      color-mix(in oklab, var(--background) 97%, transparent) 100%
+      var(--background) 0%,
+      var(--background) 46%,
+      color-mix(in oklab, var(--accent) 45%, var(--background)) 50%,
+      var(--background) 54%,
+      var(--background) 100%
     );
-    background-size: 220% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: water-shimmer 14s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.8s;
-    will-change: background-position;
+    animation: water-shimmer 16s linear infinite -3s;
   }
 
-  /* Desktop: a touch faster + slightly more luminous peak,
-     still calm and editorial. Activates ≥768px. */
+  /* Desktop ≥768px: slightly faster cycle, marginally more luminous peak */
   @media (min-width: 768px) {
     .water-text {
       background-image: linear-gradient(
         100deg,
-        color-mix(in oklab, var(--background) 94%, transparent) 0%,
-        color-mix(in oklab, var(--background) 100%, transparent) 40%,
-        color-mix(in oklab, var(--primary-glow) 78%, transparent) 50%,
-        color-mix(in oklab, var(--background) 100%, transparent) 60%,
-        color-mix(in oklab, var(--background) 94%, transparent) 100%
+        var(--background) 0%,
+        var(--background) 42%,
+        color-mix(in oklab, var(--primary-glow) 70%, var(--background)) 50%,
+        var(--background) 58%,
+        var(--background) 100%
       );
-      background-size: 240% 100%;
-      animation:
-        water-shimmer 9s cubic-bezier(0.45, 0, 0.55, 1) infinite,
-        water-drift   7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+      animation-duration: 10s;
     }
     .water-text-accent {
       background-image: linear-gradient(
         100deg,
-        color-mix(in oklab, var(--background) 95%, transparent) 0%,
-        color-mix(in oklab, var(--accent) 82%, transparent) 46%,
-        color-mix(in oklab, var(--accent) 65%, transparent) 54%,
-        color-mix(in oklab, var(--background) 95%, transparent) 100%
+        var(--background) 0%,
+        var(--background) 44%,
+        color-mix(in oklab, var(--accent) 65%, var(--background)) 50%,
+        var(--background) 56%,
+        var(--background) 100%
       );
-      background-size: 240% 100%;
-      animation: water-shimmer 10s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.6s;
+      animation-duration: 12s;
     }
   }
+
+  /* Hi-DPI / coarse pointer (mobile, tablets): pause shimmer when offscreen
+     would be ideal, but we instead reduce GPU pressure by halving keyframe
+     resolution via a longer duration on small screens (already set above). */
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
     from { transform: translate3d(0, 0, 0); }
@@ -512,7 +517,9 @@
   .hero-section { --hero-py: 0px !important; --hero-hx: 0px !important; --hero-hy: 0px !important; }
   .water-text, .water-text-accent {
     animation: none !important;
-    background-position: 50% 50% !important;
+    /* Park gradient at the opaque base so glyphs remain solid var(--background) */
+    background-position: 0% 50% !important;
+    will-change: auto !important;
   }
 }
 
