@@ -189,14 +189,14 @@ function Index() {
 
             {/* Section label — international editorial eyebrow */}
             <div
-              className="hero-fade mt-5 flex items-center gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
+              className="hero-fade mt-3.5 sm:mt-5 flex items-center gap-2.5 sm:gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
               style={{
                 animationDelay: "40ms",
                 letterSpacing: "0.32em",
                 wordSpacing: "normal",
               }}
             >
-              <span aria-hidden className="h-px w-8 bg-background/45" />
+              <span aria-hidden className="h-px w-6 sm:w-8 bg-background/45" />
               <span>A Bangladesh-built consultancy</span>
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
@@ -209,7 +209,7 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-4 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
+              className="hero-fade mt-3 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
                 /* Refined editorial scale: 26px floor → 56px ceiling.
@@ -257,7 +257,7 @@ function Index() {
                 Slightly higher contrast (/80) and wider max-width on desktop
                 for editorial readability without losing the airy feel. */}
             <p
-              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
+              className="hero-fade mt-3.5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
                 /* 13px mobile → 17px desktop — editorial body scale */
@@ -284,19 +284,19 @@ function Index() {
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
-              className="hero-fade mt-6 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3"
+              className="hero-fade mt-4 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3"
               style={{ animationDelay: "220ms" }}
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Start a project
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
               <Link
                 to="/services"
-                className="group inline-flex items-center justify-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-full border border-background/30 bg-background/5 px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Explore services
                 <ArrowRight className="h-4 w-4 opacity-70 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
@@ -305,7 +305,7 @@ function Index() {
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-7 flex items-center gap-4"
+              className="hero-fade mt-5 sm:mt-7 flex items-center gap-4"
               style={{ animationDelay: "320ms" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
@@ -314,7 +314,7 @@ function Index() {
               <span className="hidden h-px flex-1 bg-background/15 sm:block" />
             </div>
             <div
-              className="hero-fade mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/70"
+              className="hero-fade mt-2 sm:mt-3 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs text-background/70"
               style={{ animationDelay: "360ms" }}
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
