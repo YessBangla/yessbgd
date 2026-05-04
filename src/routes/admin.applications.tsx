@@ -213,6 +213,28 @@ function AdminApplications() {
     navigate({ to: "/admin/login" });
   };
 
+  const exportCSV = () => {
+    const headers = ["Submitted","Job","Name","Email","Phone","LinkedIn","Status","Status updated","Note","Resume name","Resume size (KB)"];
+    const escape = (v: unknown) => {
+      const s = (v ?? "").toString().replace(/"/g, '""');
+      return /[",\n]/.test(s) ? `"${s}"` : s;
+    };
+    const rows = filtered.map((a) => [
+      new Date(a.created_at).toISOString(),
+      a.job_title, a.full_name, a.email, a.phone, a.linkedin ?? "",
+      a.status, new Date(a.status_updated_at).toISOString(), a.status_note ?? "",
+      a.resume_name, Math.round(a.resume_size / 1024),
+    ].map(escape).join(","));
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `applications-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (!authChecked) {
     return (
       <section className="py-24">
