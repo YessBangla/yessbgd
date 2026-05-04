@@ -290,6 +290,20 @@ function ApplicationStatusPage() {
               </div>
             </div>
 
+            {autofilled && !app && !error && (
+              <p className="mt-3 inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
+                <Check className="h-3.5 w-3.5 text-primary" />
+                Filled from your last application.
+                <button
+                  type="button"
+                  onClick={clearSaved}
+                  className="ml-1 font-semibold text-primary underline-offset-2 hover:underline"
+                >
+                  Clear
+                </button>
+              </p>
+            )}
+
             {error && (
               <div
                 role="alert"
