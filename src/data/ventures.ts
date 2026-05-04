@@ -112,6 +112,25 @@ export const ventures: Venture[] = [
       { title: "Original drama slate", desc: "12+ flagship serials a year, produced in-house with award-winning directors." },
       { title: "Brand-safe inventory", desc: "Curated programming blocks and custom integrations for premium advertisers." },
     ],
+    caseStudy: {
+      challenge:
+        "Launching a new satellite channel into a saturated market — with the production quality of global broadcasters but a lean, local cost base.",
+      solution:
+        "We built a tape-less HD newsroom, a flagship drama slate and a sponsorship-friendly programming grid — all wired into a real-time audience analytics layer.",
+      phases: [
+        { title: "Discover", desc: "Audience research across 6 divisions, competitor grid analysis and a programming blueprint." },
+        { title: "Design", desc: "On-air branding system, set design and a graphics package built for HD and social cut-downs." },
+        { title: "Build", desc: "Three studios, two control rooms, MAM workflow and an OB van commissioned in 7 months." },
+        { title: "Launch & grow", desc: "Soft launch, weekly grid optimisation against ratings and a rolling slate of new originals." },
+      ],
+      techStack: ["Sony HD Cameras", "Avid MAM", "Vizrt Graphics", "Dalet Newsroom", "Eutelsat Uplink"],
+      results: [
+        { label: "Weekly reach", value: "22M+" },
+        { label: "Prime-time share", value: "Top 5" },
+        { label: "Original hours / yr", value: "1,800+" },
+        { label: "On-air uptime", value: "99.99%" },
+      ],
+    },
   },
   {
     slug: "akash-ott",
