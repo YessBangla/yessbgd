@@ -971,9 +971,18 @@ function StepForm({
         <button
           type="submit"
           disabled={submitting}
-          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:opacity-60 sm:w-auto"
+          aria-busy={submitting}
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
-          {submitting ? "Submitting…" : "Submit application"}
+          {submitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" /> Uploading & submitting…
+            </>
+          ) : (
+            <>
+              Submit application <ArrowRight className="h-4 w-4" />
+            </>
+          )}
         </button>
 
         <p className="mt-4 text-xs text-muted-foreground">
