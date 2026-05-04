@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOffscreenPause } from "@/hooks/useOffscreenPause";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
