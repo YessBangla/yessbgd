@@ -1040,6 +1040,7 @@ function StepSelect({
 
 function StepForm({
   job,
+  isOpenApplication,
   onBack,
   onSubmit,
   resume,
@@ -1049,6 +1050,7 @@ function StepForm({
   submitting,
 }: {
   job: (typeof openings)[number];
+  isOpenApplication: boolean;
   onBack: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   resume: File | null;
@@ -1080,6 +1082,29 @@ function StepForm({
         <p className="mt-2 text-sm text-muted-foreground">
           All fields marked * are required. Your information is used only to evaluate this application.
         </p>
+
+        {isOpenApplication && (
+          <div className="mt-6">
+            <Field
+              label="Desired role *"
+              error={errors.desiredRole}
+              htmlFor="desiredRole"
+            >
+              <input
+                id="desiredRole"
+                name="desiredRole"
+                type="text"
+                maxLength={120}
+                required
+                placeholder="e.g. Senior Brand Designer, Data Analyst…"
+                className={inputClass(!!errors.desiredRole)}
+              />
+            </Field>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Tell us the role or area you'd like to be considered for.
+            </p>
+          </div>
+        )}
 
         <div className="mt-6 grid gap-5 sm:grid-cols-2">
           <Field label="Full name *" error={errors.fullName} htmlFor="fullName">
