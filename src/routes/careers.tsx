@@ -904,3 +904,78 @@ function FilterSelect({
     </div>
   );
 }
+
+function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+}: {
+  page: number;
+  totalPages: number;
+  onPageChange: (p: number) => void;
+}) {
+  const pages: (number | "…")[] = [];
+  const add = (p: number | "…") => pages.push(p);
+  const window = 1;
+  for (let i = 1; i <= totalPages; i++) {
+    if (
+      i === 1 ||
+      i === totalPages ||
+      (i >= page - window && i <= page + window)
+    ) {
+      add(i);
+    } else if (pages[pages.length - 1] !== "…") {
+      add("…");
+    }
+  }
+  const btn =
+    "inline-flex h-9 min-w-9 items-center justify-center rounded-full border px-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40";
+  return (
+    <nav
+      aria-label="Job listings pagination"
+      className="mt-6 flex flex-wrap items-center justify-center gap-1.5"
+    >
+      <button
+        type="button"
+        onClick={() => onPageChange(page - 1)}
+        disabled={page <= 1}
+        className={`${btn} border-border text-muted-foreground hover:text-foreground`}
+        aria-label="Previous page"
+      >
+        <ArrowLeft className="h-4 w-4" />
+      </button>
+      {pages.map((p, idx) =>
+        p === "…" ? (
+          <span key={`e-${idx}`} className="px-2 text-sm text-muted-foreground">
+            …
+          </span>
+        ) : (
+          <button
+            key={p}
+            type="button"
+            onClick={() => onPageChange(p)}
+            aria-current={p === page ? "page" : undefined}
+            className={
+              btn +
+              " " +
+              (p === page
+                ? "border-primary bg-gradient-primary text-primary-foreground shadow-glow"
+                : "border-border text-foreground/80 hover:bg-secondary/40")
+            }
+          >
+            {p}
+          </button>
+        ),
+      )}
+      <button
+        type="button"
+        onClick={() => onPageChange(page + 1)}
+        disabled={page >= totalPages}
+        className={`${btn} border-border text-muted-foreground hover:text-foreground`}
+        aria-label="Next page"
+      >
+        <ArrowRight className="h-4 w-4" />
+      </button>
+    </nav>
+  );
+}
