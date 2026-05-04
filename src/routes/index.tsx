@@ -241,7 +241,10 @@ function Index() {
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
                 built for{" "}
-                <span className="whitespace-nowrap">global ambition.</span>
+                {/* nowrap only ≥sm — keeps "global ambition." together on
+                    tablet/desktop, but allows wrapping on ≤360px to avoid
+                    horizontal overflow on small phones. */}
+                <span className="sm:whitespace-nowrap">global ambition.</span>
               </span>
             </h1>
 
