@@ -406,6 +406,10 @@ function Careers() {
                 }}
                 query={query}
                 setQuery={setQuery}
+                searchSummary={searchSummary}
+                setSearchSummary={setSearchSummary}
+                searchDuties={searchDuties}
+                setSearchDuties={setSearchDuties}
                 selectedSlug={selectedSlug}
                 onSelect={(slug) => {
                   setSelectedSlug((prev) => (prev === slug ? null : slug));
