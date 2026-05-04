@@ -250,6 +250,25 @@ export const ventures: Venture[] = [
       { title: "Fair-trade pricing", desc: "Farmers receive a published floor price plus a quality bonus on every harvest." },
       { title: "Cold-chain delivery", desc: "Temperature-controlled vans and same-day fulfilment across major cities." },
     ],
+    caseStudy: {
+      challenge:
+        "Urban families wanted truly organic groceries but couldn't trust the labels — and small farmers had no fair route to high-value urban buyers.",
+      solution:
+        "We built a verified-supplier marketplace with lab testing, cold-chain logistics and a transparent grading & pricing system that protects both shopper and farmer.",
+      phases: [
+        { title: "Discover", desc: "On-farm visits across 6 districts, soil and supply audits and a household demand study." },
+        { title: "Design", desc: "Trust-first storefront, traceability cards on each product and a subscription flow." },
+        { title: "Build", desc: "Marketplace, route-optimised cold-chain ops, lab integration and a farmer-payout module." },
+        { title: "Launch & grow", desc: "Pilot in 3 zones, weekly farmer onboarding and SLA-driven delivery scale-up." },
+      ],
+      techStack: ["Next.js", "Supabase", "Mapbox", "Stripe", "Twilio", "Cloudflare R2"],
+      results: [
+        { label: "Partner farms", value: "200+" },
+        { label: "On-time delivery", value: "98.6%" },
+        { label: "Avg. farmer income", value: "+34%" },
+        { label: "Subscription retention", value: "71%" },
+      ],
+    },
   },
   {
     slug: "yess-service",
