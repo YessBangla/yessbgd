@@ -417,17 +417,17 @@
   .water-text,
   .water-text-accent {
     --water-base: oklch(0.985 0.003 230);
-    /* Opaque fallback — guarantees AAA contrast even before background-clip paints */
+    /* Paint glyphs in opaque white FIRST, then layer the shimmer gradient
+       on top via background-clip. If background-clip fails or the gradient
+       paints offscreen, the glyphs still appear in --water-base white. */
     color: var(--water-base);
-    -webkit-text-fill-color: transparent;
+    background-color: var(--water-base);
     -webkit-background-clip: text;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     background-repeat: no-repeat;
     background-size: 300% 100%;
     background-position: 0% 50%;
-    /* Isolate style recalcs only — `contain: paint` was clipping the
-       300%-wide background-image render and making whole lines invisible
-       at certain shimmer frames. Style containment is enough here. */
     contain: style;
   }
   .water-text {
