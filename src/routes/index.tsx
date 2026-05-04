@@ -257,7 +257,7 @@ function Index() {
                 Slightly higher contrast (/80) and wider max-width on desktop
                 for editorial readability without losing the airy feel. */}
             <p
-              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
+              className="hero-fade mt-3.5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
                 /* 13px mobile → 17px desktop — editorial body scale */
