@@ -278,8 +278,19 @@ function Careers() {
           <div className="mx-auto mt-10 max-w-5xl">
             {step === 1 && (
               <StepSelect
-                openings={filtered}
+                openings={paged}
+                filteredCount={filtered.length}
                 allCount={openings.length}
+                page={safePage}
+                totalPages={totalPages}
+                onPageChange={(p) => {
+                  setPage(p);
+                  if (typeof window !== "undefined") {
+                    window.requestAnimationFrame(() => {
+                      document.getElementById("application-flow")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                  }
+                }}
                 query={query}
                 setQuery={setQuery}
                 selectedSlug={selectedSlug}
