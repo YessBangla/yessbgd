@@ -146,7 +146,7 @@ function Index() {
     <>
       {/* HERO — international editorial, full-bleed cinematic */}
       <section
-        className="relative isolate flex flex-col overflow-hidden bg-foreground text-background"
+        className="relative isolate grid overflow-hidden bg-foreground text-background"
         style={{ minHeight: "clamp(360px, 52vh, 560px)" }}
       >
         {/* Background image */}
