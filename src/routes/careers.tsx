@@ -317,6 +317,7 @@ function Careers() {
         full_name: parsed.data.fullName,
         email: parsed.data.email,
         phone: parsed.data.phone,
+        applicant_location: parsed.data.location,
         linkedin: parsed.data.linkedin || null,
         cover_letter: parsed.data.coverLetter,
         resume_path: path,
