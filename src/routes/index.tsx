@@ -452,7 +452,7 @@ function Index() {
       </section>
 
       {/* SERVICES */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="container-tight">
           <Reveal className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we offer</p>
@@ -465,8 +465,8 @@ function Index() {
             </p>
           </Reveal>
 
-          <Reveal className="mt-12">
-            <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl">
+          <Reveal className="mt-8 sm:mt-12">
+            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={servicesImg}
                 alt="Bangladeshi engineers building software in a modern Dhaka studio"
@@ -474,11 +474,11 @@ function Index() {
                 height={960}
                 loading="lazy"
                 decoding="async"
-                className="block aspect-[21/7] w-full object-cover sm:aspect-[21/6]"
+                className="block aspect-[4/3] w-full object-cover sm:aspect-[21/6]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                <p className="max-w-xl text-sm font-medium text-foreground sm:text-base">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
+                <p className="max-w-xl text-xs font-medium text-foreground sm:text-base">
                   Engineering, design and consulting — delivered to international standards from Bangladesh.
                 </p>
               </div>
