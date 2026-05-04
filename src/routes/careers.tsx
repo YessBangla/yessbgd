@@ -458,6 +458,141 @@ function Careers() {
           </div>
         </div>
       </section>
+
+      {/* Hiring process */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">How we hire</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              A clear, respectful process.
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Most candidates go from application to offer in two to three weeks. You'll always know where you stand.
+            </p>
+          </div>
+          <ol className="relative mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {hiringSteps.map((s, idx) => (
+              <li key={s.title} className="rounded-2xl glass-card p-6">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                    <s.icon className="h-5 w-5" />
+                  </div>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Step {idx + 1}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-base font-semibold">{s.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we value</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              The principles behind the work.
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {values.map((v) => (
+              <div key={v.title} className="rounded-2xl glass-card p-6">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                  <v.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold">{v.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Voices from the team</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              Why people stay and grow here.
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <figure key={t.name} className="flex h-full flex-col rounded-2xl glass-card p-6">
+                <Quote className="h-6 w-6 text-primary" aria-hidden />
+                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/90">
+                  "{t.quote}"
+                </blockquote>
+                <figcaption className="mt-6 border-t border-border pt-4">
+                  <p className="font-display text-sm font-semibold">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.role}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight max-w-3xl">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">FAQ</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              Questions, answered.
+            </h2>
+          </div>
+          <div className="mt-10 divide-y divide-border overflow-hidden rounded-2xl glass-card">
+            {faqs.map((f) => (
+              <details key={f.q} className="group p-5 sm:p-6">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 text-left text-sm font-semibold sm:text-base">
+                  {f.q}
+                  <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="relative overflow-hidden rounded-3xl glass-card p-8 text-center sm:p-12">
+            <div className="mx-auto max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Don't see your role?</p>
+              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                We're always meeting great people.
+              </h2>
+              <p className="mt-4 text-sm text-muted-foreground sm:text-base">
+                Send your CV and a short note about the work you want to do. We'll keep you in mind as new
+                roles open across engineering, design, consulting and operations.
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <a
+                  href="mailto:yessbangla.bd@gmail.com?subject=General%20application%20—%20YESS%20Bangla"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow"
+                >
+                  <Mail className="h-4 w-4" /> Email our recruiters
+                </a>
+                <a
+                  href="#application-flow"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary/40"
+                >
+                  Browse open roles <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
