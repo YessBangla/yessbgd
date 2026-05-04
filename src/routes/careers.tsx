@@ -936,6 +936,43 @@ function StepSelect({
         )}
       </div>
 
+      {/* Open application — outside listed categories */}
+      <button
+        type="button"
+        onClick={() => onSelect("open-application")}
+        aria-pressed={selectedSlug === "open-application"}
+        className={
+          "mt-4 flex w-full flex-col items-start gap-2 rounded-2xl border-2 border-dashed p-5 text-left transition-all sm:flex-row sm:items-center sm:justify-between " +
+          (selectedSlug === "open-application"
+            ? "border-primary bg-primary/5 shadow-glow"
+            : "border-border hover:border-primary/50 hover:bg-secondary/40")
+        }
+      >
+        <div className="flex items-start gap-3">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+            <Send className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">
+              Don't see your role?
+            </p>
+            <h3 className="mt-1 font-display text-base font-semibold leading-snug">
+              Submit an open application
+            </h3>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Send your CV with a short note — we keep an active talent network across teams.
+            </p>
+          </div>
+        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold">
+          {selectedSlug === "open-application" ? (
+            <><Check className="h-3.5 w-3.5 text-primary" /> Selected</>
+          ) : (
+            <>Choose <ArrowRight className="h-3.5 w-3.5" /></>
+          )}
+        </span>
+      </button>
+
       {error && (
         <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-destructive">
           <AlertCircle className="h-3.5 w-3.5" /> {error}
