@@ -827,3 +827,37 @@ function inputClass(hasError: boolean) {
     (hasError ? "border-destructive/60" : "border-border")
   );
 }
+
+function FilterSelect({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+}) {
+  const id = `filter-${label.toLowerCase()}`;
+  return (
+    <div>
+      <label htmlFor={id} className="block text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </label>
+      <div className="relative mt-1.5">
+        <select
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full appearance-none rounded-lg border border-border bg-background py-2.5 pl-3 pr-9 text-sm outline-none transition-colors focus:border-primary"
+        >
+          {options.map((o) => (
+            <option key={o} value={o}>{o}</option>
+          ))}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      </div>
+    </div>
+  );
+}
