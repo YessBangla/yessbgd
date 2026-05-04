@@ -4,12 +4,35 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/PageHero";
 import { Download, LogOut, Mail, Phone, Linkedin, FileText, Trash2, RefreshCw } from "lucide-react";
 
-type Status = "New" | "Reviewed" | "Rejected";
-const STATUSES: Status[] = ["New", "Reviewed", "Rejected"];
+type Status =
+  | "Submitted"
+  | "Under review"
+  | "Interview"
+  | "Offer"
+  | "Hired"
+  | "On hold"
+  | "Rejected"
+  | "New"
+  | "Reviewed";
+const STATUSES: Status[] = [
+  "Submitted",
+  "Under review",
+  "Interview",
+  "Offer",
+  "Hired",
+  "On hold",
+  "Rejected",
+];
 const STATUS_STYLES: Record<Status, string> = {
-  New: "bg-primary/15 text-primary border-primary/30",
-  Reviewed: "bg-accent/15 text-accent-foreground border-accent/30",
+  Submitted: "bg-primary/15 text-primary border-primary/30",
+  "Under review": "bg-primary/15 text-primary border-primary/30",
+  Interview: "bg-accent/15 text-accent-foreground border-accent/30",
+  Offer: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  Hired: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  "On hold": "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30",
   Rejected: "bg-destructive/10 text-destructive border-destructive/30",
+  New: "bg-primary/15 text-primary border-primary/30",
+  Reviewed: "bg-primary/15 text-primary border-primary/30",
 };
 
 export const Route = createFileRoute("/admin/applications")({
