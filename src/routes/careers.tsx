@@ -19,6 +19,15 @@ import {
   AlertCircle,
   CheckCircle2,
   Search,
+  Send,
+  ClipboardCheck,
+  MessageSquare,
+  Handshake,
+  Quote,
+  Globe2,
+  Trophy,
+  Rocket,
+  Mail,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { openings } from "@/data/openings";
@@ -41,6 +50,70 @@ const perks = [
   { icon: GraduationCap, title: "Learning budget", desc: "Annual stipend for courses, certifications and conferences." },
   { icon: Users, title: "Inclusive culture", desc: "A diverse, collaborative team that values every voice." },
   { icon: Sparkles, title: "Modern tooling", desc: "The best hardware and software to do your best work." },
+];
+
+const stats = [
+  { value: "120+", label: "Team members" },
+  { value: "12", label: "Open roles" },
+  { value: "9", label: "Industries served" },
+  { value: "4.8/5", label: "Glassdoor rating" },
+];
+
+const hiringSteps = [
+  { icon: Send, title: "Apply", desc: "Submit your application in under 5 minutes — no account required." },
+  { icon: ClipboardCheck, title: "Screen", desc: "Recruiter review within 5–7 business days, then a short intro call." },
+  { icon: MessageSquare, title: "Interview", desc: "1–2 focused interviews with the hiring manager and the team." },
+  { icon: Handshake, title: "Offer", desc: "Reference checks, transparent comp discussion and a written offer." },
+];
+
+const values = [
+  { icon: Trophy, title: "Outcomes over optics", desc: "We measure work by the results it delivers, not the hours it took." },
+  { icon: Globe2, title: "Built for South Asia", desc: "We design for emerging markets first — speed, resilience, accessibility." },
+  { icon: Rocket, title: "Bias for momentum", desc: "Ship, learn, iterate. Small bets compound into category-defining work." },
+];
+
+const testimonials = [
+  {
+    quote:
+      "I joined as a junior engineer and within 18 months was leading a product line. The growth here is real, not theoretical.",
+    name: "Tasnim R.",
+    role: "Engineering Lead",
+  },
+  {
+    quote:
+      "It's the rare workplace where designers, engineers and consultants actually sit at the same table on day one.",
+    name: "Arif H.",
+    role: "Product Designer",
+  },
+  {
+    quote:
+      "The clients are ambitious, the standards are high, and the team has your back. That combination is hard to find.",
+    name: "Nabila K.",
+    role: "Senior Consultant",
+  },
+];
+
+const faqs = [
+  {
+    q: "Do I need to live in Dhaka?",
+    a: "Many roles are hybrid or remote-friendly within Bangladesh. Each listing notes the expected location and travel pattern.",
+  },
+  {
+    q: "What's your interview process like?",
+    a: "Most roles involve a recruiter screen, a hiring-manager conversation and one practical exercise. We aim to wrap within two weeks of applying.",
+  },
+  {
+    q: "I'm a fresh graduate — should I apply?",
+    a: "Yes. We hire interns and entry-level talent across teams. Lead with the projects you've shipped and what you want to learn next.",
+  },
+  {
+    q: "Can I apply to more than one role?",
+    a: "Please apply to the single role that fits you best. Our recruiters route strong candidates internally if another team is a better match.",
+  },
+  {
+    q: "Don't see a role that fits?",
+    a: "Email yessbangla.bd@gmail.com with your CV and a short note on the work you want to do — we keep an active talent network.",
+  },
 ];
 
 const MAX_RESUME_BYTES = 5 * 1024 * 1024;
@@ -268,6 +341,24 @@ function Careers() {
         subtitle="Join a team of consultants, engineers and creators shaping the next decade of business and technology in South Asia."
       />
 
+      {/* Stats strip */}
+      <section className="border-b border-border bg-secondary/30 py-10">
+        <div className="container-tight">
+          <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center sm:text-left">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {s.label}
+                </dt>
+                <dd className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                  {s.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* Application flow */}
       <section id="application-flow" className="py-16 sm:py-20">
         <div className="container-tight">
@@ -364,6 +455,141 @@ function Careers() {
                 <p className="mt-1 text-sm text-muted-foreground">{p.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hiring process */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">How we hire</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              A clear, respectful process.
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Most candidates go from application to offer in two to three weeks. You'll always know where you stand.
+            </p>
+          </div>
+          <ol className="relative mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {hiringSteps.map((s, idx) => (
+              <li key={s.title} className="rounded-2xl glass-card p-6">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                    <s.icon className="h-5 w-5" />
+                  </div>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Step {idx + 1}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-base font-semibold">{s.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we value</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              The principles behind the work.
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {values.map((v) => (
+              <div key={v.title} className="rounded-2xl glass-card p-6">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                  <v.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold">{v.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Voices from the team</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              Why people stay and grow here.
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <figure key={t.name} className="flex h-full flex-col rounded-2xl glass-card p-6">
+                <Quote className="h-6 w-6 text-primary" aria-hidden />
+                <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/90">
+                  "{t.quote}"
+                </blockquote>
+                <figcaption className="mt-6 border-t border-border pt-4">
+                  <p className="font-display text-sm font-semibold">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.role}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight max-w-3xl">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">FAQ</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              Questions, answered.
+            </h2>
+          </div>
+          <div className="mt-10 divide-y divide-border overflow-hidden rounded-2xl glass-card">
+            {faqs.map((f) => (
+              <details key={f.q} className="group p-5 sm:p-6">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 text-left text-sm font-semibold sm:text-base">
+                  {f.q}
+                  <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="border-t border-border py-20">
+        <div className="container-tight">
+          <div className="relative overflow-hidden rounded-3xl glass-card p-8 text-center sm:p-12">
+            <div className="mx-auto max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Don't see your role?</p>
+              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                We're always meeting great people.
+              </h2>
+              <p className="mt-4 text-sm text-muted-foreground sm:text-base">
+                Send your CV and a short note about the work you want to do. We'll keep you in mind as new
+                roles open across engineering, design, consulting and operations.
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <a
+                  href="mailto:yessbangla.bd@gmail.com?subject=General%20application%20—%20YESS%20Bangla"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow"
+                >
+                  <Mail className="h-4 w-4" /> Email our recruiters
+                </a>
+                <a
+                  href="#application-flow"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary/40"
+                >
+                  Browse open roles <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
