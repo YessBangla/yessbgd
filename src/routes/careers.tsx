@@ -197,7 +197,11 @@ function Careers() {
         o.title.toLowerCase().includes(q) ||
         o.dept.toLowerCase().includes(q) ||
         o.location.toLowerCase().includes(q) ||
-        o.level.toLowerCase().includes(q)
+        o.level.toLowerCase().includes(q) ||
+        o.type.toLowerCase().includes(q) ||
+        o.summary.toLowerCase().includes(q) ||
+        o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
+        o.requirements.some((r) => r.toLowerCase().includes(q))
       );
     });
   }, [query, filterType, filterLocation, filterDept, filterLevel]);
