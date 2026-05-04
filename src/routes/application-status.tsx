@@ -133,23 +133,16 @@ function ApplicationStatusPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Realtime subscribe to this application's row
+  // Poll every 20s for status updates (anon has no realtime SELECT access)
   useEffect(() => {
     if (!app?.id) return;
-    const channel = supabase
-      .channel(`app-status-${app.id}`)
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "job_applications", filter: `id=eq.${app.id}` },
-        (payload) => {
-          setApp((prev) => (prev ? { ...prev, ...(payload.new as Partial<Application>) } : prev));
-        }
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [app?.id]);
+    const t = setInterval(async () => {
+      const { data } = await supabase.rpc("lookup_application", { _ref: ref, _email: email });
+      const row = Array.isArray(data) ? data[0] : null;
+      if (row) setApp(row as Application);
+    }, 20000);
+    return () => clearInterval(t);
+  }, [app?.id, ref, email]);
 
   const refDisplay = useMemo(() => (app ? app.id.slice(0, 8).toUpperCase() : ""), [app]);
 
