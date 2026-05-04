@@ -102,9 +102,9 @@
   --hero-ink: oklch(0.96 0.005 250);              /* almost-white wash */
   --hero-veil: oklch(0.34 0.012 250);             /* cool slate veil */
   --hero-overlay-h: linear-gradient(180deg,
-    color-mix(in oklab, var(--hero-veil) 58%, transparent) 0%,
-    color-mix(in oklab, var(--hero-veil) 40%, transparent) 55%,
-    color-mix(in oklab, var(--hero-veil) 22%, transparent) 100%);
+    color-mix(in oklab, var(--hero-veil) 88%, transparent) 0%,
+    color-mix(in oklab, var(--hero-veil) 62%, transparent) 55%,
+    color-mix(in oklab, var(--hero-veil) 30%, transparent) 100%);
   --hero-overlay-v: linear-gradient(180deg,
     color-mix(in oklab, var(--hero-ink) 28%, transparent) 0%,
     transparent 35%,
