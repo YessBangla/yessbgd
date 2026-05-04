@@ -174,7 +174,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 glass-nav">
       <div className="container-tight relative flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-3" aria-label="YESS Bangla — home">
+        <Link to="/" className="flex items-center" aria-label="YESS Bangla — home">
           <img
             src={logo}
             alt="YESS Bangla logo"
@@ -184,9 +184,6 @@ export function Header() {
             fetchPriority="high"
             className="h-11 w-11 rounded-xl object-contain bg-white p-1 ring-1 ring-border/60 shadow-sm"
           />
-          <span className="font-display text-lg font-bold tracking-tight leading-none">
-            YESS <span className="text-primary">Bangla</span>
-          </span>
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
