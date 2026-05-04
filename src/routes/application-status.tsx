@@ -98,8 +98,8 @@ function ApplicationStatusPage() {
   const [error, setError] = useState<string | null>(null);
   const [app, setApp] = useState<Application | null>(null);
 
-  const lookup = async (e?: FormEvent) => {
-    e?.preventDefault();
+  const lookup = async (evt?: FormEvent) => {
+    evt?.preventDefault();
     setError(null);
     setApp(null);
     const parsed = lookupSchema.safeParse({ ref, email });
@@ -111,7 +111,7 @@ function ApplicationStatusPage() {
     // ref is the first 8 chars (uppercase) of the uuid; query by id prefix + email
     const refLower = parsed.data.ref.trim().toLowerCase().replace(/[^a-f0-9-]/g, "");
     const emailLower = parsed.data.email.trim().toLowerCase();
-    const { data, error: e } = await supabase
+    const { data, error: queryErr } = await supabase
       .from("job_applications")
       .select(
         "id, job_title, full_name, email, status, status_note, status_updated_at, created_at"
@@ -120,8 +120,8 @@ function ApplicationStatusPage() {
       .ilike("id", `${refLower}%`)
       .limit(1);
     setLoading(false);
-    if (e) {
-      setError(e.message);
+    if (queryErr) {
+      setError(queryErr.message);
       return;
     }
     if (!data || data.length === 0) {
