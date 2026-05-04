@@ -65,11 +65,29 @@ export function SectionHeader({
  * Hairline gradient divider — subtle visual transition between sections.
  * Render BETWEEN sections (not inside) so it doesn't affect section padding.
  * Width-constrained via container-tight so it never stretches edge-to-edge.
+ *
+ * Contrast tuning:
+ *  - Uses --foreground at low alpha (not --border) so the line strength is
+ *    perceptually identical in light AND dark themes. `--border` resolves to
+ *    a near-white 10% alpha in dark mode, which is barely visible against the
+ *    dark mesh background; foreground-derived alpha solves that.
+ *  - Two stacked gradients: a 1px hairline + a soft 1px highlight underneath,
+ *    creating a gentle "etched" line that reads as premium without being heavy.
+ *  - Edges fade fully to transparent so the divider feels suspended, not boxed.
  */
 export function SectionDivider() {
   return (
-    <div aria-hidden className="container-tight">
-      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+    <div aria-hidden className="container-tight" role="presentation">
+      <div className="relative mx-auto h-px w-full max-w-3xl">
+        {/* Primary hairline — foreground at ~14% / 22% (light/dark via .dark variant) */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/15 to-transparent dark:via-foreground/25"
+        />
+        {/* Soft highlight directly beneath — adds depth in light mode, fades in dark */}
+        <div
+          className="absolute left-0 right-0 top-px h-px bg-gradient-to-r from-transparent via-background/80 to-transparent dark:via-foreground/5"
+        />
+      </div>
     </div>
   );
 }
