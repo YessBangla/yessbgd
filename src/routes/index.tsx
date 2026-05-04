@@ -222,7 +222,7 @@ function Index() {
 
             {/* Lede paragraph */}
             <p
-              className="hero-fade mt-5 max-w-xl text-[13px] leading-[1.65] text-background/75 sm:text-[14.5px]"
+              className="hero-fade mt-4 sm:mt-5 max-w-xl text-[13px] leading-[1.65] text-background/75 sm:text-[14.5px]"
               style={{ animationDelay: "160ms" }}
             >
               <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
