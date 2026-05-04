@@ -186,7 +186,7 @@ function Index() {
 
             {/* Section label — international editorial */}
             <div
-              className="hero-fade mt-6 flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.34em] text-background/55"
+              className="hero-fade mt-5 flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.34em] text-background/55"
               style={{ animationDelay: "40ms" }}
             >
               <span className="h-px w-8 bg-background/40" />
@@ -196,7 +196,7 @@ function Index() {
             {/* Headline — three-line editorial cadence with water shimmer */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-4 font-display font-semibold text-balance text-background"
+              className="hero-fade mt-3 sm:mt-4 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
                 fontSize: "clamp(1.875rem, 1.15rem + 3.5vw, 3.75rem)",
@@ -222,7 +222,7 @@ function Index() {
 
             {/* Lede paragraph */}
             <p
-              className="hero-fade mt-5 max-w-xl text-[13px] leading-[1.65] text-background/75 sm:text-[14.5px]"
+              className="hero-fade mt-4 sm:mt-5 max-w-xl text-[13px] leading-[1.65] text-background/75 sm:text-[14.5px]"
               style={{ animationDelay: "160ms" }}
             >
               <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
@@ -233,7 +233,7 @@ function Index() {
 
             {/* CTA row */}
             <div
-              className="hero-fade mt-8 flex flex-wrap items-center gap-3"
+              className="hero-fade mt-6 sm:mt-7 flex flex-wrap items-center gap-3"
               style={{ animationDelay: "220ms" }}
             >
               <Link
@@ -241,19 +241,20 @@ function Index() {
                 className="group inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Start a project
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 motion-reduce:transition-none" />
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Explore services
+                <ArrowRight className="h-4 w-4 opacity-70 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
             </div>
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-8 flex items-center gap-4"
+              className="hero-fade mt-7 flex items-center gap-4"
               style={{ animationDelay: "320ms" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
