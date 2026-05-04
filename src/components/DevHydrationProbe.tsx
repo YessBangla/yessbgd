@@ -149,6 +149,10 @@ function ProbeInner() {
       <div className="truncate opacity-70">↳ "{report.heroH1 || "(none)"}"</div>
       <div>motion: {report.motion}{forceReduce ? " (forced)" : ""}</div>
       <div>viewport: {report.viewport} @{report.dpr}x</div>
+      <div className="mt-1 border-t border-current/20 pt-1">
+        shimmer: {report.shimmerCount} {report.shimmerPaused ? "⏸ paused" : "▶ playing"}
+      </div>
+      <div className="truncate opacity-70">↳ bgPos: {report.shimmerBgPos || "(n/a)"}</div>
       <label className="mt-2 flex items-center gap-1.5 cursor-pointer select-none">
         <input
           type="checkbox"
@@ -157,6 +161,12 @@ function ProbeInner() {
         />
         force reduced-motion
       </label>
+      <button
+        onClick={toggleTheme}
+        className="mt-1 w-full rounded border border-current/30 px-2 py-1 text-[11px] hover:bg-current/5"
+      >
+        toggle dark mode
+      </button>
     </div>
   );
 }
