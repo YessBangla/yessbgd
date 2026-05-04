@@ -277,7 +277,7 @@ function Index() {
               className="hero-fade ml-auto max-w-sm space-y-3"
               style={{ animationDelay: "240ms" }}
             >
-              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+              <div className="hero-float rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl" style={{ animationDelay: "0s" }}>
                 <div className="flex items-center gap-3">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-accent-foreground shadow-lg">
                     <TrendingUp className="h-5 w-5" />
