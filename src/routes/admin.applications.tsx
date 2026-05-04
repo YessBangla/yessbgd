@@ -157,6 +157,23 @@ function AdminApplications() {
     }
   };
 
+  const updateNote = async (app: Application, status_note: string) => {
+    const prev = app.status_note;
+    setItems((list) =>
+      list?.map((x) => (x.id === app.id ? { ...x, status_note } : x)) ?? null,
+    );
+    const { error: e } = await supabase
+      .from("job_applications")
+      .update({ status_note: status_note || null })
+      .eq("id", app.id);
+    if (e) {
+      alert(e.message);
+      setItems((list) =>
+        list?.map((x) => (x.id === app.id ? { ...x, status_note: prev } : x)) ?? null,
+      );
+    }
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     navigate({ to: "/admin/login" });
