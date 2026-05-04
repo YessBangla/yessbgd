@@ -480,6 +480,25 @@ export const ventures: Venture[] = [
       { title: "HACCP-grade kitchens", desc: "Daily hygiene audits, cold-chain integrity and full ingredient traceability." },
       { title: "Operator-friendly", desc: "Cloud kitchen partnerships open new revenue without rebuilding your team." },
     ],
+    caseStudy: {
+      challenge:
+        "Diners wanted authentic Bangla flavours at consistent restaurant quality — and event hosts struggled to find caterers that scale without sacrificing taste or hygiene.",
+      solution:
+        "Yess Food operates HACCP-grade central kitchens and a chef-led recipe lab — powering dine-in concepts, cloud kitchens, catering and packaged brands from one quality system.",
+      phases: [
+        { title: "Discover", desc: "Taste panels, supply audits and a brand portfolio strategy across price points." },
+        { title: "Design", desc: "Menu engineering, kitchen layout and a packaging system built for delivery." },
+        { title: "Build", desc: "Central kitchens, last-mile partnerships, POS-to-kitchen workflow and QA scorecards." },
+        { title: "Launch & grow", desc: "Phased outlet rollout, weekly mystery audits and a quarterly menu refresh cycle." },
+      ],
+      techStack: ["Cloud POS", "Kitchen Display Systems", "Foodpanda API", "Pathao API", "ERPNext"],
+      results: [
+        { label: "Hygiene audit score", value: "98/100" },
+        { label: "Order accuracy", value: "99.2%" },
+        { label: "Avg. prep time", value: "12 min" },
+        { label: "Customer rating", value: "4.7/5" },
+      ],
+    },
   },
   {
     slug: "yess-all-in-one-solution",
