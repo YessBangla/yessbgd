@@ -228,7 +228,7 @@ function Careers() {
   );
 
   // Reset to page 1 whenever filters/search change
-  const filtersKey = `${query}|${filterType}|${filterLocation}|${filterDept}|${filterLevel}`;
+  const filtersKey = `${query}|${filterType}|${filterLocation}|${filterDept}|${filterLevel}|${searchSummary}|${searchDuties}`;
   const lastKeyRef = useRef(filtersKey);
   if (lastKeyRef.current !== filtersKey) {
     lastKeyRef.current = filtersKey;
