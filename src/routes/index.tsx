@@ -240,7 +240,8 @@ function Index() {
                 className="water-text-accent block"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
-                built for global ambition.
+                built for{" "}
+                <span className="whitespace-nowrap">global ambition.</span>
               </span>
             </h1>
 
