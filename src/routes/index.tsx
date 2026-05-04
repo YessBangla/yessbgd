@@ -159,15 +159,13 @@ function Index() {
           className="absolute inset-0 -z-10 h-full w-full object-cover object-[60%_center]"
         />
         {/* Cinematic overlays — layered, smooth, premium */}
-        {/* Base wash for legibility */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-foreground/35" />
         {/* Soft horizontal fade — image breathes on the right */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(100deg, oklch(var(--foreground) / 0.96) 0%, oklch(var(--foreground) / 0.82) 32%, oklch(var(--foreground) / 0.5) 60%, oklch(var(--foreground) / 0.18) 88%, oklch(var(--foreground) / 0.05) 100%)",
+              "linear-gradient(100deg, color-mix(in oklab, var(--foreground) 96%, transparent) 0%, color-mix(in oklab, var(--foreground) 82%, transparent) 32%, color-mix(in oklab, var(--foreground) 50%, transparent) 60%, color-mix(in oklab, var(--foreground) 18%, transparent) 88%, transparent 100%)",
           }}
         />
         {/* Vertical depth — darker top & bottom for cinematic vignette */}
@@ -176,7 +174,7 @@ function Index() {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(180deg, oklch(var(--foreground) / 0.55) 0%, transparent 22%, transparent 70%, oklch(var(--foreground) / 0.75) 100%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--foreground) 55%, transparent) 0%, transparent 22%, transparent 70%, color-mix(in oklab, var(--foreground) 75%, transparent) 100%)",
           }}
         />
         {/* Radial accent glow — soft warm spotlight from bottom-left */}
@@ -185,12 +183,12 @@ function Index() {
           className="absolute inset-0 -z-10 opacity-70"
           style={{
             background:
-              "radial-gradient(60% 50% at 18% 78%, oklch(var(--accent) / 0.22) 0%, transparent 70%)",
+              "radial-gradient(60% 50% at 18% 78%, color-mix(in oklab, var(--accent) 22%, transparent) 0%, transparent 70%)",
           }}
         />
-        {/* Subtle blur halo behind text */}
-        <div aria-hidden className="absolute -left-24 top-1/3 -z-10 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-        <div aria-hidden className="absolute right-0 top-0 -z-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+        {/* Subtle blur halos behind text */}
+        <div aria-hidden className="pointer-events-none absolute -left-24 top-1/3 -z-10 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute right-0 top-0 -z-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
         <div
           aria-hidden
           className="absolute inset-0 -z-10 opacity-[0.05] mix-blend-overlay"
