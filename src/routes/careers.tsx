@@ -1,13 +1,34 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Briefcase, MapPin, Clock, ArrowRight, Sparkles, Users, GraduationCap, Heart } from "lucide-react";
+import { useMemo, useState, type FormEvent } from "react";
+import { z } from "zod";
+import {
+  Briefcase,
+  MapPin,
+  Clock,
+  ArrowRight,
+  ArrowLeft,
+  Sparkles,
+  Users,
+  GraduationCap,
+  Heart,
+  Check,
+  ChevronDown,
+  Upload,
+  FileText,
+  X,
+  AlertCircle,
+  CheckCircle2,
+  Search,
+} from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { openings } from "@/data/openings";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
     meta: [
       { title: "Careers — Join YESS Bangla" },
-      { name: "description", content: "Build the future of business and technology in Bangladesh. Explore open roles at YESS Bangla Private Limited." },
+      { name: "description", content: "Apply to open roles at YESS Bangla. Select a position and submit your application in minutes." },
       { property: "og:title", content: "Careers at YESS Bangla" },
       { property: "og:description", content: "Open roles in engineering, design, consulting and operations." },
     ],
@@ -22,7 +43,171 @@ const perks = [
   { icon: Sparkles, title: "Modern tooling", desc: "The best hardware and software to do your best work." },
 ];
 
+const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
+const applicationSchema = z.object({
+  fullName: z.string().trim().min(2, "Please enter your full name").max(100),
+  email: z.string().trim().email("Please enter a valid email").max(255),
+  phone: z
+    .string()
+    .trim()
+    .min(7, "Please enter a valid phone number")
+    .max(30)
+    .regex(/^[0-9+\-\s()]+$/, "Use digits, spaces, +, -, ( and ) only"),
+  linkedin: z
+    .string()
+    .trim()
+    .max(255)
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
+  coverLetter: z
+    .string()
+    .trim()
+    .min(20, "Please write at least 20 characters")
+    .max(2000, "Please keep it under 2000 characters"),
+});
+
+type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume" | "job", string>>;
+
 function Careers() {
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
+  const [errors, setErrors] = useState<Errors>({});
+  const [submitting, setSubmitting] = useState(false);
+
+  const selectedJob = useMemo(
+    () => openings.find((o) => o.slug === selectedSlug) ?? null,
+    [selectedSlug],
+  );
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return openings;
+    return openings.filter(
+      (o) =>
+        o.title.toLowerCase().includes(q) ||
+        o.dept.toLowerCase().includes(q) ||
+        o.location.toLowerCase().includes(q),
+    );
+  }, [query]);
+
+  const proceedToForm = () => {
+    if (!selectedSlug) {
+      setErrors({ job: "Please select a position to continue." });
+      return;
+    }
+    setErrors({});
+    setStep(2);
+    if (typeof window !== "undefined") {
+      window.requestAnimationFrame(() => {
+        document.getElementById("application-flow")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  };
+
+  const validateResume = (file: File | null): string | null => {
+    if (!file) return "Please attach your CV / resume (PDF, DOC, or DOCX).";
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+    const extOk = ["pdf", "doc", "docx"].includes(ext);
+    const typeOk = ALLOWED_TYPES.includes(file.type);
+    if (!extOk && !typeOk) {
+      return `Unsupported file type${ext ? ` (.${ext})` : ""}. Please upload a PDF, DOC, or DOCX file.`;
+    }
+    if (file.size === 0) return "This file appears to be empty. Please choose a different file.";
+    if (file.size > MAX_RESUME_BYTES) {
+      const mb = (file.size / (1024 * 1024)).toFixed(2);
+      return `File is too large (${mb} MB). Maximum allowed size is 5 MB.`;
+    }
+    return null;
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0] ?? null;
+    setResume(f);
+    const err = validateResume(f);
+    setErrors((prev) => ({ ...prev, resume: err ?? undefined }));
+  };
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedJob) {
+      setStep(1);
+      setErrors({ job: "Please select a position first." });
+      return;
+    }
+    setErrors({});
+    const fd = new FormData(e.currentTarget);
+    const raw = {
+      fullName: String(fd.get("fullName") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      phone: String(fd.get("phone") ?? ""),
+      linkedin: String(fd.get("linkedin") ?? ""),
+      coverLetter: String(fd.get("coverLetter") ?? ""),
+    };
+    const parsed = applicationSchema.safeParse(raw);
+    const resumeErr = validateResume(resume);
+
+    if (!parsed.success || resumeErr) {
+      const fieldErrors: Errors = {};
+      if (!parsed.success) {
+        for (const issue of parsed.error.issues) {
+          const key = issue.path[0] as keyof Errors;
+          if (!fieldErrors[key]) fieldErrors[key] = issue.message;
+        }
+      }
+      if (resumeErr) fieldErrors.resume = resumeErr;
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const safeName = (resume!.name || "cv").replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${selectedJob.slug}/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+      const { error: upErr } = await supabase.storage
+        .from("resumes")
+        .upload(path, resume!, {
+          contentType: resume!.type || "application/octet-stream",
+          upsert: false,
+        });
+      if (upErr) throw upErr;
+
+      const { error: insErr } = await supabase.from("job_applications").insert({
+        job_slug: selectedJob.slug,
+        job_title: selectedJob.title,
+        full_name: parsed.data.fullName,
+        email: parsed.data.email,
+        phone: parsed.data.phone,
+        linkedin: parsed.data.linkedin || null,
+        cover_letter: parsed.data.coverLetter,
+        resume_path: path,
+        resume_name: resume!.name,
+        resume_size: resume!.size,
+        resume_type: resume!.type || "application/octet-stream",
+      });
+      if (insErr) throw insErr;
+      setStep(3);
+      if (typeof window !== "undefined") {
+        window.requestAnimationFrame(() => {
+          document.getElementById("application-flow")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Submission failed. Please try again.";
+      setErrors({ resume: message });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <>
       <PageHero
@@ -31,7 +216,63 @@ function Careers() {
         subtitle="Join a team of consultants, engineers and creators shaping the next decade of business and technology in South Asia."
       />
 
-      <section className="py-20">
+      {/* Application flow */}
+      <section id="application-flow" className="py-16 sm:py-20">
+        <div className="container-tight">
+          <div className="mx-auto max-w-3xl">
+            <Stepper step={step} />
+          </div>
+
+          <div className="mx-auto mt-10 max-w-5xl">
+            {step === 1 && (
+              <StepSelect
+                openings={filtered}
+                allCount={openings.length}
+                query={query}
+                setQuery={setQuery}
+                selectedSlug={selectedSlug}
+                onSelect={(slug) => {
+                  setSelectedSlug(slug);
+                  setErrors((p) => ({ ...p, job: undefined }));
+                }}
+                onContinue={proceedToForm}
+                error={errors.job}
+              />
+            )}
+
+            {step === 2 && selectedJob && (
+              <StepForm
+                job={selectedJob}
+                onBack={() => setStep(1)}
+                onSubmit={onSubmit}
+                resume={resume}
+                onFileChange={onFileChange}
+                clearResume={() => {
+                  setResume(null);
+                  setErrors((p) => ({ ...p, resume: undefined }));
+                }}
+                errors={errors}
+                submitting={submitting}
+              />
+            )}
+
+            {step === 3 && selectedJob && (
+              <StepSuccess
+                job={selectedJob}
+                onAnother={() => {
+                  setStep(1);
+                  setSelectedSlug(null);
+                  setResume(null);
+                  setErrors({});
+                }}
+              />
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Perks */}
+      <section className="border-t border-border py-20">
         <div className="container-tight">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Why YESS Bangla</p>
@@ -52,38 +293,444 @@ function Careers() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
 
-      <section className="border-t border-border py-20">
-        <div className="container-tight">
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Open positions</h2>
-          <p className="mt-3 text-muted-foreground">We're hiring across multiple teams. Don't see your role? Send us your CV.</p>
+/* ---------------- Stepper ---------------- */
 
-          <div className="mt-10 divide-y divide-border overflow-hidden rounded-2xl glass-card">
-            {openings.map((o) => (
-              <div key={o.title} className="flex flex-col gap-4 p-6 transition-colors hover:bg-secondary/40 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-primary">
+function Stepper({ step }: { step: 1 | 2 | 3 }) {
+  const items = [
+    { n: 1, label: "Select position" },
+    { n: 2, label: "Your details" },
+    { n: 3, label: "Submitted" },
+  ];
+  return (
+    <ol className="flex items-center justify-between gap-2 sm:gap-4">
+      {items.map((it, idx) => {
+        const active = step === it.n;
+        const done = step > it.n;
+        return (
+          <li key={it.n} className="flex flex-1 items-center gap-2 sm:gap-3">
+            <div
+              className={
+                "grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-semibold transition-colors " +
+                (done
+                  ? "bg-gradient-primary text-primary-foreground shadow-glow"
+                  : active
+                  ? "bg-foreground text-background"
+                  : "border border-border bg-background text-muted-foreground")
+              }
+            >
+              {done ? <Check className="h-4 w-4" /> : it.n}
+            </div>
+            <span
+              className={
+                "hidden text-xs font-medium sm:inline " +
+                (active || done ? "text-foreground" : "text-muted-foreground")
+              }
+            >
+              {it.label}
+            </span>
+            {idx < items.length - 1 && (
+              <div
+                className={
+                  "ml-1 h-px flex-1 transition-colors sm:ml-2 " +
+                  (step > it.n ? "bg-primary/60" : "bg-border")
+                }
+              />
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/* ---------------- Step 1: Select ---------------- */
+
+function StepSelect({
+  openings,
+  allCount,
+  query,
+  setQuery,
+  selectedSlug,
+  onSelect,
+  onContinue,
+  error,
+}: {
+  openings: typeof import("@/data/openings").openings;
+  allCount: number;
+  query: string;
+  setQuery: (s: string) => void;
+  selectedSlug: string | null;
+  onSelect: (slug: string) => void;
+  onContinue: () => void;
+  error?: string;
+}) {
+  return (
+    <div className="rounded-3xl glass-card p-6 sm:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Step 1</p>
+          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            Select the position you're applying for
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Choose one role to continue. You can always come back and apply for another.
+          </p>
+        </div>
+        <div className="relative w-full sm:w-72">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search role, team, location"
+            className="w-full rounded-full border border-border bg-background py-2.5 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+            aria-label="Search openings"
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        {openings.length === 0 ? (
+          <div className="col-span-full rounded-2xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+            No openings match your search.
+          </div>
+        ) : (
+          openings.map((o) => {
+            const active = selectedSlug === o.slug;
+            return (
+              <button
+                key={o.slug}
+                type="button"
+                onClick={() => onSelect(o.slug)}
+                aria-pressed={active}
+                className={
+                  "group relative flex flex-col gap-3 rounded-2xl border p-5 text-left transition-all " +
+                  (active
+                    ? "border-primary bg-primary/5 shadow-glow"
+                    : "border-border bg-background hover:border-primary/40 hover:bg-secondary/40")
+                }
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-primary">
                     <Briefcase className="h-3.5 w-3.5" />
                     {o.dept}
                   </div>
-                  <h3 className="mt-2 font-display text-lg font-semibold">{o.title}</h3>
-                  <div className="mt-2 flex flex-wrap gap-4 text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> {o.location}</span>
-                    <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {o.type}</span>
+                  <div
+                    className={
+                      "grid h-5 w-5 place-items-center rounded-full border transition-colors " +
+                      (active ? "border-primary bg-primary text-primary-foreground" : "border-border")
+                    }
+                    aria-hidden
+                  >
+                    {active && <Check className="h-3 w-3" />}
                   </div>
                 </div>
-                <Link
-                  to="/careers/$slug"
-                  params={{ slug: o.slug }}
-                  className="inline-flex items-center gap-2 self-start rounded-full border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-primary hover:text-primary-foreground sm:self-center"
+                <h3 className="font-display text-base font-semibold leading-snug">{o.title}</h3>
+                <p className="text-xs text-muted-foreground line-clamp-2">{o.summary}</p>
+                <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5">
+                    <MapPin className="h-3 w-3" /> {o.location}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Clock className="h-3 w-3" /> {o.type}
+                  </span>
+                </div>
+              </button>
+            );
+          })
+        )}
+      </div>
+
+      {error && (
+        <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-destructive">
+          <AlertCircle className="h-3.5 w-3.5" /> {error}
+        </p>
+      )}
+
+      <div className="mt-8 flex flex-col-reverse items-stretch justify-between gap-3 sm:flex-row sm:items-center">
+        <p className="text-xs text-muted-foreground">
+          Showing {openings.length} of {allCount} open roles.
+        </p>
+        <button
+          type="button"
+          onClick={onContinue}
+          disabled={!selectedSlug}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Continue to application <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Step 2: Form ---------------- */
+
+function StepForm({
+  job,
+  onBack,
+  onSubmit,
+  resume,
+  onFileChange,
+  clearResume,
+  errors,
+  submitting,
+}: {
+  job: (typeof openings)[number];
+  onBack: () => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  resume: File | null;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  clearResume: () => void;
+  errors: Errors;
+  submitting: boolean;
+}) {
+  return (
+    <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <form
+        onSubmit={onSubmit}
+        noValidate
+        className="rounded-3xl glass-card p-6 sm:p-8"
+      >
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Step 2</p>
+            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight">Your details</h2>
+          </div>
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border px-3.5 py-2 text-xs font-medium text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Change role
+          </button>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">
+          All fields marked * are required. Your information is used only to evaluate this application.
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field label="Full name *" error={errors.fullName} htmlFor="fullName">
+            <input id="fullName" name="fullName" type="text" autoComplete="name" maxLength={100} required className={inputClass(!!errors.fullName)} />
+          </Field>
+          <Field label="Email *" error={errors.email} htmlFor="email">
+            <input id="email" name="email" type="email" autoComplete="email" maxLength={255} required className={inputClass(!!errors.email)} />
+          </Field>
+          <Field label="Phone *" error={errors.phone} htmlFor="phone">
+            <input id="phone" name="phone" type="tel" autoComplete="tel" maxLength={30} required className={inputClass(!!errors.phone)} />
+          </Field>
+          <Field label="LinkedIn / portfolio" error={errors.linkedin} htmlFor="linkedin">
+            <input id="linkedin" name="linkedin" type="url" inputMode="url" maxLength={255} placeholder="https://" className={inputClass(!!errors.linkedin)} />
+          </Field>
+        </div>
+
+        <div className="mt-5">
+          <Field label="Cover letter *" error={errors.coverLetter} htmlFor="coverLetter">
+            <textarea
+              id="coverLetter"
+              name="coverLetter"
+              rows={6}
+              maxLength={2000}
+              required
+              placeholder="Tell us why you're a great fit for this role…"
+              className={inputClass(!!errors.coverLetter) + " min-h-[140px] resize-y"}
+            />
+          </Field>
+        </div>
+
+        <div className="mt-5">
+          <label className="text-sm font-medium">Resume / CV *</label>
+          <p className="mt-1 text-xs text-muted-foreground">PDF or Word — up to 5 MB.</p>
+          <div className="mt-2">
+            {resume ? (
+              <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background p-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <FileText className="h-5 w-5 shrink-0 text-primary" />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{resume.name}</p>
+                    <p className="text-xs text-muted-foreground">{(resume.size / 1024).toFixed(0)} KB</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={clearResume}
+                  className="grid h-8 w-8 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
+                  aria-label="Remove file"
                 >
-                  Apply <ArrowRight className="h-4 w-4" />
-                </Link>
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-            ))}
+            ) : (
+              <label
+                htmlFor="resume"
+                className={
+                  "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-8 text-center transition-colors hover:bg-secondary/40 " +
+                  (errors.resume ? "border-destructive/60" : "border-border")
+                }
+              >
+                <Upload className="h-5 w-5 text-muted-foreground" />
+                <span className="text-sm font-medium">Click to upload your CV</span>
+                <span className="text-xs text-muted-foreground">PDF, DOC, DOCX · max 5 MB</span>
+              </label>
+            )}
+            <input
+              id="resume"
+              name="resume"
+              type="file"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              className="sr-only"
+              onChange={onFileChange}
+            />
+            {errors.resume && (
+              <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-destructive">
+                <AlertCircle className="h-3.5 w-3.5" /> {errors.resume}
+              </p>
+            )}
           </div>
         </div>
-      </section>
-    </>
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:opacity-60 sm:w-auto"
+        >
+          {submitting ? "Submitting…" : "Submit application"}
+        </button>
+
+        <p className="mt-4 text-xs text-muted-foreground">
+          By submitting, you agree to our{" "}
+          <Link to="/privacy" className="underline">privacy policy</Link>.
+        </p>
+      </form>
+
+      <aside className="space-y-6">
+        <div className="rounded-3xl glass-card p-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Applying for
+          </p>
+          <h3 className="mt-2 font-display text-lg font-semibold leading-snug">{job.title}</h3>
+          <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5" /> {job.dept}</span>
+            <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> {job.location}</span>
+            <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {job.type}</span>
+          </div>
+          <p className="mt-3 text-sm text-foreground/80">{job.summary}</p>
+        </div>
+
+        <details className="group rounded-3xl glass-card p-6">
+          <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold">
+            What you'll do
+            <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
+          </summary>
+          <ul className="mt-3 space-y-2 text-sm text-foreground/85">
+            {job.responsibilities.map((r) => (
+              <li key={r} className="flex gap-2">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                {r}
+              </li>
+            ))}
+          </ul>
+        </details>
+
+        <details className="group rounded-3xl glass-card p-6">
+          <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold">
+            What we're looking for
+            <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
+          </summary>
+          <ul className="mt-3 space-y-2 text-sm text-foreground/85">
+            {job.requirements.map((r) => (
+              <li key={r} className="flex gap-2">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                {r}
+              </li>
+            ))}
+          </ul>
+        </details>
+      </aside>
+    </div>
+  );
+}
+
+/* ---------------- Step 3: Success ---------------- */
+
+function StepSuccess({
+  job,
+  onAnother,
+}: {
+  job: (typeof openings)[number];
+  onAnother: () => void;
+}) {
+  return (
+    <div className="mx-auto max-w-xl rounded-3xl glass-card p-8 text-center">
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow">
+        <CheckCircle2 className="h-7 w-7" />
+      </div>
+      <h2 className="mt-5 font-display text-2xl font-bold tracking-tight">Application received</h2>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Thanks for applying to <span className="font-semibold text-foreground">{job.title}</span>. Our team
+        reviews every submission and will reach out within 5–7 business days if your background is a fit.
+      </p>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Questions? Email{" "}
+        <a className="text-primary underline" href="mailto:yessbangla.bd@gmail.com">
+          yessbangla.bd@gmail.com
+        </a>
+        .
+      </p>
+      <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <button
+          type="button"
+          onClick={onAnother}
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow"
+        >
+          Apply for another role
+        </button>
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
+        >
+          Back to home
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Field + input ---------------- */
+
+function Field({
+  label,
+  error,
+  htmlFor,
+  children,
+}: {
+  label: string;
+  error?: string;
+  htmlFor: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label htmlFor={htmlFor} className="text-sm font-medium">
+        {label}
+      </label>
+      <div className="mt-1.5">{children}</div>
+      {error && (
+        <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-destructive">
+          <AlertCircle className="h-3.5 w-3.5" /> {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function inputClass(hasError: boolean) {
+  return (
+    "w-full rounded-lg border bg-background px-3 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary " +
+    (hasError ? "border-destructive/60" : "border-border")
   );
 }
