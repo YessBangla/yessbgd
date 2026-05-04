@@ -241,7 +241,10 @@ function Index() {
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
                 built for{" "}
-                <span className="whitespace-nowrap">global ambition.</span>
+                {/* nowrap only ≥sm — keeps "global ambition." together on
+                    tablet/desktop, but allows wrapping on ≤360px to avoid
+                    horizontal overflow on small phones. */}
+                <span className="sm:whitespace-nowrap">global ambition.</span>
               </span>
             </h1>
 
@@ -249,7 +252,7 @@ function Index() {
                 Slightly higher contrast (/80) and wider max-width on desktop
                 for editorial readability without losing the airy feel. */}
             <p
-              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-xl lg:max-w-2xl text-background/80"
+              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
                 /* 13px mobile → 17px desktop — editorial body scale */
@@ -264,26 +267,28 @@ function Index() {
               <span className="font-medium text-background/95">YESS Bangla</span>{" "}
               partners with ambitious organisations to deliver consulting,
               technology, media and commerce solutions —
-              {/* nowrap only ≥sm; on narrow phones these long phrases must wrap */}
-              <span className="sm:whitespace-nowrap"> engineered to international standards,</span>
-              <span className="sm:whitespace-nowrap"> shipped from Dhaka.</span>
+              {/* nowrap only ≥md (768px+) — narrow tablets/large phones still
+                  wrap naturally; desktop keeps the editorial line break. */}
+              <span className="md:whitespace-nowrap"> engineered to international standards,</span>
+              <span className="md:whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
 
-            {/* CTA row */}
+            {/* CTA row — stacks full-width on small phones for tap-target
+                clarity, settles into a flex row from sm:+ */}
             <div
-              className="hero-fade mt-6 sm:mt-7 flex flex-wrap items-center gap-3"
+              className="hero-fade mt-6 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3"
               style={{ animationDelay: "220ms" }}
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Start a project
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
               <Link
                 to="/services"
-                className="group inline-flex items-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Explore services
                 <ArrowRight className="h-4 w-4 opacity-70 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
