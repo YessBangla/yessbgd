@@ -581,9 +581,15 @@ function StepSelect({
         </p>
       )}
 
+      {totalPages > 1 && (
+        <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
+      )}
+
       <div className="mt-8 flex flex-col-reverse items-stretch justify-between gap-3 sm:flex-row sm:items-center">
         <p className="text-xs text-muted-foreground">
-          Showing {openings.length} of {allCount} open roles.
+          {filteredCount === 0
+            ? `No roles match · ${allCount} total open`
+            : `Showing ${openings.length} of ${filteredCount} match${filteredCount > 1 ? "es" : ""} · ${allCount} total open`}
         </p>
         <button
           type="button"
