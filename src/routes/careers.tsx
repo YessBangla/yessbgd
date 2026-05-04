@@ -52,6 +52,70 @@ const perks = [
   { icon: Sparkles, title: "Modern tooling", desc: "The best hardware and software to do your best work." },
 ];
 
+const stats = [
+  { value: "120+", label: "Team members" },
+  { value: "12", label: "Open roles" },
+  { value: "9", label: "Industries served" },
+  { value: "4.8/5", label: "Glassdoor rating" },
+];
+
+const hiringSteps = [
+  { icon: Send, title: "Apply", desc: "Submit your application in under 5 minutes — no account required." },
+  { icon: ClipboardCheck, title: "Screen", desc: "Recruiter review within 5–7 business days, then a short intro call." },
+  { icon: MessageSquare, title: "Interview", desc: "1–2 focused interviews with the hiring manager and the team." },
+  { icon: Handshake, title: "Offer", desc: "Reference checks, transparent comp discussion and a written offer." },
+];
+
+const values = [
+  { icon: Trophy, title: "Outcomes over optics", desc: "We measure work by the results it delivers, not the hours it took." },
+  { icon: Globe2, title: "Built for South Asia", desc: "We design for emerging markets first — speed, resilience, accessibility." },
+  { icon: Rocket, title: "Bias for momentum", desc: "Ship, learn, iterate. Small bets compound into category-defining work." },
+];
+
+const testimonials = [
+  {
+    quote:
+      "I joined as a junior engineer and within 18 months was leading a product line. The growth here is real, not theoretical.",
+    name: "Tasnim R.",
+    role: "Engineering Lead",
+  },
+  {
+    quote:
+      "It's the rare workplace where designers, engineers and consultants actually sit at the same table on day one.",
+    name: "Arif H.",
+    role: "Product Designer",
+  },
+  {
+    quote:
+      "The clients are ambitious, the standards are high, and the team has your back. That combination is hard to find.",
+    name: "Nabila K.",
+    role: "Senior Consultant",
+  },
+];
+
+const faqs = [
+  {
+    q: "Do I need to live in Dhaka?",
+    a: "Many roles are hybrid or remote-friendly within Bangladesh. Each listing notes the expected location and travel pattern.",
+  },
+  {
+    q: "What's your interview process like?",
+    a: "Most roles involve a recruiter screen, a hiring-manager conversation and one practical exercise. We aim to wrap within two weeks of applying.",
+  },
+  {
+    q: "I'm a fresh graduate — should I apply?",
+    a: "Yes. We hire interns and entry-level talent across teams. Lead with the projects you've shipped and what you want to learn next.",
+  },
+  {
+    q: "Can I apply to more than one role?",
+    a: "Please apply to the single role that fits you best. Our recruiters route strong candidates internally if another team is a better match.",
+  },
+  {
+    q: "Don't see a role that fits?",
+    a: "Email yessbangla.bd@gmail.com with your CV and a short note on the work you want to do — we keep an active talent network.",
+  },
+];
+
 const MAX_RESUME_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = [
   "application/pdf",
