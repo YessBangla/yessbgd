@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { TiltCard } from "@/components/TiltCard";
-import { HeroThreeOrb } from "@/components/HeroThreeOrb";
-import { useTiltPreference } from "@/hooks/useTiltPreference";
-import { Move3d } from "lucide-react";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
@@ -135,20 +132,19 @@ const impactMetrics: ImpactMetric[] = [
 function Index() {
   const [openVenture, setOpenVenture] = useState<Venture | null>(null);
   const [hydrated, setHydrated] = useState(false);
-  const tilt = useTiltPreference();
   useEffect(() => {
     setHydrated(true);
   }, []);
   return (
     <>
-      {/* HERO — light, airy, Apple-style glass */}
+      {/* HERO — refined, professional, Apple-style glass */}
       <section className="relative overflow-hidden">
         {/* Ambient floating orbs */}
-        <div className="orb h-[480px] w-[480px] -top-40 -left-32" style={{ background: "oklch(0.78 0.16 188 / 0.55)" }} />
-        <div className="orb h-[420px] w-[420px] top-20 right-0" style={{ background: "oklch(0.82 0.18 28 / 0.45)", animationDelay: "-6s" }} />
-        <div className="orb h-[360px] w-[360px] bottom-0 left-1/3" style={{ background: "oklch(0.85 0.14 250 / 0.45)", animationDelay: "-12s" }} />
+        <div className="orb h-[480px] w-[480px] -top-40 -left-32" style={{ background: "oklch(0.78 0.16 188 / 0.45)" }} />
+        <div className="orb h-[420px] w-[420px] top-20 right-0" style={{ background: "oklch(0.82 0.18 28 / 0.35)", animationDelay: "-6s" }} />
+        <div className="orb h-[360px] w-[360px] bottom-0 left-1/3" style={{ background: "oklch(0.85 0.14 250 / 0.35)", animationDelay: "-12s" }} />
 
-        <div className="container-tight relative grid gap-12 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
+        <div className="container-tight relative grid gap-12 py-20 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16 lg:py-28">
           <div>
             <motion.div
               initial={false}
@@ -159,7 +155,7 @@ function Index() {
             </motion.div>
             <motion.h1
               initial={false}
-              className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl"
+              className="mt-6 font-display font-semibold leading-[1.05] tracking-tight text-balance"
             >
               Business consulting that turns data into{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -197,7 +193,14 @@ function Index() {
               </Link>
             </motion.div>
 
-            <div className="mt-10 grid grid-cols-3 gap-3 border-t border-border/60 pt-6 sm:gap-6 sm:pt-8">
+            {/* Trust signals */}
+            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-primary" /> ISO-grade processes</span>
+              <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-primary" /> Trusted since 2014</span>
+              <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-primary" /> 98% client retention</span>
+            </div>
+
+            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-border/60 pt-6 sm:gap-6 sm:pt-8">
               {[
                 { target: 250, label: "Projects", format: { plus: true } as const },
                 { target: 11,  label: "Years", format: { plus: true } as const },
@@ -210,7 +213,6 @@ function Index() {
                     (i > 0 ? "border-l border-border/60 pl-3 sm:pl-6" : "")
                   }
                 >
-                  {/* Fixed-height numeric slot prevents skeleton ↔ counter shift */}
                   <div className="flex h-7 items-baseline font-display text-xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:h-9 sm:text-3xl">
                     {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
                   </div>
@@ -225,7 +227,7 @@ function Index() {
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 to-accent/20 opacity-60 blur-2xl" />
             <TiltCard
-              enabled={tilt.hydrated && tilt.enabled}
+              enabled={false}
               className="relative overflow-hidden rounded-3xl glass-strong p-2"
             >
               <img
@@ -240,28 +242,6 @@ function Index() {
               />
             </TiltCard>
 
-            {/* 3D tilt toggle — persists in localStorage. Client-only to avoid SSR mismatch. */}
-            <ClientOnly fallback={null}>
-              <button
-                type="button"
-                onClick={tilt.toggle}
-                aria-pressed={tilt.enabled}
-                aria-label={tilt.enabled ? "Disable 3D tilt effect" : "Enable 3D tilt effect"}
-                title={tilt.enabled ? "Disable 3D tilt" : "Enable 3D tilt"}
-                className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full glass-strong px-2.5 py-1.5 text-[11px] font-medium text-foreground/80 shadow-sm backdrop-blur transition hover:text-foreground"
-              >
-                <Move3d className={`h-3.5 w-3.5 ${tilt.enabled ? "text-primary" : "text-muted-foreground"}`} />
-                <span className="hidden sm:inline">3D {tilt.enabled ? "On" : "Off"}</span>
-              </button>
-            </ClientOnly>
-
-            {/* Three.js 3D ornament — fixed-size to prevent layout shift */}
-            <ClientOnly fallback={<div aria-hidden className="pointer-events-none absolute -top-8 -right-6 hidden h-32 w-32 lg:block" />}>
-              <div className="pointer-events-auto absolute -top-8 -right-6 hidden h-32 w-32 lg:block">
-                <HeroThreeOrb className="h-full w-full" />
-              </div>
-            </ClientOnly>
-
             <div className="absolute -bottom-6 -left-6 hidden rounded-2xl glass-strong p-4 sm:block">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary text-primary-foreground">
@@ -270,6 +250,18 @@ function Index() {
                 <div>
                   <div className="text-sm font-semibold text-foreground">11+ years</div>
                   <div className="text-xs text-muted-foreground">of trusted expertise</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute -top-5 -right-4 hidden rounded-2xl glass-strong p-3 lg:block">
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-accent text-accent-foreground">
+                  <TrendingUp className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-foreground">3× growth</div>
+                  <div className="text-[10px] text-muted-foreground">avg. client outcome</div>
                 </div>
               </div>
             </div>
