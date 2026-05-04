@@ -209,15 +209,20 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-4 sm:mt-5 lg:mt-6 font-display font-semibold text-balance text-background"
+              className="hero-fade mt-4 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Refined editorial scale: 28px mobile → 56px desktop */
-                /* Floor 1.625rem (26px) keeps 320px viewports safe; preferred
-                   slope tuned so 360–430px lands cleanly between 27–32px. */
-                fontSize: "clamp(1.625rem, 0.85rem + 3.6vw, 3.5rem)",
-                /* Premium leading: tighter as type grows */
-                lineHeight: "clamp(1.04, 1.2 - 0.7vw, 1.14)",
+                /* Refined editorial scale: 26px floor → 56px ceiling.
+                   Tuned slope (3.0vw) so ceiling lands at ~1280px instead
+                   of 994px — gives larger laptops a true 50–54px sweet spot
+                   before pinning, avoiding tablet portrait jumps. */
+                fontSize: "clamp(1.625rem, 0.95rem + 3.0vw, 3.5rem)",
+                /* Premium leading: relaxed on mobile (1.08), tighter on
+                   desktop (1.06). Previous formula was always floor-clamped
+                   to 1.04 because preferred went negative — fixed slope
+                   so the curve actually runs from ~1.08 → 1.06 across
+                   320–1366px without overlap or negative math. */
+                lineHeight: "clamp(1.06, 1.24 - 0.05vw, 1.2)",
                 /* Em-based optical tracking — auto-scales with font-size */
                 letterSpacing: "-0.022em",
                 wordSpacing: "normal",
