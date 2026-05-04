@@ -407,40 +407,71 @@
     50%      { transform: translate3d(0, -1.5px, 0); }
   }
   .water-text {
+    /* Mobile defaults: softer peak, slower drift, lower contrast */
     background-image: linear-gradient(
       100deg,
-      color-mix(in oklab, var(--background) 92%, transparent) 0%,
-      color-mix(in oklab, var(--background) 100%, transparent) 38%,
-      color-mix(in oklab, var(--primary-glow) 85%, transparent) 50%,
-      color-mix(in oklab, var(--background) 100%, transparent) 62%,
-      color-mix(in oklab, var(--background) 92%, transparent) 100%
+      color-mix(in oklab, var(--background) 96%, transparent) 0%,
+      color-mix(in oklab, var(--background) 100%, transparent) 42%,
+      color-mix(in oklab, var(--primary-glow) 55%, transparent) 50%,
+      color-mix(in oklab, var(--background) 100%, transparent) 58%,
+      color-mix(in oklab, var(--background) 96%, transparent) 100%
     );
-    background-size: 200% 100%;
+    background-size: 220% 100%;
     background-position: 0% 50%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
     animation:
-      water-shimmer 8s cubic-bezier(0.45, 0, 0.55, 1) infinite,
-      water-drift   6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+      water-shimmer 12s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+      water-drift   9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
     will-change: background-position, transform;
   }
   .water-text-accent {
     background-image: linear-gradient(
       100deg,
-      color-mix(in oklab, var(--background) 95%, transparent) 0%,
-      color-mix(in oklab, var(--accent) 90%, transparent) 45%,
-      color-mix(in oklab, var(--accent) 70%, transparent) 55%,
-      color-mix(in oklab, var(--background) 95%, transparent) 100%
+      color-mix(in oklab, var(--background) 97%, transparent) 0%,
+      color-mix(in oklab, var(--accent) 60%, transparent) 47%,
+      color-mix(in oklab, var(--accent) 50%, transparent) 53%,
+      color-mix(in oklab, var(--background) 97%, transparent) 100%
     );
-    background-size: 200% 100%;
+    background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    animation: water-shimmer 9s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.6s;
+    animation: water-shimmer 14s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.8s;
     will-change: background-position;
+  }
+
+  /* Desktop: a touch faster + slightly more luminous peak,
+     still calm and editorial. Activates ≥768px. */
+  @media (min-width: 768px) {
+    .water-text {
+      background-image: linear-gradient(
+        100deg,
+        color-mix(in oklab, var(--background) 94%, transparent) 0%,
+        color-mix(in oklab, var(--background) 100%, transparent) 40%,
+        color-mix(in oklab, var(--primary-glow) 78%, transparent) 50%,
+        color-mix(in oklab, var(--background) 100%, transparent) 60%,
+        color-mix(in oklab, var(--background) 94%, transparent) 100%
+      );
+      background-size: 240% 100%;
+      animation:
+        water-shimmer 9s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+        water-drift   7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+    .water-text-accent {
+      background-image: linear-gradient(
+        100deg,
+        color-mix(in oklab, var(--background) 95%, transparent) 0%,
+        color-mix(in oklab, var(--accent) 82%, transparent) 46%,
+        color-mix(in oklab, var(--accent) 65%, transparent) 54%,
+        color-mix(in oklab, var(--background) 95%, transparent) 100%
+      );
+      background-size: 240% 100%;
+      animation: water-shimmer 10s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.6s;
+    }
   }
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
