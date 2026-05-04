@@ -386,7 +386,7 @@ function Careers() {
                 setQuery={setQuery}
                 selectedSlug={selectedSlug}
                 onSelect={(slug) => {
-                  setSelectedSlug(slug);
+                  setSelectedSlug((prev) => (prev === slug ? null : slug));
                   setErrors((p) => ({ ...p, job: undefined }));
                 }}
                 onContinue={proceedToForm}
