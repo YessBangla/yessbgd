@@ -86,6 +86,8 @@ function ProbeInner() {
     measure();
     const t1 = setTimeout(measure, 120);
     const t2 = setTimeout(measure, 800);
+    // Poll the shimmer's background-position so the readout reflects pause frames live
+    const poll = window.setInterval(measure, 500);
 
     window.addEventListener("resize", measure);
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -101,10 +103,15 @@ function ProbeInner() {
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      window.clearInterval(poll);
       window.removeEventListener("resize", measure);
       mql.removeEventListener("change", measure);
     };
   }, []);
+
+  const toggleTheme = () => {
+    document.documentElement.classList.toggle("dark");
+  };
 
   const ok = (b: boolean) => (b ? "✓" : "✗");
   const warn =
