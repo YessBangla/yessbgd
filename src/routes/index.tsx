@@ -8,6 +8,7 @@ import venturesImg from "@/assets/ventures-dhaka-bd.jpg";
 import trustImg from "@/assets/trust-handshake-bd.jpg";
 import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
   Dialog,
