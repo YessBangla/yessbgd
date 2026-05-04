@@ -548,4 +548,10 @@
   transition: none !important;
   will-change: auto !important;
 }
+.force-reduce-motion .water-text,
+.force-reduce-motion .water-text-accent {
+  animation: none !important;
+  background-position: 0% 50% !important;
+  will-change: auto !important;
+}
 
