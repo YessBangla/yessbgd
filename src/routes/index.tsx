@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
+import aboutImg from "@/assets/about-team-bd.jpg";
+import servicesImg from "@/assets/services-tech-bd.jpg";
+import venturesImg from "@/assets/ventures-dhaka-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
