@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TiltCard } from "@/components/TiltCard";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
@@ -137,86 +136,102 @@ function Index() {
   }, []);
   return (
     <>
-      {/* HERO — refined, professional, Apple-style glass */}
-      <section className="relative overflow-hidden">
-        {/* Ambient floating orbs */}
-        <div className="orb h-[480px] w-[480px] -top-40 -left-32" style={{ background: "oklch(0.78 0.16 188 / 0.45)" }} />
-        <div className="orb h-[420px] w-[420px] top-20 right-0" style={{ background: "oklch(0.82 0.18 28 / 0.35)", animationDelay: "-6s" }} />
-        <div className="orb h-[360px] w-[360px] bottom-0 left-1/3" style={{ background: "oklch(0.85 0.14 250 / 0.35)", animationDelay: "-12s" }} />
+      {/* HERO — professional, editorial */}
+      <section className="relative overflow-hidden border-b border-border/60">
+        {/* Subtle ambient backdrop */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-primary/15 blur-3xl" />
+          <div className="absolute top-24 -right-20 h-[360px] w-[360px] rounded-full bg-accent/15 blur-3xl" />
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+        </div>
 
-        <div className="container-tight relative grid gap-12 py-20 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16 lg:py-28">
+        <div className="container-tight relative grid gap-14 py-20 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-20 lg:py-28">
           <div>
             <motion.div
-              initial={false}
-              className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-foreground/80"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/60 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground/80 backdrop-blur"
             >
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-              Experts in Business & IT Solutions
-            </motion.div>
-            <motion.h1
-              initial={false}
-              className="mt-6 font-display font-semibold leading-[1.05] tracking-tight text-balance"
-            >
-              Business consulting that turns data into{" "}
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                strategic growth.
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inset-0 animate-ping rounded-full bg-primary/60" />
+                <span className="relative h-1.5 w-1.5 rounded-full bg-primary" />
               </span>
+              Trusted since 2014
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
+              className="mt-6 font-display font-semibold leading-[1.04] tracking-tight text-balance"
+            >
+              Consulting & technology that{" "}
+              <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+                move your business forward
+              </span>
+              .
             </motion.h1>
+
             <motion.p
-              initial={false}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
-              YESS Bangla helps organisations across Bangladesh modernise, scale and lead — with a
-              full suite of consulting, IT, OTT and e-commerce solutions.
+              YESS Bangla partners with ambitious organisations across Bangladesh — delivering
+              strategy, software, media and commerce solutions built to international standards.
             </motion.p>
+
             <motion.div
-              initial={false}
-              className="mt-10 flex flex-wrap items-center gap-3"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="mt-9 flex flex-wrap items-center gap-3"
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-all hover:scale-[1.03] hover:shadow-lg"
+                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5"
               >
-                Start a project <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                Start a project
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold text-foreground transition-all hover:scale-[1.03]"
+                className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/50 px-6 py-3 text-sm font-semibold text-foreground backdrop-blur transition-all hover:bg-background"
               >
                 Explore services
-              </Link>
-              <Link
-                to="/insights"
-                className="group inline-flex items-center gap-1.5 px-2 py-3 text-sm font-semibold text-primary transition-all hover:gap-2.5"
-              >
-                View insights <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
 
             {/* Trust signals */}
-            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-primary" /> ISO-grade processes</span>
-              <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-primary" /> Trusted since 2014</span>
+              <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-primary" /> 11+ years expertise</span>
               <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-primary" /> 98% client retention</span>
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-3 border-t border-border/60 pt-6 sm:gap-6 sm:pt-8">
+            <div className="mt-10 grid grid-cols-3 gap-4 border-t border-border/60 pt-8 sm:gap-8">
               {[
-                { target: 250, label: "Projects", format: { plus: true } as const },
-                { target: 11,  label: "Years", format: { plus: true } as const },
-                { target: 64,  label: "Districts" },
+                { target: 250, label: "Projects delivered", format: { plus: true } as const },
+                { target: 120, label: "Enterprise clients", format: { plus: true } as const },
+                { target: 64,  label: "Districts covered" },
               ].map((s, i) => (
                 <div
                   key={s.label}
-                  className={
-                    "min-w-0 " +
-                    (i > 0 ? "border-l border-border/60 pl-3 sm:pl-6" : "")
-                  }
+                  className={"min-w-0 " + (i > 0 ? "border-l border-border/60 pl-4 sm:pl-8" : "")}
                 >
-                  <div className="flex h-7 items-baseline font-display text-xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:h-9 sm:text-3xl">
+                  <div className="flex h-8 items-baseline font-display text-2xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:h-10 sm:text-3xl">
                     {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
                   </div>
-                  <div className="mt-1.5 truncate text-[11px] text-muted-foreground sm:mt-2 sm:text-xs">
+                  <div className="mt-2 text-[11px] uppercase tracking-wider text-muted-foreground sm:text-xs">
                     {s.label}
                   </div>
                 </div>
@@ -224,12 +239,15 @@ function Index() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 to-accent/20 opacity-60 blur-2xl" />
-            <TiltCard
-              enabled={false}
-              className="relative overflow-hidden rounded-3xl glass-strong p-2"
-            >
+          {/* Visual */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative"
+          >
+            <div aria-hidden className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-primary/20 via-transparent to-accent/20 blur-2xl" />
+            <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-background/60 p-1.5 shadow-2xl backdrop-blur">
               <img
                 src={heroImg}
                 alt="YESS Bangla consulting team meeting"
@@ -238,13 +256,13 @@ function Index() {
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"
-                className="block rounded-2xl"
+                className="block aspect-[4/3] w-full rounded-[1.35rem] object-cover"
               />
-            </TiltCard>
+            </div>
 
-            <div className="absolute -bottom-6 -left-6 hidden rounded-2xl glass-strong p-4 sm:block">
+            <div className="absolute -bottom-5 -left-5 hidden rounded-2xl border border-border/60 bg-background/85 p-4 shadow-xl backdrop-blur sm:block">
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary text-primary-foreground">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground">
                   <Award className="h-5 w-5" />
                 </div>
                 <div>
@@ -254,9 +272,9 @@ function Index() {
               </div>
             </div>
 
-            <div className="absolute -top-5 -right-4 hidden rounded-2xl glass-strong p-3 lg:block">
+            <div className="absolute -top-5 -right-4 hidden rounded-2xl border border-border/60 bg-background/85 p-3 shadow-xl backdrop-blur lg:block">
               <div className="flex items-center gap-2.5">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-accent text-accent-foreground">
+                <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-accent text-accent-foreground">
                   <TrendingUp className="h-4 w-4" />
                 </div>
                 <div>
@@ -265,7 +283,7 @@ function Index() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
