@@ -517,7 +517,9 @@
   .hero-section { --hero-py: 0px !important; --hero-hx: 0px !important; --hero-hy: 0px !important; }
   .water-text, .water-text-accent {
     animation: none !important;
-    background-position: 50% 50% !important;
+    /* Park gradient at the opaque base so glyphs remain solid var(--background) */
+    background-position: 0% 50% !important;
+    will-change: auto !important;
   }
 }
 
