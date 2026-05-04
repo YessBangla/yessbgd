@@ -313,6 +313,26 @@ export const openings: Opening[] = [
       "Curiosity, ownership and openness to feedback.",
     ],
   },
+  {
+    slug: "brand-promoter",
+    title: "Brand Promoter",
+    type: "Part-time",
+    location: "Dhaka / Field",
+    dept: "Marketing",
+    level: "Entry",
+    summary:
+      "Be the friendly face of YESS Bangla at activations, campuses and partner events — drive awareness, sign-ups and conversations.",
+    responsibilities: [
+      "Represent the brand at on-ground activations, campuses and pop-ups.",
+      "Engage prospects, demo our products and capture qualified leads.",
+      "Report daily activity, learnings and field feedback to the marketing team.",
+    ],
+    requirements: [
+      "Confident, friendly communicator in Bangla and English.",
+      "Comfortable on your feet for full-day events; flexible weekends.",
+      "Bonus: prior promotion, sales-floor or campus ambassador experience.",
+    ],
+  },
 ];
 
 export function getOpening(slug: string): Opening | undefined {
