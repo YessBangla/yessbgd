@@ -33,6 +33,9 @@ function ProbeInner() {
     motion: "?",
     viewport: "?",
     dpr: 1,
+    shimmerCount: 0,
+    shimmerPaused: false,
+    shimmerBgPos: "",
   });
 
   useEffect(() => {
