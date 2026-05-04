@@ -1,9 +1,12 @@
+export type JobLevel = "Internship" | "Entry" | "Mid" | "Senior" | "Lead";
+
 export type Opening = {
   slug: string;
   title: string;
   type: string;
   location: string;
   dept: string;
+  level: JobLevel;
   summary: string;
   responsibilities: string[];
   requirements: string[];
@@ -16,6 +19,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Remote",
     dept: "Engineering",
+    level: "Senior",
     summary:
       "Build production-grade web platforms across our OTT, e-commerce and consulting products.",
     responsibilities: [
@@ -35,6 +39,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "Design",
+    level: "Mid",
     summary:
       "Shape the look, feel and interaction model of our consumer and enterprise products.",
     responsibilities: [
@@ -54,6 +59,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "Consulting",
+    level: "Mid",
     summary:
       "Translate client problems into structured analysis, recommendations and roadmaps.",
     responsibilities: [
@@ -73,6 +79,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Hybrid",
     dept: "Marketing",
+    level: "Mid",
     summary:
       "Plan and execute multi-channel campaigns that grow our brand and ventures.",
     responsibilities: [
@@ -92,6 +99,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "Operations",
+    level: "Entry",
     summary:
       "Be the trusted partner clients rely on through onboarding, adoption and renewal.",
     responsibilities: [
@@ -111,6 +119,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Remote",
     dept: "Engineering",
+    level: "Mid",
     summary:
       "Ship delightful, performant mobile apps for our consumer ventures across iOS and Android.",
     responsibilities: [
@@ -130,6 +139,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Hybrid",
     dept: "Data",
+    level: "Mid",
     summary:
       "Turn raw product, marketing and operations data into decisions leadership can act on.",
     responsibilities: [
@@ -149,6 +159,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Remote",
     dept: "Marketing",
+    level: "Mid",
     summary:
       "Own the editorial voice across our brand, ventures and thought-leadership channels.",
     responsibilities: [
@@ -168,6 +179,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "Finance",
+    level: "Entry",
     summary:
       "Keep the engine running — billing, vendor payments, reporting and compliance across entities.",
     responsibilities: [
@@ -187,6 +199,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "Sales",
+    level: "Senior",
     summary:
       "Lead consultative B2B sales for our consulting, software and platform engagements.",
     responsibilities: [
@@ -206,6 +219,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Remote",
     dept: "Engineering",
+    level: "Mid",
     summary:
       "Raise the quality bar across our products with smart manual testing and robust automation.",
     responsibilities: [
@@ -225,6 +239,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "Design",
+    level: "Mid",
     summary:
       "Craft on-brand visuals and short-form motion for campaigns, social and product launches.",
     responsibilities: [
@@ -244,6 +259,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka",
     dept: "People",
+    level: "Lead",
     summary:
       "Build the systems, rituals and culture that help a high-performing team do their best work.",
     responsibilities: [
@@ -263,6 +279,7 @@ export const openings: Opening[] = [
     type: "Full-time",
     location: "Dhaka / Remote",
     dept: "Engineering",
+    level: "Senior",
     summary:
       "Own the platform our engineers ship on — reliable, secure and cost-aware by default.",
     responsibilities: [
@@ -282,6 +299,7 @@ export const openings: Opening[] = [
     type: "Internship",
     location: "Dhaka",
     dept: "Engineering",
+    level: "Internship",
     summary:
       "A paid, structured internship for final-year students or recent grads ready to ship real product work.",
     responsibilities: [
@@ -293,6 +311,26 @@ export const openings: Opening[] = [
       "Strong fundamentals in JavaScript/TypeScript or Python.",
       "Familiarity with Git and at least one web framework.",
       "Curiosity, ownership and openness to feedback.",
+    ],
+  },
+  {
+    slug: "brand-promoter",
+    title: "Brand Promoter",
+    type: "Part-time",
+    location: "Dhaka / Field",
+    dept: "Marketing",
+    level: "Entry",
+    summary:
+      "Be the friendly face of YESS Bangla at activations, campuses and partner events — drive awareness, sign-ups and conversations.",
+    responsibilities: [
+      "Represent the brand at on-ground activations, campuses and pop-ups.",
+      "Engage prospects, demo our products and capture qualified leads.",
+      "Report daily activity, learnings and field feedback to the marketing team.",
+    ],
+    requirements: [
+      "Confident, friendly communicator in Bangla and English.",
+      "Comfortable on your feet for full-day events; flexible weekends.",
+      "Bonus: prior promotion, sales-floor or campus ambassador experience.",
     ],
   },
 ];

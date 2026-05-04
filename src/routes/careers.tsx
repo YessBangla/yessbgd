@@ -79,6 +79,10 @@ function Careers() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [filterType, setFilterType] = useState<string>("All");
+  const [filterLocation, setFilterLocation] = useState<string>("All");
+  const [filterDept, setFilterDept] = useState<string>("All");
+  const [filterLevel, setFilterLevel] = useState<string>("All");
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -88,16 +92,46 @@ function Careers() {
     [selectedSlug],
   );
 
+  const facets = useMemo(() => {
+    const uniq = (arr: string[]) => Array.from(new Set(arr)).sort();
+    return {
+      types: ["All", ...uniq(openings.map((o) => o.type))],
+      locations: ["All", ...uniq(openings.map((o) => o.location))],
+      depts: ["All", ...uniq(openings.map((o) => o.dept))],
+      levels: ["All", ...uniq(openings.map((o) => o.level))],
+    };
+  }, []);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return openings;
-    return openings.filter(
-      (o) =>
+    return openings.filter((o) => {
+      if (filterType !== "All" && o.type !== filterType) return false;
+      if (filterLocation !== "All" && o.location !== filterLocation) return false;
+      if (filterDept !== "All" && o.dept !== filterDept) return false;
+      if (filterLevel !== "All" && o.level !== filterLevel) return false;
+      if (!q) return true;
+      return (
         o.title.toLowerCase().includes(q) ||
         o.dept.toLowerCase().includes(q) ||
-        o.location.toLowerCase().includes(q),
-    );
-  }, [query]);
+        o.location.toLowerCase().includes(q) ||
+        o.level.toLowerCase().includes(q)
+      );
+    });
+  }, [query, filterType, filterLocation, filterDept, filterLevel]);
+
+  const activeFilterCount =
+    (filterType !== "All" ? 1 : 0) +
+    (filterLocation !== "All" ? 1 : 0) +
+    (filterDept !== "All" ? 1 : 0) +
+    (filterLevel !== "All" ? 1 : 0);
+
+  const resetFilters = () => {
+    setFilterType("All");
+    setFilterLocation("All");
+    setFilterDept("All");
+    setFilterLevel("All");
+    setQuery("");
+  };
 
   const proceedToForm = () => {
     if (!selectedSlug) {
@@ -237,6 +271,17 @@ function Careers() {
                 }}
                 onContinue={proceedToForm}
                 error={errors.job}
+                facets={facets}
+                filterType={filterType}
+                filterLocation={filterLocation}
+                filterDept={filterDept}
+                filterLevel={filterLevel}
+                setFilterType={setFilterType}
+                setFilterLocation={setFilterLocation}
+                setFilterDept={setFilterDept}
+                setFilterLevel={setFilterLevel}
+                activeFilterCount={activeFilterCount}
+                resetFilters={resetFilters}
               />
             )}
 
@@ -358,6 +403,17 @@ function StepSelect({
   onSelect,
   onContinue,
   error,
+  facets,
+  filterType,
+  filterLocation,
+  filterDept,
+  filterLevel,
+  setFilterType,
+  setFilterLocation,
+  setFilterDept,
+  setFilterLevel,
+  activeFilterCount,
+  resetFilters,
 }: {
   openings: typeof import("@/data/openings").openings;
   allCount: number;
@@ -367,6 +423,17 @@ function StepSelect({
   onSelect: (slug: string) => void;
   onContinue: () => void;
   error?: string;
+  facets: { types: string[]; locations: string[]; depts: string[]; levels: string[] };
+  filterType: string;
+  filterLocation: string;
+  filterDept: string;
+  filterLevel: string;
+  setFilterType: (s: string) => void;
+  setFilterLocation: (s: string) => void;
+  setFilterDept: (s: string) => void;
+  setFilterLevel: (s: string) => void;
+  activeFilterCount: number;
+  resetFilters: () => void;
 }) {
   return (
     <div className="rounded-3xl glass-card p-6 sm:p-8">
@@ -377,7 +444,7 @@ function StepSelect({
             Select the position you're applying for
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Choose one role to continue. You can always come back and apply for another.
+            Filter by type, location, department or level — then pick a role to continue.
           </p>
         </div>
         <div className="relative w-full sm:w-72">
@@ -392,6 +459,29 @@ function StepSelect({
           />
         </div>
       </div>
+
+      {/* Advanced filters */}
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={facets.types} />
+        <FilterSelect label="Location" value={filterLocation} onChange={setFilterLocation} options={facets.locations} />
+        <FilterSelect label="Department" value={filterDept} onChange={setFilterDept} options={facets.depts} />
+        <FilterSelect label="Level" value={filterLevel} onChange={setFilterLevel} options={facets.levels} />
+      </div>
+
+      {activeFilterCount > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {activeFilterCount} active filter{activeFilterCount > 1 ? "s" : ""}
+          </span>
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <X className="h-3 w-3" /> Clear all
+          </button>
+        </div>
+      )}
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {openings.length === 0 ? (
@@ -437,6 +527,9 @@ function StepSelect({
                   </span>
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-3 w-3" /> {o.type}
+                  </span>
+                  <span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/80">
+                    {o.level}
                   </span>
                 </div>
               </button>
@@ -732,5 +825,39 @@ function inputClass(hasError: boolean) {
   return (
     "w-full rounded-lg border bg-background px-3 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary " +
     (hasError ? "border-destructive/60" : "border-border")
+  );
+}
+
+function FilterSelect({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+}) {
+  const id = `filter-${label.toLowerCase()}`;
+  return (
+    <div>
+      <label htmlFor={id} className="block text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </label>
+      <div className="relative mt-1.5">
+        <select
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full appearance-none rounded-lg border border-border bg-background py-2.5 pl-3 pr-9 text-sm outline-none transition-colors focus:border-primary"
+        >
+          {options.map((o) => (
+            <option key={o} value={o}>{o}</option>
+          ))}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      </div>
+    </div>
   );
 }
