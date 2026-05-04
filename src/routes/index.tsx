@@ -199,13 +199,16 @@ function Index() {
               className="hero-fade mt-3 sm:mt-4 lg:mt-5 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Slightly smaller desktop ceiling for a more refined editorial scale */
+                /* Refined editorial scale — fluid from mobile to desktop ceiling */
                 fontSize: "clamp(1.75rem, 1rem + 3vw, 3.25rem)",
-                /* Tighter, more controlled leading on large screens */
-                lineHeight: "clamp(1.04, 1.02 + 0.15vw, 1.1)",
-                /* Premium negative tracking that eases as size grows */
-                letterSpacing: "clamp(-0.03em, -0.018em - 0.04vw, -0.015em)",
-                wordSpacing: "-0.01em",
+                /* Premium leading: tighter as type grows */
+                lineHeight: "clamp(1.06, 1.18 - 0.6vw, 1.14)",
+                /* Em-based tracking auto-scales with font-size — no mixed units,
+                   safe for Latin, Bangla and RTL scripts. Single value keeps
+                   spacing visually identical from 360px to 1920px. */
+                letterSpacing: "-0.018em",
+                /* word-spacing left at browser default for international parity */
+                wordSpacing: "normal",
               }}
             >
               <span className="water-text block">Strategy, software</span>
@@ -217,7 +220,7 @@ function Index() {
               </span>
               <span
                 className="water-text-accent block"
-                style={{ marginTop: "0.08em", letterSpacing: "-0.025em" }}
+                style={{ marginTop: "0.08em", letterSpacing: "-0.02em" }}
               >
                 built for global ambition.
               </span>
@@ -229,8 +232,11 @@ function Index() {
               style={{
                 animationDelay: "160ms",
                 fontSize: "clamp(0.8125rem, 0.72rem + 0.4vw, 0.9375rem)",
-                lineHeight: "clamp(1.6, 1.55 + 0.15vw, 1.7)",
-                letterSpacing: "-0.005em",
+                /* Single em-based leading — predictable across breakpoints */
+                lineHeight: 1.65,
+                /* Subtle, em-based tracking; safe for all scripts */
+                letterSpacing: "-0.003em",
+                wordSpacing: "normal",
               }}
             >
               <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
