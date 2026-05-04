@@ -132,6 +132,11 @@ const applicationSchema = z.object({
     .min(7, "Please enter a valid phone number")
     .max(30)
     .regex(/^[0-9+\-\s()]+$/, "Use digits, spaces, +, -, ( and ) only"),
+  location: z
+    .string()
+    .trim()
+    .min(2, "Please enter your city / country")
+    .max(120, "Please keep it under 120 characters"),
   linkedin: z
     .string()
     .trim()
@@ -274,6 +279,7 @@ function Careers() {
       fullName: String(fd.get("fullName") ?? ""),
       email: String(fd.get("email") ?? ""),
       phone: String(fd.get("phone") ?? ""),
+      location: String(fd.get("location") ?? ""),
       linkedin: String(fd.get("linkedin") ?? ""),
       coverLetter: String(fd.get("coverLetter") ?? ""),
     };
@@ -311,6 +317,7 @@ function Careers() {
         full_name: parsed.data.fullName,
         email: parsed.data.email,
         phone: parsed.data.phone,
+        applicant_location: parsed.data.location,
         linkedin: parsed.data.linkedin || null,
         cover_letter: parsed.data.coverLetter,
         resume_path: path,
@@ -884,6 +891,9 @@ function StepForm({
           </Field>
           <Field label="Phone *" error={errors.phone} htmlFor="phone">
             <input id="phone" name="phone" type="tel" autoComplete="tel" maxLength={30} required className={inputClass(!!errors.phone)} />
+          </Field>
+          <Field label="Location *" error={errors.location} htmlFor="location">
+            <input id="location" name="location" type="text" autoComplete="address-level2" maxLength={120} required placeholder="City, Country" className={inputClass(!!errors.location)} />
           </Field>
           <Field label="LinkedIn / portfolio" error={errors.linkedin} htmlFor="linkedin">
             <input id="linkedin" name="linkedin" type="url" inputMode="url" maxLength={255} placeholder="https://" className={inputClass(!!errors.linkedin)} />

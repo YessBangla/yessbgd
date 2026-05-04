@@ -46,6 +46,7 @@ export type Database = {
       }
       job_applications: {
         Row: {
+          applicant_location: string | null
           cover_letter: string
           created_at: string
           email: string
@@ -62,6 +63,7 @@ export type Database = {
           status: Database["public"]["Enums"]["application_status"]
         }
         Insert: {
+          applicant_location?: string | null
           cover_letter: string
           created_at?: string
           email: string
@@ -78,6 +80,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["application_status"]
         }
         Update: {
+          applicant_location?: string | null
           cover_letter?: string
           created_at?: string
           email?: string
