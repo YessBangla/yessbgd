@@ -223,10 +223,15 @@ function Index() {
               </span>
             </h1>
 
-            {/* Lede paragraph */}
+            {/* Lede paragraph — fluid type, premium leading & tracking */}
             <p
-              className="hero-fade mt-4 sm:mt-5 max-w-xl text-[13px] leading-[1.65] text-background/75 sm:text-[14.5px]"
-              style={{ animationDelay: "160ms" }}
+              className="hero-fade mt-4 sm:mt-5 lg:mt-6 max-w-xl text-background/75"
+              style={{
+                animationDelay: "160ms",
+                fontSize: "clamp(0.8125rem, 0.72rem + 0.4vw, 0.9375rem)",
+                lineHeight: "clamp(1.6, 1.55 + 0.15vw, 1.7)",
+                letterSpacing: "-0.005em",
+              }}
             >
               <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
               consulting, technology, media and commerce solutions —
