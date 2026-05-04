@@ -79,6 +79,10 @@ function Careers() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [filterType, setFilterType] = useState<string>("All");
+  const [filterLocation, setFilterLocation] = useState<string>("All");
+  const [filterDept, setFilterDept] = useState<string>("All");
+  const [filterLevel, setFilterLevel] = useState<string>("All");
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -88,16 +92,46 @@ function Careers() {
     [selectedSlug],
   );
 
+  const facets = useMemo(() => {
+    const uniq = (arr: string[]) => Array.from(new Set(arr)).sort();
+    return {
+      types: ["All", ...uniq(openings.map((o) => o.type))],
+      locations: ["All", ...uniq(openings.map((o) => o.location))],
+      depts: ["All", ...uniq(openings.map((o) => o.dept))],
+      levels: ["All", ...uniq(openings.map((o) => o.level))],
+    };
+  }, []);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return openings;
-    return openings.filter(
-      (o) =>
+    return openings.filter((o) => {
+      if (filterType !== "All" && o.type !== filterType) return false;
+      if (filterLocation !== "All" && o.location !== filterLocation) return false;
+      if (filterDept !== "All" && o.dept !== filterDept) return false;
+      if (filterLevel !== "All" && o.level !== filterLevel) return false;
+      if (!q) return true;
+      return (
         o.title.toLowerCase().includes(q) ||
         o.dept.toLowerCase().includes(q) ||
-        o.location.toLowerCase().includes(q),
-    );
-  }, [query]);
+        o.location.toLowerCase().includes(q) ||
+        o.level.toLowerCase().includes(q)
+      );
+    });
+  }, [query, filterType, filterLocation, filterDept, filterLevel]);
+
+  const activeFilterCount =
+    (filterType !== "All" ? 1 : 0) +
+    (filterLocation !== "All" ? 1 : 0) +
+    (filterDept !== "All" ? 1 : 0) +
+    (filterLevel !== "All" ? 1 : 0);
+
+  const resetFilters = () => {
+    setFilterType("All");
+    setFilterLocation("All");
+    setFilterDept("All");
+    setFilterLevel("All");
+    setQuery("");
+  };
 
   const proceedToForm = () => {
     if (!selectedSlug) {
