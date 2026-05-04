@@ -105,6 +105,196 @@ export const openings: Opening[] = [
       "Comfort with CRM tools and basic reporting.",
     ],
   },
+  {
+    slug: "mobile-engineer-react-native",
+    title: "Mobile Engineer (React Native)",
+    type: "Full-time",
+    location: "Dhaka / Remote",
+    dept: "Engineering",
+    summary:
+      "Ship delightful, performant mobile apps for our consumer ventures across iOS and Android.",
+    responsibilities: [
+      "Build and maintain cross-platform apps in React Native and TypeScript.",
+      "Optimize startup time, memory and frame rate on mid-range devices.",
+      "Own release pipelines, crash reporting and OTA updates.",
+    ],
+    requirements: [
+      "3+ years shipping production React Native apps to App Store and Play Store.",
+      "Solid grasp of native modules, navigation and offline patterns.",
+      "Care for accessibility, localization and edge-case UX.",
+    ],
+  },
+  {
+    slug: "data-analyst",
+    title: "Data Analyst",
+    type: "Full-time",
+    location: "Dhaka / Hybrid",
+    dept: "Data",
+    summary:
+      "Turn raw product, marketing and operations data into decisions leadership can act on.",
+    responsibilities: [
+      "Build trusted dashboards and self-serve metrics across teams.",
+      "Run deep-dive analyses on funnels, retention and unit economics.",
+      "Partner with engineering on event tracking and data quality.",
+    ],
+    requirements: [
+      "2+ years in analytics with strong SQL and a BI tool (Looker, Metabase, Power BI).",
+      "Working knowledge of Python or R for ad-hoc analysis.",
+      "Clear storytelling — charts and narratives non-analysts understand.",
+    ],
+  },
+  {
+    slug: "content-strategist",
+    title: "Content Strategist",
+    type: "Full-time",
+    location: "Dhaka / Remote",
+    dept: "Marketing",
+    summary:
+      "Own the editorial voice across our brand, ventures and thought-leadership channels.",
+    responsibilities: [
+      "Plan and produce long-form articles, case studies and launch narratives.",
+      "Brief designers and video producers on supporting assets.",
+      "Optimize content for SEO, distribution and lead capture.",
+    ],
+    requirements: [
+      "3+ years in B2B or tech content with published, link-shareable work.",
+      "Editorial eye for structure, tone and source quality.",
+      "Comfort with CMS workflows and basic on-page SEO.",
+    ],
+  },
+  {
+    slug: "finance-operations-associate",
+    title: "Finance & Operations Associate",
+    type: "Full-time",
+    location: "Dhaka",
+    dept: "Finance",
+    summary:
+      "Keep the engine running — billing, vendor payments, reporting and compliance across entities.",
+    responsibilities: [
+      "Own monthly close, reconciliations and management reporting.",
+      "Coordinate with auditors, banks and tax advisors.",
+      "Improve internal controls and finance tooling as we scale.",
+    ],
+    requirements: [
+      "2+ years in finance ops, accounting or audit (CA part-qualified a plus).",
+      "Strong Excel/Sheets and a modern accounting platform.",
+      "High accuracy, discretion and ownership.",
+    ],
+  },
+  {
+    slug: "enterprise-sales-manager",
+    title: "Enterprise Sales Manager",
+    type: "Full-time",
+    location: "Dhaka",
+    dept: "Sales",
+    summary:
+      "Lead consultative B2B sales for our consulting, software and platform engagements.",
+    responsibilities: [
+      "Build a qualified pipeline of mid-market and enterprise accounts.",
+      "Run discovery, scoping and proposal cycles end-to-end.",
+      "Partner with delivery on smooth handover and account growth.",
+    ],
+    requirements: [
+      "5+ years in B2B sales with a track record of six-figure deals.",
+      "Confident speaking with founders, CXOs and procurement.",
+      "Disciplined CRM hygiene and forecasting.",
+    ],
+  },
+  {
+    slug: "qa-automation-engineer",
+    title: "QA Automation Engineer",
+    type: "Full-time",
+    location: "Dhaka / Remote",
+    dept: "Engineering",
+    summary:
+      "Raise the quality bar across our products with smart manual testing and robust automation.",
+    responsibilities: [
+      "Design test plans for new features and regression suites.",
+      "Build and maintain end-to-end automation (Playwright or Cypress).",
+      "Triage production issues with clear, reproducible reports.",
+    ],
+    requirements: [
+      "3+ years in QA with both manual and automation experience.",
+      "Solid understanding of REST APIs, browser dev tools and Git.",
+      "Bonus: performance testing or mobile QA exposure.",
+    ],
+  },
+  {
+    slug: "graphic-motion-designer",
+    title: "Graphic & Motion Designer",
+    type: "Full-time",
+    location: "Dhaka",
+    dept: "Design",
+    summary:
+      "Craft on-brand visuals and short-form motion for campaigns, social and product launches.",
+    responsibilities: [
+      "Design key visuals, social creatives and pitch decks.",
+      "Produce short motion pieces in After Effects or equivalent.",
+      "Steward brand consistency across teams and partners.",
+    ],
+    requirements: [
+      "Portfolio with both static and motion work.",
+      "Fluency in Figma plus Adobe CC (Illustrator, Photoshop, After Effects).",
+      "Strong typography, layout and timing instincts.",
+    ],
+  },
+  {
+    slug: "hr-people-operations-lead",
+    title: "HR & People Operations Lead",
+    type: "Full-time",
+    location: "Dhaka",
+    dept: "People",
+    summary:
+      "Build the systems, rituals and culture that help a high-performing team do their best work.",
+    responsibilities: [
+      "Own end-to-end recruiting, onboarding and performance cycles.",
+      "Partner with leaders on org design, comp bands and progression.",
+      "Champion learning, well-being and an inclusive workplace.",
+    ],
+    requirements: [
+      "5+ years in HR or people ops, ideally in tech or services.",
+      "Working knowledge of Bangladesh labour law and HRIS tools.",
+      "Empathetic communicator with strong judgment.",
+    ],
+  },
+  {
+    slug: "devops-cloud-engineer",
+    title: "DevOps / Cloud Engineer",
+    type: "Full-time",
+    location: "Dhaka / Remote",
+    dept: "Engineering",
+    summary:
+      "Own the platform our engineers ship on — reliable, secure and cost-aware by default.",
+    responsibilities: [
+      "Manage CI/CD, infrastructure-as-code and environment parity.",
+      "Run observability: logs, metrics, alerts and incident response.",
+      "Harden security posture across cloud accounts and secrets.",
+    ],
+    requirements: [
+      "4+ years with AWS, GCP or Azure in production.",
+      "Hands-on with Docker, Terraform and a major CI system.",
+      "On-call mindset with a bias for automation.",
+    ],
+  },
+  {
+    slug: "engineering-internship",
+    title: "Engineering Internship (6 months)",
+    type: "Internship",
+    location: "Dhaka",
+    dept: "Engineering",
+    summary:
+      "A paid, structured internship for final-year students or recent grads ready to ship real product work.",
+    responsibilities: [
+      "Pair with senior engineers on live features and bug fixes.",
+      "Write tests, docs and small services from day one.",
+      "Present learnings in weekly engineering reviews.",
+    ],
+    requirements: [
+      "Strong fundamentals in JavaScript/TypeScript or Python.",
+      "Familiarity with Git and at least one web framework.",
+      "Curiosity, ownership and openness to feedback.",
+    ],
+  },
 ];
 
 export function getOpening(slug: string): Opening | undefined {
