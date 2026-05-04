@@ -475,9 +475,15 @@
     }
   }
 
-  /* Hi-DPI / coarse pointer (mobile, tablets): pause shimmer when offscreen
-     would be ideal, but we instead reduce GPU pressure by halving keyframe
-     resolution via a longer duration on small screens (already set above). */
+  /* Offscreen pause — toggled by useOffscreenPause hook via IntersectionObserver.
+     When the headline scrolls out of view, halt the shimmer animation entirely
+     (pauses the GPU compositor work, frees `will-change` budget). */
+  .is-paused.water-text,
+  .is-paused.water-text-accent,
+  .is-paused .water-text,
+  .is-paused .water-text-accent {
+    animation-play-state: paused;
+  }
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
     from { transform: translate3d(0, 0, 0); }

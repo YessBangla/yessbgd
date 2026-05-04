@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOffscreenPause } from "@/hooks/useOffscreenPause";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
@@ -140,6 +141,8 @@ const impactMetrics: ImpactMetric[] = [
 function Index() {
   const [openVenture, setOpenVenture] = useState<Venture | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  // Pause water-ripple shimmer when the headline scrolls offscreen
+  const headlineRef = useOffscreenPause<HTMLHeadingElement>();
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -192,6 +195,7 @@ function Index() {
 
             {/* Headline — three-line editorial cadence with water shimmer */}
             <h1
+              ref={headlineRef}
               className="hero-fade mt-4 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
