@@ -11,6 +11,7 @@ import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
+import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import {
   Dialog,
   DialogContent,
@@ -428,9 +429,37 @@ function Index() {
         </div>
       </section>
 
-      {/* ABOUT STRIP */}
-      <section className="py-14 sm:py-20">
-        <div className="container-tight grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-center">
+      {/* CLIENTS — early trust signal, animated marquee
+          Surfaces social proof immediately after CTA so visitors see who
+          trusts us before any pitch. Reduced vertical padding keeps it
+          feeling like a thin trust ribbon, not a full section. */}
+      <section className="py-8 sm:py-10">
+        <div className="container-tight">
+          <Reveal>
+            <p className="text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground/80">
+              Trusted by leading organisations across Bangladesh
+            </p>
+          </Reveal>
+          <div className="marquee-mask mt-5 overflow-hidden sm:mt-6">
+            <div className="marquee gap-10 pr-10 sm:gap-12 sm:pr-12">
+              {[...clients, ...clients].map((c, i) => (
+                <span
+                  key={`${c}-${i}`}
+                  className="shrink-0 font-display text-[15px] font-semibold tracking-tight text-muted-foreground/65 transition-colors hover:text-primary sm:text-base lg:text-lg"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* ABOUT STRIP — who we are */}
+      <section className="py-12 sm:py-20 lg:py-24">
+        <div className="container-tight grid gap-8 sm:gap-12 lg:grid-cols-12 lg:items-center lg:gap-14">
           <Reveal className="lg:col-span-5">
             <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
               <div aria-hidden className="absolute -inset-3 rounded-2xl bg-gradient-to-tr from-primary/15 to-accent/15 blur-2xl sm:-inset-4 sm:rounded-3xl" />
@@ -449,29 +478,32 @@ function Index() {
           </Reveal>
 
           <Reveal className="lg:col-span-7">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Simply know about us</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            <div className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
+              <span aria-hidden className="h-px w-6 bg-primary/40" />
+              Simply know about us
+            </div>
+            <h2 className="mt-3 font-display font-semibold tracking-tight text-balance">
               We help people take their businesses to the next level.
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-3 text-muted-foreground">
               We cope with tasks of various complexity levels, provide long-term guarantees, and
               continuously master new technologies for the industries we serve. Our portfolio
               spans dozens of successful engagements across Bangladesh.
             </p>
 
-            <Stagger className="mt-8 grid grid-cols-2 gap-4">
+            <Stagger className="mt-7 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
               {features.map((f) => (
                 <StaggerItem key={f.title}>
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3 }}
-                    className="glass-card h-full rounded-2xl p-5"
+                    className="glass-card h-full rounded-2xl p-4 sm:p-5"
                   >
                     <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                       <f.icon className="h-5 w-5" />
                     </div>
-                    <h3 className="mt-4 font-display text-base font-semibold">{f.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
+                    <h3 className="mt-3 font-display text-[15px] font-semibold sm:mt-4 sm:text-base">{f.title}</h3>
+                    <p className="mt-1 text-[13px] text-muted-foreground sm:text-sm">{f.desc}</p>
                   </motion.div>
                 </StaggerItem>
               ))}
@@ -487,19 +519,16 @@ function Index() {
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section className="py-14 sm:py-20">
+      <SectionDivider />
+
+      {/* SERVICES — what we offer */}
+      <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we offer</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Effective, wide-area business solutions
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              From media platforms to enterprise software — a portfolio of services built for
-              ambitious organisations.
-            </p>
-          </Reveal>
+          <SectionHeader
+            eyebrow="What we offer"
+            title="Effective, wide-area business solutions"
+            lede="From media platforms to enterprise software — a portfolio of services built for ambitious organisations."
+          />
 
           <Reveal className="mt-8 sm:mt-12">
             <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
@@ -521,24 +550,24 @@ function Index() {
             </div>
           </Reveal>
 
-          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
               <StaggerItem key={s.title}>
                 <motion.article
                   whileHover={{ y: -6 }}
                   transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-7"
+                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-5 sm:p-7"
                 >
                   <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/8 transition-transform group-hover:scale-125" />
                   <div className="relative">
                     <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                       <s.icon className="h-6 w-6" />
                     </div>
-                    <h3 className="mt-5 font-display text-xl font-semibold">{s.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+                    <h3 className="mt-4 font-display text-lg font-semibold sm:mt-5 sm:text-xl">{s.title}</h3>
+                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{s.desc}</p>
                     <Link
                       to="/services"
-                      className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5"
+                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-5"
                     >
                       Learn more <ArrowRight className="h-4 w-4" />
                     </Link>
@@ -550,96 +579,21 @@ function Index() {
         </div>
       </section>
 
-      {/* VENTURES SHOWCASE — 11 ventures */}
-      <section className="py-14 sm:py-20">
+      <SectionDivider />
+
+      {/* IMPACT & METRICS — proof, placed right after capability pitch */}
+      <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our ventures</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Eleven ventures. One ecosystem.
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              A connected portfolio of media, technology, commerce and education brands — each
-              built to lead its category in Bangladesh.
-            </p>
-          </Reveal>
+          <SectionHeader
+            eyebrow="Impact & metrics"
+            title="Numbers that tell our story"
+            lede="A decade of measurable impact for businesses, partners and communities across Bangladesh."
+          />
 
-          <Reveal className="mt-8 sm:mt-12">
-            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
-              <img
-                src={venturesImg}
-                alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
-                width={1280}
-                height={720}
-                loading="lazy"
-                decoding="async"
-                className="block aspect-[4/3] w-full object-cover sm:aspect-[16/5]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent sm:bg-gradient-to-r sm:from-background/85 sm:via-background/40 sm:to-transparent" />
-              <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10">
-                <div className="max-w-md">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">From Dhaka, for Bangladesh</p>
-                  <p className="mt-1.5 font-display text-base font-semibold leading-tight sm:mt-2 sm:text-2xl">
-                    A connected portfolio reaching every corner of the country.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {ventures.map((v) => (
-              <StaggerItem key={v.name}>
-                <motion.button
-                  type="button"
-                  onClick={() => setOpenVenture(v)}
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="group relative h-full w-full overflow-hidden rounded-2xl glass-card p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label={`Open details for ${v.name}`}
-                >
-                  <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
-                  <div className="relative flex items-start gap-4">
-                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                      <v.icon className="h-6 w-6" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-display text-lg font-semibold leading-tight">{v.name}</h3>
-                        <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                          {v.tag}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{v.desc}</p>
-                      <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5">
-                        View details <ArrowRight className="h-3.5 w-3.5" />
-                      </span>
-                    </div>
-                  </div>
-                </motion.button>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      {/* IMPACT & METRICS */}
-      <section className="py-20">
-        <div className="container-tight">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Impact & metrics</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Numbers that tell our story
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              A decade of measurable impact for businesses, partners and communities across Bangladesh.
-            </p>
-          </Reveal>
-
-          <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {impactMetrics.map((m) => (
               <StaggerItem key={m.id}>
-                <div className="relative h-full rounded-2xl glass-card p-6">
+                <div className="relative h-full rounded-2xl glass-card p-5 sm:p-6">
                   <div className="flex items-center gap-4">
                     <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-accent">
                       <m.icon className="h-6 w-6" />
@@ -664,24 +618,26 @@ function Index() {
         </div>
       </section>
 
-      {/* PROCESS */}
-      <section className="py-20">
+      <SectionDivider />
+
+      {/* PROCESS — how we work, before showcasing breadth */}
+      <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">How we work</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">A proven, four-step delivery process</h2>
-            <p className="mt-4 text-muted-foreground">Clarity at every stage — from first conversation to long-term growth.</p>
-          </Reveal>
-          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <SectionHeader
+            eyebrow="How we work"
+            title="A proven, four-step delivery process"
+            lede="Clarity at every stage — from first conversation to long-term growth."
+          />
+          <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             {process.map((p, i) => (
               <StaggerItem key={p.title}>
-                <div className="relative h-full rounded-2xl glass-card p-6">
+                <div className="relative h-full rounded-2xl glass-card p-5 sm:p-6">
                   <div className="absolute right-5 top-5 font-display text-4xl font-semibold text-primary/10">0{i + 1}</div>
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                     <p.icon className="h-5 w-5" />
                   </div>
                   <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
-                  <p className="mt-1.5 text-sm text-muted-foreground">{p.desc}</p>
+                  <p className="mt-1.5 text-[13px] text-muted-foreground sm:text-sm">{p.desc}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -689,22 +645,95 @@ function Index() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="py-20">
+      <SectionDivider />
+
+      {/* VENTURES SHOWCASE — 11 ventures, breadth of ecosystem */}
+      <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Client stories</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">Loved by ambitious teams</h2>
+          <SectionHeader
+            eyebrow="Our ventures"
+            title="Eleven ventures. One ecosystem."
+            lede="A connected portfolio of media, technology, commerce and education brands — each built to lead its category in Bangladesh."
+          />
+
+          <Reveal className="mt-8 sm:mt-12">
+            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
+              <img
+                src={venturesImg}
+                alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
+                width={1280}
+                height={720}
+                loading="lazy"
+                decoding="async"
+                className="block aspect-[4/3] w-full object-cover sm:aspect-[16/5]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent sm:bg-gradient-to-r sm:from-background/85 sm:via-background/40 sm:to-transparent" />
+              <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10">
+                <div className="max-w-md">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">From Dhaka, for Bangladesh</p>
+                  <p className="mt-1.5 font-display text-base font-semibold leading-tight sm:mt-2 sm:text-2xl">
+                    A connected portfolio reaching every corner of the country.
+                  </p>
+                </div>
+              </div>
+            </div>
           </Reveal>
-          <Stagger className="mt-14 grid gap-6 md:grid-cols-3">
+
+          <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {ventures.map((v) => (
+              <StaggerItem key={v.name}>
+                <motion.button
+                  type="button"
+                  onClick={() => setOpenVenture(v)}
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                  className="group relative h-full w-full overflow-hidden rounded-2xl glass-card p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6"
+                  aria-label={`Open details for ${v.name}`}
+                >
+                  <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
+                  <div className="relative flex items-start gap-4">
+                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <v.icon className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="font-display text-base font-semibold leading-tight sm:text-lg">{v.name}</h3>
+                        <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          {v.tag}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
+                        View details <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </motion.button>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* TESTIMONIALS — voice of the customer */}
+      <section className="py-12 sm:py-20 lg:py-24">
+        <div className="container-tight">
+          <SectionHeader
+            eyebrow="Client stories"
+            title="Loved by ambitious teams"
+            lede="Honest words from leaders who chose us to ship the work that mattered."
+          />
+          <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
               <StaggerItem key={t.name}>
-                <figure className="relative h-full rounded-2xl glass-card p-7">
+                <figure className="relative h-full rounded-2xl glass-card p-5 sm:p-7">
                   <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" />
                   <div className="flex gap-0.5 text-accent">
                     {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
-                  <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90">"{t.quote}"</blockquote>
+                  <blockquote className="mt-4 text-[13px] leading-relaxed text-foreground/90 sm:text-sm">"{t.quote}"</blockquote>
                   <figcaption className="mt-5 flex items-center gap-3 border-t border-border/60 pt-4">
                     <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary font-display text-sm font-semibold text-primary-foreground">
                       {t.name.split(" ").map((n) => n[0]).join("")}
@@ -721,39 +750,16 @@ function Index() {
         </div>
       </section>
 
-      {/* CLIENTS — animated marquee */}
-      <section className="py-14">
+      {/* FINAL CTA */}
+      <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <Reveal>
-            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              Trusted by leading organisations across Bangladesh
-            </p>
-          </Reveal>
-          <div className="marquee-mask mt-8 overflow-hidden">
-            <div className="marquee gap-12 pr-12">
-              {[...clients, ...clients].map((c, i) => (
-                <span
-                  key={`${c}-${i}`}
-                  className="shrink-0 font-display text-base font-semibold tracking-tight text-muted-foreground/70 transition-colors hover:text-primary sm:text-lg"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20">
-        <div className="container-tight">
-          <Reveal>
-            <div className="relative overflow-hidden rounded-3xl glass-strong p-10 md:p-16">
+            <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-10 md:p-16">
               <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-primary opacity-20 blur-3xl" />
               <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-accent opacity-20 blur-3xl" />
-              <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
+              <div className="relative grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div>
-                  <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                  <h2 className="font-display font-semibold tracking-tight">
                     Offering the best experience of business and IT services.
                   </h2>
                   <p className="mt-3 text-muted-foreground">
@@ -780,6 +786,7 @@ function Index() {
           </Reveal>
         </div>
       </section>
+
 
       {/* VENTURE DETAILS DIALOG */}
       <Dialog open={!!openVenture} onOpenChange={(o) => !o && setOpenVenture(null)}>
