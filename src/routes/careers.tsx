@@ -154,7 +154,7 @@ const applicationSchema = z.object({
     .max(2000, "Please keep it under 2000 characters"),
 });
 
-type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume" | "job", string>>;
+type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume" | "job" | "desiredRole", string>>;
 
 function Careers() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -322,8 +322,15 @@ function Careers() {
     };
     const parsed = applicationSchema.safeParse(raw);
     const resumeErr = validateResume(resume);
+    const isOpen = selectedJob.slug === "open-application";
+    const desiredRole = String(fd.get("desiredRole") ?? "").trim();
+    let desiredRoleErr: string | null = null;
+    if (isOpen) {
+      if (desiredRole.length < 2) desiredRoleErr = "Please tell us the role you're interested in.";
+      else if (desiredRole.length > 120) desiredRoleErr = "Please keep it under 120 characters.";
+    }
 
-    if (!parsed.success || resumeErr) {
+    if (!parsed.success || resumeErr || desiredRoleErr) {
       const fieldErrors: Errors = {};
       if (!parsed.success) {
         for (const issue of parsed.error.issues) {
@@ -332,9 +339,12 @@ function Careers() {
         }
       }
       if (resumeErr) fieldErrors.resume = resumeErr;
+      if (desiredRoleErr) (fieldErrors as Errors & { desiredRole?: string }).desiredRole = desiredRoleErr;
       setErrors(fieldErrors);
       return;
     }
+
+    const finalJobTitle = isOpen ? `Open Application — ${desiredRole}` : selectedJob.title;
 
     setSubmitting(true);
     try {
@@ -352,7 +362,7 @@ function Careers() {
         .from("job_applications")
         .insert({
           job_slug: selectedJob.slug,
-          job_title: selectedJob.title,
+          job_title: finalJobTitle,
           full_name: parsed.data.fullName,
           email: parsed.data.email,
           phone: parsed.data.phone,
@@ -465,6 +475,7 @@ function Careers() {
             {step === 2 && selectedJob && (
               <StepForm
                 job={selectedJob}
+                isOpenApplication={selectedJob.slug === "open-application"}
                 onBack={() => setStep(1)}
                 onSubmit={onSubmit}
                 resume={resume}
@@ -1029,6 +1040,7 @@ function StepSelect({
 
 function StepForm({
   job,
+  isOpenApplication,
   onBack,
   onSubmit,
   resume,
@@ -1038,6 +1050,7 @@ function StepForm({
   submitting,
 }: {
   job: (typeof openings)[number];
+  isOpenApplication: boolean;
   onBack: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   resume: File | null;
@@ -1069,6 +1082,29 @@ function StepForm({
         <p className="mt-2 text-sm text-muted-foreground">
           All fields marked * are required. Your information is used only to evaluate this application.
         </p>
+
+        {isOpenApplication && (
+          <div className="mt-6">
+            <Field
+              label="Desired role *"
+              error={errors.desiredRole}
+              htmlFor="desiredRole"
+            >
+              <input
+                id="desiredRole"
+                name="desiredRole"
+                type="text"
+                maxLength={120}
+                required
+                placeholder="e.g. Senior Brand Designer, Data Analyst…"
+                className={inputClass(!!errors.desiredRole)}
+              />
+            </Field>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Tell us the role or area you'd like to be considered for.
+            </p>
+          </div>
+        )}
 
         <div className="mt-6 grid gap-5 sm:grid-cols-2">
           <Field label="Full name *" error={errors.fullName} htmlFor="fullName">
