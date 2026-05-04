@@ -279,6 +279,7 @@ function Careers() {
       fullName: String(fd.get("fullName") ?? ""),
       email: String(fd.get("email") ?? ""),
       phone: String(fd.get("phone") ?? ""),
+      location: String(fd.get("location") ?? ""),
       linkedin: String(fd.get("linkedin") ?? ""),
       coverLetter: String(fd.get("coverLetter") ?? ""),
     };
