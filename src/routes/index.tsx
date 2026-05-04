@@ -168,9 +168,8 @@ function Index() {
         <div className="container-tight relative grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
-            <div
-              className="hero-fade inline-flex items-center gap-3 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur"
-            >
+            {/* Eyebrow chip */}
+            <div className="hero-fade inline-flex items-center gap-3 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
                 <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
@@ -182,30 +181,43 @@ function Index() {
               </span>
             </div>
 
-            <h1
-              className="hero-fade mt-4 font-display font-semibold leading-[0.98] tracking-[-0.02em] text-balance text-[clamp(2rem,4.6vw,3.75rem)]"
-              style={{ animationDelay: "60ms" }}
+            {/* Section label — international editorial */}
+            <div
+              className="hero-fade mt-6 flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.34em] text-background/55"
+              style={{ animationDelay: "40ms" }}
             >
-              Strategy, software &amp;{" "}
-              <span className="italic font-light text-background/90">storytelling</span>{" "}
-              <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-background via-background to-accent/90 bg-clip-text text-transparent">
-                built for global ambition.
+              <span className="h-px w-8 bg-background/40" />
+              A Bangladesh-built consultancy
+            </div>
+
+            {/* Headline — three-line editorial cadence with water shimmer */}
+            <h1
+              className="hero-fade mt-3 font-display font-semibold leading-[1.02] tracking-[-0.025em] text-balance text-[clamp(2.1rem,4.8vw,4rem)]"
+              style={{ animationDelay: "80ms" }}
+            >
+              <span className="water-text block">Strategy, software</span>
+              <span className="block text-background/95">
+                &amp;{" "}
+                <span className="italic font-light text-background/85">storytelling</span>
               </span>
+              <span className="water-text-accent block">built for global ambition.</span>
             </h1>
 
+            {/* Lede paragraph */}
             <p
-              className="hero-fade mt-4 max-w-xl text-sm leading-relaxed text-background/75 sm:text-base"
-              style={{ animationDelay: "140ms" }}
+              className="hero-fade mt-5 max-w-xl text-[15px] leading-[1.7] text-background/75 sm:text-[17px]"
+              style={{ animationDelay: "160ms" }}
             >
-              YESS Bangla partners with ambitious organisations to deliver consulting,
-              technology, media and commerce solutions — engineered to international standards,
-              shipped from Dhaka.
+              <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
+              consulting, technology, media and commerce solutions —
+              <span className="whitespace-nowrap"> engineered to international standards,</span>
+              <span className="whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
 
+            {/* CTA row */}
             <div
-              className="hero-fade mt-6 flex flex-wrap items-center gap-3"
-              style={{ animationDelay: "200ms" }}
+              className="hero-fade mt-8 flex flex-wrap items-center gap-3"
+              style={{ animationDelay: "220ms" }}
             >
               <Link
                 to="/contact"
@@ -222,10 +234,19 @@ function Index() {
               </Link>
             </div>
 
-            {/* Trust signals */}
+            {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/65"
-              style={{ animationDelay: "300ms" }}
+              className="hero-fade mt-8 flex items-center gap-4"
+              style={{ animationDelay: "320ms" }}
+            >
+              <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
+                Why teams choose us
+              </span>
+              <span className="hidden h-px flex-1 bg-background/15 sm:block" />
+            </div>
+            <div
+              className="hero-fade mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/70"
+              style={{ animationDelay: "360ms" }}
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
               <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
