@@ -168,11 +168,8 @@ function Index() {
         <div className="container-tight relative grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-3 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur"
+            <div
+              className="hero-fade inline-flex items-center gap-3 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur"
             >
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
@@ -183,13 +180,11 @@ function Index() {
               <span className="inline-flex items-center gap-1 text-background/70">
                 <Star className="h-3 w-3 fill-accent text-accent" /> 4.9 / 5
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.05 }}
-              className="mt-4 font-display font-semibold leading-[0.98] tracking-[-0.02em] text-balance text-[clamp(2rem,4.6vw,3.75rem)]"
+            <h1
+              className="hero-fade mt-4 font-display font-semibold leading-[0.98] tracking-[-0.02em] text-balance text-[clamp(2rem,4.6vw,3.75rem)]"
+              style={{ animationDelay: "60ms" }}
             >
               Strategy, software &amp;{" "}
               <span className="italic font-light text-background/90">storytelling</span>
@@ -197,24 +192,20 @@ function Index() {
               <span className="bg-gradient-to-r from-background via-background to-accent/90 bg-clip-text text-transparent">
                 built for global ambition.
               </span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.12 }}
-              className="mt-4 max-w-xl text-sm leading-relaxed text-background/75 sm:text-base"
+            <p
+              className="hero-fade mt-4 max-w-xl text-sm leading-relaxed text-background/75 sm:text-base"
+              style={{ animationDelay: "140ms" }}
             >
               YESS Bangla partners with ambitious organisations to deliver consulting,
               technology, media and commerce solutions — engineered to international standards,
               shipped from Dhaka.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.18 }}
-              className="mt-6 flex flex-wrap items-center gap-3"
+            <div
+              className="hero-fade mt-6 flex flex-wrap items-center gap-3"
+              style={{ animationDelay: "200ms" }}
             >
               <Link
                 to="/contact"
@@ -229,28 +220,24 @@ function Index() {
               >
                 Explore services
               </Link>
-            </motion.div>
+            </div>
 
             {/* Trust signals */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/65"
+            <div
+              className="hero-fade mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/65"
+              style={{ animationDelay: "300ms" }}
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
               <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
               <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> 98% client retention</span>
-            </motion.div>
+            </div>
           </div>
 
           {/* RIGHT — Floating editorial cards */}
           <div className="relative lg:col-span-5 xl:col-span-5">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              className="ml-auto max-w-sm space-y-3"
+            <div
+              className="hero-fade ml-auto max-w-sm space-y-3"
+              style={{ animationDelay: "240ms" }}
             >
               <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
                 <div className="flex items-center gap-3">
@@ -289,7 +276,7 @@ function Index() {
                   CEO · Retail Group
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
