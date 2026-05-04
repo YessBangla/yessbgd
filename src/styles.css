@@ -96,45 +96,48 @@
        • Halo blur 32–48px max (perf); avoid blur-3xl on mobile
        • Use color-mix(oklab) for smooth, hue-safe blends
      ─────────────────────────────────────────────────────────────── */
-  /* Mobile defaults — text spans full width, so coverage stays denser
-     across the whole frame for guaranteed legibility. */
+  /* Mobile defaults — refined neutral wash (light grey, not black) so the
+     hero feels editorial and international. We tint with a cool slate veil
+     instead of the foreground for a softer, premium read. */
+  --hero-ink: oklch(0.96 0.005 250);              /* almost-white wash */
+  --hero-veil: oklch(0.34 0.012 250);             /* cool slate veil */
   --hero-overlay-h: linear-gradient(180deg,
-    color-mix(in oklab, var(--foreground) 78%, transparent) 0%,
-    color-mix(in oklab, var(--foreground) 62%, transparent) 55%,
-    color-mix(in oklab, var(--foreground) 40%, transparent) 100%);
+    color-mix(in oklab, var(--hero-veil) 88%, transparent) 0%,
+    color-mix(in oklab, var(--hero-veil) 62%, transparent) 55%,
+    color-mix(in oklab, var(--hero-veil) 30%, transparent) 100%);
   --hero-overlay-v: linear-gradient(180deg,
-    color-mix(in oklab, var(--foreground) 55%, transparent) 0%,
-    color-mix(in oklab, var(--foreground) 18%, transparent) 35%,
-    color-mix(in oklab, var(--foreground) 25%, transparent) 70%,
-    color-mix(in oklab, var(--foreground) 70%, transparent) 100%);
+    color-mix(in oklab, var(--hero-ink) 28%, transparent) 0%,
+    transparent 35%,
+    transparent 70%,
+    color-mix(in oklab, var(--hero-veil) 45%, transparent) 100%);
   --hero-overlay-glow: radial-gradient(60% 55% at 25% 60%,
-    color-mix(in oklab, var(--accent) 18%, transparent) 0%,
+    color-mix(in oklab, var(--accent) 14%, transparent) 0%,
     transparent 75%);
   --hero-halo-primary: oklch(from var(--primary) l c h / 0.10);
   --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.14);
-  --hero-halo-blur: 32px;        /* mobile: smaller blur = cheaper paint */
-  --hero-glow-opacity: 0.5;
-  --hero-grid-opacity: 0.035;
+  --hero-halo-blur: 32px;
+  --hero-glow-opacity: 0.45;
+  --hero-grid-opacity: 0.03;
 }
 
-/* Tablet+ : two-column layout — switch back to horizontal fade so the
-   image breathes on the right while text stays readable on the left. */
+/* Tablet+ : two-column layout — left side gets a slate-to-clear gradient
+   so the headline sits on a soft grey panel while the image breathes right. */
 @media (min-width: 768px) {
   :root {
     --hero-overlay-h: linear-gradient(95deg,
-      color-mix(in oklab, var(--foreground) 92%, transparent) 0%,
-      color-mix(in oklab, var(--foreground) 76%, transparent) 38%,
-      color-mix(in oklab, var(--foreground) 40%, transparent) 66%,
-      color-mix(in oklab, var(--foreground) 12%, transparent) 90%,
+      color-mix(in oklab, var(--hero-veil) 88%, transparent) 0%,
+      color-mix(in oklab, var(--hero-veil) 70%, transparent) 38%,
+      color-mix(in oklab, var(--hero-veil) 38%, transparent) 66%,
+      color-mix(in oklab, var(--hero-veil) 10%, transparent) 90%,
       transparent 100%);
     --hero-overlay-v: linear-gradient(180deg,
-      color-mix(in oklab, var(--foreground) 45%, transparent) 0%,
+      color-mix(in oklab, var(--hero-ink) 22%, transparent) 0%,
       transparent 28%,
       transparent 68%,
-      color-mix(in oklab, var(--foreground) 65%, transparent) 100%);
+      color-mix(in oklab, var(--hero-veil) 40%, transparent) 100%);
     --hero-halo-blur: 40px;
-    --hero-glow-opacity: 0.6;
-    --hero-grid-opacity: 0.04;
+    --hero-glow-opacity: 0.55;
+    --hero-grid-opacity: 0.035;
   }
 }
 
