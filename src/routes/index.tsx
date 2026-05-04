@@ -284,7 +284,7 @@ function Index() {
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
-              className="hero-fade mt-6 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3"
+              className="hero-fade mt-4 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3"
               style={{ animationDelay: "220ms" }}
             >
               <Link
