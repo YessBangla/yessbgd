@@ -196,25 +196,28 @@ function Index() {
             {/* Headline — three-line editorial cadence with water shimmer */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-3 sm:mt-4 font-display font-semibold text-balance text-background"
+              className="hero-fade mt-3 sm:mt-4 lg:mt-5 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                fontSize: "clamp(1.875rem, 1.15rem + 3.5vw, 3.75rem)",
-                lineHeight: "clamp(1.05, 1.02 + 0.2vw, 1.08)",
-                letterSpacing: "clamp(-0.035em, -0.022em - 0.05vw, -0.02em)",
+                /* Slightly smaller desktop ceiling for a more refined editorial scale */
+                fontSize: "clamp(1.75rem, 1rem + 3vw, 3.25rem)",
+                /* Tighter, more controlled leading on large screens */
+                lineHeight: "clamp(1.04, 1.02 + 0.15vw, 1.1)",
+                /* Premium negative tracking that eases as size grows */
+                letterSpacing: "clamp(-0.03em, -0.018em - 0.04vw, -0.015em)",
                 wordSpacing: "-0.01em",
               }}
             >
               <span className="water-text block">Strategy, software</span>
-              <span className="block text-background/95" style={{ marginTop: "0.05em" }}>
+              <span className="block text-background/95" style={{ marginTop: "0.08em" }}>
                 &amp;{" "}
-                <span className="italic font-light tracking-[-0.01em] text-background/90">
+                <span className="italic font-light tracking-[-0.005em] text-background/90">
                   storytelling
                 </span>
               </span>
               <span
                 className="water-text-accent block"
-                style={{ marginTop: "0.05em", letterSpacing: "-0.03em" }}
+                style={{ marginTop: "0.08em", letterSpacing: "-0.025em" }}
               >
                 built for global ambition.
               </span>
