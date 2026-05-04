@@ -151,7 +151,7 @@ function Index() {
       {/* HERO — international editorial, full-bleed cinematic */}
       <section
         className="hero-section relative isolate grid overflow-hidden bg-foreground text-background"
-        style={{ minHeight: "clamp(192px, 27vh, 294px)" }}
+        style={{ minHeight: "clamp(420px, 60vh, 560px)" }}
       >
         {/* Background image */}
         <img
