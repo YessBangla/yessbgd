@@ -112,6 +112,25 @@ export const ventures: Venture[] = [
       { title: "Original drama slate", desc: "12+ flagship serials a year, produced in-house with award-winning directors." },
       { title: "Brand-safe inventory", desc: "Curated programming blocks and custom integrations for premium advertisers." },
     ],
+    caseStudy: {
+      challenge:
+        "Launching a new satellite channel into a saturated market — with the production quality of global broadcasters but a lean, local cost base.",
+      solution:
+        "We built a tape-less HD newsroom, a flagship drama slate and a sponsorship-friendly programming grid — all wired into a real-time audience analytics layer.",
+      phases: [
+        { title: "Discover", desc: "Audience research across 6 divisions, competitor grid analysis and a programming blueprint." },
+        { title: "Design", desc: "On-air branding system, set design and a graphics package built for HD and social cut-downs." },
+        { title: "Build", desc: "Three studios, two control rooms, MAM workflow and an OB van commissioned in 7 months." },
+        { title: "Launch & grow", desc: "Soft launch, weekly grid optimisation against ratings and a rolling slate of new originals." },
+      ],
+      techStack: ["Sony HD Cameras", "Avid MAM", "Vizrt Graphics", "Dalet Newsroom", "Eutelsat Uplink"],
+      results: [
+        { label: "Weekly reach", value: "22M+" },
+        { label: "Prime-time share", value: "Top 5" },
+        { label: "Original hours / yr", value: "1,800+" },
+        { label: "On-air uptime", value: "99.99%" },
+      ],
+    },
   },
   {
     slug: "akash-ott",
@@ -139,6 +158,25 @@ export const ventures: Venture[] = [
       { title: "Originals studio", desc: "A pipeline of platform-exclusive series and films across genres." },
       { title: "Smart discovery", desc: "ML-driven recommendations, watch-party mode and continue-watching across devices." },
     ],
+    caseStudy: {
+      challenge:
+        "Bangla-speaking audiences worldwide were stitching together piracy sites, social clips and regional apps — there was no premium, legal, mobile-first home for Bangla content.",
+      solution:
+        "Akash OTT shipped a DRM-protected, multi-CDN streaming platform with a curated library, exclusive originals and a recommendation engine tuned for Bangla viewing patterns.",
+      phases: [
+        { title: "Discover", desc: "Diaspora research across 6 markets, content licensing audit and a pricing study." },
+        { title: "Design", desc: "Cross-device UX (mobile, web, smart TV) with offline-first flows and family profiles." },
+        { title: "Build", desc: "Multi-CDN delivery, Widevine/FairPlay DRM, payments in BDT/USD/AED and analytics." },
+        { title: "Launch & grow", desc: "Hero original premiere, performance marketing in 12 markets and weekly cohort tuning." },
+      ],
+      techStack: ["React Native", "Next.js", "Shaka Player", "AWS MediaConvert", "Cloudflare Stream", "Stripe"],
+      results: [
+        { label: "Countries served", value: "40+" },
+        { label: "Avg. start time", value: "1.6s" },
+        { label: "Day-30 retention", value: "48%" },
+        { label: "Originals shipped", value: "20+" },
+      ],
+    },
   },
   {
     slug: "the-daily-akash",
@@ -166,6 +204,25 @@ export const ventures: Venture[] = [
       { title: "Long-form & investigations", desc: "A dedicated desk for multi-week investigations and data journalism." },
       { title: "Native ad studio", desc: "Brand storytelling that respects readers — clearly labelled, beautifully crafted." },
     ],
+    caseStudy: {
+      challenge:
+        "Readers were drowning in unverified social posts and clickbait — credible journalism existed, but it was buried under slow sites and intrusive ads.",
+      solution:
+        "We launched a mobile-first newsroom on a fast headless CMS, with a published code of ethics, structured beats, and a native ad studio that funds independent reporting.",
+      phases: [
+        { title: "Discover", desc: "Reader interviews, beat mapping and an ethics charter co-written with senior editors." },
+        { title: "Design", desc: "Reader-first article template, dark mode, distraction-free reading and rich media embeds." },
+        { title: "Build", desc: "Headless CMS, edge caching, AMP/Web Stories, push subs and a sponsored-content workflow." },
+        { title: "Launch & grow", desc: "Beat-by-beat rollout, newsletter loops and a weekly editorial scorecard." },
+      ],
+      techStack: ["Next.js", "Sanity CMS", "Algolia", "Cloudflare", "OneSignal", "Plausible"],
+      results: [
+        { label: "Monthly readers", value: "5M+" },
+        { label: "Median load time", value: "0.9s" },
+        { label: "Newsletter open rate", value: "42%" },
+        { label: "Investigations / yr", value: "30+" },
+      ],
+    },
   },
   {
     slug: "yess-organic-haat",
@@ -193,6 +250,25 @@ export const ventures: Venture[] = [
       { title: "Fair-trade pricing", desc: "Farmers receive a published floor price plus a quality bonus on every harvest." },
       { title: "Cold-chain delivery", desc: "Temperature-controlled vans and same-day fulfilment across major cities." },
     ],
+    caseStudy: {
+      challenge:
+        "Urban families wanted truly organic groceries but couldn't trust the labels — and small farmers had no fair route to high-value urban buyers.",
+      solution:
+        "We built a verified-supplier marketplace with lab testing, cold-chain logistics and a transparent grading & pricing system that protects both shopper and farmer.",
+      phases: [
+        { title: "Discover", desc: "On-farm visits across 6 districts, soil and supply audits and a household demand study." },
+        { title: "Design", desc: "Trust-first storefront, traceability cards on each product and a subscription flow." },
+        { title: "Build", desc: "Marketplace, route-optimised cold-chain ops, lab integration and a farmer-payout module." },
+        { title: "Launch & grow", desc: "Pilot in 3 zones, weekly farmer onboarding and SLA-driven delivery scale-up." },
+      ],
+      techStack: ["Next.js", "Supabase", "Mapbox", "Stripe", "Twilio", "Cloudflare R2"],
+      results: [
+        { label: "Partner farms", value: "200+" },
+        { label: "On-time delivery", value: "98.6%" },
+        { label: "Avg. farmer income", value: "+34%" },
+        { label: "Subscription retention", value: "71%" },
+      ],
+    },
   },
   {
     slug: "yess-service",
@@ -220,6 +296,25 @@ export const ventures: Venture[] = [
       { title: "Upfront pricing", desc: "See the price before you book — no surprises, no haggling, no hidden fees." },
       { title: "Service guarantee", desc: "If you're not satisfied, we send a second professional or refund — your call." },
     ],
+    caseStudy: {
+      challenge:
+        "Booking a trustworthy electrician, AC tech or deep-cleaner meant scrolling Facebook groups and praying — pricing was opaque and quality wildly inconsistent.",
+      solution:
+        "Yess Service launched an instant-booking app with vetted, in-house-trained professionals, upfront pricing and a written satisfaction guarantee on every job.",
+      phases: [
+        { title: "Discover", desc: "Customer & technician interviews, complaint mining and a service-catalogue blueprint." },
+        { title: "Design", desc: "3-tap booking flow, transparent price cards, live ETA and a post-job rating loop." },
+        { title: "Build", desc: "Customer + pro apps, dispatch engine, payments, training LMS and a QA dashboard." },
+        { title: "Launch & grow", desc: "Pilot in 3 zones, weekly NPS reviews and a re-training programme for low-rated pros." },
+      ],
+      techStack: ["React Native", "Node.js", "PostgreSQL", "Mapbox", "bKash", "Stripe"],
+      results: [
+        { label: "Avg. arrival time", value: "47 min" },
+        { label: "Customer NPS", value: "72" },
+        { label: "Repeat bookings", value: "61%" },
+        { label: "Pros onboarded", value: "1,200+" },
+      ],
+    },
   },
   {
     slug: "yess-host",
@@ -247,6 +342,25 @@ export const ventures: Venture[] = [
       { title: "One-click stacks", desc: "WordPress, Laravel, Next.js, Node, n8n and 30+ apps in under a minute." },
       { title: "Real humans, 24/7", desc: "Median first-response under 4 minutes — by chat, ticket or phone." },
     ],
+    caseStudy: {
+      challenge:
+        "Local hosting was slow, oversold and unsupported — agencies were forced to send clients to overseas providers and absorb the latency and billing complexity.",
+      solution:
+        "Yess Host built a BD-first, multi-region cloud with NVMe storage, one-click app stacks, automated backups and a tier-3 support desk staffed in-country.",
+      phases: [
+        { title: "Discover", desc: "Workload audit with 40 agencies, baseline benchmarks and an SLA design workshop." },
+        { title: "Design", desc: "Plan ladder, control panel UX, migration tooling and a transparent status page." },
+        { title: "Build", desc: "Multi-region nodes, automated backups, WAF, DDoS shield and a 30+ app marketplace." },
+        { title: "Launch & grow", desc: "Free migrations, partner programme for agencies and quarterly capacity expansion." },
+      ],
+      techStack: ["KVM", "LiteSpeed", "Cloudflare", "Acronis Backup", "Imunify360", "Prometheus"],
+      results: [
+        { label: "Network uptime", value: "99.99%" },
+        { label: "Avg. TTFB (BD)", value: "82ms" },
+        { label: "Sites hosted", value: "18,000+" },
+        { label: "Support response", value: "<4 min" },
+      ],
+    },
   },
   {
     slug: "yess-event",
@@ -274,6 +388,25 @@ export const ventures: Venture[] = [
       { title: "Owned equipment", desc: "Stage, sound, lighting, LED walls and broadcast kit — owned, not rented." },
       { title: "Single accountable lead", desc: "One producer owns budget, timeline and quality from kick-off to wrap." },
     ],
+    caseStudy: {
+      challenge:
+        "Brands juggling 4–5 vendors per event were paying twice and still getting inconsistent stages, AV gaps and last-minute panics on show day.",
+      solution:
+        "Yess Event delivers strategy, creative, production and logistics under one accountable producer — with owned stage, sound, lighting and broadcast kit.",
+      phases: [
+        { title: "Discover", desc: "Audience-moment workshop, success metrics and a written creative brief." },
+        { title: "Design", desc: "Concept boards, run-of-show, set design and a fully costed production plan." },
+        { title: "Build", desc: "Vendor-free production with owned kit, rehearsals and a live show-control room." },
+        { title: "Launch & grow", desc: "Show day execution, multi-cam capture, social cut-downs and a post-event report." },
+      ],
+      techStack: ["d&b Audiotechnik", "Robe Lighting", "ROE LED Walls", "grandMA3", "Blackmagic ATEM"],
+      results: [
+        { label: "Events delivered", value: "300+" },
+        { label: "On-time show start", value: "100%" },
+        { label: "Client repeat rate", value: "78%" },
+        { label: "Avg. CSAT", value: "4.9/5" },
+      ],
+    },
   },
   {
     slug: "yess-model",
@@ -301,6 +434,25 @@ export const ventures: Venture[] = [
       { title: "Brand-grade portfolios", desc: "Studio-quality test shoots and digitals refreshed every season." },
       { title: "Transparent contracts", desc: "Clear day rates, usage windows and a duty-of-care policy on every booking." },
     ],
+    caseStudy: {
+      challenge:
+        "Brands struggled to find vetted, brief-ready talent fast — and aspiring models had no safe, structured route from open call to paid campaign.",
+      solution:
+        "Yess Model built a managed roster with grooming, brand-grade portfolios and transparent contracts — plus a digital casting platform brands can search by brief.",
+      phases: [
+        { title: "Discover", desc: "Open scouting in 8 cities, brand demand mapping and a written code of conduct." },
+        { title: "Design", desc: "Talent grading framework, portfolio templates and a self-serve brand brief flow." },
+        { title: "Build", desc: "Casting platform, secure contracts, payment escrow and a duty-of-care helpline." },
+        { title: "Launch & grow", desc: "Quarterly intake, training cohorts and brand campaigns published as case studies." },
+      ],
+      techStack: ["Next.js", "Supabase", "Cloudinary", "DocuSign", "Stripe Connect"],
+      results: [
+        { label: "Active roster", value: "200+" },
+        { label: "Avg. brief-to-cast", value: "36 hrs" },
+        { label: "Booking repeat rate", value: "65%" },
+        { label: "On-time payouts", value: "100%" },
+      ],
+    },
   },
   {
     slug: "yess-food",
@@ -328,6 +480,25 @@ export const ventures: Venture[] = [
       { title: "HACCP-grade kitchens", desc: "Daily hygiene audits, cold-chain integrity and full ingredient traceability." },
       { title: "Operator-friendly", desc: "Cloud kitchen partnerships open new revenue without rebuilding your team." },
     ],
+    caseStudy: {
+      challenge:
+        "Diners wanted authentic Bangla flavours at consistent restaurant quality — and event hosts struggled to find caterers that scale without sacrificing taste or hygiene.",
+      solution:
+        "Yess Food operates HACCP-grade central kitchens and a chef-led recipe lab — powering dine-in concepts, cloud kitchens, catering and packaged brands from one quality system.",
+      phases: [
+        { title: "Discover", desc: "Taste panels, supply audits and a brand portfolio strategy across price points." },
+        { title: "Design", desc: "Menu engineering, kitchen layout and a packaging system built for delivery." },
+        { title: "Build", desc: "Central kitchens, last-mile partnerships, POS-to-kitchen workflow and QA scorecards." },
+        { title: "Launch & grow", desc: "Phased outlet rollout, weekly mystery audits and a quarterly menu refresh cycle." },
+      ],
+      techStack: ["Cloud POS", "Kitchen Display Systems", "Foodpanda API", "Pathao API", "ERPNext"],
+      results: [
+        { label: "Hygiene audit score", value: "98/100" },
+        { label: "Order accuracy", value: "99.2%" },
+        { label: "Avg. prep time", value: "12 min" },
+        { label: "Customer rating", value: "4.7/5" },
+      ],
+    },
   },
   {
     slug: "yess-all-in-one-solution",
@@ -355,6 +526,25 @@ export const ventures: Venture[] = [
       { title: "Concierge desk", desc: "A dedicated relationship manager handles requests across every venture for you." },
       { title: "Bundle savings", desc: "Tailored packages combine services for measurable cost and time savings." },
     ],
+    caseStudy: {
+      challenge:
+        "Enterprises using multiple YESS ventures were juggling separate logins, invoices and account managers — losing the very efficiency the group was built to deliver.",
+      solution:
+        "Yess All-in-One stitches every venture into a single account: one SSO, one invoice, one concierge — with bundled pricing and a unified usage dashboard.",
+      phases: [
+        { title: "Discover", desc: "Customer journey mapping across ventures, billing audit and a unified data model." },
+        { title: "Design", desc: "Account hierarchy, role permissions, bundle pricing and a concierge service blueprint." },
+        { title: "Build", desc: "SSO, unified billing, cross-venture API gateway and a real-time usage dashboard." },
+        { title: "Launch & grow", desc: "White-glove migration of top accounts and a quarterly business review cadence." },
+      ],
+      techStack: ["TypeScript", "Auth0", "Stripe Billing", "PostgreSQL", "GraphQL Federation", "Datadog"],
+      results: [
+        { label: "Avg. cost saving", value: "−24%" },
+        { label: "Concierge response", value: "<10 min" },
+        { label: "Cross-sell uplift", value: "+38%" },
+        { label: "Enterprise NPS", value: "68" },
+      ],
+    },
   },
 ];
 
