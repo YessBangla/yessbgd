@@ -481,14 +481,16 @@ function Careers() {
             {step === 3 && selectedJob && (
               <StepSuccess
                 job={selectedJob}
+                receipt={receipt}
+                isOpenApplication={selectedJob.slug === "open-application"}
                 onAnother={() => {
                   setStep(1);
                   setSelectedSlug(null);
                   setResume(null);
                   setErrors({});
+                  setReceipt(null);
                 }}
-              />
-            )}
+              />)}
           </div>
         </div>
       </section>
