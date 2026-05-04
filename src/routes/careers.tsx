@@ -712,6 +712,10 @@ function StepSelect({
   onPageChange: (p: number) => void;
   query: string;
   setQuery: (s: string) => void;
+  searchSummary: boolean;
+  setSearchSummary: (v: boolean) => void;
+  searchDuties: boolean;
+  setSearchDuties: (v: boolean) => void;
   selectedSlug: string | null;
   onSelect: (slug: string) => void;
   onContinue: () => void;
