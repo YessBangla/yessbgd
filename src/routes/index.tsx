@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-business.jpg";
+import aboutImg from "@/assets/about-team-bd.jpg";
+import servicesImg from "@/assets/services-tech-bd.jpg";
+import venturesImg from "@/assets/ventures-dhaka-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
@@ -362,8 +365,25 @@ function Index() {
 
       {/* ABOUT STRIP */}
       <section className="py-20">
-        <div className="container-tight grid gap-10 lg:grid-cols-2 lg:items-center">
-          <Reveal>
+        <div className="container-tight grid gap-10 lg:grid-cols-12 lg:items-center">
+          <Reveal className="lg:col-span-5">
+            <div className="relative">
+              <div aria-hidden className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/15 to-accent/15 blur-2xl" />
+              <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-background/60 p-1.5 shadow-xl backdrop-blur">
+                <img
+                  src={aboutImg}
+                  alt="YESS Bangla consultants collaborating in a Dhaka office"
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                  decoding="async"
+                  className="block aspect-[4/3] w-full rounded-[1.35rem] object-cover"
+                />
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal className="lg:col-span-7">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Simply know about us</p>
             <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
               We help people take their businesses to the next level.
@@ -373,6 +393,25 @@ function Index() {
               continuously master new technologies for the industries we serve. Our portfolio
               spans dozens of successful engagements across Bangladesh.
             </p>
+
+            <Stagger className="mt-8 grid grid-cols-2 gap-4">
+              {features.map((f) => (
+                <StaggerItem key={f.title}>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.3 }}
+                    className="glass-card h-full rounded-2xl p-5"
+                  >
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <f.icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="mt-4 font-display text-base font-semibold">{f.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
+                  </motion.div>
+                </StaggerItem>
+              ))}
+            </Stagger>
+
             <Link
               to="/about"
               className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
@@ -380,24 +419,6 @@ function Index() {
               Read more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Reveal>
-
-          <Stagger className="grid grid-cols-2 gap-4">
-            {features.map((f) => (
-              <StaggerItem key={f.title}>
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.3 }}
-                  className="glass-card h-full rounded-2xl p-5"
-                >
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                    <f.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 font-display text-base font-semibold">{f.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </Stagger>
         </div>
       </section>
 
@@ -413,6 +434,26 @@ function Index() {
               From media platforms to enterprise software — a portfolio of services built for
               ambitious organisations.
             </p>
+          </Reveal>
+
+          <Reveal className="mt-12">
+            <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl">
+              <img
+                src={servicesImg}
+                alt="Bangladeshi engineers building software in a modern Dhaka studio"
+                width={1280}
+                height={960}
+                loading="lazy"
+                decoding="async"
+                className="block aspect-[21/9] w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                <p className="max-w-xl text-sm font-medium text-foreground sm:text-base">
+                  Engineering, design and consulting — delivered to international standards from Bangladesh.
+                </p>
+              </div>
+            </div>
           </Reveal>
 
           <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -456,6 +497,29 @@ function Index() {
               A connected portfolio of media, technology, commerce and education brands — each
               built to lead its category in Bangladesh.
             </p>
+          </Reveal>
+
+          <Reveal className="mt-12">
+            <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl">
+              <img
+                src={venturesImg}
+                alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
+                width={1280}
+                height={720}
+                loading="lazy"
+                decoding="async"
+                className="block aspect-[16/7] w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
+              <div className="absolute inset-0 flex items-center p-6 sm:p-10">
+                <div className="max-w-md">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">From Dhaka, for Bangladesh</p>
+                  <p className="mt-2 font-display text-xl font-semibold leading-tight sm:text-2xl">
+                    A connected portfolio reaching every corner of the country.
+                  </p>
+                </div>
+              </div>
+            </div>
           </Reveal>
 
           <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
