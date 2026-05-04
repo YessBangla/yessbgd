@@ -423,6 +423,14 @@
   .orb { animation: none !important; }
   .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
   .marquee { animation: none !important; }
+  /* Hero: kill parallax + transitions, but keep static overlays visible */
+  .hero-section, .hero-section * { transition: none !important; }
+  .hero-overlay, .hero-halo {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+  .hero-section { --hero-py: 0px !important; --hero-hx: 0px !important; --hero-hy: 0px !important; }
 }
 
 /* Dev-only: force reduced motion via toggle in DevHydrationProbe */
