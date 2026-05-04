@@ -156,7 +156,7 @@ function Index() {
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          className="absolute inset-0 -z-10 h-full w-full object-cover object-[60%_center]"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center sm:object-[60%_center]"
         />
         {/* Cinematic overlays — layered, smooth, premium */}
         {/* Soft horizontal fade — image breathes on the right */}
@@ -199,7 +199,7 @@ function Index() {
           }}
         />
 
-        <div className="container-tight relative grid gap-10 py-12 sm:py-20 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-24">
+        <div className="container-tight relative grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             <motion.div
