@@ -188,26 +188,22 @@ function Careers() {
   }, []);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const norm = (s: string) =>
+      s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const q = norm(query.trim());
+    const has = (s: string) => norm(s).includes(q);
     return openings.filter((o) => {
       if (filterType !== "All" && o.type !== filterType) return false;
       if (filterLocation !== "All" && o.location !== filterLocation) return false;
       if (filterDept !== "All" && o.dept !== filterDept) return false;
       if (filterLevel !== "All" && o.level !== filterLevel) return false;
       if (!q) return true;
-      if (
-        o.title.toLowerCase().includes(q) ||
-        o.dept.toLowerCase().includes(q) ||
-        o.location.toLowerCase().includes(q) ||
-        o.level.toLowerCase().includes(q) ||
-        o.type.toLowerCase().includes(q)
-      )
+      if (has(o.title) || has(o.dept) || has(o.location) || has(o.level) || has(o.type))
         return true;
-      if (searchSummary && o.summary.toLowerCase().includes(q)) return true;
+      if (searchSummary && has(o.summary)) return true;
       if (
         searchDuties &&
-        (o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
-          o.requirements.some((r) => r.toLowerCase().includes(q)))
+        (o.responsibilities.some(has) || o.requirements.some(has))
       )
         return true;
       return false;
