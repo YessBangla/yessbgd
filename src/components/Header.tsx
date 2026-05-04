@@ -174,15 +174,20 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 glass-nav">
       <div className="container-tight relative flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center" aria-label="YESS Bangla — home">
+        <Link
+          to="/"
+          className="group relative flex items-center"
+          aria-label="YESS Bangla — home"
+        >
+          <span className="logo-halo pointer-events-none absolute inset-0 -z-10 rounded-2xl" aria-hidden />
           <img
             src={logo}
             alt="YESS Bangla logo"
-            width={44}
-            height={44}
+            width={48}
+            height={48}
             decoding="async"
             fetchPriority="high"
-            className="h-11 w-11 rounded-xl object-contain bg-white p-1 ring-1 ring-border/60 shadow-sm"
+            className="logo-mark h-12 w-12 rounded-2xl bg-white object-contain p-1 ring-1 ring-border shadow-md transition-transform duration-300 group-hover:scale-[1.04]"
           />
         </Link>
 
