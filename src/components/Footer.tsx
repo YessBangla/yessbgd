@@ -68,7 +68,7 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link to="/projects" className="font-semibold text-primary hover:underline">View all →</Link></li>
+              <li><Link to="/ventures" className="font-semibold text-primary hover:underline">View all →</Link></li>
             </ul>
           </div>
 
