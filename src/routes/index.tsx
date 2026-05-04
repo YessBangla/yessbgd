@@ -39,7 +39,9 @@ import {
   Briefcase,
   Building2,
   HeartHandshake,
-} from "lucide-react";
+  Download,
+  Mail,
+  Layers,
 
 export const Route = createFileRoute("/")({
   head: () => ({
