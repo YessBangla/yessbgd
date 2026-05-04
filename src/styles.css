@@ -425,8 +425,10 @@
     background-repeat: no-repeat;
     background-size: 300% 100%;
     background-position: 0% 50%;
-    /* Isolate repaints to the text's own bounding box (paint + style). */
-    contain: paint style;
+    /* Isolate style recalcs only — `contain: paint` was clipping the
+       300%-wide background-image render and making whole lines invisible
+       at certain shimmer frames. Style containment is enough here. */
+    contain: style;
   }
   .water-text {
     /* Mobile: subtle cool sheen, longer cycle */
