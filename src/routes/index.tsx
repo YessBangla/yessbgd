@@ -289,7 +289,7 @@ function Index() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+              <div className="hero-float rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl" style={{ animationDelay: "-2.5s" }}>
                 <div className="flex items-center gap-3">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-background text-foreground shadow-lg">
                     <Award className="h-5 w-5" />
