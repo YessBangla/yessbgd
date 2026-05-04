@@ -39,6 +39,9 @@ import {
   Briefcase,
   Building2,
   HeartHandshake,
+  Download,
+  Mail,
+  Layers,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -284,6 +287,76 @@ function Index() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* QUICK CTA STRIP */}
+      <section className="relative -mt-px border-y border-border/60 bg-gradient-to-br from-primary/8 via-background to-accent/8">
+        <div className="container-tight py-12 sm:py-14">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_2fr] lg:items-center">
+            <Reveal>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Ready when you are
+              </p>
+              <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                Let&rsquo;s build what&rsquo;s next — together.
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Talk to our team, browse what we deliver, or take our profile with you.
+              </p>
+            </Reveal>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Link
+                to="/contact"
+                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                </div>
+                <div className="mt-6">
+                  <div className="font-display text-base font-semibold">Contact us</div>
+                  <div className="mt-1 text-xs text-muted-foreground">Reply within one business day</div>
+                </div>
+              </Link>
+
+              <Link
+                to="/services"
+                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-glow">
+                    <Layers className="h-5 w-5" />
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                </div>
+                <div className="mt-6">
+                  <div className="font-display text-base font-semibold">Explore services</div>
+                  <div className="mt-1 text-xs text-muted-foreground">Consulting, IT, OTT &amp; commerce</div>
+                </div>
+              </Link>
+
+              <a
+                href="/yess-bangla-company-profile.pdf"
+                download
+                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-5 text-background transition-all hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-background/15 text-background">
+                    <Download className="h-5 w-5" />
+                  </div>
+                  <ArrowRight className="h-4 w-4 opacity-70 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
+                </div>
+                <div className="mt-6">
+                  <div className="font-display text-base font-semibold">Company profile</div>
+                  <div className="mt-1 text-xs opacity-75">Download PDF · ~80 KB</div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
