@@ -252,7 +252,7 @@ function Index() {
                 Slightly higher contrast (/80) and wider max-width on desktop
                 for editorial readability without losing the airy feel. */}
             <p
-              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-xl lg:max-w-2xl text-background/80"
+              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
                 /* 13px mobile → 17px desktop — editorial body scale */
@@ -267,9 +267,10 @@ function Index() {
               <span className="font-medium text-background/95">YESS Bangla</span>{" "}
               partners with ambitious organisations to deliver consulting,
               technology, media and commerce solutions —
-              {/* nowrap only ≥sm; on narrow phones these long phrases must wrap */}
-              <span className="sm:whitespace-nowrap"> engineered to international standards,</span>
-              <span className="sm:whitespace-nowrap"> shipped from Dhaka.</span>
+              {/* nowrap only ≥md (768px+) — narrow tablets/large phones still
+                  wrap naturally; desktop keeps the editorial line break. */}
+              <span className="md:whitespace-nowrap"> engineered to international standards,</span>
+              <span className="md:whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
 
             {/* CTA row */}
