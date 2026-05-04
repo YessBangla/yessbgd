@@ -475,6 +475,7 @@ function Careers() {
             {step === 2 && selectedJob && (
               <StepForm
                 job={selectedJob}
+                isOpenApplication={selectedJob.slug === "open-application"}
                 onBack={() => setStep(1)}
                 onSubmit={onSubmit}
                 resume={resume}
