@@ -734,27 +734,34 @@ function StepSelect({
       </div>
 
       {/* Advanced filters */}
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={facets.types} />
-        <FilterSelect label="Location" value={filterLocation} onChange={setFilterLocation} options={facets.locations} />
-        <FilterSelect label="Department" value={filterDept} onChange={setFilterDept} options={facets.depts} />
-        <FilterSelect label="Level" value={filterLevel} onChange={setFilterLevel} options={facets.levels} />
-      </div>
-
-      {activeFilterCount > 0 && (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">
-            {activeFilterCount} active filter{activeFilterCount > 1 ? "s" : ""}
-          </span>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <X className="h-3 w-3" /> Clear all
-          </button>
+      <div className="mt-6 rounded-2xl border border-border bg-secondary/30 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Refine results
+            {activeFilterCount > 0 && (
+              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                {activeFilterCount}
+              </span>
+            )}
+          </div>
+          {activeFilterCount > 0 && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <X className="h-3 w-3" /> Clear all
+            </button>
+          )}
         </div>
-      )}
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={facets.types} />
+          <FilterSelect label="Location" value={filterLocation} onChange={setFilterLocation} options={facets.locations} />
+          <FilterSelect label="Department" value={filterDept} onChange={setFilterDept} options={facets.depts} />
+          <FilterSelect label="Level" value={filterLevel} onChange={setFilterLevel} options={facets.levels} />
+        </div>
+      </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {openings.length === 0 ? (
