@@ -113,7 +113,8 @@ function ApplicationStatusPage() {
   const autofilled = !sp.ref && !sp.email && !!saved;
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  type ErrKind = "validation" | "network" | "server" | "notfound";
+  const [error, setError] = useState<{ kind: ErrKind; message: string; detail?: string } | null>(null);
   const [app, setApp] = useState<Application | null>(null);
   const [lastChecked, setLastChecked] = useState<Date | null>(null);
   const [online, setOnline] = useState(typeof navigator === "undefined" ? true : navigator.onLine);
@@ -123,14 +124,47 @@ function ApplicationStatusPage() {
   const runLookup = async (
     parsedRef: string,
     parsedEmail: string,
-  ): Promise<{ row: Application | null; error: string | null }> => {
-    const { data, error: queryErr } = await supabase.rpc("lookup_application", {
-      _ref: parsedRef,
-      _email: parsedEmail,
-    });
-    if (queryErr) return { row: null, error: queryErr.message };
-    const row = Array.isArray(data) ? ((data[0] as Application | undefined) ?? null) : null;
-    return { row, error: null };
+  ): Promise<
+    | { row: Application | null; error: null }
+    | { row: null; error: { kind: Exclude<ErrKind, "validation" | "notfound">; message: string; detail?: string } }
+  > => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      return {
+        row: null,
+        error: {
+          kind: "network",
+          message: "You're offline.",
+          detail: "Reconnect to the internet and try again.",
+        },
+      };
+    }
+    try {
+      const { data, error: queryErr } = await supabase.rpc("lookup_application", {
+        _ref: parsedRef,
+        _email: parsedEmail,
+      });
+      if (queryErr) {
+        const msg = queryErr.message || "Unknown server error";
+        const isNet = /fetch|network|failed to fetch|networkerror|timeout/i.test(msg);
+        return {
+          row: null,
+          error: isNet
+            ? { kind: "network", message: "Network problem reaching the server.", detail: msg }
+            : { kind: "server", message: "The server couldn't process this lookup.", detail: msg },
+        };
+      }
+      const row = Array.isArray(data) ? ((data[0] as Application | undefined) ?? null) : null;
+      return { row, error: null };
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const isNet = /fetch|network|failed to fetch|networkerror|timeout|abort/i.test(msg);
+      return {
+        row: null,
+        error: isNet
+          ? { kind: "network", message: "Couldn't reach the server.", detail: msg }
+          : { kind: "server", message: "Something went wrong.", detail: msg },
+      };
+    }
   };
 
   const lookup = async (evt?: FormEvent) => {
@@ -140,7 +174,10 @@ function ApplicationStatusPage() {
     prevSigRef.current = null;
     const parsed = lookupSchema.safeParse({ ref, email });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError({
+        kind: "validation",
+        message: parsed.error.issues[0]?.message ?? "Please check your inputs.",
+      });
       return;
     }
     setLoading(true);
@@ -152,7 +189,11 @@ function ApplicationStatusPage() {
       return;
     }
     if (!row) {
-      setError("No application found for this reference and email. Please double-check both values.");
+      setError({
+        kind: "notfound",
+        message: "No application matches that reference and email.",
+        detail: "Double-check both values — the reference is the 8-character code from your confirmation.",
+      });
       return;
     }
     prevSigRef.current = `${row.status}|${row.status_updated_at}`;
