@@ -117,6 +117,40 @@ function AdminApplications() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Realtime: refresh on insert/update/delete
+  useEffect(() => {
+    if (!authChecked) return;
+    const channel = supabase
+      .channel("admin-job-applications")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "job_applications" },
+        (payload) => {
+          setItems((prev) => {
+            if (!prev) return prev;
+            if (payload.eventType === "INSERT") {
+              return [payload.new as Application, ...prev];
+            }
+            if (payload.eventType === "UPDATE") {
+              return prev.map((x) =>
+                x.id === (payload.new as Application).id
+                  ? { ...x, ...(payload.new as Application) }
+                  : x,
+              );
+            }
+            if (payload.eventType === "DELETE") {
+              return prev.filter((x) => x.id !== (payload.old as { id: string }).id);
+            }
+            return prev;
+          });
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [authChecked]);
+
   const downloadResume = async (path: string, name: string) => {
     const { data, error: e } = await supabase.storage.from("resumes").createSignedUrl(path, 60);
     if (e || !data) {
