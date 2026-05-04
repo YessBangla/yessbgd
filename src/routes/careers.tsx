@@ -127,12 +127,28 @@ function Careers() {
     (filterDept !== "All" ? 1 : 0) +
     (filterLevel !== "All" ? 1 : 0);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [filtered, safePage],
+  );
+
+  // Reset to page 1 whenever filters/search change
+  const filtersKey = `${query}|${filterType}|${filterLocation}|${filterDept}|${filterLevel}`;
+  const lastKeyRef = useRef(filtersKey);
+  if (lastKeyRef.current !== filtersKey) {
+    lastKeyRef.current = filtersKey;
+    if (page !== 1) setPage(1);
+  }
+
   const resetFilters = () => {
     setFilterType("All");
     setFilterLocation("All");
     setFilterDept("All");
     setFilterLevel("All");
     setQuery("");
+    setPage(1);
   };
 
   const proceedToForm = () => {
