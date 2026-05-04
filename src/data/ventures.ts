@@ -204,6 +204,25 @@ export const ventures: Venture[] = [
       { title: "Long-form & investigations", desc: "A dedicated desk for multi-week investigations and data journalism." },
       { title: "Native ad studio", desc: "Brand storytelling that respects readers — clearly labelled, beautifully crafted." },
     ],
+    caseStudy: {
+      challenge:
+        "Readers were drowning in unverified social posts and clickbait — credible journalism existed, but it was buried under slow sites and intrusive ads.",
+      solution:
+        "We launched a mobile-first newsroom on a fast headless CMS, with a published code of ethics, structured beats, and a native ad studio that funds independent reporting.",
+      phases: [
+        { title: "Discover", desc: "Reader interviews, beat mapping and an ethics charter co-written with senior editors." },
+        { title: "Design", desc: "Reader-first article template, dark mode, distraction-free reading and rich media embeds." },
+        { title: "Build", desc: "Headless CMS, edge caching, AMP/Web Stories, push subs and a sponsored-content workflow." },
+        { title: "Launch & grow", desc: "Beat-by-beat rollout, newsletter loops and a weekly editorial scorecard." },
+      ],
+      techStack: ["Next.js", "Sanity CMS", "Algolia", "Cloudflare", "OneSignal", "Plausible"],
+      results: [
+        { label: "Monthly readers", value: "5M+" },
+        { label: "Median load time", value: "0.9s" },
+        { label: "Newsletter open rate", value: "42%" },
+        { label: "Investigations / yr", value: "30+" },
+      ],
+    },
   },
   {
     slug: "yess-organic-haat",
