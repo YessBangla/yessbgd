@@ -420,10 +420,12 @@
     background-repeat: no-repeat;
     background-size: 300% 100%;
     background-position: 0% 50%;
-    /* GPU layer + isolate repaints to text bounding box */
-    transform: translateZ(0);
-    contain: paint;
-    will-change: background-position;
+    /* Isolate repaints to the text's own bounding box (paint + style).
+       NOTE: no `will-change` here — `background-position` is not a
+       compositor-accelerated property, so promoting it just wastes memory
+       without reducing paint cost. The shimmer is cheap enough as a
+       contained repaint on the text glyphs alone. */
+    contain: paint style;
   }
   .water-text {
     /* Mobile: subtle cool sheen, longer cycle */
@@ -477,12 +479,13 @@
 
   /* Offscreen pause — toggled by useOffscreenPause hook via IntersectionObserver.
      When the headline scrolls out of view, halt the shimmer animation entirely
-     (pauses the GPU compositor work, frees `will-change` budget). */
+     and release any compositor hints so the browser can discard the layer. */
   .is-paused.water-text,
   .is-paused.water-text-accent,
   .is-paused .water-text,
   .is-paused .water-text-accent {
     animation-play-state: paused;
+    contain: paint style;
   }
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
