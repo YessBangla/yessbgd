@@ -169,7 +169,7 @@ function Index() {
           }}
         />
 
-        <div className="container-tight relative grid min-h-[88vh] gap-16 py-24 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-32">
+        <div className="container-tight relative grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-24">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             <motion.div
@@ -406,7 +406,7 @@ function Index() {
                   height={960}
                   loading="lazy"
                   decoding="async"
-                  className="block aspect-[4/3] w-full rounded-[1.35rem] object-cover"
+                  className="mx-auto block aspect-[4/3] w-full max-w-md rounded-[1.35rem] object-cover sm:max-w-lg lg:max-w-none"
                 />
               </div>
             </div>
@@ -474,7 +474,7 @@ function Index() {
                 height={960}
                 loading="lazy"
                 decoding="async"
-                className="block aspect-[21/9] w-full object-cover"
+                className="block aspect-[21/7] w-full object-cover sm:aspect-[21/6]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
@@ -537,7 +537,7 @@ function Index() {
                 height={720}
                 loading="lazy"
                 decoding="async"
-                className="block aspect-[16/7] w-full object-cover"
+                className="block aspect-[16/6] w-full object-cover sm:aspect-[16/5]"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
               <div className="absolute inset-0 flex items-center p-6 sm:p-10">
