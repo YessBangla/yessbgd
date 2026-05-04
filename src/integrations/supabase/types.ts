@@ -137,6 +137,19 @@ export type Database = {
         }
         Returns: boolean
       }
+      lookup_application: {
+        Args: { _email: string; _ref: string }
+        Returns: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          job_title: string
+          status: Database["public"]["Enums"]["application_status"]
+          status_note: string
+          status_updated_at: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
