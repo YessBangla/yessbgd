@@ -213,7 +213,9 @@ function Index() {
               style={{
                 animationDelay: "80ms",
                 /* Refined editorial scale: 28px mobile → 56px desktop */
-                fontSize: "clamp(1.75rem, 0.95rem + 3.4vw, 3.5rem)",
+                /* Floor 1.625rem (26px) keeps 320px viewports safe; preferred
+                   slope tuned so 360–430px lands cleanly between 27–32px. */
+                fontSize: "clamp(1.625rem, 0.85rem + 3.6vw, 3.5rem)",
                 /* Premium leading: tighter as type grows */
                 lineHeight: "clamp(1.04, 1.2 - 0.7vw, 1.14)",
                 /* Em-based optical tracking — auto-scales with font-size */
