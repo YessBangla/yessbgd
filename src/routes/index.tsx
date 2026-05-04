@@ -276,7 +276,7 @@ function Index() {
                   CEO · Retail Group
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
