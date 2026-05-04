@@ -90,10 +90,27 @@ const lookupSchema = z.object({
   email: z.string().trim().email("Enter a valid email"),
 });
 
+function readSavedLookup(): { ref: string; email: string } | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem("yess:lastApplication");
+    if (!raw) return null;
+    const v = JSON.parse(raw) as { ref?: string; email?: string };
+    if (v && typeof v.ref === "string" && typeof v.email === "string") {
+      return { ref: v.ref, email: v.email };
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 function ApplicationStatusPage() {
   const sp = Route.useSearch();
-  const [ref, setRef] = useState(sp.ref ?? "");
-  const [email, setEmail] = useState(sp.email ?? "");
+  const saved = useMemo(() => readSavedLookup(), []);
+  const [ref, setRef] = useState(sp.ref ?? saved?.ref ?? "");
+  const [email, setEmail] = useState(sp.email ?? saved?.email ?? "");
+  const autofilled = !sp.ref && !sp.email && !!saved;
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
