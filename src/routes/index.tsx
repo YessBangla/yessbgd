@@ -192,15 +192,28 @@ function Index() {
 
             {/* Headline — three-line editorial cadence with water shimmer */}
             <h1
-              className="hero-fade mt-3 font-display font-semibold leading-[1.02] tracking-[-0.025em] text-balance text-[clamp(2.1rem,4.8vw,4rem)]"
-              style={{ animationDelay: "80ms" }}
+              className="hero-fade mt-4 font-display font-semibold text-balance text-background"
+              style={{
+                animationDelay: "80ms",
+                fontSize: "clamp(2.25rem, 1.4rem + 4.2vw, 4.5rem)",
+                lineHeight: "clamp(1.05, 1.02 + 0.2vw, 1.08)",
+                letterSpacing: "clamp(-0.035em, -0.022em - 0.05vw, -0.02em)",
+                wordSpacing: "-0.01em",
+              }}
             >
               <span className="water-text block">Strategy, software</span>
-              <span className="block text-background/95">
+              <span className="block text-background/95" style={{ marginTop: "0.05em" }}>
                 &amp;{" "}
-                <span className="italic font-light text-background/85">storytelling</span>
+                <span className="italic font-light tracking-[-0.01em] text-background/90">
+                  storytelling
+                </span>
               </span>
-              <span className="water-text-accent block">built for global ambition.</span>
+              <span
+                className="water-text-accent block"
+                style={{ marginTop: "0.05em", letterSpacing: "-0.03em" }}
+              >
+                built for global ambition.
+              </span>
             </h1>
 
             {/* Lede paragraph */}
