@@ -220,7 +220,7 @@ function Index() {
               </span>
               <span
                 className="water-text-accent block"
-                style={{ marginTop: "0.08em", letterSpacing: "-0.025em" }}
+                style={{ marginTop: "0.08em", letterSpacing: "-0.02em" }}
               >
                 built for global ambition.
               </span>
