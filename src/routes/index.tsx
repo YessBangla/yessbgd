@@ -199,13 +199,15 @@ function Index() {
               className="hero-fade mt-3 sm:mt-4 lg:mt-5 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Slightly smaller desktop ceiling for a more refined editorial scale */
+                /* Refined editorial scale — fluid from mobile to desktop ceiling */
                 fontSize: "clamp(1.75rem, 1rem + 3vw, 3.25rem)",
-                /* Tighter, more controlled leading on large screens */
-                lineHeight: "clamp(1.04, 1.02 + 0.15vw, 1.1)",
-                /* Premium negative tracking that eases as size grows */
-                letterSpacing: "clamp(-0.03em, -0.018em - 0.04vw, -0.015em)",
-                wordSpacing: "-0.01em",
+                /* Premium leading: tighter as type grows */
+                lineHeight: "clamp(1.06, 1.18 - 0.6vw, 1.14)",
+                /* Tracking eases (becomes less negative) as size grows — em-only,
+                   no mixed units; safe for Latin + Bangla + RTL alike */
+                letterSpacing: "clamp(-0.028em, -0.014em - 0.012vw, -0.012em)",
+                /* word-spacing: leave at browser default for international parity */
+                wordSpacing: "normal",
               }}
             >
               <span className="water-text block">Strategy, software</span>
