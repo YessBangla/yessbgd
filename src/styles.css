@@ -394,6 +394,54 @@
       transparent 100%);
   }
 
+  /* ────── Water-ripple text shimmer ──────
+     A slow, calm sheen that drifts across the headline like light
+     refracting through still water. GPU-only (background-position +
+     transform), no layout, no opacity-per-frame. */
+  @keyframes water-shimmer {
+    0%   { background-position:   0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  @keyframes water-drift {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50%      { transform: translate3d(0, -1.5px, 0); }
+  }
+  .water-text {
+    background-image: linear-gradient(
+      100deg,
+      color-mix(in oklab, var(--background) 92%, transparent) 0%,
+      color-mix(in oklab, var(--background) 100%, transparent) 38%,
+      color-mix(in oklab, var(--primary-glow) 85%, transparent) 50%,
+      color-mix(in oklab, var(--background) 100%, transparent) 62%,
+      color-mix(in oklab, var(--background) 92%, transparent) 100%
+    );
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation:
+      water-shimmer 8s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+      water-drift   6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    will-change: background-position, transform;
+  }
+  .water-text-accent {
+    background-image: linear-gradient(
+      100deg,
+      color-mix(in oklab, var(--background) 95%, transparent) 0%,
+      color-mix(in oklab, var(--accent) 90%, transparent) 45%,
+      color-mix(in oklab, var(--accent) 70%, transparent) 55%,
+      color-mix(in oklab, var(--background) 95%, transparent) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: water-shimmer 9s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.6s;
+    will-change: background-position;
+  }
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
     from { transform: translate3d(0, 0, 0); }
