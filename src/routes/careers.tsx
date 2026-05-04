@@ -271,6 +271,17 @@ function Careers() {
                 }}
                 onContinue={proceedToForm}
                 error={errors.job}
+                facets={facets}
+                filterType={filterType}
+                filterLocation={filterLocation}
+                filterDept={filterDept}
+                filterLevel={filterLevel}
+                setFilterType={setFilterType}
+                setFilterLocation={setFilterLocation}
+                setFilterDept={setFilterDept}
+                setFilterLevel={setFilterLevel}
+                activeFilterCount={activeFilterCount}
+                resetFilters={resetFilters}
               />
             )}
 
