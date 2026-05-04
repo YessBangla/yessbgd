@@ -154,7 +154,7 @@ const applicationSchema = z.object({
     .max(2000, "Please keep it under 2000 characters"),
 });
 
-type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume" | "job", string>>;
+type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume" | "job" | "desiredRole", string>>;
 
 function Careers() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
