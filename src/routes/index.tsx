@@ -235,7 +235,7 @@ function Index() {
               >
                 &amp;{" "}
                 <span
-                  className="italic font-light text-background/90"
+                  className="font-light text-background/90"
                   style={{ letterSpacing: "-0.008em" }}
                 >
                   storytelling
