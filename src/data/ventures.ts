@@ -296,6 +296,25 @@ export const ventures: Venture[] = [
       { title: "Upfront pricing", desc: "See the price before you book — no surprises, no haggling, no hidden fees." },
       { title: "Service guarantee", desc: "If you're not satisfied, we send a second professional or refund — your call." },
     ],
+    caseStudy: {
+      challenge:
+        "Booking a trustworthy electrician, AC tech or deep-cleaner meant scrolling Facebook groups and praying — pricing was opaque and quality wildly inconsistent.",
+      solution:
+        "Yess Service launched an instant-booking app with vetted, in-house-trained professionals, upfront pricing and a written satisfaction guarantee on every job.",
+      phases: [
+        { title: "Discover", desc: "Customer & technician interviews, complaint mining and a service-catalogue blueprint." },
+        { title: "Design", desc: "3-tap booking flow, transparent price cards, live ETA and a post-job rating loop." },
+        { title: "Build", desc: "Customer + pro apps, dispatch engine, payments, training LMS and a QA dashboard." },
+        { title: "Launch & grow", desc: "Pilot in 3 zones, weekly NPS reviews and a re-training programme for low-rated pros." },
+      ],
+      techStack: ["React Native", "Node.js", "PostgreSQL", "Mapbox", "bKash", "Stripe"],
+      results: [
+        { label: "Avg. arrival time", value: "47 min" },
+        { label: "Customer NPS", value: "72" },
+        { label: "Repeat bookings", value: "61%" },
+        { label: "Pros onboarded", value: "1,200+" },
+      ],
+    },
   },
   {
     slug: "yess-host",
