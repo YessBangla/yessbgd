@@ -186,7 +186,7 @@ function Index() {
 
             {/* Section label — international editorial */}
             <div
-              className="hero-fade mt-6 flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.34em] text-background/55"
+              className="hero-fade mt-5 flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.34em] text-background/55"
               style={{ animationDelay: "40ms" }}
             >
               <span className="h-px w-8 bg-background/40" />
