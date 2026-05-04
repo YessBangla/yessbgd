@@ -203,10 +203,11 @@ function Index() {
                 fontSize: "clamp(1.75rem, 1rem + 3vw, 3.25rem)",
                 /* Premium leading: tighter as type grows */
                 lineHeight: "clamp(1.06, 1.18 - 0.6vw, 1.14)",
-                /* Tracking eases (becomes less negative) as size grows — em-only,
-                   no mixed units; safe for Latin + Bangla + RTL alike */
-                letterSpacing: "clamp(-0.028em, -0.014em - 0.012vw, -0.012em)",
-                /* word-spacing: leave at browser default for international parity */
+                /* Em-based tracking auto-scales with font-size — no mixed units,
+                   safe for Latin, Bangla and RTL scripts. Single value keeps
+                   spacing visually identical from 360px to 1920px. */
+                letterSpacing: "-0.018em",
+                /* word-spacing left at browser default for international parity */
                 wordSpacing: "normal",
               }}
             >
