@@ -151,7 +151,7 @@ function Index() {
       {/* HERO — international editorial, full-bleed cinematic */}
       <section
         className="hero-section relative isolate grid overflow-hidden bg-foreground text-background"
-        style={{ minHeight: "clamp(360px, 52vh, 560px)" }}
+        style={{ minHeight: "clamp(300px, 42vh, 460px)" }}
       >
         {/* Background image */}
         <img
@@ -168,7 +168,7 @@ function Index() {
         {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
         <HeroOverlays imageSrc={heroImg} />
 
-        <div className="container-tight relative grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12">
+        <div className="container-tight relative grid gap-5 py-4 sm:gap-7 sm:py-7 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-9">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             {/* Eyebrow chip */}
@@ -277,7 +277,7 @@ function Index() {
               className="hero-fade ml-auto max-w-sm space-y-3"
               style={{ animationDelay: "240ms" }}
             >
-              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+              <div className="hero-float rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl" style={{ animationDelay: "0s" }}>
                 <div className="flex items-center gap-3">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-accent-foreground shadow-lg">
                     <TrendingUp className="h-5 w-5" />
@@ -289,7 +289,7 @@ function Index() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+              <div className="hero-float rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl" style={{ animationDelay: "-2.5s" }}>
                 <div className="flex items-center gap-3">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-background text-foreground shadow-lg">
                     <Award className="h-5 w-5" />
@@ -301,7 +301,7 @@ function Index() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+              <div className="hero-float rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl" style={{ animationDelay: "-5s" }}>
                 <div className="flex items-center gap-1 text-accent">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} className="h-3.5 w-3.5 fill-current" />

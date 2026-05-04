@@ -499,6 +499,16 @@
     will-change: transform;
   }
   .marquee:hover { animation-play-state: paused; }
+
+  /* Hero floating cards — gentle vertical drift, transform-only (compositor) */
+  @keyframes hero-float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50%      { transform: translate3d(0, -6px, 0); }
+  }
+  .hero-float {
+    animation: hero-float 7s ease-in-out infinite;
+    will-change: transform;
+  }
   .marquee-mask {
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
