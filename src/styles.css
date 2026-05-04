@@ -479,6 +479,10 @@
     will-change: auto !important;
   }
   .hero-section { --hero-py: 0px !important; --hero-hx: 0px !important; --hero-hy: 0px !important; }
+  .water-text, .water-text-accent {
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
 }
 
 /* Dev-only: force reduced motion via toggle in DevHydrationProbe */
