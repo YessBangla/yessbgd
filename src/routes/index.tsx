@@ -232,8 +232,11 @@ function Index() {
               style={{
                 animationDelay: "160ms",
                 fontSize: "clamp(0.8125rem, 0.72rem + 0.4vw, 0.9375rem)",
-                lineHeight: "clamp(1.6, 1.55 + 0.15vw, 1.7)",
-                letterSpacing: "-0.005em",
+                /* Single em-based leading — predictable across breakpoints */
+                lineHeight: 1.65,
+                /* Subtle, em-based tracking; safe for all scripts */
+                letterSpacing: "-0.003em",
+                wordSpacing: "normal",
               }}
             >
               <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
