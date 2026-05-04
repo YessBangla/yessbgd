@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/PageHero";
-import { Check, Search, Loader2, AlertCircle, ArrowRight, Clock } from "lucide-react";
+import { Check, Search, Loader2, AlertCircle, ArrowRight, Clock, RefreshCw, Wifi, WifiOff } from "lucide-react";
 
 type SearchParams = { ref?: string; email?: string };
 
