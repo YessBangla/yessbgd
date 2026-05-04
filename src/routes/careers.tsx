@@ -834,14 +834,25 @@ function StepSelect({
             ? `No roles match · ${allCount} total open`
             : `Showing ${openings.length} of ${filteredCount} match${filteredCount > 1 ? "es" : ""} · ${allCount} total open`}
         </p>
-        <button
-          type="button"
-          onClick={onContinue}
-          disabled={!selectedSlug}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Continue to application <ArrowRight className="h-4 w-4" />
-        </button>
+        <div className="flex flex-col-reverse items-stretch gap-2 sm:flex-row sm:items-center">
+          {selectedSlug && (
+            <button
+              type="button"
+              onClick={() => onSelect(selectedSlug)}
+              className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border bg-background px-4 py-2.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <XCircle className="h-3.5 w-3.5" /> Clear selection
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onContinue}
+            disabled={!selectedSlug}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Continue to application <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
