@@ -488,7 +488,7 @@
   .is-paused .water-text,
   .is-paused .water-text-accent {
     animation-play-state: paused;
-    contain: paint style;
+    contain: style;
   }
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
