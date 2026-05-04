@@ -158,6 +158,25 @@ export const ventures: Venture[] = [
       { title: "Originals studio", desc: "A pipeline of platform-exclusive series and films across genres." },
       { title: "Smart discovery", desc: "ML-driven recommendations, watch-party mode and continue-watching across devices." },
     ],
+    caseStudy: {
+      challenge:
+        "Bangla-speaking audiences worldwide were stitching together piracy sites, social clips and regional apps — there was no premium, legal, mobile-first home for Bangla content.",
+      solution:
+        "Akash OTT shipped a DRM-protected, multi-CDN streaming platform with a curated library, exclusive originals and a recommendation engine tuned for Bangla viewing patterns.",
+      phases: [
+        { title: "Discover", desc: "Diaspora research across 6 markets, content licensing audit and a pricing study." },
+        { title: "Design", desc: "Cross-device UX (mobile, web, smart TV) with offline-first flows and family profiles." },
+        { title: "Build", desc: "Multi-CDN delivery, Widevine/FairPlay DRM, payments in BDT/USD/AED and analytics." },
+        { title: "Launch & grow", desc: "Hero original premiere, performance marketing in 12 markets and weekly cohort tuning." },
+      ],
+      techStack: ["React Native", "Next.js", "Shaka Player", "AWS MediaConvert", "Cloudflare Stream", "Stripe"],
+      results: [
+        { label: "Countries served", value: "40+" },
+        { label: "Avg. start time", value: "1.6s" },
+        { label: "Day-30 retention", value: "48%" },
+        { label: "Originals shipped", value: "20+" },
+      ],
+    },
   },
   {
     slug: "the-daily-akash",
