@@ -263,8 +263,9 @@ function Index() {
               <span className="font-medium text-background/95">YESS Bangla</span>{" "}
               partners with ambitious organisations to deliver consulting,
               technology, media and commerce solutions —
-              <span className="whitespace-nowrap"> engineered to international standards,</span>
-              <span className="whitespace-nowrap"> shipped from Dhaka.</span>
+              {/* nowrap only ≥sm; on narrow phones these long phrases must wrap */}
+              <span className="sm:whitespace-nowrap"> engineered to international standards,</span>
+              <span className="sm:whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
 
             {/* CTA row */}
