@@ -169,7 +169,7 @@ function Index() {
           }}
         />
 
-        <div className="container-tight relative grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-24">
+        <div className="container-tight relative grid gap-10 py-12 sm:py-20 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-24">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             <motion.div
@@ -393,12 +393,12 @@ function Index() {
       </section>
 
       {/* ABOUT STRIP */}
-      <section className="py-20">
-        <div className="container-tight grid gap-10 lg:grid-cols-12 lg:items-center">
+      <section className="py-14 sm:py-20">
+        <div className="container-tight grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
-            <div className="relative">
-              <div aria-hidden className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/15 to-accent/15 blur-2xl" />
-              <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-background/60 p-1.5 shadow-xl backdrop-blur">
+            <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
+              <div aria-hidden className="absolute -inset-3 rounded-2xl bg-gradient-to-tr from-primary/15 to-accent/15 blur-2xl sm:-inset-4 sm:rounded-3xl" />
+              <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-background/60 p-1 shadow-xl backdrop-blur sm:rounded-3xl sm:p-1.5">
                 <img
                   src={aboutImg}
                   alt="YESS Bangla consultants collaborating in a Dhaka office"
@@ -406,7 +406,7 @@ function Index() {
                   height={960}
                   loading="lazy"
                   decoding="async"
-                  className="mx-auto block aspect-[4/3] w-full max-w-md rounded-[1.35rem] object-cover sm:max-w-lg lg:max-w-none"
+                  className="block aspect-[4/3] w-full rounded-xl object-cover sm:rounded-[1.35rem]"
                 />
               </div>
             </div>
@@ -452,7 +452,7 @@ function Index() {
       </section>
 
       {/* SERVICES */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="container-tight">
           <Reveal className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">What we offer</p>
@@ -465,8 +465,8 @@ function Index() {
             </p>
           </Reveal>
 
-          <Reveal className="mt-12">
-            <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl">
+          <Reveal className="mt-8 sm:mt-12">
+            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={servicesImg}
                 alt="Bangladeshi engineers building software in a modern Dhaka studio"
@@ -474,11 +474,11 @@ function Index() {
                 height={960}
                 loading="lazy"
                 decoding="async"
-                className="block aspect-[21/7] w-full object-cover sm:aspect-[21/6]"
+                className="block aspect-[4/3] w-full object-cover sm:aspect-[21/6]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                <p className="max-w-xl text-sm font-medium text-foreground sm:text-base">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
+                <p className="max-w-xl text-xs font-medium text-foreground sm:text-base">
                   Engineering, design and consulting — delivered to international standards from Bangladesh.
                 </p>
               </div>
@@ -515,7 +515,7 @@ function Index() {
       </section>
 
       {/* VENTURES SHOWCASE — 11 ventures */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="container-tight">
           <Reveal className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Our ventures</p>
@@ -528,8 +528,8 @@ function Index() {
             </p>
           </Reveal>
 
-          <Reveal className="mt-12">
-            <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl">
+          <Reveal className="mt-8 sm:mt-12">
+            <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={venturesImg}
                 alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
@@ -537,13 +537,13 @@ function Index() {
                 height={720}
                 loading="lazy"
                 decoding="async"
-                className="block aspect-[16/6] w-full object-cover sm:aspect-[16/5]"
+                className="block aspect-[4/3] w-full object-cover sm:aspect-[16/5]"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
-              <div className="absolute inset-0 flex items-center p-6 sm:p-10">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent sm:bg-gradient-to-r sm:from-background/85 sm:via-background/40 sm:to-transparent" />
+              <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10">
                 <div className="max-w-md">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">From Dhaka, for Bangladesh</p>
-                  <p className="mt-2 font-display text-xl font-semibold leading-tight sm:text-2xl">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">From Dhaka, for Bangladesh</p>
+                  <p className="mt-1.5 font-display text-base font-semibold leading-tight sm:mt-2 sm:text-2xl">
                     A connected portfolio reaching every corner of the country.
                   </p>
                 </div>
