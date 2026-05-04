@@ -730,7 +730,7 @@ function StepSelect({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search role, team, location"
+            placeholder="Search role, skills, responsibilities…"
             className="w-full rounded-full border border-border bg-background py-2.5 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
             aria-label="Search openings"
           />
