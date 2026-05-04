@@ -403,6 +403,17 @@ function StepSelect({
   onSelect,
   onContinue,
   error,
+  facets,
+  filterType,
+  filterLocation,
+  filterDept,
+  filterLevel,
+  setFilterType,
+  setFilterLocation,
+  setFilterDept,
+  setFilterLevel,
+  activeFilterCount,
+  resetFilters,
 }: {
   openings: typeof import("@/data/openings").openings;
   allCount: number;
@@ -412,6 +423,17 @@ function StepSelect({
   onSelect: (slug: string) => void;
   onContinue: () => void;
   error?: string;
+  facets: { types: string[]; locations: string[]; depts: string[]; levels: string[] };
+  filterType: string;
+  filterLocation: string;
+  filterDept: string;
+  filterLevel: string;
+  setFilterType: (s: string) => void;
+  setFilterLocation: (s: string) => void;
+  setFilterDept: (s: string) => void;
+  setFilterLevel: (s: string) => void;
+  activeFilterCount: number;
+  resetFilters: () => void;
 }) {
   return (
     <div className="rounded-3xl glass-card p-6 sm:p-8">
@@ -422,7 +444,7 @@ function StepSelect({
             Select the position you're applying for
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Choose one role to continue. You can always come back and apply for another.
+            Filter by type, location, department or level — then pick a role to continue.
           </p>
         </div>
         <div className="relative w-full sm:w-72">
@@ -437,6 +459,29 @@ function StepSelect({
           />
         </div>
       </div>
+
+      {/* Advanced filters */}
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={facets.types} />
+        <FilterSelect label="Location" value={filterLocation} onChange={setFilterLocation} options={facets.locations} />
+        <FilterSelect label="Department" value={filterDept} onChange={setFilterDept} options={facets.depts} />
+        <FilterSelect label="Level" value={filterLevel} onChange={setFilterLevel} options={facets.levels} />
+      </div>
+
+      {activeFilterCount > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {activeFilterCount} active filter{activeFilterCount > 1 ? "s" : ""}
+          </span>
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <X className="h-3 w-3" /> Clear all
+          </button>
+        </div>
+      )}
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {openings.length === 0 ? (
