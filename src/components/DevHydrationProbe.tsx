@@ -54,6 +54,19 @@ function ProbeInner() {
 
       const visible = h1 ? isVisible(h1 as HTMLElement) : false;
 
+      const shimmerEls = document.querySelectorAll<HTMLElement>(
+        ".water-text, .water-text-accent",
+      );
+      let paused = shimmerEls.length > 0;
+      let firstBgPos = "";
+      shimmerEls.forEach((el, i) => {
+        const cs = window.getComputedStyle(el);
+        if (cs.animationPlayState !== "paused" && cs.animationName !== "none") {
+          paused = false;
+        }
+        if (i === 0) firstBgPos = cs.backgroundPosition;
+      });
+
       setReport({
         heroH1: (h1?.textContent || "").trim().slice(0, 60),
         heroH1Visible: visible,
@@ -64,6 +77,9 @@ function ProbeInner() {
           : "no-preference",
         viewport: `${window.innerWidth}×${window.innerHeight}`,
         dpr: window.devicePixelRatio,
+        shimmerCount: shimmerEls.length,
+        shimmerPaused: paused,
+        shimmerBgPos: firstBgPos,
       });
     };
 
