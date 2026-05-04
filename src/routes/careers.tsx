@@ -19,6 +19,15 @@ import {
   AlertCircle,
   CheckCircle2,
   Search,
+  Send,
+  ClipboardCheck,
+  MessageSquare,
+  Handshake,
+  Quote,
+  Globe2,
+  Trophy,
+  Rocket,
+  Mail,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { openings } from "@/data/openings";
