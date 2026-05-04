@@ -347,21 +347,30 @@ function Careers() {
         });
       if (upErr) throw upErr;
 
-      const { error: insErr } = await supabase.from("job_applications").insert({
-        job_slug: selectedJob.slug,
-        job_title: selectedJob.title,
-        full_name: parsed.data.fullName,
-        email: parsed.data.email,
-        phone: parsed.data.phone,
-        applicant_location: parsed.data.location,
-        linkedin: parsed.data.linkedin || null,
-        cover_letter: parsed.data.coverLetter,
-        resume_path: path,
-        resume_name: resume!.name,
-        resume_size: resume!.size,
-        resume_type: resume!.type || "application/octet-stream",
-      });
+      const { data: insData, error: insErr } = await supabase
+        .from("job_applications")
+        .insert({
+          job_slug: selectedJob.slug,
+          job_title: selectedJob.title,
+          full_name: parsed.data.fullName,
+          email: parsed.data.email,
+          phone: parsed.data.phone,
+          applicant_location: parsed.data.location,
+          linkedin: parsed.data.linkedin || null,
+          cover_letter: parsed.data.coverLetter,
+          resume_path: path,
+          resume_name: resume!.name,
+          resume_size: resume!.size,
+          resume_type: resume!.type || "application/octet-stream",
+        })
+        .select("id, created_at")
+        .single();
       if (insErr) throw insErr;
+      setReceipt({
+        id: insData?.id ?? null,
+        createdAt: insData?.created_at ?? new Date().toISOString(),
+        email: parsed.data.email,
+      });
       setStep(3);
       if (typeof window !== "undefined") {
         window.requestAnimationFrame(() => {
