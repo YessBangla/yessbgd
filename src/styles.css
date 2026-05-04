@@ -348,7 +348,7 @@
     border-radius: 9999px;
     filter: blur(var(--hero-halo-blur));
     pointer-events: none;
-    contain: strict;
+    contain: layout paint;
     will-change: transform;
     transform: translate3d(var(--hero-hx, 0px), var(--hero-hy, 0px), 0);
     transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
