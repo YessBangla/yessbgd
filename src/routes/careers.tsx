@@ -83,6 +83,8 @@ function Careers() {
   const [filterLocation, setFilterLocation] = useState<string>("All");
   const [filterDept, setFilterDept] = useState<string>("All");
   const [filterLevel, setFilterLevel] = useState<string>("All");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 6;
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
