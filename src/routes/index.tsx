@@ -199,7 +199,7 @@ function Index() {
               className="hero-fade mt-4 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                fontSize: "clamp(2.25rem, 1.4rem + 4.2vw, 4.5rem)",
+                fontSize: "clamp(1.875rem, 1.15rem + 3.5vw, 3.75rem)",
                 lineHeight: "clamp(1.05, 1.02 + 0.2vw, 1.08)",
                 letterSpacing: "clamp(-0.035em, -0.022em - 0.05vw, -0.02em)",
                 wordSpacing: "-0.01em",
@@ -222,7 +222,7 @@ function Index() {
 
             {/* Lede paragraph */}
             <p
-              className="hero-fade mt-5 max-w-xl text-[15px] leading-[1.7] text-background/75 sm:text-[17px]"
+              className="hero-fade mt-5 max-w-xl text-[13px] leading-[1.65] text-background/75 sm:text-[14.5px]"
               style={{ animationDelay: "160ms" }}
             >
               <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
