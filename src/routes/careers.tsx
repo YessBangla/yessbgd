@@ -195,18 +195,24 @@ function Careers() {
       if (filterDept !== "All" && o.dept !== filterDept) return false;
       if (filterLevel !== "All" && o.level !== filterLevel) return false;
       if (!q) return true;
-      return (
+      if (
         o.title.toLowerCase().includes(q) ||
         o.dept.toLowerCase().includes(q) ||
         o.location.toLowerCase().includes(q) ||
         o.level.toLowerCase().includes(q) ||
-        o.type.toLowerCase().includes(q) ||
-        o.summary.toLowerCase().includes(q) ||
-        o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
-        o.requirements.some((r) => r.toLowerCase().includes(q))
-      );
+        o.type.toLowerCase().includes(q)
+      )
+        return true;
+      if (searchSummary && o.summary.toLowerCase().includes(q)) return true;
+      if (
+        searchDuties &&
+        (o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
+          o.requirements.some((r) => r.toLowerCase().includes(q)))
+      )
+        return true;
+      return false;
     });
-  }, [query, filterType, filterLocation, filterDept, filterLevel]);
+  }, [query, filterType, filterLocation, filterDept, filterLevel, searchSummary, searchDuties]);
 
   const activeFilterCount =
     (filterType !== "All" ? 1 : 0) +
