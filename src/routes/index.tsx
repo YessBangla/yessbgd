@@ -8,6 +8,7 @@ import venturesImg from "@/assets/ventures-dhaka-bd.jpg";
 import trustImg from "@/assets/trust-handshake-bd.jpg";
 import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import {
   Dialog,
@@ -146,7 +147,7 @@ function Index() {
     <>
       {/* HERO — international editorial, full-bleed cinematic */}
       <section
-        className="relative isolate grid overflow-hidden bg-foreground text-background"
+        className="hero-section relative isolate grid overflow-hidden bg-foreground text-background"
         style={{ minHeight: "clamp(360px, 52vh, 560px)" }}
       >
         {/* Background image */}
@@ -161,42 +162,8 @@ function Index() {
           fetchPriority="high"
           className="absolute inset-0 -z-10 h-full w-full object-cover object-center sm:object-[60%_center]"
         />
-        {/* Cinematic overlays — re-tuned for shorter hero */}
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(95deg, color-mix(in oklab, var(--foreground) 92%, transparent) 0%, color-mix(in oklab, var(--foreground) 74%, transparent) 38%, color-mix(in oklab, var(--foreground) 38%, transparent) 66%, color-mix(in oklab, var(--foreground) 10%, transparent) 90%, transparent 100%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--foreground) 45%, transparent) 0%, transparent 28%, transparent 68%, color-mix(in oklab, var(--foreground) 65%, transparent) 100%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 opacity-60"
-          style={{
-            background:
-              "radial-gradient(50% 60% at 20% 65%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 72%)",
-          }}
-        />
-        <div aria-hidden className="pointer-events-none absolute -left-20 top-1/2 -z-10 h-64 w-64 -translate-y-1/2 rounded-full bg-primary/12 blur-2xl" />
-        <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 -z-10 h-52 w-52 rounded-full bg-accent/18 blur-2xl" />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 opacity-[0.04] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-          }}
-        />
+        {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
+        <HeroOverlays imageSrc={heroImg} />
 
         <div className="container-tight relative grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12">
           {/* LEFT — Headline column */}

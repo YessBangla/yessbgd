@@ -82,6 +82,40 @@
   --gradient-accent: linear-gradient(135deg, oklch(0.68 0.2 28) 0%, oklch(0.78 0.16 50) 100%);
   --gradient-surface: linear-gradient(180deg, var(--background) 0%, var(--surface) 100%);
 
+  /* ───────────────────────────────────────────────────────────────
+     HERO OVERLAY DESIGN TOKENS — keep these in sync when editing.
+     Checklist (in order of stacking, back → front):
+       1. --hero-overlay-h  : horizontal fade (left dark → right reveal)
+       2. --hero-overlay-v  : vertical vignette (top + bottom dim)
+       3. --hero-overlay-glow: warm radial accent spotlight
+       4. --hero-halo-*     : soft blurred color halos behind text
+       5. --hero-grid       : faint grid texture
+     Rules:
+       • Left side opacity ≥ 0.85 to keep H1/buttons WCAG AA on light bg
+       • Right side opacity ≤ 0.18 so the photograph stays visible
+       • Halo blur 32–48px max (perf); avoid blur-3xl on mobile
+       • Use color-mix(oklab) for smooth, hue-safe blends
+     ─────────────────────────────────────────────────────────────── */
+  --hero-overlay-h: linear-gradient(95deg,
+    color-mix(in oklab, var(--foreground) 92%, transparent) 0%,
+    color-mix(in oklab, var(--foreground) 74%, transparent) 38%,
+    color-mix(in oklab, var(--foreground) 38%, transparent) 66%,
+    color-mix(in oklab, var(--foreground) 10%, transparent) 90%,
+    transparent 100%);
+  --hero-overlay-v: linear-gradient(180deg,
+    color-mix(in oklab, var(--foreground) 45%, transparent) 0%,
+    transparent 28%,
+    transparent 68%,
+    color-mix(in oklab, var(--foreground) 65%, transparent) 100%);
+  --hero-overlay-glow: radial-gradient(50% 60% at 20% 65%,
+    color-mix(in oklab, var(--accent) 20%, transparent) 0%,
+    transparent 72%);
+  --hero-halo-primary: oklch(from var(--primary) l c h / 0.12);
+  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.18);
+  --hero-halo-blur: 40px;        /* keep ≤ 48px for cheap GPU paint */
+  --hero-glow-opacity: 0.6;
+  --hero-grid-opacity: 0.04;
+
   /* Glass tokens */
   --glass-bg: oklch(1 0 0 / 0.55);
   --glass-bg-strong: oklch(1 0 0 / 0.72);
@@ -283,6 +317,57 @@
   .hero-fade {
     animation: hero-fade-in 0.6s cubic-bezier(0.32, 0.72, 0, 1) both;
     will-change: transform, opacity;
+  }
+
+  /* ────── HERO OVERLAYS — perf-tuned, parallax-ready ──────
+     Each layer uses transform: translate3d so the GPU compositor
+     handles parallax without repainting; contain: strict isolates
+     paint to the layer; will-change is scoped to transform only. */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    contain: layout paint;
+    will-change: transform;
+    transform: translate3d(0, var(--hero-py, 0px), 0);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .hero-overlay--h    { background: var(--hero-overlay-h); }
+  .hero-overlay--v    { background: var(--hero-overlay-v); }
+  .hero-overlay--glow { background: var(--hero-overlay-glow); opacity: var(--hero-glow-opacity); }
+  .hero-overlay--grid {
+    background-image:
+      linear-gradient(to right, currentColor 1px, transparent 1px),
+      linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: var(--hero-grid-opacity);
+    mix-blend-mode: overlay;
+  }
+  .hero-halo {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(var(--hero-halo-blur));
+    pointer-events: none;
+    contain: layout paint;
+    will-change: transform;
+    transform: translate3d(var(--hero-hx, 0px), var(--hero-hy, 0px), 0);
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .hero-halo--primary { background: var(--hero-halo-primary); }
+  .hero-halo--accent  { background: var(--hero-halo-accent); }
+
+  /* Hover parallax — GPU transform only, no layout */
+  .hero-section:hover { --hero-py: -6px; --hero-hx: 8px; --hero-hy: -4px; }
+
+  /* Auto-contrast — JS toggles .hero-bright when the photo is light */
+  .hero-section.hero-bright { --hero-glow-opacity: 0.72; }
+  .hero-section.hero-bright .hero-overlay--h {
+    background: linear-gradient(95deg,
+      color-mix(in oklab, var(--foreground) 96%, transparent) 0%,
+      color-mix(in oklab, var(--foreground) 84%, transparent) 42%,
+      color-mix(in oklab, var(--foreground) 52%, transparent) 70%,
+      color-mix(in oklab, var(--foreground) 20%, transparent) 92%,
+      transparent 100%);
   }
 
   /* Infinite horizontal marquee for client/logo strip */
