@@ -28,6 +28,9 @@ import {
   Trophy,
   Rocket,
   Mail,
+  Loader2,
+  SlidersHorizontal,
+  XCircle,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { openings } from "@/data/openings";
@@ -731,27 +734,34 @@ function StepSelect({
       </div>
 
       {/* Advanced filters */}
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={facets.types} />
-        <FilterSelect label="Location" value={filterLocation} onChange={setFilterLocation} options={facets.locations} />
-        <FilterSelect label="Department" value={filterDept} onChange={setFilterDept} options={facets.depts} />
-        <FilterSelect label="Level" value={filterLevel} onChange={setFilterLevel} options={facets.levels} />
-      </div>
-
-      {activeFilterCount > 0 && (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">
-            {activeFilterCount} active filter{activeFilterCount > 1 ? "s" : ""}
-          </span>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <X className="h-3 w-3" /> Clear all
-          </button>
+      <div className="mt-6 rounded-2xl border border-border bg-secondary/30 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Refine results
+            {activeFilterCount > 0 && (
+              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                {activeFilterCount}
+              </span>
+            )}
+          </div>
+          {activeFilterCount > 0 && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <X className="h-3 w-3" /> Clear all
+            </button>
+          )}
         </div>
-      )}
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <FilterSelect label="Type" value={filterType} onChange={setFilterType} options={facets.types} />
+          <FilterSelect label="Location" value={filterLocation} onChange={setFilterLocation} options={facets.locations} />
+          <FilterSelect label="Department" value={filterDept} onChange={setFilterDept} options={facets.depts} />
+          <FilterSelect label="Level" value={filterLevel} onChange={setFilterLevel} options={facets.levels} />
+        </div>
+      </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {openings.length === 0 ? (
@@ -824,14 +834,25 @@ function StepSelect({
             ? `No roles match · ${allCount} total open`
             : `Showing ${openings.length} of ${filteredCount} match${filteredCount > 1 ? "es" : ""} · ${allCount} total open`}
         </p>
-        <button
-          type="button"
-          onClick={onContinue}
-          disabled={!selectedSlug}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Continue to application <ArrowRight className="h-4 w-4" />
-        </button>
+        <div className="flex flex-col-reverse items-stretch gap-2 sm:flex-row sm:items-center">
+          {selectedSlug && (
+            <button
+              type="button"
+              onClick={() => onSelect(selectedSlug)}
+              className="inline-flex items-center justify-center gap-1.5 rounded-full border border-border bg-background px-4 py-2.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <XCircle className="h-3.5 w-3.5" /> Clear selection
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onContinue}
+            disabled={!selectedSlug}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Continue to application <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -968,9 +989,18 @@ function StepForm({
         <button
           type="submit"
           disabled={submitting}
-          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:opacity-60 sm:w-auto"
+          aria-busy={submitting}
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-opacity disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
-          {submitting ? "Submitting…" : "Submit application"}
+          {submitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" /> Uploading & submitting…
+            </>
+          ) : (
+            <>
+              Submit application <ArrowRight className="h-4 w-4" />
+            </>
+          )}
         </button>
 
         <p className="mt-4 text-xs text-muted-foreground">
