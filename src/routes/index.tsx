@@ -173,14 +173,16 @@ function Index() {
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             {/* Eyebrow chip */}
-            <div className="hero-fade inline-flex items-center gap-3 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur">
+            {/* Eyebrow chip — flex-wraps gracefully on ≤360px viewports
+                so the trust signals never overflow the container. */}
+            <div className="hero-fade inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-full border border-background/20 bg-background/5 px-3.5 py-1.5 text-[10.5px] sm:text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
                 <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
               </span>
-              Bangladesh · Est. 2014
-              <span className="h-3 w-px bg-background/25" />
-              <span className="inline-flex items-center gap-1 text-background/70">
+              <span className="whitespace-nowrap">Bangladesh · Est. 2014</span>
+              <span aria-hidden className="hidden h-3 w-px bg-background/25 sm:inline" />
+              <span className="inline-flex items-center gap-1 whitespace-nowrap text-background/70">
                 <Star className="h-3 w-3 fill-accent text-accent" /> 4.9 / 5
               </span>
             </div>
@@ -211,7 +213,9 @@ function Index() {
               style={{
                 animationDelay: "80ms",
                 /* Refined editorial scale: 28px mobile → 56px desktop */
-                fontSize: "clamp(1.75rem, 0.95rem + 3.4vw, 3.5rem)",
+                /* Floor 1.625rem (26px) keeps 320px viewports safe; preferred
+                   slope tuned so 360–430px lands cleanly between 27–32px. */
+                fontSize: "clamp(1.625rem, 0.85rem + 3.6vw, 3.5rem)",
                 /* Premium leading: tighter as type grows */
                 lineHeight: "clamp(1.04, 1.2 - 0.7vw, 1.14)",
                 /* Em-based optical tracking — auto-scales with font-size */
@@ -236,7 +240,8 @@ function Index() {
                 className="water-text-accent block"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
-                built for global ambition.
+                built for{" "}
+                <span className="whitespace-nowrap">global ambition.</span>
               </span>
             </h1>
 
@@ -259,8 +264,9 @@ function Index() {
               <span className="font-medium text-background/95">YESS Bangla</span>{" "}
               partners with ambitious organisations to deliver consulting,
               technology, media and commerce solutions —
-              <span className="whitespace-nowrap"> engineered to international standards,</span>
-              <span className="whitespace-nowrap"> shipped from Dhaka.</span>
+              {/* nowrap only ≥sm; on narrow phones these long phrases must wrap */}
+              <span className="sm:whitespace-nowrap"> engineered to international standards,</span>
+              <span className="sm:whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
 
             {/* CTA row */}
