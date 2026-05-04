@@ -388,6 +388,25 @@ export const ventures: Venture[] = [
       { title: "Owned equipment", desc: "Stage, sound, lighting, LED walls and broadcast kit — owned, not rented." },
       { title: "Single accountable lead", desc: "One producer owns budget, timeline and quality from kick-off to wrap." },
     ],
+    caseStudy: {
+      challenge:
+        "Brands juggling 4–5 vendors per event were paying twice and still getting inconsistent stages, AV gaps and last-minute panics on show day.",
+      solution:
+        "Yess Event delivers strategy, creative, production and logistics under one accountable producer — with owned stage, sound, lighting and broadcast kit.",
+      phases: [
+        { title: "Discover", desc: "Audience-moment workshop, success metrics and a written creative brief." },
+        { title: "Design", desc: "Concept boards, run-of-show, set design and a fully costed production plan." },
+        { title: "Build", desc: "Vendor-free production with owned kit, rehearsals and a live show-control room." },
+        { title: "Launch & grow", desc: "Show day execution, multi-cam capture, social cut-downs and a post-event report." },
+      ],
+      techStack: ["d&b Audiotechnik", "Robe Lighting", "ROE LED Walls", "grandMA3", "Blackmagic ATEM"],
+      results: [
+        { label: "Events delivered", value: "300+" },
+        { label: "On-time show start", value: "100%" },
+        { label: "Client repeat rate", value: "78%" },
+        { label: "Avg. CSAT", value: "4.9/5" },
+      ],
+    },
   },
   {
     slug: "yess-model",
