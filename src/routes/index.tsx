@@ -142,154 +142,183 @@ function Index() {
   }, []);
   return (
     <>
-      {/* HERO — professional, editorial */}
-      <section className="relative overflow-hidden border-b border-border/60">
-        {/* Subtle ambient backdrop */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-primary/15 blur-3xl" />
-          <div className="absolute top-24 -right-20 h-[360px] w-[360px] rounded-full bg-accent/15 blur-3xl" />
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
-              backgroundSize: "56px 56px",
-            }}
-          />
-        </div>
+      {/* HERO — international editorial, full-bleed cinematic */}
+      <section className="relative isolate overflow-hidden bg-foreground text-background">
+        {/* Background image */}
+        <img
+          src={heroImg}
+          alt=""
+          aria-hidden="true"
+          width={1920}
+          height={1200}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-[60%_center]"
+        />
+        {/* Cinematic overlays */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-foreground via-foreground/85 to-foreground/30" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-foreground/90 via-transparent to-foreground/40" />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-[0.05] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
+        />
 
-        <div className="container-tight relative grid gap-14 py-20 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-20 lg:py-28">
-          <div>
+        <div className="container-tight relative grid min-h-[88vh] gap-16 py-24 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-32">
+          {/* LEFT — Headline column */}
+          <div className="lg:col-span-7 xl:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/60 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground/80 backdrop-blur"
+              className="inline-flex items-center gap-3 rounded-full border border-background/20 bg-background/5 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur"
             >
               <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-primary/60" />
-                <span className="relative h-1.5 w-1.5 rounded-full bg-primary" />
+                <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
+                <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
               </span>
-              Trusted since 2014
+              Bangladesh · Est. 2014
+              <span className="h-3 w-px bg-background/25" />
+              <span className="inline-flex items-center gap-1 text-background/70">
+                <Star className="h-3 w-3 fill-accent text-accent" /> 4.9 / 5
+              </span>
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05 }}
-              className="mt-6 font-display font-semibold leading-[1.04] tracking-tight text-balance"
+              transition={{ duration: 0.65, delay: 0.05 }}
+              className="mt-7 font-display font-semibold leading-[0.98] tracking-[-0.02em] text-balance text-[clamp(2.5rem,6vw,5.25rem)]"
             >
-              Consulting & technology that{" "}
-              <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-                move your business forward
+              Strategy, software &amp;{" "}
+              <span className="italic font-light text-background/90">storytelling</span>
+              <br className="hidden sm:block" />
+              <span className="bg-gradient-to-r from-background via-background to-accent/90 bg-clip-text text-transparent">
+                built for global ambition.
               </span>
-              .
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+              transition={{ duration: 0.65, delay: 0.12 }}
+              className="mt-7 max-w-xl text-base leading-relaxed text-background/75 sm:text-lg"
             >
-              YESS Bangla partners with ambitious organisations across Bangladesh — delivering
-              strategy, software, media and commerce solutions built to international standards.
+              YESS Bangla partners with ambitious organisations to deliver consulting,
+              technology, media and commerce solutions — engineered to international standards,
+              shipped from Dhaka.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="mt-9 flex flex-wrap items-center gap-3"
+              transition={{ duration: 0.65, delay: 0.18 }}
+              className="mt-10 flex flex-wrap items-center gap-3"
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5"
+                className="group inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
               >
                 Start a project
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/50 px-6 py-3 text-sm font-semibold text-foreground backdrop-blur transition-all hover:bg-background"
+                className="inline-flex items-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 py-3.5 text-sm font-semibold text-background backdrop-blur transition-all hover:bg-background/10"
               >
                 Explore services
               </Link>
             </motion.div>
 
             {/* Trust signals */}
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-primary" /> ISO-grade processes</span>
-              <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-primary" /> 11+ years expertise</span>
-              <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-primary" /> 98% client retention</span>
-            </div>
-
-            <div className="mt-10 grid grid-cols-3 gap-4 border-t border-border/60 pt-8 sm:gap-8">
-              {[
-                { target: 250, label: "Projects delivered", format: { plus: true } as const },
-                { target: 120, label: "Enterprise clients", format: { plus: true } as const },
-                { target: 64,  label: "Districts covered" },
-              ].map((s, i) => (
-                <div
-                  key={s.label}
-                  className={"min-w-0 " + (i > 0 ? "border-l border-border/60 pl-4 sm:pl-8" : "")}
-                >
-                  <div className="flex h-8 items-baseline font-display text-2xl font-semibold leading-none tracking-tight text-foreground tabular-nums sm:h-10 sm:text-3xl">
-                    {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
-                  </div>
-                  <div className="mt-2 text-[11px] uppercase tracking-wider text-muted-foreground sm:text-xs">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 text-xs text-background/65"
+            >
+              <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
+              <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
+              <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> 98% client retention</span>
+            </motion.div>
           </div>
 
-          {/* Visual */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="relative"
-          >
-            <div aria-hidden className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-primary/20 via-transparent to-accent/20 blur-2xl" />
-            <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-background/60 p-1.5 shadow-2xl backdrop-blur">
-              <img
-                src={heroImg}
-                alt="YESS Bangla consulting team meeting"
-                width={1600}
-                height={1024}
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-                className="block aspect-[4/3] w-full rounded-[1.35rem] object-cover"
-              />
-            </div>
-
-            <div className="absolute -bottom-5 -left-5 hidden rounded-2xl border border-border/60 bg-background/85 p-4 shadow-xl backdrop-blur sm:block">
-              <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground">
-                  <Award className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-foreground">11+ years</div>
-                  <div className="text-xs text-muted-foreground">of trusted expertise</div>
+          {/* RIGHT — Floating editorial cards */}
+          <div className="relative lg:col-span-5 xl:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.25 }}
+              className="ml-auto max-w-sm space-y-4"
+            >
+              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-accent-foreground shadow-lg">
+                    <TrendingUp className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider text-background/60">Average client outcome</div>
+                    <div className="font-display text-2xl font-semibold leading-none text-background">3× growth</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="absolute -top-5 -right-4 hidden rounded-2xl border border-border/60 bg-background/85 p-3 shadow-xl backdrop-blur lg:block">
-              <div className="flex items-center gap-2.5">
-                <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-accent text-accent-foreground">
-                  <TrendingUp className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-foreground">3× growth</div>
-                  <div className="text-[10px] text-muted-foreground">avg. client outcome</div>
+              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-background text-foreground shadow-lg">
+                    <Award className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[11px] uppercase tracking-wider text-background/60">Trusted by</div>
+                    <div className="font-display text-base font-semibold leading-tight text-background">120+ enterprise clients across 64 districts</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+
+              <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
+                <div className="flex items-center gap-1 text-accent">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-current" />
+                  ))}
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-background/85">
+                  &ldquo;The most strategic technology partner we&rsquo;ve worked with in the region.&rdquo;
+                </p>
+                <p className="mt-2 text-[11px] uppercase tracking-wider text-background/55">
+                  CEO · Retail Group
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Bottom KPI strip */}
+        <div className="relative border-t border-background/10 bg-foreground/40 backdrop-blur-md">
+          <div className="container-tight grid grid-cols-2 gap-y-6 py-6 sm:grid-cols-4">
+            {[
+              { target: 250, label: "Projects delivered", format: { plus: true } as const },
+              { target: 120, label: "Enterprise clients", format: { plus: true } as const },
+              { target: 64,  label: "Districts covered" },
+              { target: 11,  label: "Years of expertise", format: { plus: true } as const },
+            ].map((s, i) => (
+              <div
+                key={s.label}
+                className={"min-w-0 px-4 sm:px-6 " + (i > 0 ? "sm:border-l sm:border-background/10" : "")}
+              >
+                <div className="flex h-8 items-baseline font-display text-2xl font-semibold leading-none tracking-tight text-background tabular-nums sm:text-3xl">
+                  {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
+                </div>
+                <div className="mt-2 text-[10px] uppercase tracking-[0.18em] text-background/55 sm:text-[11px]">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
