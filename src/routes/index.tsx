@@ -187,7 +187,7 @@ function Index() {
               style={{ animationDelay: "60ms" }}
             >
               Strategy, software &amp;{" "}
-              <span className="italic font-light text-background/90">storytelling</span>
+              <span className="italic font-light text-background/90">storytelling</span>{" "}
               <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-background via-background to-accent/90 bg-clip-text text-transparent">
                 built for global ambition.
