@@ -434,6 +434,25 @@ export const ventures: Venture[] = [
       { title: "Brand-grade portfolios", desc: "Studio-quality test shoots and digitals refreshed every season." },
       { title: "Transparent contracts", desc: "Clear day rates, usage windows and a duty-of-care policy on every booking." },
     ],
+    caseStudy: {
+      challenge:
+        "Brands struggled to find vetted, brief-ready talent fast — and aspiring models had no safe, structured route from open call to paid campaign.",
+      solution:
+        "Yess Model built a managed roster with grooming, brand-grade portfolios and transparent contracts — plus a digital casting platform brands can search by brief.",
+      phases: [
+        { title: "Discover", desc: "Open scouting in 8 cities, brand demand mapping and a written code of conduct." },
+        { title: "Design", desc: "Talent grading framework, portfolio templates and a self-serve brand brief flow." },
+        { title: "Build", desc: "Casting platform, secure contracts, payment escrow and a duty-of-care helpline." },
+        { title: "Launch & grow", desc: "Quarterly intake, training cohorts and brand campaigns published as case studies." },
+      ],
+      techStack: ["Next.js", "Supabase", "Cloudinary", "DocuSign", "Stripe Connect"],
+      results: [
+        { label: "Active roster", value: "200+" },
+        { label: "Avg. brief-to-cast", value: "36 hrs" },
+        { label: "Booking repeat rate", value: "65%" },
+        { label: "On-time payouts", value: "100%" },
+      ],
+    },
   },
   {
     slug: "yess-food",
