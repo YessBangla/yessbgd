@@ -714,26 +714,63 @@ function StepSelect({
 }) {
   return (
     <div className="rounded-3xl glass-card p-6 sm:p-8">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Step 1</p>
-          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-            Select the position you're applying for
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Filter by type, location, department or level — then pick a role to continue.
-          </p>
-        </div>
-        <div className="relative w-full sm:w-72">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Step 1</p>
+        <h2 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          Find your role
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Type a keyword — title, skill, team or location.
+        </p>
+      </div>
+
+      {/* Big, friendly search */}
+      <div className="mt-5">
+        <label htmlFor="job-search" className="sr-only">Search openings</label>
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <input
+            id="job-search"
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search role, skills, responsibilities…"
-            className="w-full rounded-full border border-border bg-background py-2.5 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
-            aria-label="Search openings"
+            placeholder='e.g. "engineer", "design", "Dhaka"'
+            className="w-full rounded-2xl border border-border bg-background py-4 pl-12 pr-12 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+        {/* Quick chips */}
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Quick search:
+          </span>
+          {["Engineering", "Design", "Remote", "Internship"].map((chip) => {
+            const active = query.toLowerCase() === chip.toLowerCase();
+            return (
+              <button
+                key={chip}
+                type="button"
+                onClick={() => setQuery(active ? "" : chip)}
+                className={
+                  "rounded-full border px-3 py-1 text-xs font-medium transition-colors " +
+                  (active
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground")
+                }
+              >
+                {chip}
+              </button>
+            );
+          })}
         </div>
       </div>
 
