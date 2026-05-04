@@ -51,6 +51,7 @@ export function Footer() {
               <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
               <li><Link to="/industries" className="hover:text-primary">Industries</Link></li>
               <li><Link to="/projects" className="hover:text-primary">Projects</Link></li>
+              <li><Link to="/ventures" className="hover:text-primary">Ventures</Link></li>
               <li><Link to="/insights" className="hover:text-primary">Insights</Link></li>
               <li><Link to="/careers" className="hover:text-primary">Careers</Link></li>
               <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
@@ -67,7 +68,7 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link to="/projects" className="font-semibold text-primary hover:underline">View all →</Link></li>
+              <li><Link to="/ventures" className="font-semibold text-primary hover:underline">View all →</Link></li>
             </ul>
           </div>
 

@@ -108,27 +108,21 @@ function ApplicationStatusPage() {
       return;
     }
     setLoading(true);
-    // ref is the first 8 chars (uppercase) of the uuid; query by id prefix + email
-    const refLower = parsed.data.ref.trim().toLowerCase().replace(/[^a-f0-9-]/g, "");
-    const emailLower = parsed.data.email.trim().toLowerCase();
-    const { data, error: queryErr } = await supabase
-      .from("job_applications")
-      .select(
-        "id, job_title, full_name, email, status, status_note, status_updated_at, created_at"
-      )
-      .ilike("email", emailLower)
-      .ilike("id", `${refLower}%`)
-      .limit(1);
+    const { data, error: queryErr } = await supabase.rpc("lookup_application", {
+      _ref: parsed.data.ref,
+      _email: parsed.data.email,
+    });
     setLoading(false);
     if (queryErr) {
       setError(queryErr.message);
       return;
     }
-    if (!data || data.length === 0) {
+    const row = Array.isArray(data) ? data[0] : null;
+    if (!row) {
       setError("No application found for this reference and email.");
       return;
     }
-    setApp(data[0] as Application);
+    setApp(row as Application);
   };
 
   // Auto-lookup when arriving with prefilled params
@@ -139,23 +133,16 @@ function ApplicationStatusPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Realtime subscribe to this application's row
+  // Poll every 20s for status updates (anon has no realtime SELECT access)
   useEffect(() => {
     if (!app?.id) return;
-    const channel = supabase
-      .channel(`app-status-${app.id}`)
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "job_applications", filter: `id=eq.${app.id}` },
-        (payload) => {
-          setApp((prev) => (prev ? { ...prev, ...(payload.new as Partial<Application>) } : prev));
-        }
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [app?.id]);
+    const t = setInterval(async () => {
+      const { data } = await supabase.rpc("lookup_application", { _ref: ref, _email: email });
+      const row = Array.isArray(data) ? data[0] : null;
+      if (row) setApp(row as Application);
+    }, 20000);
+    return () => clearInterval(t);
+  }, [app?.id, ref, email]);
 
   const refDisplay = useMemo(() => (app ? app.id.slice(0, 8).toUpperCase() : ""), [app]);
 

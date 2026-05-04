@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -24,9 +25,15 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
 
+const VenturesRoute = VenturesRouteImport.update({
+  id: '/ventures',
+  path: '/ventures',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -88,9 +95,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const VenturesSlugRoute = VenturesSlugRouteImport.update({
-  id: '/ventures/$slug',
-  path: '/ventures/$slug',
-  getParentRoute: () => rootRouteImport,
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => VenturesRoute,
 } as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
@@ -101,6 +108,11 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => CareersRoute,
+} as any)
+const AdminMessagesRoute = AdminMessagesRouteImport.update({
+  id: '/admin/messages',
+  path: '/admin/messages',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
@@ -126,8 +138,10 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
@@ -145,8 +159,10 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
@@ -165,8 +181,10 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
+  '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
@@ -186,8 +204,10 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/ventures'
     | '/admin/applications'
     | '/admin/login'
+    | '/admin/messages'
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
@@ -205,8 +225,10 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/ventures'
     | '/admin/applications'
     | '/admin/login'
+    | '/admin/messages'
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
@@ -224,8 +246,10 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/ventures'
     | '/admin/applications'
     | '/admin/login'
+    | '/admin/messages'
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
@@ -244,13 +268,21 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
+  VenturesRoute: typeof VenturesRouteWithChildren
   AdminApplicationsRoute: typeof AdminApplicationsRoute
   AdminLoginRoute: typeof AdminLoginRoute
-  VenturesSlugRoute: typeof VenturesSlugRoute
+  AdminMessagesRoute: typeof AdminMessagesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/ventures': {
+      id: '/ventures'
+      path: '/ventures'
+      fullPath: '/ventures'
+      preLoaderRoute: typeof VenturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -337,10 +369,10 @@ declare module '@tanstack/react-router' {
     }
     '/ventures/$slug': {
       id: '/ventures/$slug'
-      path: '/ventures/$slug'
+      path: '/$slug'
       fullPath: '/ventures/$slug'
       preLoaderRoute: typeof VenturesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof VenturesRoute
     }
     '/insights/$slug': {
       id: '/insights/$slug'
@@ -355,6 +387,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/careers/$slug'
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof CareersRoute
+    }
+    '/admin/messages': {
+      id: '/admin/messages'
+      path: '/admin/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AdminMessagesRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
       id: '/admin/login'
@@ -396,6 +435,18 @@ const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
   InsightsRouteChildren,
 )
 
+interface VenturesRouteChildren {
+  VenturesSlugRoute: typeof VenturesSlugRoute
+}
+
+const VenturesRouteChildren: VenturesRouteChildren = {
+  VenturesSlugRoute: VenturesSlugRoute,
+}
+
+const VenturesRouteWithChildren = VenturesRoute._addFileChildren(
+  VenturesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -409,9 +460,10 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
+  VenturesRoute: VenturesRouteWithChildren,
   AdminApplicationsRoute: AdminApplicationsRoute,
   AdminLoginRoute: AdminLoginRoute,
-  VenturesSlugRoute: VenturesSlugRoute,
+  AdminMessagesRoute: AdminMessagesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
