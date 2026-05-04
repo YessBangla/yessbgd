@@ -1337,7 +1337,22 @@ function StepSuccess({
         </ol>
       </div>
 
-      <p className="mt-6 text-xs text-muted-foreground">
+      <div className="mt-6 rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm">
+        <p className="font-semibold">Track your application</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Use your reference <span className="font-mono font-semibold text-foreground">{refId}</span> and the email{" "}
+          <span className="font-semibold text-foreground">{receipt?.email ?? "—"}</span> to see live status updates.
+        </p>
+        <Link
+          to="/application-status"
+          search={{ ref: refId, email: receipt?.email ?? "" }}
+          className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-background px-4 py-2 text-xs font-semibold text-primary"
+        >
+          Open status tracker <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+
+      <p className="mt-4 text-xs text-muted-foreground">
         Questions? Email{" "}
         <a className="text-primary underline" href="mailto:yessbangla.bd@gmail.com">
           yessbangla.bd@gmail.com
