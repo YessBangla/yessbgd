@@ -196,7 +196,7 @@ function Index() {
             {/* Headline — three-line editorial cadence with water shimmer */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-4 font-display font-semibold text-balance text-background"
+              className="hero-fade mt-3 sm:mt-4 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
                 fontSize: "clamp(1.875rem, 1.15rem + 3.5vw, 3.75rem)",
