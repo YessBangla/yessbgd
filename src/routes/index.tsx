@@ -499,6 +499,29 @@ function Index() {
             </p>
           </Reveal>
 
+          <Reveal className="mt-12">
+            <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl">
+              <img
+                src={venturesImg}
+                alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
+                width={1280}
+                height={720}
+                loading="lazy"
+                decoding="async"
+                className="block aspect-[16/7] w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
+              <div className="absolute inset-0 flex items-center p-6 sm:p-10">
+                <div className="max-w-md">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">From Dhaka, for Bangladesh</p>
+                  <p className="mt-2 font-display text-xl font-semibold leading-tight sm:text-2xl">
+                    A connected portfolio reaching every corner of the country.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
           <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {ventures.map((v) => (
               <StaggerItem key={v.name}>
