@@ -60,6 +60,8 @@ type Application = {
   resume_type: string;
   created_at: string;
   status: Status;
+  status_note: string | null;
+  status_updated_at: string;
 };
 
 type ResumeKind = "all" | "pdf" | "doc" | "other";
