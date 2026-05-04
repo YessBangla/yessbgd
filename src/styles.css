@@ -96,25 +96,49 @@
        • Halo blur 32–48px max (perf); avoid blur-3xl on mobile
        • Use color-mix(oklab) for smooth, hue-safe blends
      ─────────────────────────────────────────────────────────────── */
-  --hero-overlay-h: linear-gradient(95deg,
-    color-mix(in oklab, var(--foreground) 92%, transparent) 0%,
-    color-mix(in oklab, var(--foreground) 74%, transparent) 38%,
-    color-mix(in oklab, var(--foreground) 38%, transparent) 66%,
-    color-mix(in oklab, var(--foreground) 10%, transparent) 90%,
-    transparent 100%);
+  /* Mobile defaults — text spans full width, so coverage stays denser
+     across the whole frame for guaranteed legibility. */
+  --hero-overlay-h: linear-gradient(180deg,
+    color-mix(in oklab, var(--foreground) 78%, transparent) 0%,
+    color-mix(in oklab, var(--foreground) 62%, transparent) 55%,
+    color-mix(in oklab, var(--foreground) 40%, transparent) 100%);
   --hero-overlay-v: linear-gradient(180deg,
-    color-mix(in oklab, var(--foreground) 45%, transparent) 0%,
-    transparent 28%,
-    transparent 68%,
-    color-mix(in oklab, var(--foreground) 65%, transparent) 100%);
-  --hero-overlay-glow: radial-gradient(50% 60% at 20% 65%,
-    color-mix(in oklab, var(--accent) 20%, transparent) 0%,
-    transparent 72%);
-  --hero-halo-primary: oklch(from var(--primary) l c h / 0.12);
-  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.18);
-  --hero-halo-blur: 40px;        /* keep ≤ 48px for cheap GPU paint */
-  --hero-glow-opacity: 0.6;
-  --hero-grid-opacity: 0.04;
+    color-mix(in oklab, var(--foreground) 55%, transparent) 0%,
+    color-mix(in oklab, var(--foreground) 18%, transparent) 35%,
+    color-mix(in oklab, var(--foreground) 25%, transparent) 70%,
+    color-mix(in oklab, var(--foreground) 70%, transparent) 100%);
+  --hero-overlay-glow: radial-gradient(60% 55% at 25% 60%,
+    color-mix(in oklab, var(--accent) 18%, transparent) 0%,
+    transparent 75%);
+  --hero-halo-primary: oklch(from var(--primary) l c h / 0.10);
+  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.14);
+  --hero-halo-blur: 32px;        /* mobile: smaller blur = cheaper paint */
+  --hero-glow-opacity: 0.5;
+  --hero-grid-opacity: 0.035;
+}
+
+/* Tablet+ : two-column layout — switch back to horizontal fade so the
+   image breathes on the right while text stays readable on the left. */
+@media (min-width: 768px) {
+  :root {
+    --hero-overlay-h: linear-gradient(95deg,
+      color-mix(in oklab, var(--foreground) 92%, transparent) 0%,
+      color-mix(in oklab, var(--foreground) 76%, transparent) 38%,
+      color-mix(in oklab, var(--foreground) 40%, transparent) 66%,
+      color-mix(in oklab, var(--foreground) 12%, transparent) 90%,
+      transparent 100%);
+    --hero-overlay-v: linear-gradient(180deg,
+      color-mix(in oklab, var(--foreground) 45%, transparent) 0%,
+      transparent 28%,
+      transparent 68%,
+      color-mix(in oklab, var(--foreground) 65%, transparent) 100%);
+    --hero-halo-blur: 40px;
+    --hero-glow-opacity: 0.6;
+    --hero-grid-opacity: 0.04;
+  }
+}
+
+:root {
 
   /* Glass tokens */
   --glass-bg: oklch(1 0 0 / 0.55);
