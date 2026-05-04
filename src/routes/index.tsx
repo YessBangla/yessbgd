@@ -189,14 +189,14 @@ function Index() {
 
             {/* Section label — international editorial eyebrow */}
             <div
-              className="hero-fade mt-5 flex items-center gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
+              className="hero-fade mt-3.5 sm:mt-5 flex items-center gap-2.5 sm:gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
               style={{
                 animationDelay: "40ms",
                 letterSpacing: "0.32em",
                 wordSpacing: "normal",
               }}
             >
-              <span aria-hidden className="h-px w-8 bg-background/45" />
+              <span aria-hidden className="h-px w-6 sm:w-8 bg-background/45" />
               <span>A Bangladesh-built consultancy</span>
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
