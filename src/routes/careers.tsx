@@ -891,6 +891,8 @@ function StepForm({
           </Field>
           <Field label="Phone *" error={errors.phone} htmlFor="phone">
             <input id="phone" name="phone" type="tel" autoComplete="tel" maxLength={30} required className={inputClass(!!errors.phone)} />
+          <Field label="Location *" error={errors.location} htmlFor="location">
+            <input id="location" name="location" type="text" autoComplete="address-level2" maxLength={120} required placeholder="City, Country" className={inputClass(!!errors.location)} />
           </Field>
           <Field label="LinkedIn / portfolio" error={errors.linkedin} htmlFor="linkedin">
             <input id="linkedin" name="linkedin" type="url" inputMode="url" maxLength={255} placeholder="https://" className={inputClass(!!errors.linkedin)} />
