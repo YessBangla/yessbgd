@@ -273,11 +273,6 @@ function Index() {
               <span className="md:whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
 
-            {/* CTA row */}
-            <div
-              className="hero-fade mt-6 sm:mt-7 flex flex-wrap items-center gap-3"
-              style={{ animationDelay: "220ms" }}
-            >
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
