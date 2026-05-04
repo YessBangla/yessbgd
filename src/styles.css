@@ -445,4 +445,11 @@
 .force-reduce-motion .orb { animation: none !important; }
 .force-reduce-motion .hero-fade { animation: none !important; opacity: 1 !important; transform: none !important; }
 .force-reduce-motion .marquee { animation: none !important; }
+.force-reduce-motion .hero-section, .force-reduce-motion .hero-section * { transition: none !important; }
+.force-reduce-motion .hero-overlay,
+.force-reduce-motion .hero-halo {
+  transform: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
 
