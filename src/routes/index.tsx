@@ -185,63 +185,80 @@ function Index() {
               </span>
             </div>
 
-            {/* Section label — international editorial */}
+            {/* Section label — international editorial eyebrow */}
             <div
-              className="hero-fade mt-5 flex items-center gap-3 text-[10.5px] font-medium uppercase tracking-[0.34em] text-background/55"
-              style={{ animationDelay: "40ms" }}
+              className="hero-fade mt-5 flex items-center gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
+              style={{
+                animationDelay: "40ms",
+                letterSpacing: "0.32em",
+                wordSpacing: "normal",
+              }}
             >
-              <span className="h-px w-8 bg-background/40" />
-              A Bangladesh-built consultancy
+              <span aria-hidden className="h-px w-8 bg-background/45" />
+              <span>A Bangladesh-built consultancy</span>
+              <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
 
-            {/* Headline — three-line editorial cadence with water shimmer */}
+            {/* Headline — three-line editorial cadence with water shimmer.
+                Typography contract (see scripts/check-hero-typography.mjs):
+                  • fontSize: clamp(rem, expr, rem) — editorial ceiling 3.5rem
+                  • lineHeight: unitless clamp — tighter as size grows
+                  • letterSpacing: em-only — script-safe (Latin/Bangla/RTL)
+                  • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-3 sm:mt-4 lg:mt-5 font-display font-semibold text-balance text-background"
+              className="hero-fade mt-4 sm:mt-5 lg:mt-6 font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Refined editorial scale — fluid from mobile to desktop ceiling */
-                fontSize: "clamp(1.75rem, 1rem + 3vw, 3.25rem)",
+                /* Refined editorial scale: 28px mobile → 56px desktop */
+                fontSize: "clamp(1.75rem, 0.95rem + 3.4vw, 3.5rem)",
                 /* Premium leading: tighter as type grows */
-                lineHeight: "clamp(1.06, 1.18 - 0.6vw, 1.14)",
-                /* Em-based tracking auto-scales with font-size — no mixed units,
-                   safe for Latin, Bangla and RTL scripts. Single value keeps
-                   spacing visually identical from 360px to 1920px. */
-                letterSpacing: "-0.018em",
-                /* word-spacing left at browser default for international parity */
+                lineHeight: "clamp(1.04, 1.2 - 0.7vw, 1.14)",
+                /* Em-based optical tracking — auto-scales with font-size */
+                letterSpacing: "-0.022em",
                 wordSpacing: "normal",
               }}
             >
               <span className="water-text block">Strategy, software</span>
-              <span className="block text-background/95" style={{ marginTop: "0.08em" }}>
+              <span
+                className="block text-background/95"
+                style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
+              >
                 &amp;{" "}
-                <span className="italic font-light tracking-[-0.005em] text-background/90">
+                <span
+                  className="italic font-light text-background/90"
+                  style={{ letterSpacing: "-0.008em" }}
+                >
                   storytelling
                 </span>
               </span>
               <span
                 className="water-text-accent block"
-                style={{ marginTop: "0.08em", letterSpacing: "-0.02em" }}
+                style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
                 built for global ambition.
               </span>
             </h1>
 
-            {/* Lede paragraph — fluid type, premium leading & tracking */}
+            {/* Lede paragraph — fluid type, premium leading & tracking.
+                Slightly higher contrast (/80) and wider max-width on desktop
+                for editorial readability without losing the airy feel. */}
             <p
-              className="hero-fade mt-4 sm:mt-5 lg:mt-6 max-w-xl text-background/75"
+              className="hero-fade mt-5 sm:mt-6 lg:mt-7 max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
-                fontSize: "clamp(0.8125rem, 0.72rem + 0.4vw, 0.9375rem)",
-                /* Single em-based leading — predictable across breakpoints */
-                lineHeight: 1.65,
-                /* Subtle, em-based tracking; safe for all scripts */
-                letterSpacing: "-0.003em",
+                /* 13px mobile → 17px desktop — editorial body scale */
+                fontSize: "clamp(0.8125rem, 0.7rem + 0.5vw, 1.0625rem)",
+                /* Slightly tighter leading on desktop for elegance */
+                lineHeight: "clamp(1.55, 1.72 - 0.18vw, 1.7)",
+                /* Subtle em-based optical tracking — script-safe */
+                letterSpacing: "-0.005em",
                 wordSpacing: "normal",
               }}
             >
-              <span className="text-background/90">YESS Bangla</span> partners with ambitious organisations to deliver
-              consulting, technology, media and commerce solutions —
+              <span className="font-medium text-background/95">YESS Bangla</span>{" "}
+              partners with ambitious organisations to deliver consulting,
+              technology, media and commerce solutions —
               <span className="whitespace-nowrap"> engineered to international standards,</span>
               <span className="whitespace-nowrap"> shipped from Dhaka.</span>
             </p>
