@@ -406,6 +406,25 @@ function AdminApplications() {
                   </span>
                 </div>
 
+                <div className="mt-4 rounded-xl border border-border bg-secondary/20 p-3">
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    Note to applicant (visible on tracker)
+                  </label>
+                  <textarea
+                    defaultValue={a.status_note ?? ""}
+                    onBlur={(e) => {
+                      const v = e.target.value.trim();
+                      if (v !== (a.status_note ?? "")) updateNote(a, v);
+                    }}
+                    rows={2}
+                    placeholder="e.g. We'll email you to schedule a call this week."
+                    className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                  />
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    Saved on blur. Last update: {new Date(a.status_updated_at).toLocaleString()}
+                  </p>
+                </div>
+
                 <details className="mt-4">
                   <summary className="cursor-pointer text-sm font-semibold">Cover letter</summary>
                   <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/85">{a.cover_letter}</p>
