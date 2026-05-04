@@ -160,6 +160,8 @@ function Careers() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [searchSummary, setSearchSummary] = useState(true);
+  const [searchDuties, setSearchDuties] = useState(true);
   const [filterType, setFilterType] = useState<string>("All");
   const [filterLocation, setFilterLocation] = useState<string>("All");
   const [filterDept, setFilterDept] = useState<string>("All");
