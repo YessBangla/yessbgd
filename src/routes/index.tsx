@@ -305,7 +305,7 @@ function Index() {
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-7 flex items-center gap-4"
+              className="hero-fade mt-5 sm:mt-7 flex items-center gap-4"
               style={{ animationDelay: "320ms" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
@@ -314,7 +314,7 @@ function Index() {
               <span className="hidden h-px flex-1 bg-background/15 sm:block" />
             </div>
             <div
-              className="hero-fade mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/70"
+              className="hero-fade mt-2 sm:mt-3 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs text-background/70"
               style={{ animationDelay: "360ms" }}
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
