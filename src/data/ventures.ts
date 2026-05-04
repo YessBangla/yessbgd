@@ -526,6 +526,25 @@ export const ventures: Venture[] = [
       { title: "Concierge desk", desc: "A dedicated relationship manager handles requests across every venture for you." },
       { title: "Bundle savings", desc: "Tailored packages combine services for measurable cost and time savings." },
     ],
+    caseStudy: {
+      challenge:
+        "Enterprises using multiple YESS ventures were juggling separate logins, invoices and account managers — losing the very efficiency the group was built to deliver.",
+      solution:
+        "Yess All-in-One stitches every venture into a single account: one SSO, one invoice, one concierge — with bundled pricing and a unified usage dashboard.",
+      phases: [
+        { title: "Discover", desc: "Customer journey mapping across ventures, billing audit and a unified data model." },
+        { title: "Design", desc: "Account hierarchy, role permissions, bundle pricing and a concierge service blueprint." },
+        { title: "Build", desc: "SSO, unified billing, cross-venture API gateway and a real-time usage dashboard." },
+        { title: "Launch & grow", desc: "White-glove migration of top accounts and a quarterly business review cadence." },
+      ],
+      techStack: ["TypeScript", "Auth0", "Stripe Billing", "PostgreSQL", "GraphQL Federation", "Datadog"],
+      results: [
+        { label: "Avg. cost saving", value: "−24%" },
+        { label: "Concierge response", value: "<10 min" },
+        { label: "Cross-sell uplift", value: "+38%" },
+        { label: "Enterprise NPS", value: "68" },
+      ],
+    },
   },
 ];
 
