@@ -9,18 +9,17 @@ export function Footer() {
       <div className="container-tight py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2.5">
+            <Link to="/" className="inline-flex items-center" aria-label="YESS Bangla — home">
               <img
                 src={logo}
                 alt="YESS Bangla logo"
                 loading="lazy"
                 decoding="async"
-                width={44}
-                height={44}
-                className="h-11 w-11 rounded-lg object-contain bg-white p-0.5"
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-xl bg-white object-contain p-1 ring-1 ring-border shadow-sm"
               />
-              <div className="font-display text-lg font-bold">YESS Bangla</div>
-            </div>
+            </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               A full-service business consulting and IT solutions company helping organisations
               across Bangladesh scale with confidence.
