@@ -157,6 +157,36 @@ function ApplicationStatusPage() {
     }
     prevSigRef.current = `${row.status}|${row.status_updated_at}`;
     setApp(row);
+    // Persist for next visit
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(
+          "yess:lastApplication",
+          JSON.stringify({
+            ref: parsed.data.ref,
+            email: parsed.data.email,
+            savedAt: Date.now(),
+          }),
+        );
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
+  const clearSaved = () => {
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem("yess:lastApplication");
+      } catch {
+        /* ignore */
+      }
+    }
+    setRef("");
+    setEmail("");
+    setApp(null);
+    setError(null);
+    prevSigRef.current = null;
   };
 
   const refresh = async () => {
@@ -177,7 +207,7 @@ function ApplicationStatusPage() {
   };
 
   useEffect(() => {
-    if (sp.ref && sp.email) {
+    if ((sp.ref && sp.email) || (saved && ref && email)) {
       lookup();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
