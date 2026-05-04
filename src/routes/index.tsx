@@ -393,12 +393,12 @@ function Index() {
       </section>
 
       {/* ABOUT STRIP */}
-      <section className="py-20">
-        <div className="container-tight grid gap-10 lg:grid-cols-12 lg:items-center">
+      <section className="py-14 sm:py-20">
+        <div className="container-tight grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-5">
-            <div className="relative">
-              <div aria-hidden className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/15 to-accent/15 blur-2xl" />
-              <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-background/60 p-1.5 shadow-xl backdrop-blur">
+            <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
+              <div aria-hidden className="absolute -inset-3 rounded-2xl bg-gradient-to-tr from-primary/15 to-accent/15 blur-2xl sm:-inset-4 sm:rounded-3xl" />
+              <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-background/60 p-1 shadow-xl backdrop-blur sm:rounded-3xl sm:p-1.5">
                 <img
                   src={aboutImg}
                   alt="YESS Bangla consultants collaborating in a Dhaka office"
@@ -406,7 +406,7 @@ function Index() {
                   height={960}
                   loading="lazy"
                   decoding="async"
-                  className="mx-auto block aspect-[4/3] w-full max-w-md rounded-[1.35rem] object-cover sm:max-w-lg lg:max-w-none"
+                  className="block aspect-[4/3] w-full rounded-xl object-cover sm:rounded-[1.35rem]"
                 />
               </div>
             </div>
