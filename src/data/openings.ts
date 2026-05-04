@@ -1,9 +1,12 @@
+export type JobLevel = "Internship" | "Entry" | "Mid" | "Senior" | "Lead";
+
 export type Opening = {
   slug: string;
   title: string;
   type: string;
   location: string;
   dept: string;
+  level: JobLevel;
   summary: string;
   responsibilities: string[];
   requirements: string[];
