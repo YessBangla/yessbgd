@@ -113,7 +113,8 @@ function ApplicationStatusPage() {
   const autofilled = !sp.ref && !sp.email && !!saved;
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  type ErrKind = "validation" | "network" | "server" | "notfound";
+  const [error, setError] = useState<{ kind: ErrKind; message: string; detail?: string } | null>(null);
   const [app, setApp] = useState<Application | null>(null);
   const [lastChecked, setLastChecked] = useState<Date | null>(null);
   const [online, setOnline] = useState(typeof navigator === "undefined" ? true : navigator.onLine);
@@ -123,14 +124,47 @@ function ApplicationStatusPage() {
   const runLookup = async (
     parsedRef: string,
     parsedEmail: string,
-  ): Promise<{ row: Application | null; error: string | null }> => {
-    const { data, error: queryErr } = await supabase.rpc("lookup_application", {
-      _ref: parsedRef,
-      _email: parsedEmail,
-    });
-    if (queryErr) return { row: null, error: queryErr.message };
-    const row = Array.isArray(data) ? ((data[0] as Application | undefined) ?? null) : null;
-    return { row, error: null };
+  ): Promise<
+    | { row: Application | null; error: null }
+    | { row: null; error: { kind: Exclude<ErrKind, "validation" | "notfound">; message: string; detail?: string } }
+  > => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      return {
+        row: null,
+        error: {
+          kind: "network",
+          message: "You're offline.",
+          detail: "Reconnect to the internet and try again.",
+        },
+      };
+    }
+    try {
+      const { data, error: queryErr } = await supabase.rpc("lookup_application", {
+        _ref: parsedRef,
+        _email: parsedEmail,
+      });
+      if (queryErr) {
+        const msg = queryErr.message || "Unknown server error";
+        const isNet = /fetch|network|failed to fetch|networkerror|timeout/i.test(msg);
+        return {
+          row: null,
+          error: isNet
+            ? { kind: "network", message: "Network problem reaching the server.", detail: msg }
+            : { kind: "server", message: "The server couldn't process this lookup.", detail: msg },
+        };
+      }
+      const row = Array.isArray(data) ? ((data[0] as Application | undefined) ?? null) : null;
+      return { row, error: null };
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const isNet = /fetch|network|failed to fetch|networkerror|timeout|abort/i.test(msg);
+      return {
+        row: null,
+        error: isNet
+          ? { kind: "network", message: "Couldn't reach the server.", detail: msg }
+          : { kind: "server", message: "Something went wrong.", detail: msg },
+      };
+    }
   };
 
   const lookup = async (evt?: FormEvent) => {
@@ -140,7 +174,10 @@ function ApplicationStatusPage() {
     prevSigRef.current = null;
     const parsed = lookupSchema.safeParse({ ref, email });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Invalid input");
+      setError({
+        kind: "validation",
+        message: parsed.error.issues[0]?.message ?? "Please check your inputs.",
+      });
       return;
     }
     setLoading(true);
@@ -152,7 +189,11 @@ function ApplicationStatusPage() {
       return;
     }
     if (!row) {
-      setError("No application found for this reference and email. Please double-check both values.");
+      setError({
+        kind: "notfound",
+        message: "No application matches that reference and email.",
+        detail: "Double-check both values — the reference is the 8-character code from your confirmation.",
+      });
       return;
     }
     prevSigRef.current = `${row.status}|${row.status_updated_at}`;
@@ -304,16 +345,56 @@ function ApplicationStatusPage() {
               </p>
             )}
 
-            {error && (
-              <div
-                role="alert"
-                aria-live="polite"
-                className="mt-3 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive"
-              >
-                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                <span>{error}</span>
-              </div>
-            )}
+            {error && (() => {
+              const palette =
+                error.kind === "validation"
+                  ? "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                  : error.kind === "notfound"
+                    ? "border-border bg-secondary/40 text-foreground"
+                    : error.kind === "network"
+                      ? "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                      : "border-destructive/30 bg-destructive/10 text-destructive";
+              const Icon =
+                error.kind === "network" ? WifiOff : error.kind === "notfound" ? Search : AlertCircle;
+              const heading =
+                error.kind === "validation"
+                  ? "Check your inputs"
+                  : error.kind === "network"
+                    ? "Connection problem"
+                    : error.kind === "notfound"
+                      ? "Not found"
+                      : "Server error";
+              const canRetry = error.kind === "network" || error.kind === "server";
+              return (
+                <div
+                  role="alert"
+                  aria-live="polite"
+                  className={`mt-3 flex items-start gap-2.5 rounded-lg border px-3 py-2.5 text-xs ${palette}`}
+                >
+                  <Icon className="mt-0.5 h-4 w-4 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold">{heading}</p>
+                    <p className="mt-0.5 opacity-90">{error.message}</p>
+                    {error.detail && (
+                      <p className="mt-1 break-words font-mono text-[10px] opacity-70">
+                        {error.detail}
+                      </p>
+                    )}
+                    {canRetry && (
+                      <button
+                        type="button"
+                        onClick={() => lookup()}
+                        disabled={loading}
+                        className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-current bg-background/60 px-3 py-1 font-semibold hover:bg-background disabled:opacity-60"
+                      >
+                        <RefreshCw className={"h-3 w-3 " + (loading ? "animate-spin" : "")} />
+                        Try again
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
           </form>
 
           {loading && !app && (
