@@ -160,6 +160,8 @@ function Careers() {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [searchSummary, setSearchSummary] = useState(true);
+  const [searchDuties, setSearchDuties] = useState(true);
   const [filterType, setFilterType] = useState<string>("All");
   const [filterLocation, setFilterLocation] = useState<string>("All");
   const [filterDept, setFilterDept] = useState<string>("All");
@@ -193,18 +195,24 @@ function Careers() {
       if (filterDept !== "All" && o.dept !== filterDept) return false;
       if (filterLevel !== "All" && o.level !== filterLevel) return false;
       if (!q) return true;
-      return (
+      if (
         o.title.toLowerCase().includes(q) ||
         o.dept.toLowerCase().includes(q) ||
         o.location.toLowerCase().includes(q) ||
         o.level.toLowerCase().includes(q) ||
-        o.type.toLowerCase().includes(q) ||
-        o.summary.toLowerCase().includes(q) ||
-        o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
-        o.requirements.some((r) => r.toLowerCase().includes(q))
-      );
+        o.type.toLowerCase().includes(q)
+      )
+        return true;
+      if (searchSummary && o.summary.toLowerCase().includes(q)) return true;
+      if (
+        searchDuties &&
+        (o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
+          o.requirements.some((r) => r.toLowerCase().includes(q)))
+      )
+        return true;
+      return false;
     });
-  }, [query, filterType, filterLocation, filterDept, filterLevel]);
+  }, [query, filterType, filterLocation, filterDept, filterLevel, searchSummary, searchDuties]);
 
   const activeFilterCount =
     (filterType !== "All" ? 1 : 0) +
@@ -220,7 +228,7 @@ function Careers() {
   );
 
   // Reset to page 1 whenever filters/search change
-  const filtersKey = `${query}|${filterType}|${filterLocation}|${filterDept}|${filterLevel}`;
+  const filtersKey = `${query}|${filterType}|${filterLocation}|${filterDept}|${filterLevel}|${searchSummary}|${searchDuties}`;
   const lastKeyRef = useRef(filtersKey);
   if (lastKeyRef.current !== filtersKey) {
     lastKeyRef.current = filtersKey;
@@ -398,6 +406,10 @@ function Careers() {
                 }}
                 query={query}
                 setQuery={setQuery}
+                searchSummary={searchSummary}
+                setSearchSummary={setSearchSummary}
+                searchDuties={searchDuties}
+                setSearchDuties={setSearchDuties}
                 selectedSlug={selectedSlug}
                 onSelect={(slug) => {
                   setSelectedSlug((prev) => (prev === slug ? null : slug));
@@ -672,6 +684,10 @@ function StepSelect({
   onPageChange,
   query,
   setQuery,
+  searchSummary,
+  setSearchSummary,
+  searchDuties,
+  setSearchDuties,
   selectedSlug,
   onSelect,
   onContinue,
@@ -696,6 +712,10 @@ function StepSelect({
   onPageChange: (p: number) => void;
   query: string;
   setQuery: (s: string) => void;
+  searchSummary: boolean;
+  setSearchSummary: (v: boolean) => void;
+  searchDuties: boolean;
+  setSearchDuties: (v: boolean) => void;
   selectedSlug: string | null;
   onSelect: (slug: string) => void;
   onContinue: () => void;
@@ -771,6 +791,42 @@ function StepSelect({
               </button>
             );
           })}
+        </div>
+
+        {/* Search scope toggles */}
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Also search in:
+          </span>
+          {[
+            { label: "Summary", value: searchSummary, set: setSearchSummary },
+            { label: "Responsibilities & Requirements", value: searchDuties, set: setSearchDuties },
+          ].map((t) => (
+            <button
+              key={t.label}
+              type="button"
+              role="switch"
+              aria-checked={t.value}
+              onClick={() => t.set(!t.value)}
+              className={
+                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors " +
+                (t.value
+                  ? "border-primary bg-primary/10 text-foreground"
+                  : "border-border bg-background text-muted-foreground hover:text-foreground")
+              }
+            >
+              <span
+                className={
+                  "grid h-3.5 w-3.5 place-items-center rounded-full border " +
+                  (t.value ? "border-primary bg-primary text-primary-foreground" : "border-border")
+                }
+                aria-hidden
+              >
+                {t.value && <Check className="h-2.5 w-2.5" />}
+              </span>
+              {t.label}
+            </button>
+          ))}
         </div>
       </div>
 
