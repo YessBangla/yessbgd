@@ -11,6 +11,7 @@ import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
+import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import {
   Dialog,
   DialogContent,
