@@ -28,6 +28,9 @@ import {
   Trophy,
   Rocket,
   Mail,
+  Loader2,
+  SlidersHorizontal,
+  XCircle,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { openings } from "@/data/openings";
