@@ -262,8 +262,11 @@ function Index() {
                 animationDelay: "160ms",
                 /* 13px mobile → 17px desktop — editorial body scale */
                 fontSize: "clamp(0.8125rem, 0.7rem + 0.5vw, 1.0625rem)",
-                /* Slightly tighter leading on desktop for elegance */
-                lineHeight: "clamp(1.55, 1.72 - 0.18vw, 1.7)",
+                /* Mobile relaxed (1.64) → desktop tight (1.5).
+                   Old formula was always floor-pinned to 1.55 because the
+                   preferred expression went negative across all viewports.
+                   New slope produces a real curve: 1.64 → 1.56 → 1.50. */
+                lineHeight: "clamp(1.5, 1.7 - 0.018vw, 1.66)",
                 /* Subtle em-based optical tracking — script-safe */
                 letterSpacing: "-0.005em",
                 wordSpacing: "normal",
