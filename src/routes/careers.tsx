@@ -792,6 +792,42 @@ function StepSelect({
             );
           })}
         </div>
+
+        {/* Search scope toggles */}
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Also search in:
+          </span>
+          {[
+            { label: "Summary", value: searchSummary, set: setSearchSummary },
+            { label: "Responsibilities & Requirements", value: searchDuties, set: setSearchDuties },
+          ].map((t) => (
+            <button
+              key={t.label}
+              type="button"
+              role="switch"
+              aria-checked={t.value}
+              onClick={() => t.set(!t.value)}
+              className={
+                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors " +
+                (t.value
+                  ? "border-primary bg-primary/10 text-foreground"
+                  : "border-border bg-background text-muted-foreground hover:text-foreground")
+              }
+            >
+              <span
+                className={
+                  "grid h-3.5 w-3.5 place-items-center rounded-full border " +
+                  (t.value ? "border-primary bg-primary text-primary-foreground" : "border-border")
+                }
+                aria-hidden
+              >
+                {t.value && <Check className="h-2.5 w-2.5" />}
+              </span>
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Advanced filters */}
