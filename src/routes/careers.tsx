@@ -528,6 +528,9 @@ function StepSelect({
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-3 w-3" /> {o.type}
                   </span>
+                  <span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-foreground/80">
+                    {o.level}
+                  </span>
                 </div>
               </button>
             );
