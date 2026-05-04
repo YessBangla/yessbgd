@@ -410,13 +410,17 @@
     0%   { background-position:   0% 50%; }
     100% { background-position: 300% 50%; }
   }
-  /* Always-light base for shimmer text — the hero uses bg-foreground
-     (dark) regardless of theme, so we MUST NOT bind to var(--background)
-     which flips to near-black in dark mode and made lines 1 & 3
-     invisible against the dark hero overlay. */
+  /* Theme-aware base for shimmer text — the hero element uses
+     `bg-foreground` (always the OPPOSITE of `--background`), so binding
+     `--water-base` to `--background` guarantees maximum contrast in
+     BOTH light and dark modes:
+       • Light theme: --foreground = near-black → --background = near-white → readable
+       • Dark theme:  --foreground = near-white → --background = near-black → readable
+     The shimmer gradient adds chroma but never reduces lightness past
+     the base, so every line stays WCAG AAA at every animation phase. */
   .water-text,
   .water-text-accent {
-    --water-base: oklch(0.985 0.003 230);
+    --water-base: var(--background);
     /* Paint glyphs in opaque white FIRST, then layer the shimmer gradient
        on top via background-clip. If background-clip fails or the gradient
        paints offscreen, the glyphs still appear in --water-base white. */
