@@ -172,9 +172,34 @@ function Careers() {
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
 
+  const openApplication = useMemo(
+    () => ({
+      slug: "open-application",
+      title: "Open Application — role not listed",
+      type: "Any",
+      location: "Any",
+      dept: "General",
+      level: "Any" as const,
+      summary:
+        "Don't see a role that matches? Send us your CV and tell us about the work you'd love to do — we'll route it to the right team.",
+      responsibilities: [
+        "Tell us the kind of work you want to do.",
+        "Share examples of projects you've shipped or contributed to.",
+      ],
+      requirements: [
+        "A short cover note explaining your interest and strengths.",
+        "An up-to-date CV (PDF, DOC, or DOCX).",
+      ],
+    }),
+    [],
+  );
+
   const selectedJob = useMemo(
-    () => openings.find((o) => o.slug === selectedSlug) ?? null,
-    [selectedSlug],
+    () => {
+      if (selectedSlug === openApplication.slug) return openApplication as unknown as (typeof openings)[number];
+      return openings.find((o) => o.slug === selectedSlug) ?? null;
+    },
+    [selectedSlug, openApplication],
   );
 
   const facets = useMemo(() => {
