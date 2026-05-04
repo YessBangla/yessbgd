@@ -171,6 +171,7 @@ function Careers() {
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
+  const [receipt, setReceipt] = useState<{ id: string | null; createdAt: string; email: string } | null>(null);
 
   const openApplication = useMemo(
     () => ({
