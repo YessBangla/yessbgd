@@ -156,7 +156,7 @@ function Index() {
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          className="absolute inset-0 -z-10 h-full w-full object-cover object-[60%_center]"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center sm:object-[60%_center]"
         />
         {/* Cinematic overlays — layered, smooth, premium */}
         {/* Soft horizontal fade — image breathes on the right */}
@@ -199,7 +199,7 @@ function Index() {
           }}
         />
 
-        <div className="container-tight relative grid gap-10 py-12 sm:py-20 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-24">
+        <div className="container-tight relative grid gap-6 py-6 sm:gap-8 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-12">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             <motion.div
@@ -223,7 +223,7 @@ function Index() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.05 }}
-              className="mt-7 font-display font-semibold leading-[0.98] tracking-[-0.02em] text-balance text-[clamp(2.5rem,6vw,5.25rem)]"
+              className="mt-4 font-display font-semibold leading-[0.98] tracking-[-0.02em] text-balance text-[clamp(2rem,4.6vw,3.75rem)]"
             >
               Strategy, software &amp;{" "}
               <span className="italic font-light text-background/90">storytelling</span>
@@ -237,7 +237,7 @@ function Index() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.12 }}
-              className="mt-7 max-w-xl text-base leading-relaxed text-background/75 sm:text-lg"
+              className="mt-4 max-w-xl text-sm leading-relaxed text-background/75 sm:text-base"
             >
               YESS Bangla partners with ambitious organisations to deliver consulting,
               technology, media and commerce solutions — engineered to international standards,
@@ -248,7 +248,7 @@ function Index() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.18 }}
-              className="mt-10 flex flex-wrap items-center gap-3"
+              className="mt-6 flex flex-wrap items-center gap-3"
             >
               <Link
                 to="/contact"
@@ -270,7 +270,7 @@ function Index() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 text-xs text-background/65"
+              className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-background/65"
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
               <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
@@ -284,7 +284,7 @@ function Index() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.25 }}
-              className="ml-auto max-w-sm space-y-4"
+              className="ml-auto max-w-sm space-y-3"
             >
               <div className="rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl">
                 <div className="flex items-center gap-3">
@@ -329,7 +329,7 @@ function Index() {
 
         {/* Bottom KPI strip */}
         <div className="relative border-t border-background/10 bg-foreground/40 backdrop-blur-md">
-          <div className="container-tight grid grid-cols-2 gap-y-6 py-6 sm:grid-cols-4">
+          <div className="container-tight grid grid-cols-2 gap-y-4 py-4 sm:grid-cols-4">
             {[
               { target: 250, label: "Projects delivered", format: { plus: true } as const },
               { target: 120, label: "Enterprise clients", format: { plus: true } as const },
