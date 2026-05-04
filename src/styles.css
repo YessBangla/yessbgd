@@ -327,7 +327,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    contain: strict;
+    contain: layout paint;
     will-change: transform;
     transform: translate3d(0, var(--hero-py, 0px), 0);
     transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
