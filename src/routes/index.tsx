@@ -254,7 +254,7 @@ function Index() {
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-8 flex items-center gap-4"
+              className="hero-fade mt-7 flex items-center gap-4"
               style={{ animationDelay: "320ms" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
