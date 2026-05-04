@@ -425,7 +425,11 @@ function Stepper({ step }: { step: 1 | 2 | 3 }) {
 
 function StepSelect({
   openings,
+  filteredCount,
   allCount,
+  page,
+  totalPages,
+  onPageChange,
   query,
   setQuery,
   selectedSlug,
@@ -445,7 +449,11 @@ function StepSelect({
   resetFilters,
 }: {
   openings: typeof import("@/data/openings").openings;
+  filteredCount: number;
   allCount: number;
+  page: number;
+  totalPages: number;
+  onPageChange: (p: number) => void;
   query: string;
   setQuery: (s: string) => void;
   selectedSlug: string | null;
