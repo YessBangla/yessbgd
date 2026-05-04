@@ -158,44 +158,40 @@ function Index() {
           fetchPriority="high"
           className="absolute inset-0 -z-10 h-full w-full object-cover object-center sm:object-[60%_center]"
         />
-        {/* Cinematic overlays — layered, smooth, premium */}
-        {/* Soft horizontal fade — image breathes on the right */}
+        {/* Cinematic overlays — re-tuned for shorter hero */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(100deg, color-mix(in oklab, var(--foreground) 96%, transparent) 0%, color-mix(in oklab, var(--foreground) 82%, transparent) 32%, color-mix(in oklab, var(--foreground) 50%, transparent) 60%, color-mix(in oklab, var(--foreground) 18%, transparent) 88%, transparent 100%)",
+              "linear-gradient(95deg, color-mix(in oklab, var(--foreground) 92%, transparent) 0%, color-mix(in oklab, var(--foreground) 74%, transparent) 38%, color-mix(in oklab, var(--foreground) 38%, transparent) 66%, color-mix(in oklab, var(--foreground) 10%, transparent) 90%, transparent 100%)",
           }}
         />
-        {/* Vertical depth — darker top & bottom for cinematic vignette */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--foreground) 55%, transparent) 0%, transparent 22%, transparent 70%, color-mix(in oklab, var(--foreground) 75%, transparent) 100%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--foreground) 45%, transparent) 0%, transparent 28%, transparent 68%, color-mix(in oklab, var(--foreground) 65%, transparent) 100%)",
           }}
         />
-        {/* Radial accent glow — soft warm spotlight from bottom-left */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-70"
+          className="absolute inset-0 -z-10 opacity-60"
           style={{
             background:
-              "radial-gradient(60% 50% at 18% 78%, color-mix(in oklab, var(--accent) 22%, transparent) 0%, transparent 70%)",
+              "radial-gradient(50% 60% at 20% 65%, color-mix(in oklab, var(--accent) 20%, transparent) 0%, transparent 72%)",
           }}
         />
-        {/* Subtle blur halos behind text */}
-        <div aria-hidden className="pointer-events-none absolute -left-24 top-1/3 -z-10 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-        <div aria-hidden className="pointer-events-none absolute right-0 top-0 -z-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -left-20 top-1/2 -z-10 h-64 w-64 -translate-y-1/2 rounded-full bg-primary/12 blur-2xl" />
+        <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 -z-10 h-52 w-52 rounded-full bg-accent/18 blur-2xl" />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-[0.05] mix-blend-overlay"
+          className="absolute inset-0 -z-10 opacity-[0.04] mix-blend-overlay"
           style={{
             backgroundImage:
               "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
+            backgroundSize: "56px 56px",
           }}
         />
 
