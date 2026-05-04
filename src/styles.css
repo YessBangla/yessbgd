@@ -319,6 +319,57 @@
     will-change: transform, opacity;
   }
 
+  /* ────── HERO OVERLAYS — perf-tuned, parallax-ready ──────
+     Each layer uses transform: translate3d so the GPU compositor
+     handles parallax without repainting; contain: strict isolates
+     paint to the layer; will-change is scoped to transform only. */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    contain: strict;
+    will-change: transform;
+    transform: translate3d(0, var(--hero-py, 0px), 0);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .hero-overlay--h    { background: var(--hero-overlay-h); }
+  .hero-overlay--v    { background: var(--hero-overlay-v); }
+  .hero-overlay--glow { background: var(--hero-overlay-glow); opacity: var(--hero-glow-opacity); }
+  .hero-overlay--grid {
+    background-image:
+      linear-gradient(to right, currentColor 1px, transparent 1px),
+      linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: var(--hero-grid-opacity);
+    mix-blend-mode: overlay;
+  }
+  .hero-halo {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(var(--hero-halo-blur));
+    pointer-events: none;
+    contain: strict;
+    will-change: transform;
+    transform: translate3d(var(--hero-hx, 0px), var(--hero-hy, 0px), 0);
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .hero-halo--primary { background: var(--hero-halo-primary); }
+  .hero-halo--accent  { background: var(--hero-halo-accent); }
+
+  /* Hover parallax — GPU transform only, no layout */
+  .hero-section:hover { --hero-py: -6px; --hero-hx: 8px; --hero-hy: -4px; }
+
+  /* Auto-contrast — JS toggles .hero-bright when the photo is light */
+  .hero-section.hero-bright { --hero-glow-opacity: 0.72; }
+  .hero-section.hero-bright .hero-overlay--h {
+    background: linear-gradient(95deg,
+      color-mix(in oklab, var(--foreground) 96%, transparent) 0%,
+      color-mix(in oklab, var(--foreground) 84%, transparent) 42%,
+      color-mix(in oklab, var(--foreground) 52%, transparent) 70%,
+      color-mix(in oklab, var(--foreground) 20%, transparent) 92%,
+      transparent 100%);
+  }
+
   /* Infinite horizontal marquee for client/logo strip */
   @keyframes marquee-x {
     from { transform: translate3d(0, 0, 0); }
