@@ -197,7 +197,11 @@ function Careers() {
         o.title.toLowerCase().includes(q) ||
         o.dept.toLowerCase().includes(q) ||
         o.location.toLowerCase().includes(q) ||
-        o.level.toLowerCase().includes(q)
+        o.level.toLowerCase().includes(q) ||
+        o.type.toLowerCase().includes(q) ||
+        o.summary.toLowerCase().includes(q) ||
+        o.responsibilities.some((r) => r.toLowerCase().includes(q)) ||
+        o.requirements.some((r) => r.toLowerCase().includes(q))
       );
     });
   }, [query, filterType, filterLocation, filterDept, filterLevel]);
@@ -726,7 +730,7 @@ function StepSelect({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search role, team, location"
+            placeholder="Search role, skills, responsibilities…"
             className="w-full rounded-full border border-border bg-background py-2.5 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
             aria-label="Search openings"
           />
