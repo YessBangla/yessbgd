@@ -342,6 +342,25 @@ export const ventures: Venture[] = [
       { title: "One-click stacks", desc: "WordPress, Laravel, Next.js, Node, n8n and 30+ apps in under a minute." },
       { title: "Real humans, 24/7", desc: "Median first-response under 4 minutes — by chat, ticket or phone." },
     ],
+    caseStudy: {
+      challenge:
+        "Local hosting was slow, oversold and unsupported — agencies were forced to send clients to overseas providers and absorb the latency and billing complexity.",
+      solution:
+        "Yess Host built a BD-first, multi-region cloud with NVMe storage, one-click app stacks, automated backups and a tier-3 support desk staffed in-country.",
+      phases: [
+        { title: "Discover", desc: "Workload audit with 40 agencies, baseline benchmarks and an SLA design workshop." },
+        { title: "Design", desc: "Plan ladder, control panel UX, migration tooling and a transparent status page." },
+        { title: "Build", desc: "Multi-region nodes, automated backups, WAF, DDoS shield and a 30+ app marketplace." },
+        { title: "Launch & grow", desc: "Free migrations, partner programme for agencies and quarterly capacity expansion." },
+      ],
+      techStack: ["KVM", "LiteSpeed", "Cloudflare", "Acronis Backup", "Imunify360", "Prometheus"],
+      results: [
+        { label: "Network uptime", value: "99.99%" },
+        { label: "Avg. TTFB (BD)", value: "82ms" },
+        { label: "Sites hosted", value: "18,000+" },
+        { label: "Support response", value: "<4 min" },
+      ],
+    },
   },
   {
     slug: "yess-event",
