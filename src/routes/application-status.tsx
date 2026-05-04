@@ -90,10 +90,27 @@ const lookupSchema = z.object({
   email: z.string().trim().email("Enter a valid email"),
 });
 
+function readSavedLookup(): { ref: string; email: string } | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem("yess:lastApplication");
+    if (!raw) return null;
+    const v = JSON.parse(raw) as { ref?: string; email?: string };
+    if (v && typeof v.ref === "string" && typeof v.email === "string") {
+      return { ref: v.ref, email: v.email };
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 function ApplicationStatusPage() {
   const sp = Route.useSearch();
-  const [ref, setRef] = useState(sp.ref ?? "");
-  const [email, setEmail] = useState(sp.email ?? "");
+  const saved = useMemo(() => readSavedLookup(), []);
+  const [ref, setRef] = useState(sp.ref ?? saved?.ref ?? "");
+  const [email, setEmail] = useState(sp.email ?? saved?.email ?? "");
+  const autofilled = !sp.ref && !sp.email && !!saved;
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -140,6 +157,36 @@ function ApplicationStatusPage() {
     }
     prevSigRef.current = `${row.status}|${row.status_updated_at}`;
     setApp(row);
+    // Persist for next visit
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(
+          "yess:lastApplication",
+          JSON.stringify({
+            ref: parsed.data.ref,
+            email: parsed.data.email,
+            savedAt: Date.now(),
+          }),
+        );
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
+  const clearSaved = () => {
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem("yess:lastApplication");
+      } catch {
+        /* ignore */
+      }
+    }
+    setRef("");
+    setEmail("");
+    setApp(null);
+    setError(null);
+    prevSigRef.current = null;
   };
 
   const refresh = async () => {
@@ -160,7 +207,7 @@ function ApplicationStatusPage() {
   };
 
   useEffect(() => {
-    if (sp.ref && sp.email) {
+    if ((sp.ref && sp.email) || (saved && ref && email)) {
       lookup();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -242,6 +289,20 @@ function ApplicationStatusPage() {
                 </button>
               </div>
             </div>
+
+            {autofilled && !app && !error && (
+              <p className="mt-3 inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
+                <Check className="h-3.5 w-3.5 text-primary" />
+                Filled from your last application.
+                <button
+                  type="button"
+                  onClick={clearSaved}
+                  className="ml-1 font-semibold text-primary underline-offset-2 hover:underline"
+                >
+                  Clear
+                </button>
+              </p>
+            )}
 
             {error && (
               <div

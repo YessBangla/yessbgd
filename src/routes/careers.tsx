@@ -35,6 +35,7 @@ import {
 import { PageHero } from "@/components/PageHero";
 import { openings } from "@/data/openings";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/careers")({
   head: () => ({
@@ -377,10 +378,27 @@ function Careers() {
         .select("id, created_at")
         .single();
       if (insErr) throw insErr;
+      const newId = insData?.id ?? null;
       setReceipt({
-        id: insData?.id ?? null,
+        id: newId,
         createdAt: insData?.created_at ?? new Date().toISOString(),
         email: parsed.data.email,
+      });
+      // Save lookup credentials so the tracker auto-fills on return visits
+      if (typeof window !== "undefined" && newId) {
+        try {
+          window.localStorage.setItem(
+            "yess:lastApplication",
+            JSON.stringify({ ref: newId.slice(0, 8).toUpperCase(), email: parsed.data.email, savedAt: Date.now() }),
+          );
+        } catch {
+          /* ignore quota/private-mode errors */
+        }
+      }
+      toast.success("Application submitted", {
+        description: newId
+          ? `Reference ${newId.slice(0, 8).toUpperCase()} — confirmation sent to ${parsed.data.email}.`
+          : `Confirmation sent to ${parsed.data.email}.`,
       });
       setStep(3);
       if (typeof window !== "undefined") {
