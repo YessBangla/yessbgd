@@ -187,7 +187,7 @@ export function Header() {
             height={48}
             decoding="async"
             fetchPriority="high"
-            className="logo-mark h-12 w-12 rounded-2xl bg-white object-contain p-1 ring-1 ring-border shadow-md transition-transform duration-300 group-hover:scale-[1.04]"
+            className="logo-mark h-12 w-12 rounded-2xl bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04]"
           />
         </Link>
 
