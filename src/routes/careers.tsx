@@ -322,8 +322,15 @@ function Careers() {
     };
     const parsed = applicationSchema.safeParse(raw);
     const resumeErr = validateResume(resume);
+    const isOpen = selectedJob.slug === "open-application";
+    const desiredRole = String(fd.get("desiredRole") ?? "").trim();
+    let desiredRoleErr: string | null = null;
+    if (isOpen) {
+      if (desiredRole.length < 2) desiredRoleErr = "Please tell us the role you're interested in.";
+      else if (desiredRole.length > 120) desiredRoleErr = "Please keep it under 120 characters.";
+    }
 
-    if (!parsed.success || resumeErr) {
+    if (!parsed.success || resumeErr || desiredRoleErr) {
       const fieldErrors: Errors = {};
       if (!parsed.success) {
         for (const issue of parsed.error.issues) {
@@ -332,9 +339,12 @@ function Careers() {
         }
       }
       if (resumeErr) fieldErrors.resume = resumeErr;
+      if (desiredRoleErr) (fieldErrors as Errors & { desiredRole?: string }).desiredRole = desiredRoleErr;
       setErrors(fieldErrors);
       return;
     }
+
+    const finalJobTitle = isOpen ? `Open Application — ${desiredRole}` : selectedJob.title;
 
     setSubmitting(true);
     try {
