@@ -168,7 +168,7 @@ function Index() {
         {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
         <HeroOverlays imageSrc={heroImg} />
 
-        <div className="container-tight relative grid gap-5 py-4 sm:gap-7 sm:py-7 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-9">
+        <div className="container-tight relative grid gap-4 py-3 sm:gap-6 sm:py-5 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-7">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             {/* Eyebrow chip */}
