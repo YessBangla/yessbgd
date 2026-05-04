@@ -362,7 +362,7 @@ function Careers() {
         .from("job_applications")
         .insert({
           job_slug: selectedJob.slug,
-          job_title: selectedJob.title,
+          job_title: finalJobTitle,
           full_name: parsed.data.fullName,
           email: parsed.data.email,
           phone: parsed.data.phone,
