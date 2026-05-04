@@ -341,6 +341,24 @@ function Careers() {
         subtitle="Join a team of consultants, engineers and creators shaping the next decade of business and technology in South Asia."
       />
 
+      {/* Stats strip */}
+      <section className="border-b border-border bg-secondary/30 py-10">
+        <div className="container-tight">
+          <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center sm:text-left">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {s.label}
+                </dt>
+                <dd className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                  {s.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* Application flow */}
       <section id="application-flow" className="py-16 sm:py-20">
         <div className="container-tight">
