@@ -95,37 +95,70 @@ function ApplicationStatusPage() {
   const [ref, setRef] = useState(sp.ref ?? "");
   const [email, setEmail] = useState(sp.email ?? "");
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [app, setApp] = useState<Application | null>(null);
+  const [lastChecked, setLastChecked] = useState<Date | null>(null);
+  const [online, setOnline] = useState(typeof navigator === "undefined" ? true : navigator.onLine);
+  const [flash, setFlash] = useState(false);
+  const prevSigRef = useRef<string | null>(null);
+
+  const runLookup = async (
+    parsedRef: string,
+    parsedEmail: string,
+  ): Promise<{ row: Application | null; error: string | null }> => {
+    const { data, error: queryErr } = await supabase.rpc("lookup_application", {
+      _ref: parsedRef,
+      _email: parsedEmail,
+    });
+    if (queryErr) return { row: null, error: queryErr.message };
+    const row = Array.isArray(data) ? ((data[0] as Application | undefined) ?? null) : null;
+    return { row, error: null };
+  };
 
   const lookup = async (evt?: FormEvent) => {
     evt?.preventDefault();
     setError(null);
     setApp(null);
+    prevSigRef.current = null;
     const parsed = lookupSchema.safeParse({ ref, email });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Invalid input");
       return;
     }
     setLoading(true);
-    const { data, error: queryErr } = await supabase.rpc("lookup_application", {
-      _ref: parsed.data.ref,
-      _email: parsed.data.email,
-    });
+    const { row, error: err } = await runLookup(parsed.data.ref, parsed.data.email);
     setLoading(false);
-    if (queryErr) {
-      setError(queryErr.message);
+    setLastChecked(new Date());
+    if (err) {
+      setError(err);
       return;
     }
-    const row = Array.isArray(data) ? data[0] : null;
     if (!row) {
-      setError("No application found for this reference and email.");
+      setError("No application found for this reference and email. Please double-check both values.");
       return;
     }
-    setApp(row as Application);
+    prevSigRef.current = `${row.status}|${row.status_updated_at}`;
+    setApp(row);
   };
 
-  // Auto-lookup when arriving with prefilled params
+  const refresh = async () => {
+    if (!app || refreshing) return;
+    setRefreshing(true);
+    const { row } = await runLookup(ref, email);
+    setRefreshing(false);
+    setLastChecked(new Date());
+    if (row) {
+      const sig = `${row.status}|${row.status_updated_at}`;
+      if (sig !== prevSigRef.current) {
+        prevSigRef.current = sig;
+        setFlash(true);
+        setTimeout(() => setFlash(false), 1600);
+      }
+      setApp(row);
+    }
+  };
+
   useEffect(() => {
     if (sp.ref && sp.email) {
       lookup();
@@ -133,15 +166,33 @@ function ApplicationStatusPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Poll every 20s for status updates (anon has no realtime SELECT access)
+  useEffect(() => {
+    const onOnline = () => setOnline(true);
+    const onOffline = () => setOnline(false);
+    window.addEventListener("online", onOnline);
+    window.addEventListener("offline", onOffline);
+    return () => {
+      window.removeEventListener("online", onOnline);
+      window.removeEventListener("offline", onOffline);
+    };
+  }, []);
+
   useEffect(() => {
     if (!app?.id) return;
-    const t = setInterval(async () => {
-      const { data } = await supabase.rpc("lookup_application", { _ref: ref, _email: email });
-      const row = Array.isArray(data) ? data[0] : null;
-      if (row) setApp(row as Application);
-    }, 20000);
-    return () => clearInterval(t);
+    const tick = () => {
+      if (document.hidden || !navigator.onLine) return;
+      void refresh();
+    };
+    const t = setInterval(tick, 20000);
+    const onVis = () => {
+      if (!document.hidden) void refresh();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      clearInterval(t);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [app?.id, ref, email]);
 
   const refDisplay = useMemo(() => (app ? app.id.slice(0, 8).toUpperCase() : ""), [app]);
