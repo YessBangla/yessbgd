@@ -250,7 +250,15 @@ function AdminApplications() {
       />
       <section className="pb-24">
         <div className="container-tight">
-          
+          <div className="mb-4 flex flex-wrap gap-2 text-sm">
+            <Link to="/admin/applications" className="rounded-full border border-primary bg-primary/10 px-3 py-1.5 font-semibold text-primary">
+              Applications
+            </Link>
+            <Link to="/admin/messages" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
+              Messages
+            </Link>
+          </div>
+
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-muted-foreground">
               {items
@@ -258,6 +266,13 @@ function AdminApplications() {
                 : "Loading…"}
             </div>
             <div className="flex gap-2">
+              <button
+                onClick={exportCSV}
+                disabled={!filtered.length}
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold disabled:opacity-50"
+              >
+                <Download className="h-4 w-4" /> Export CSV
+              </button>
               <button
                 onClick={load}
                 className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold"
