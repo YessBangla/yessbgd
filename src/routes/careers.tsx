@@ -132,6 +132,11 @@ const applicationSchema = z.object({
     .min(7, "Please enter a valid phone number")
     .max(30)
     .regex(/^[0-9+\-\s()]+$/, "Use digits, spaces, +, -, ( and ) only"),
+  location: z
+    .string()
+    .trim()
+    .min(2, "Please enter your city / country")
+    .max(120, "Please keep it under 120 characters"),
   linkedin: z
     .string()
     .trim()
