@@ -42,6 +42,7 @@ import {
   Download,
   Mail,
   Layers,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
