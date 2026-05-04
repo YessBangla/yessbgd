@@ -151,7 +151,7 @@ function Index() {
       {/* HERO — international editorial, full-bleed cinematic */}
       <section
         className="hero-section relative isolate grid overflow-hidden bg-foreground text-background"
-        style={{ minHeight: "clamp(240px, 34vh, 368px)" }}
+        style={{ minHeight: "clamp(192px, 27vh, 294px)" }}
       >
         {/* Background image */}
         <img
@@ -168,7 +168,7 @@ function Index() {
         {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
         <HeroOverlays imageSrc={heroImg} />
 
-        <div className="container-tight relative grid gap-4 py-3 sm:gap-6 sm:py-5 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-7">
+        <div className="container-tight relative grid gap-3 py-2 sm:gap-5 sm:py-4 lg:grid-cols-12 lg:items-center lg:gap-6 lg:py-5">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             {/* Eyebrow chip */}
