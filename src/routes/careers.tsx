@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
 import {
   Briefcase,
@@ -83,6 +83,8 @@ function Careers() {
   const [filterLocation, setFilterLocation] = useState<string>("All");
   const [filterDept, setFilterDept] = useState<string>("All");
   const [filterLevel, setFilterLevel] = useState<string>("All");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 6;
   const [resume, setResume] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -125,12 +127,28 @@ function Careers() {
     (filterDept !== "All" ? 1 : 0) +
     (filterLevel !== "All" ? 1 : 0);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [filtered, safePage],
+  );
+
+  // Reset to page 1 whenever filters/search change
+  const filtersKey = `${query}|${filterType}|${filterLocation}|${filterDept}|${filterLevel}`;
+  const lastKeyRef = useRef(filtersKey);
+  if (lastKeyRef.current !== filtersKey) {
+    lastKeyRef.current = filtersKey;
+    if (page !== 1) setPage(1);
+  }
+
   const resetFilters = () => {
     setFilterType("All");
     setFilterLocation("All");
     setFilterDept("All");
     setFilterLevel("All");
     setQuery("");
+    setPage(1);
   };
 
   const proceedToForm = () => {
@@ -260,8 +278,19 @@ function Careers() {
           <div className="mx-auto mt-10 max-w-5xl">
             {step === 1 && (
               <StepSelect
-                openings={filtered}
+                openings={paged}
+                filteredCount={filtered.length}
                 allCount={openings.length}
+                page={safePage}
+                totalPages={totalPages}
+                onPageChange={(p) => {
+                  setPage(p);
+                  if (typeof window !== "undefined") {
+                    window.requestAnimationFrame(() => {
+                      document.getElementById("application-flow")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                  }
+                }}
                 query={query}
                 setQuery={setQuery}
                 selectedSlug={selectedSlug}
@@ -396,7 +425,11 @@ function Stepper({ step }: { step: 1 | 2 | 3 }) {
 
 function StepSelect({
   openings,
+  filteredCount,
   allCount,
+  page,
+  totalPages,
+  onPageChange,
   query,
   setQuery,
   selectedSlug,
@@ -416,7 +449,11 @@ function StepSelect({
   resetFilters,
 }: {
   openings: typeof import("@/data/openings").openings;
+  filteredCount: number;
   allCount: number;
+  page: number;
+  totalPages: number;
+  onPageChange: (p: number) => void;
   query: string;
   setQuery: (s: string) => void;
   selectedSlug: string | null;
@@ -544,9 +581,15 @@ function StepSelect({
         </p>
       )}
 
+      {totalPages > 1 && (
+        <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
+      )}
+
       <div className="mt-8 flex flex-col-reverse items-stretch justify-between gap-3 sm:flex-row sm:items-center">
         <p className="text-xs text-muted-foreground">
-          Showing {openings.length} of {allCount} open roles.
+          {filteredCount === 0
+            ? `No roles match · ${allCount} total open`
+            : `Showing ${openings.length} of ${filteredCount} match${filteredCount > 1 ? "es" : ""} · ${allCount} total open`}
         </p>
         <button
           type="button"
@@ -859,5 +902,80 @@ function FilterSelect({
         <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       </div>
     </div>
+  );
+}
+
+function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+}: {
+  page: number;
+  totalPages: number;
+  onPageChange: (p: number) => void;
+}) {
+  const pages: (number | "…")[] = [];
+  const add = (p: number | "…") => pages.push(p);
+  const window = 1;
+  for (let i = 1; i <= totalPages; i++) {
+    if (
+      i === 1 ||
+      i === totalPages ||
+      (i >= page - window && i <= page + window)
+    ) {
+      add(i);
+    } else if (pages[pages.length - 1] !== "…") {
+      add("…");
+    }
+  }
+  const btn =
+    "inline-flex h-9 min-w-9 items-center justify-center rounded-full border px-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40";
+  return (
+    <nav
+      aria-label="Job listings pagination"
+      className="mt-6 flex flex-wrap items-center justify-center gap-1.5"
+    >
+      <button
+        type="button"
+        onClick={() => onPageChange(page - 1)}
+        disabled={page <= 1}
+        className={`${btn} border-border text-muted-foreground hover:text-foreground`}
+        aria-label="Previous page"
+      >
+        <ArrowLeft className="h-4 w-4" />
+      </button>
+      {pages.map((p, idx) =>
+        p === "…" ? (
+          <span key={`e-${idx}`} className="px-2 text-sm text-muted-foreground">
+            …
+          </span>
+        ) : (
+          <button
+            key={p}
+            type="button"
+            onClick={() => onPageChange(p)}
+            aria-current={p === page ? "page" : undefined}
+            className={
+              btn +
+              " " +
+              (p === page
+                ? "border-primary bg-gradient-primary text-primary-foreground shadow-glow"
+                : "border-border text-foreground/80 hover:bg-secondary/40")
+            }
+          >
+            {p}
+          </button>
+        ),
+      )}
+      <button
+        type="button"
+        onClick={() => onPageChange(page + 1)}
+        disabled={page >= totalPages}
+        className={`${btn} border-border text-muted-foreground hover:text-foreground`}
+        aria-label="Next page"
+      >
+        <ArrowRight className="h-4 w-4" />
+      </button>
+    </nav>
   );
 }
