@@ -281,8 +281,8 @@ function Index() {
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
-              className="hero-fade mt-7 sm:mt-9 lg:mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4"
-              style={{ animationDelay: "220ms" }}
+              className="hero-fade flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4"
+              style={{ animationDelay: "220ms", marginTop: "var(--hero-rhythm-md)" }}
               role="group"
               aria-label="Primary hero actions"
             >
