@@ -257,19 +257,14 @@ function Index() {
               </span>
             </h1>
 
-            {/* Lede paragraph — fluid type, premium leading & tracking.
-                Slightly higher contrast (/80) and wider max-width on desktop
-                for editorial readability without losing the airy feel. */}
+            {/* Lede paragraph */}
             <p
-              className="hero-fade mt-5 sm:mt-7 lg:mt-8 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
+              className="hero-fade max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
               style={{
                 animationDelay: "160ms",
-                /* 14.5px mobile → 18px desktop — premium body scale */
+                marginTop: "var(--hero-rhythm-sm)",
                 fontSize: "clamp(0.90625rem, 0.78rem + 0.55vw, 1.125rem)",
-                /* Mobile relaxed (1.62) → desktop tight (1.5).
-                   Real curve, no negative pinning. */
                 lineHeight: "clamp(1.5, 1.7 - 0.02vw, 1.64)",
-                /* Subtle em-based optical tracking — script-safe */
                 letterSpacing: "-0.006em",
                 wordSpacing: "normal",
               }}
