@@ -219,6 +219,7 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
+              data-testid="hero-headline"
               className="hero-fade max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
