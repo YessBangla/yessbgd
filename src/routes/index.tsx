@@ -213,22 +213,22 @@ function Index() {
               className="hero-fade mt-3 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Refined editorial scale: 30px floor → 60px ceiling.
-                   Bigger mobile floor for a more premium hero, ceiling
-                   reached at ~1366px for a true desktop sweet spot. */
-                fontSize: "clamp(1.875rem, 1.05rem + 3.4vw, 3.75rem)",
-                /* Premium leading: relaxed mobile (1.1) → tight desktop
-                   (1.04). Smooth real curve across 320–1366px. */
-                lineHeight: "clamp(1.04, 1.26 - 0.06vw, 1.18)",
-                /* Em-based optical tracking — auto-scales with font-size */
-                letterSpacing: "-0.024em",
+                /* Balanced editorial scale: 26px floor → 56px ceiling.
+                   Tuned so "Youth Entrepreneurship" (22 chars) fits on
+                   one line from 320px upward without overflow. */
+                fontSize: "clamp(1.625rem, 0.7rem + 2.8vw, 3.5rem)",
+                /* Premium leading: relaxed mobile (1.1) → tight desktop (1.05). */
+                lineHeight: "clamp(1.05, 1.24 - 0.05vw, 1.18)",
+                /* Em-based optical tracking — slightly tighter so the
+                   headline single-line fits comfortably on small phones. */
+                letterSpacing: "-0.028em",
                 wordSpacing: "normal",
               }}
             >
               {/* Editorial three-line cadence — YESS acronym expanded:
                   Y outh E ntrepreneurship · S mart S uccess · with our
                   Excellence & Solutions. */}
-              <span className="water-text block">Youth Entrepreneurship</span>
+              <span className="water-text block whitespace-nowrap">Youth Entrepreneurship</span>
               <span
                 className="block text-background/95"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
