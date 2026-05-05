@@ -322,7 +322,7 @@ function Index() {
                   gap: "var(--hero-rhythm-xs)",
                 }}
               >
-                <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
+                <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/70 sm:inline">
                   Why teams choose us
                 </span>
                 <span
