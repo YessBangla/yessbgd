@@ -56,7 +56,11 @@ function VenturePage() {
   const { venture: v } = Route.useLoaderData();
   const Icon = v.icon;
   const cs = getVentureCase(v);
-  const others = ventures.filter((x) => x.slug !== v.slug).slice(0, 3);
+  // Related projects: prioritise same category, then fill from the rest. Cap at 4.
+  const sameCat = ventures.filter((x) => x.slug !== v.slug && x.category === v.category);
+  const otherCat = ventures.filter((x) => x.slug !== v.slug && x.category !== v.category);
+  const related = [...sameCat, ...otherCat].slice(0, 4);
+  const others = related;
 
   return (
     <>
@@ -437,11 +441,22 @@ function VenturePage() {
         </div>
       </section>
 
-      {/* Other ventures */}
+      {/* Related projects */}
       <section className="pb-20">
         <div className="container-tight">
-          <div className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-bold">Explore other ventures</h2>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Related projects
+              </p>
+              <h2 className="mt-3 font-display text-2xl font-bold sm:text-3xl">
+                More work from the YESS Bangla group.
+              </h2>
+              <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+                Sibling ventures we recommend exploring next — chosen for shared audience,
+                capability overlap and proven outcomes.
+              </p>
+            </div>
             <Link
               to="/ventures"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
@@ -449,15 +464,20 @@ function VenturePage() {
               View all <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {others.map((o) => {
               const OIcon = o.icon;
+              const why =
+                o.category === v.category
+                  ? `Same focus area as ${v.title}.`
+                  : `Often paired with ${v.title} to extend reach.`;
               return (
                 <Link
                   key={o.slug}
                   to="/ventures/$slug"
                   params={{ slug: o.slug }}
-                  className="group overflow-hidden rounded-2xl border border-border bg-background/60 transition-all hover:-translate-y-1 hover:shadow-elegant"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background/60 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  aria-label={`Read about ${o.title}`}
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img
@@ -475,12 +495,16 @@ function VenturePage() {
                       <OIcon className="h-4.5 w-4.5" strokeWidth={1.5} />
                     </span>
                   </div>
-                  <div className="p-5">
+                  <div className="flex flex-1 flex-col p-5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                       {o.category}
                     </p>
                     <h3 className="mt-1 font-display text-lg font-semibold">{o.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{o.desc}</p>
+                    <p className="mt-1 text-xs italic text-muted-foreground/90">{why}</p>
+                    <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{o.desc}</p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
+                      Explore <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </span>
                   </div>
                 </Link>
               );
