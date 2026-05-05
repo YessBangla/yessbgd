@@ -340,8 +340,8 @@ function Index() {
           {/* RIGHT — Floating editorial cards */}
           <div className="relative lg:col-span-5 xl:col-span-5">
             <div
-              className="hero-fade ml-auto max-w-sm space-y-3"
-              style={{ animationDelay: "240ms" }}
+              className="hero-fade ml-auto max-w-sm flex flex-col"
+              style={{ animationDelay: "240ms", gap: "var(--hero-rhythm-xs)" }}
             >
               <div className="hero-float rounded-2xl border border-background/15 bg-background/8 p-5 backdrop-blur-xl" style={{ animationDelay: "0s" }}>
                 <div className="flex items-center gap-3">
