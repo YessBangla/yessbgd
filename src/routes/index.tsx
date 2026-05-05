@@ -322,7 +322,7 @@ function Index() {
                   gap: "var(--hero-rhythm-xs)",
                 }}
               >
-                <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
+                <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/75 sm:inline">
                   Why teams choose us
                 </span>
                 <span
@@ -332,7 +332,7 @@ function Index() {
               </div>
               <div
                 data-testid="hero-trust-list"
-                className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/70"
+                className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/85"
                 style={{
                   animationDelay: "360ms",
                   marginTop: "var(--hero-rhythm-xs)",

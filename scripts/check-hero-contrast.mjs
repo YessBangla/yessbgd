@@ -70,20 +70,41 @@ function contrast(fgOklch, bgOklch) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
+/* ---------- alpha-composite helpers (for translucent text) ---------- */
+function alphaCompositeLin(fgOklch, bgOklch, alpha) {
+  const fg = oklchToLinearRgb(parseOklch(fgOklch));
+  const bg = oklchToLinearRgb(parseOklch(bgOklch));
+  return fg.map((c, i) => c * alpha + bg[i] * (1 - alpha));
+}
+function contrastLinear(fgLin, bgLin) {
+  const L1 = relLum(fgLin);
+  const L2 = relLum(bgLin);
+  const [hi, lo] = L1 > L2 ? [L1, L2] : [L2, L1];
+  return (hi + 0.05) / (lo + 0.05);
+}
+
 /* ---------- combinations to test ---------- */
 // On the homepage hero, the section has bg-foreground + text-background
-// so the "background" color of the surface is actually --foreground, and
-// the text uses --background. We check both themes.
+// so the "background" surface is --foreground and the text is --background.
 const checks = [
-  // {label, fg token, bg token, theme tokens, min ratio (large=3, body=4.5)}
-  { label: "Hero headline (light theme surface)",  fg: "background", bg: "foreground", tokens: lightTokens, min: 3 },
-  { label: "Hero lede (light theme surface)",      fg: "background", bg: "foreground", tokens: lightTokens, min: 4.5 },
-  { label: "Hero headline (dark theme surface)",   fg: "background", bg: "foreground", tokens: darkTokens,  min: 3 },
-  { label: "Hero lede (dark theme surface)",       fg: "background", bg: "foreground", tokens: darkTokens,  min: 4.5 },
+  { label: "Hero headline (light surface)",        fg: "background", bg: "foreground", tokens: lightTokens, min: 3 },
+  { label: "Hero lede (light surface)",            fg: "background", bg: "foreground", tokens: lightTokens, min: 4.5 },
+  { label: "Hero headline (dark surface)",         fg: "background", bg: "foreground", tokens: darkTokens,  min: 3 },
+  { label: "Hero lede (dark surface)",             fg: "background", bg: "foreground", tokens: darkTokens,  min: 4.5 },
   { label: "Accent on hero surface (light)",       fg: "accent",     bg: "foreground", tokens: lightTokens, min: 3 },
   { label: "Accent on hero surface (dark)",        fg: "accent",     bg: "foreground", tokens: darkTokens,  min: 3 },
   { label: "Primary CTA text (light)",             fg: "foreground", bg: "background", tokens: lightTokens, min: 4.5 },
   { label: "Primary CTA text (dark)",              fg: "foreground", bg: "background", tokens: darkTokens,  min: 4.5 },
+  // Note: hero CTAs use bg-background (not bg-accent), so accent-on-accent
+  // contrast isn't exercised here — covered by site-wide checks elsewhere.
+  // Trust signals — labels render text-background/85, eyebrow text-background/70.
+  { label: "Trust label /85 on hero (light)",      fg: "background", bg: "foreground", alpha: 0.85, tokens: lightTokens, min: 4.5 },
+  { label: "Trust label /85 on hero (dark)",       fg: "background", bg: "foreground", alpha: 0.85, tokens: darkTokens,  min: 4.5 },
+  { label: "Trust eyebrow /75 on hero (light)",    fg: "background", bg: "foreground", alpha: 0.75, tokens: lightTokens, min: 3 },
+  { label: "Trust eyebrow /75 on hero (dark)",     fg: "background", bg: "foreground", alpha: 0.75, tokens: darkTokens,  min: 3 },
+  // Trust icon glyphs (text-accent on hero surface)
+  { label: "Trust icon (accent) on hero (light)",  fg: "accent", bg: "foreground", tokens: lightTokens, min: 3 },
+  { label: "Trust icon (accent) on hero (dark)",   fg: "accent", bg: "foreground", tokens: darkTokens,  min: 3 },
 ];
 
 const failures = [];
@@ -92,13 +113,18 @@ for (const c of checks) {
   const fg = c.tokens[c.fg];
   const bg = c.tokens[c.bg];
   if (!fg || !bg) {
-    failures.push(`Missing token for ${c.label} (fg=${c.fg}, bg=${c.bg})`);
+    failures.push({ label: c.label, msg: `Missing token (fg=${c.fg}, bg=${c.bg})` });
     continue;
   }
-  const ratio = contrast(fg, bg);
+  let ratio;
+  if (c.alpha != null) {
+    ratio = contrastLinear(alphaCompositeLin(fg, bg, c.alpha), oklchToLinearRgb(parseOklch(bg)));
+  } else {
+    ratio = contrast(fg, bg);
+  }
   const pass = ratio >= c.min;
   rows.push({ ...c, ratio, pass });
-  if (!pass) failures.push(`${c.label}: ${ratio.toFixed(2)}:1 (needs ≥ ${c.min}:1)`);
+  if (!pass) failures.push({ label: c.label, msg: `${ratio.toFixed(2)}:1 (needs ≥ ${c.min}:1)` });
 }
 
 console.log("Hero contrast report (WCAG AA)\n");
@@ -112,12 +138,32 @@ for (const r of rows) {
   );
 }
 
+/* ---------- markdown report (for CI job summary) ---------- */
+import { writeFileSync, mkdirSync } from "node:fs";
+const reportPath = resolve(__dirname, "../reports/hero-contrast.md");
+mkdirSync(dirname(reportPath), { recursive: true });
+const md = [
+  "# Hero contrast report (WCAG AA)",
+  "",
+  `**Source tokens:** \`src/styles.css\``,
+  `**Failures:** ${failures.length}`,
+  "",
+  "| Combination | Ratio | Min | Result |",
+  "| --- | ---: | ---: | :---: |",
+  ...rows.map((r) => `| ${r.label} | ${r.ratio.toFixed(2)}:1 | ${r.min} | ${r.pass ? "✓" : "✗"} |`),
+  ...(failures.length
+    ? ["", "## Failures", "", ...failures.map((f) => `- **${f.label}** — ${f.msg}`)]
+    : []),
+  "",
+].join("\n");
+writeFileSync(reportPath, md, "utf8");
+
 if (failures.length) {
   console.error("\n✗ WCAG AA contrast failures:\n");
-  for (const f of failures) console.error("  • " + f);
+  for (const f of failures) console.error(`  • ${f.label}: ${f.msg}`);
   console.error(
-    "\nAdjust the offending tokens in src/styles.css (`:root` for light, `.dark` for dark theme).\n",
+    `\nReport: ${reportPath}\nAdjust offending tokens in src/styles.css (\`:root\` light, \`.dark\` dark).\n`,
   );
   process.exit(1);
 }
-console.log("\n✓ All hero text/overlay combinations meet WCAG AA.");
+console.log(`\n✓ All hero text/overlay combinations meet WCAG AA. Report: ${reportPath}`);
