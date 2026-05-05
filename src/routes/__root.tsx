@@ -81,7 +81,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
-      <DevHydrationProbe />
+      
     </div>
   );
 }
