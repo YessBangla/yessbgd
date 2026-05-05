@@ -13,7 +13,7 @@ import {
   Quote,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { getVenture, getVentureCase, ventures } from "@/data/ventures";
+import { getVenture, getVentureCase, getVentureGallery, getVentureTestimonial, ventures } from "@/data/ventures";
 
 export const Route = createFileRoute("/ventures/$slug")({
   loader: ({ params }) => {
