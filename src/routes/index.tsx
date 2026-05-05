@@ -211,9 +211,6 @@ function Index() {
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
 
-            {/* Headline */}
-            <h1
-
             {/* Headline — three-line editorial cadence with water shimmer.
                 Typography contract (see scripts/check-hero-typography.mjs):
                   • fontSize: clamp(rem, expr, rem) — editorial ceiling 3.5rem
@@ -222,7 +219,7 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-5 sm:mt-7 lg:mt-8 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
+              className="hero-fade max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
                 /* Balanced editorial scale: 26px floor → 56px ceiling.
