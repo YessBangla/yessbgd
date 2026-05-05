@@ -215,7 +215,7 @@ function VenturePage() {
               Why partners choose {v.title}.
             </h2>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
-              {v.features.map((f, i) => (
+              {v.features.map((f: { title: string; desc: string }, i: number) => (
                 <Reveal key={f.title} delay={i * 0.05}>
                   <article className="group h-full rounded-3xl border border-border bg-secondary/20 p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:bg-secondary/40">
                     <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
