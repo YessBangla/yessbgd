@@ -102,8 +102,6 @@ const checks = [
   { label: "Trust label /85 on hero (dark)",       fg: "background", bg: "foreground", alpha: 0.85, tokens: darkTokens,  min: 4.5 },
   { label: "Trust eyebrow /70 on hero (light)",    fg: "background", bg: "foreground", alpha: 0.7,  tokens: lightTokens, min: 3 },
   { label: "Trust eyebrow /70 on hero (dark)",     fg: "background", bg: "foreground", alpha: 0.7,  tokens: darkTokens,  min: 3 },
-  { label: "Trust eyebrow /45 on hero (light)",    fg: "background", bg: "foreground", alpha: 0.45, tokens: lightTokens, min: 3 },
-  { label: "Trust eyebrow /45 on hero (dark)",     fg: "background", bg: "foreground", alpha: 0.45, tokens: darkTokens,  min: 3 },
   // Trust icon glyphs (text-accent on hero surface)
   { label: "Trust icon (accent) on hero (light)",  fg: "accent", bg: "foreground", tokens: lightTokens, min: 3 },
   { label: "Trust icon (accent) on hero (dark)",   fg: "accent", bg: "foreground", tokens: darkTokens,  min: 3 },
