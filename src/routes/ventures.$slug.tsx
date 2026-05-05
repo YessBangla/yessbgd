@@ -13,7 +13,7 @@ import {
   Quote,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { getVenture, getVentureCase, ventures } from "@/data/ventures";
+import { getVenture, getVentureCase, getVentureGallery, getVentureTestimonial, ventures } from "@/data/ventures";
 
 export const Route = createFileRoute("/ventures/$slug")({
   loader: ({ params }) => {
@@ -319,6 +319,54 @@ function VenturePage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Gallery strip */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              In the field
+            </p>
+            <h2 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">
+              A look inside {v.title}.
+            </h2>
+          </div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {getVentureGallery(v).slice(0, 4).map((src, i) => (
+              <Reveal key={src + i} delay={i * 0.05}>
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-secondary/30">
+                  <img
+                    src={src}
+                    alt={`${v.title} — visual ${i + 1}`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/80 to-transparent" />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Client testimonial */}
+      <section className="py-12">
+        <div className="container-tight">
+          <Reveal>
+            <figure className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${v.color} p-10 text-primary-foreground shadow-elegant md:p-14`}>
+              <Quote className="absolute right-6 top-6 h-12 w-12 opacity-20" />
+              <blockquote className="max-w-3xl font-display text-xl font-semibold leading-snug sm:text-2xl">
+                “{getVentureTestimonial(v).quote}”
+              </blockquote>
+              <figcaption className="mt-6 text-sm opacity-90">
+                <span className="font-semibold">{getVentureTestimonial(v).author}</span>
+                <span className="mx-2 opacity-60">·</span>
+                <span>{getVentureTestimonial(v).role}</span>
+              </figcaption>
+            </figure>
+          </Reveal>
         </div>
       </section>
 

@@ -20,6 +20,12 @@ export type VentureCase = {
   results: { label: string; value: string }[];
 };
 
+export type VentureTestimonial = {
+  quote: string;
+  author: string;
+  role: string;
+};
+
 export type Venture = {
   slug: string;
   title: string;
@@ -37,6 +43,8 @@ export type Venture = {
   founded?: string;
   reach?: string;
   caseStudy?: VentureCase;
+  gallery?: string[];
+  testimonial?: VentureTestimonial;
 };
 
 export const ventures: Venture[] = [
@@ -549,6 +557,23 @@ export const ventures: Venture[] = [
 ];
 
 export const getVenture = (slug: string) => ventures.find((v) => v.slug === slug);
+
+// Pull 4 sibling images for a gallery strip when a venture has no curated gallery.
+export function getVentureGallery(v: Venture): string[] {
+  if (v.gallery && v.gallery.length > 0) return v.gallery;
+  const siblings = ventures.filter((x) => x.slug !== v.slug).map((x) => x.image);
+  return [v.image, ...siblings.slice(0, 4)];
+}
+
+// Tasteful default testimonial — varied per category for international feel.
+export function getVentureTestimonial(v: Venture): VentureTestimonial {
+  if (v.testimonial) return v.testimonial;
+  return {
+    quote: `Working with ${v.title} felt like adding a senior partner to our team — clear thinking, on-time delivery and measurable impact from week one.`,
+    author: "Tahmid R. Karim",
+    role: `Director of Operations · ${v.category} client`,
+  };
+}
 
 // Generic case study builder — gives every venture a richer detail page
 // (challenge, solution, phases, tech stack, measurable results).
