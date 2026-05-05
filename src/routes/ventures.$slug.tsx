@@ -355,17 +355,52 @@ function VenturePage() {
       <section className="py-12">
         <div className="container-tight">
           <Reveal>
-            <figure className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${v.color} p-10 text-primary-foreground shadow-elegant md:p-14`}>
-              <Quote className="absolute right-6 top-6 h-12 w-12 opacity-20" />
-              <blockquote className="max-w-3xl font-display text-xl font-semibold leading-snug sm:text-2xl">
-                “{getVentureTestimonial(v).quote}”
-              </blockquote>
-              <figcaption className="mt-6 text-sm opacity-90">
-                <span className="font-semibold">{getVentureTestimonial(v).author}</span>
-                <span className="mx-2 opacity-60">·</span>
-                <span>{getVentureTestimonial(v).role}</span>
-              </figcaption>
-            </figure>
+            {(() => {
+              const t = getVentureTestimonial(v);
+              return (
+                <figure className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${v.color} p-10 text-primary-foreground shadow-elegant md:p-14`}>
+                  <Quote className="absolute right-6 top-6 h-12 w-12 opacity-20" />
+                  <div className="flex flex-wrap items-center gap-4">
+                    {t.logoUrl ? (
+                      <img
+                        src={t.logoUrl}
+                        alt={`${t.company ?? t.author} logo`}
+                        className="h-12 w-12 rounded-xl bg-background/95 object-contain p-1.5 shadow"
+                      />
+                    ) : (
+                      <span
+                        aria-hidden
+                        className="grid h-12 w-12 place-items-center rounded-xl bg-background/95 font-display text-base font-bold text-foreground shadow"
+                      >
+                        {t.logoText ?? t.author.slice(0, 2).toUpperCase()}
+                      </span>
+                    )}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.18em] opacity-90">
+                      {t.company && <span>{t.company}</span>}
+                      {t.company && t.timeframe && <span aria-hidden className="opacity-50">·</span>}
+                      {t.timeframe && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <CalendarDays className="h-3.5 w-3.5" /> {t.timeframe}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <blockquote className="mt-6 max-w-3xl font-display text-xl font-semibold leading-snug sm:text-2xl">
+                    “{t.quote}”
+                  </blockquote>
+                  <figcaption className="mt-6 text-sm opacity-90">
+                    <span className="font-semibold">{t.author}</span>
+                    <span className="mx-2 opacity-60">·</span>
+                    <span>{t.role}</span>
+                  </figcaption>
+                  {t.source && (
+                    <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary-foreground/25 bg-background/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] opacity-90 backdrop-blur">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> {t.source}
+                    </p>
+                  )}
+                </figure>
+              );
+            })()}
           </Reveal>
         </div>
       </section>
