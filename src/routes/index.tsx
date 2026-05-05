@@ -709,37 +709,38 @@ function Index() {
           </Reveal>
 
           <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {ventures.map((v) => (
-              <StaggerItem key={v.name}>
-                <motion.button
-                  type="button"
-                  onClick={() => setOpenVenture(v)}
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="group relative h-full w-full overflow-hidden rounded-2xl glass-card p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6"
-                  aria-label={`Open details for ${v.name}`}
-                >
-                  <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
-                  <div className="relative flex items-start gap-4">
-                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                      <v.icon className="h-6 w-6" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-display text-base font-semibold leading-tight sm:text-lg">{v.name}</h3>
-                        <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                          {v.tag}
+            {ventures.map((v) => {
+              const VIcon = v.icon;
+              return (
+                <StaggerItem key={v.slug}>
+                  <Link
+                    to="/ventures/$slug"
+                    params={{ slug: v.slug }}
+                    aria-label={`Read about ${v.title}`}
+                    className="group relative block h-full w-full overflow-hidden rounded-2xl glass-card p-5 text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6"
+                  >
+                    <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
+                    <div className="relative flex items-start gap-4">
+                      <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${v.color} text-primary-foreground shadow-glow`}>
+                        <VIcon className="h-6 w-6" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <h3 className="font-display text-base font-semibold leading-tight sm:text-lg">{v.title}</h3>
+                          <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                            {v.category.split(" ")[0]}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
+                        <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
+                          Explore {v.title} <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
-                      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
-                      <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
-                        View details <ArrowRight className="h-3.5 w-3.5" />
-                      </span>
                     </div>
-                  </div>
-                </motion.button>
-              </StaggerItem>
-            ))}
+                  </Link>
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
