@@ -212,19 +212,15 @@ function Index() {
               className="hero-fade mt-3 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Refined editorial scale: 26px floor → 56px ceiling.
-                   Tuned slope (3.0vw) so ceiling lands at ~1280px instead
-                   of 994px — gives larger laptops a true 50–54px sweet spot
-                   before pinning, avoiding tablet portrait jumps. */
-                fontSize: "clamp(1.625rem, 0.95rem + 3.0vw, 3.5rem)",
-                /* Premium leading: relaxed on mobile (1.08), tighter on
-                   desktop (1.06). Previous formula was always floor-clamped
-                   to 1.04 because preferred went negative — fixed slope
-                   so the curve actually runs from ~1.08 → 1.06 across
-                   320–1366px without overlap or negative math. */
-                lineHeight: "clamp(1.06, 1.24 - 0.05vw, 1.2)",
+                /* Refined editorial scale: 30px floor → 60px ceiling.
+                   Bigger mobile floor for a more premium hero, ceiling
+                   reached at ~1366px for a true desktop sweet spot. */
+                fontSize: "clamp(1.875rem, 1.05rem + 3.4vw, 3.75rem)",
+                /* Premium leading: relaxed mobile (1.1) → tight desktop
+                   (1.04). Smooth real curve across 320–1366px. */
+                lineHeight: "clamp(1.04, 1.26 - 0.06vw, 1.18)",
                 /* Em-based optical tracking — auto-scales with font-size */
-                letterSpacing: "-0.022em",
+                letterSpacing: "-0.024em",
                 wordSpacing: "normal",
               }}
             >
@@ -263,15 +259,13 @@ function Index() {
               className="hero-fade mt-3.5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
-                /* 13px mobile → 17px desktop — editorial body scale */
-                fontSize: "clamp(0.8125rem, 0.7rem + 0.5vw, 1.0625rem)",
-                /* Mobile relaxed (1.64) → desktop tight (1.5).
-                   Old formula was always floor-pinned to 1.55 because the
-                   preferred expression went negative across all viewports.
-                   New slope produces a real curve: 1.64 → 1.56 → 1.50. */
-                lineHeight: "clamp(1.5, 1.7 - 0.018vw, 1.66)",
+                /* 14.5px mobile → 18px desktop — premium body scale */
+                fontSize: "clamp(0.90625rem, 0.78rem + 0.55vw, 1.125rem)",
+                /* Mobile relaxed (1.62) → desktop tight (1.5).
+                   Real curve, no negative pinning. */
+                lineHeight: "clamp(1.5, 1.7 - 0.02vw, 1.64)",
                 /* Subtle em-based optical tracking — script-safe */
-                letterSpacing: "-0.005em",
+                letterSpacing: "-0.006em",
                 wordSpacing: "normal",
               }}
             >
@@ -292,14 +286,14 @@ function Index() {
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-semibold text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-background px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[15px] font-semibold tracking-[-0.005em] text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Start a project
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
               <Link
                 to="/services"
-                className="group inline-flex items-center justify-center gap-2 rounded-full border border-background/30 bg-background/5 px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-semibold text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[15px] font-semibold tracking-[-0.005em] text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Explore services
                 <ArrowRight className="h-4 w-4 opacity-70 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
