@@ -259,15 +259,13 @@ function Index() {
               className="hero-fade mt-3.5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
               style={{
                 animationDelay: "160ms",
-                /* 13px mobile → 17px desktop — editorial body scale */
-                fontSize: "clamp(0.8125rem, 0.7rem + 0.5vw, 1.0625rem)",
-                /* Mobile relaxed (1.64) → desktop tight (1.5).
-                   Old formula was always floor-pinned to 1.55 because the
-                   preferred expression went negative across all viewports.
-                   New slope produces a real curve: 1.64 → 1.56 → 1.50. */
-                lineHeight: "clamp(1.5, 1.7 - 0.018vw, 1.66)",
+                /* 14.5px mobile → 18px desktop — premium body scale */
+                fontSize: "clamp(0.90625rem, 0.78rem + 0.55vw, 1.125rem)",
+                /* Mobile relaxed (1.62) → desktop tight (1.5).
+                   Real curve, no negative pinning. */
+                lineHeight: "clamp(1.5, 1.7 - 0.02vw, 1.64)",
                 /* Subtle em-based optical tracking — script-safe */
-                letterSpacing: "-0.005em",
+                letterSpacing: "-0.006em",
                 wordSpacing: "normal",
               }}
             >
