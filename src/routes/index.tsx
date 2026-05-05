@@ -328,7 +328,7 @@ function Index() {
                 animationDelay: "360ms",
                 marginTop: "var(--hero-rhythm-xs)",
                 columnGap: "var(--hero-rhythm-sm)",
-                rowGap: "var(--space-2)",
+                rowGap: "var(--hero-rhythm-xs)",
               }}
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
