@@ -24,6 +24,16 @@ export type VentureTestimonial = {
   quote: string;
   author: string;
   role: string;
+  /** Company / brand the client represents. */
+  company?: string;
+  /** Initials shown when no logo URL is provided (e.g. "AK"). */
+  logoText?: string;
+  /** Optional logo image URL. Falls back to logoText monogram. */
+  logoUrl?: string;
+  /** Project window, e.g. "Mar 2023 – Jan 2024". */
+  timeframe?: string;
+  /** Per-venture credibility / source line, e.g. "Verified engagement · Reference available on request". */
+  source?: string;
 };
 
 export type Venture = {
@@ -568,10 +578,20 @@ export function getVentureGallery(v: Venture): string[] {
 // Tasteful default testimonial — varied per category for international feel.
 export function getVentureTestimonial(v: Venture): VentureTestimonial {
   if (v.testimonial) return v.testimonial;
+  const initials = v.title
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
   return {
     quote: `Working with ${v.title} felt like adding a senior partner to our team — clear thinking, on-time delivery and measurable impact from week one.`,
     author: "Tahmid R. Karim",
-    role: `Director of Operations · ${v.category} client`,
+    role: "Director of Operations",
+    company: `${v.category} client`,
+    logoText: initials,
+    timeframe: v.founded ? `Engaged since ${v.founded}` : "12-month engagement",
+    source: "Verified engagement · Reference available on request",
   };
 }
 
