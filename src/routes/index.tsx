@@ -219,6 +219,7 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
+              data-testid="hero-headline"
               className="hero-fade max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
@@ -259,6 +260,7 @@ function Index() {
 
             {/* Lede paragraph */}
             <p
+              data-testid="hero-lede"
               className="hero-fade max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
               style={{
                 animationDelay: "160ms",
@@ -281,6 +283,7 @@ function Index() {
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
+              data-testid="hero-buttons"
               className="hero-fade flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center"
               style={{
                 animationDelay: "220ms",
@@ -309,31 +312,38 @@ function Index() {
             </div>
 
             {/* Trust signals — divider + caps label for editorial weight */}
-            <div
-              className="hero-fade flex items-center"
-              style={{
-                animationDelay: "320ms",
-                marginTop: "var(--hero-rhythm-md)",
-                gap: "var(--hero-rhythm-xs)",
-              }}
-            >
-              <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
-                Why teams choose us
-              </span>
-              <span className="hidden h-px flex-1 bg-background/15 sm:block" />
-            </div>
-            <div
-              className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/70"
-              style={{
-                animationDelay: "360ms",
-                marginTop: "var(--hero-rhythm-xs)",
-                columnGap: "var(--hero-rhythm-sm)",
-                rowGap: "var(--hero-rhythm-xs)",
-              }}
-            >
-              <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
-              <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
-              <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> 98% client retention</span>
+            <div data-testid="hero-trust-area">
+              <div
+                data-testid="hero-trust-row"
+                className="hero-fade flex items-center"
+                style={{
+                  animationDelay: "320ms",
+                  marginTop: "var(--hero-rhythm-md)",
+                  gap: "var(--hero-rhythm-xs)",
+                }}
+              >
+                <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
+                  Why teams choose us
+                </span>
+                <span
+                  data-testid="hero-trust-divider"
+                  className="hidden h-px flex-1 bg-background/15 sm:block"
+                />
+              </div>
+              <div
+                data-testid="hero-trust-list"
+                className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/70"
+                style={{
+                  animationDelay: "360ms",
+                  marginTop: "var(--hero-rhythm-xs)",
+                  columnGap: "var(--hero-rhythm-sm)",
+                  rowGap: "var(--hero-rhythm-xs)",
+                }}
+              >
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
+                <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
+                <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> 98% client retention</span>
+              </div>
             </div>
           </div>
 

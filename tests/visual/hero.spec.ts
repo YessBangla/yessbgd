@@ -1,53 +1,74 @@
 /**
- * Hero visual regression — mobile / tablet / desktop.
+ * Hero visual regression — sub-section snapshots.
  *
- * Captures a pixel snapshot of the homepage hero `<section>` at three
- * canonical breakpoints. Baselines are stored alongside this file under
- * `__screenshots__/`. The first run records baselines; subsequent runs
- * fail on any visual diff above the configured threshold.
+ * Captures pixel snapshots of distinct hero sub-regions (headline,
+ * lede, button group, trust area + its row/divider/list children) at
+ * three canonical breakpoints so a rhythm regression in one block
+ * doesn't smear diffs across the whole hero.
+ *
+ * Stable selectors (data-testid):
+ *   • hero-headline
+ *   • hero-lede
+ *   • hero-buttons
+ *   • hero-trust-area
+ *   • hero-trust-row
+ *   • hero-trust-divider
+ *   • hero-trust-list
  *
  * Run:
- *   bunx playwright install chromium   # one-time
- *   bunx playwright test tests/visual  # compare
- *   bunx playwright test tests/visual --update-snapshots  # accept new baseline
- *
- * Requires Playwright. Install with:  bun add -d @playwright/test
+ *   bunx playwright install chromium
+ *   bunx playwright test tests/visual
+ *   bunx playwright test tests/visual --update-snapshots
  */
-import { test, expect, devices } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
 const BASE_URL = process.env.PREVIEW_URL ?? "http://localhost:3000";
 
 const VIEWPORTS = [
-  { name: "mobile",  width: 390,  height: 844  }, // iPhone 13
-  { name: "tablet",  width: 820,  height: 1180 }, // iPad Air
-  { name: "desktop", width: 1440, height: 900  }, // standard laptop
+  { name: "mobile",  width: 390,  height: 844  },
+  { name: "tablet",  width: 820,  height: 1180 },
+  { name: "desktop", width: 1440, height: 900  },
+] as const;
+
+const TARGETS = [
+  { id: "hero-section",       selector: "section.hero-section" },
+  { id: "hero-headline",      selector: '[data-testid="hero-headline"]' },
+  { id: "hero-lede",          selector: '[data-testid="hero-lede"]' },
+  { id: "hero-buttons",       selector: '[data-testid="hero-buttons"]' },
+  { id: "hero-trust-area",    selector: '[data-testid="hero-trust-area"]' },
+  { id: "hero-trust-row",     selector: '[data-testid="hero-trust-row"]' },
+  { id: "hero-trust-divider", selector: '[data-testid="hero-trust-divider"]' },
+  { id: "hero-trust-list",    selector: '[data-testid="hero-trust-list"]' },
 ] as const;
 
 for (const vp of VIEWPORTS) {
-  test(`hero @ ${vp.name} (${vp.width}×${vp.height})`, async ({ page }) => {
-    await page.setViewportSize({ width: vp.width, height: vp.height });
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+  test.describe(`hero @ ${vp.name} (${vp.width}×${vp.height})`, () => {
+    test.beforeEach(async ({ page }) => {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await page.goto(BASE_URL, { waitUntil: "networkidle" });
+      await page.addStyleTag({
+        content: `*, *::before, *::after { animation: none !important; transition: none !important; }`,
+      });
+      await page.waitForLoadState("networkidle");
+    });
 
-    // Disable animations so snapshots are stable across runs.
-    await page.addStyleTag({
-      content: `
-        *, *::before, *::after {
-          animation: none !important;
-          transition: none !important;
+    for (const target of TARGETS) {
+      test(`${target.id}`, async ({ page }) => {
+        const el = page.locator(target.selector).first();
+
+        // Trust divider is hidden on mobile (sm:block) — skip cleanly.
+        if (target.id === "hero-trust-divider" && vp.name === "mobile") {
+          await expect(el).toBeHidden();
+          return;
         }
-      `,
-    });
 
-    const hero = page.locator("section.hero-section").first();
-    await expect(hero).toBeVisible();
-
-    // Wait for hero image to finish loading.
-    await page.waitForLoadState("networkidle");
-
-    await expect(hero).toHaveScreenshot(`hero-${vp.name}.png`, {
-      maxDiffPixelRatio: 0.01, // tolerate ≤1 % drift (font hinting, etc.)
-      animations: "disabled",
-      caret: "hide",
-    });
+        await expect(el).toBeVisible();
+        await expect(el).toHaveScreenshot(`${target.id}-${vp.name}.png`, {
+          maxDiffPixelRatio: 0.01,
+          animations: "disabled",
+          caret: "hide",
+        });
+      });
+    }
   });
 }

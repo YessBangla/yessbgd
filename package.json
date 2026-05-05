@@ -11,6 +11,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "check:typography": "node scripts/check-hero-typography.mjs && node scripts/check-homepage-typography.mjs",
+    "check:contrast": "node scripts/check-hero-contrast.mjs",
+    "check:a11y": "npm run check:typography && npm run check:contrast",
     "test:visual": "playwright test tests/visual",
     "test:visual:update": "playwright test tests/visual --update-snapshots"
   },
