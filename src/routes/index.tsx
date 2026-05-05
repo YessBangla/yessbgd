@@ -315,8 +315,8 @@ function Index() {
               <span className="hidden h-px flex-1 bg-background/15 sm:block" />
             </div>
             <div
-              className="hero-fade mt-2 sm:mt-3 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs text-background/70"
-              style={{ animationDelay: "360ms" }}
+              className="hero-fade flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs text-background/70"
+              style={{ animationDelay: "360ms", marginTop: "var(--hero-rhythm-xs)" }}
             >
               <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
               <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
