@@ -103,6 +103,9 @@ function AdminMessages() {
             <Link to="/admin/messages" className="rounded-full border border-primary bg-primary/10 px-3 py-1.5 font-semibold text-primary">
               Messages
             </Link>
+            <Link to="/admin/audit" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
+              Audit log
+            </Link>
           </div>
 
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">

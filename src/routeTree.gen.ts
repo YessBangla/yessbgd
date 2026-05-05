@@ -27,6 +27,7 @@ import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
 
 const VenturesRoute = VenturesRouteImport.update({
@@ -119,6 +120,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/admin/audit',
+  path: '/admin/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
   id: '/admin/applications',
   path: '/admin/applications',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/ventures'
     | '/admin/applications'
+    | '/admin/audit'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/ventures'
     | '/admin/applications'
+    | '/admin/audit'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/ventures'
     | '/admin/applications'
+    | '/admin/audit'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   VenturesRoute: typeof VenturesRouteWithChildren
   AdminApplicationsRoute: typeof AdminApplicationsRoute
+  AdminAuditRoute: typeof AdminAuditRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
 }
@@ -402,6 +415,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/admin/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/applications': {
       id: '/admin/applications'
       path: '/admin/applications'
@@ -462,6 +482,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   VenturesRoute: VenturesRouteWithChildren,
   AdminApplicationsRoute: AdminApplicationsRoute,
+  AdminAuditRoute: AdminAuditRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminMessagesRoute: AdminMessagesRoute,
 }
