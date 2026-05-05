@@ -125,16 +125,16 @@
 @media (min-width: 768px) {
   :root {
     --hero-overlay-h: linear-gradient(95deg,
-      color-mix(in oklab, var(--hero-veil) 88%, transparent) 0%,
-      color-mix(in oklab, var(--hero-veil) 70%, transparent) 38%,
-      color-mix(in oklab, var(--hero-veil) 38%, transparent) 66%,
-      color-mix(in oklab, var(--hero-veil) 10%, transparent) 90%,
+      color-mix(in oklab, var(--hero-ink) 86%, transparent) 0%,
+      color-mix(in oklab, var(--hero-ink) 70%, transparent) 38%,
+      color-mix(in oklab, var(--hero-veil) 42%, transparent) 66%,
+      color-mix(in oklab, var(--hero-veil) 14%, transparent) 90%,
       transparent 100%);
     --hero-overlay-v: linear-gradient(180deg,
-      color-mix(in oklab, var(--hero-ink) 22%, transparent) 0%,
+      color-mix(in oklab, var(--hero-ink) 36%, transparent) 0%,
       transparent 28%,
       transparent 68%,
-      color-mix(in oklab, var(--hero-veil) 40%, transparent) 100%);
+      color-mix(in oklab, var(--hero-ink) 55%, transparent) 100%);
     --hero-halo-blur: 40px;
     --hero-glow-opacity: 0.55;
     --hero-grid-opacity: 0.035;
