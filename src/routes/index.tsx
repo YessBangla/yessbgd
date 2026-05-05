@@ -170,7 +170,15 @@ function Index() {
         {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
         <HeroOverlays imageSrc={heroImg} />
 
-        <div className="container-tight relative grid gap-4 py-8 sm:gap-6 sm:py-12 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-16">
+        <div
+          className="container-tight relative grid lg:grid-cols-12 lg:items-center"
+          style={{
+            rowGap: "var(--hero-rhythm-md)",
+            columnGap: "var(--hero-rhythm-lg)",
+            paddingTop: "var(--hero-rhythm-lg)",
+            paddingBottom: "var(--hero-rhythm-lg)",
+          }}
+        >
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             {/* Eyebrow chip */}
@@ -190,9 +198,10 @@ function Index() {
 
             {/* Section label — international editorial eyebrow */}
             <div
-              className="hero-fade mt-3.5 sm:mt-5 flex items-center gap-2.5 sm:gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
+              className="hero-fade flex items-center gap-2.5 sm:gap-3 text-[10px] sm:text-[11px] font-semibold uppercase text-background/65"
               style={{
                 animationDelay: "40ms",
+                marginTop: "var(--hero-rhythm-xs)",
                 letterSpacing: "0.32em",
                 wordSpacing: "normal",
               }}
@@ -210,18 +219,12 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-5 sm:mt-7 lg:mt-8 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
+              className="hero-fade max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Balanced editorial scale: 26px floor → 56px ceiling.
-                   "Youth Entrepreneurship" stays one-line from 320px+. */
+                marginTop: "var(--hero-rhythm-md)",
                 fontSize: "clamp(1.625rem, 0.7rem + 2.8vw, 3.5rem)",
-                /* Premium leading: relaxed mobile (1.14) → tight desktop (1.06).
-                   Slightly more air on mobile for breathing room between the
-                   three-line cadence. */
                 lineHeight: "clamp(1.06, 1.3 - 0.06vw, 1.2)",
-                /* Em-based optical tracking — slightly tighter so the
-                   headline single-line fits comfortably on small phones. */
                 letterSpacing: "-0.028em",
                 wordSpacing: "normal",
               }}
@@ -254,19 +257,14 @@ function Index() {
               </span>
             </h1>
 
-            {/* Lede paragraph — fluid type, premium leading & tracking.
-                Slightly higher contrast (/80) and wider max-width on desktop
-                for editorial readability without losing the airy feel. */}
+            {/* Lede paragraph */}
             <p
-              className="hero-fade mt-5 sm:mt-7 lg:mt-8 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
+              className="hero-fade max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
               style={{
                 animationDelay: "160ms",
-                /* 14.5px mobile → 18px desktop — premium body scale */
+                marginTop: "var(--hero-rhythm-sm)",
                 fontSize: "clamp(0.90625rem, 0.78rem + 0.55vw, 1.125rem)",
-                /* Mobile relaxed (1.62) → desktop tight (1.5).
-                   Real curve, no negative pinning. */
                 lineHeight: "clamp(1.5, 1.7 - 0.02vw, 1.64)",
-                /* Subtle em-based optical tracking — script-safe */
                 letterSpacing: "-0.006em",
                 wordSpacing: "normal",
               }}
@@ -283,8 +281,8 @@ function Index() {
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
-              className="hero-fade mt-7 sm:mt-9 lg:mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4"
-              style={{ animationDelay: "220ms" }}
+              className="hero-fade flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4"
+              style={{ animationDelay: "220ms", marginTop: "var(--hero-rhythm-md)" }}
               role="group"
               aria-label="Primary hero actions"
             >
@@ -308,8 +306,8 @@ function Index() {
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-7 sm:mt-9 lg:mt-10 flex items-center gap-4"
-              style={{ animationDelay: "320ms" }}
+              className="hero-fade flex items-center gap-4"
+              style={{ animationDelay: "320ms", marginTop: "var(--hero-rhythm-md)" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
                 Why teams choose us

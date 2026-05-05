@@ -161,6 +161,60 @@
   --shadow-accent: 0 10px 30px -8px oklch(0.68 0.2 28 / 0.3);
 
   --transition-base: 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ───────────────────────────────────────────────────────────────
+     INTERNATIONAL DESIGN TOKENS — greys, spacing, type scale.
+     One source of truth so every page reads as a cohesive system.
+     ─────────────────────────────────────────────────────────────── */
+
+  /* Neutral grey ramp — cool slate, hue-locked at 250 for parity
+     with --hero-ink. Use for text, borders, surfaces, dividers. */
+  --neutral-50:  oklch(0.985 0.003 250);
+  --neutral-100: oklch(0.965 0.004 250);
+  --neutral-200: oklch(0.93  0.006 250);
+  --neutral-300: oklch(0.88  0.008 250);
+  --neutral-400: oklch(0.74  0.012 250);
+  --neutral-500: oklch(0.58  0.014 250);
+  --neutral-600: oklch(0.46  0.014 250);
+  --neutral-700: oklch(0.36  0.014 250);
+  --neutral-800: oklch(0.26  0.016 250);
+  --neutral-900: oklch(0.18  0.018 250);
+  --neutral-950: oklch(0.12  0.02  250);
+
+  /* 8-pt spacing scale — every margin/gap should snap to this.
+     Naming follows a familiar 1=4px, 2=8px, ... 16=128px ladder. */
+  --space-0: 0px;
+  --space-1: 0.25rem;   /* 4  */
+  --space-2: 0.5rem;    /* 8  */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.25rem;   /* 20 */
+  --space-6: 1.5rem;    /* 24 */
+  --space-7: 1.75rem;   /* 28 */
+  --space-8: 2rem;      /* 32 */
+  --space-10: 2.5rem;   /* 40 */
+  --space-12: 3rem;     /* 48 */
+  --space-14: 3.5rem;   /* 56 */
+  --space-16: 4rem;     /* 64 */
+  --space-20: 5rem;     /* 80 */
+  --space-24: 6rem;     /* 96 */
+
+  /* Hero vertical rhythm — fluid clamps so the cadence between
+     eyebrow → label → h1 → lede → CTA → trust scales smoothly
+     from 320px phones to 1440px desktops without per-breakpoint
+     overrides in route files. */
+  --hero-rhythm-xs: clamp(0.875rem, 0.7rem + 0.6vw, 1.25rem);  /* 14 → 20 */
+  --hero-rhythm-sm: clamp(1rem,    0.8rem + 0.8vw, 1.5rem);    /* 16 → 24 */
+  --hero-rhythm-md: clamp(1.25rem, 0.95rem + 1.1vw, 2rem);     /* 20 → 32 */
+  --hero-rhythm-lg: clamp(1.75rem, 1.25rem + 1.6vw, 2.75rem);  /* 28 → 44 */
+
+  /* Fluid type scale — cohesive editorial ramp. Bind to these
+     instead of hard-coded clamp() in components when possible. */
+  --text-xs:   clamp(0.75rem,  0.72rem + 0.1vw, 0.8125rem);
+  --text-sm:   clamp(0.8125rem, 0.78rem + 0.15vw, 0.9375rem);
+  --text-base: clamp(0.9375rem, 0.88rem + 0.25vw, 1.0625rem);
+  --text-lg:   clamp(1.0625rem, 0.98rem + 0.4vw,  1.1875rem);
+  --text-xl:   clamp(1.1875rem, 1.05rem + 0.6vw,  1.375rem);
 }
 
 .dark {
