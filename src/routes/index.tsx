@@ -260,6 +260,7 @@ function Index() {
 
             {/* Lede paragraph */}
             <p
+              data-testid="hero-lede"
               className="hero-fade max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
               style={{
                 animationDelay: "160ms",
