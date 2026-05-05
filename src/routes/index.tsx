@@ -332,7 +332,7 @@ function Index() {
               </div>
               <div
                 data-testid="hero-trust-list"
-                className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/70"
+                className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/85"
                 style={{
                   animationDelay: "360ms",
                   marginTop: "var(--hero-rhythm-xs)",
