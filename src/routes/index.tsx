@@ -212,19 +212,15 @@ function Index() {
               className="hero-fade mt-3 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Refined editorial scale: 26px floor → 56px ceiling.
-                   Tuned slope (3.0vw) so ceiling lands at ~1280px instead
-                   of 994px — gives larger laptops a true 50–54px sweet spot
-                   before pinning, avoiding tablet portrait jumps. */
-                fontSize: "clamp(1.625rem, 0.95rem + 3.0vw, 3.5rem)",
-                /* Premium leading: relaxed on mobile (1.08), tighter on
-                   desktop (1.06). Previous formula was always floor-clamped
-                   to 1.04 because preferred went negative — fixed slope
-                   so the curve actually runs from ~1.08 → 1.06 across
-                   320–1366px without overlap or negative math. */
-                lineHeight: "clamp(1.06, 1.24 - 0.05vw, 1.2)",
+                /* Refined editorial scale: 30px floor → 60px ceiling.
+                   Bigger mobile floor for a more premium hero, ceiling
+                   reached at ~1366px for a true desktop sweet spot. */
+                fontSize: "clamp(1.875rem, 1.05rem + 3.4vw, 3.75rem)",
+                /* Premium leading: relaxed mobile (1.1) → tight desktop
+                   (1.04). Smooth real curve across 320–1366px. */
+                lineHeight: "clamp(1.04, 1.26 - 0.06vw, 1.18)",
                 /* Em-based optical tracking — auto-scales with font-size */
-                letterSpacing: "-0.022em",
+                letterSpacing: "-0.024em",
                 wordSpacing: "normal",
               }}
             >
