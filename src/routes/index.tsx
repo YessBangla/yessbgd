@@ -222,15 +222,9 @@ function Index() {
               className="hero-fade max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
-                /* Balanced editorial scale: 26px floor → 56px ceiling.
-                   "Youth Entrepreneurship" stays one-line from 320px+. */
+                marginTop: "var(--hero-rhythm-md)",
                 fontSize: "clamp(1.625rem, 0.7rem + 2.8vw, 3.5rem)",
-                /* Premium leading: relaxed mobile (1.14) → tight desktop (1.06).
-                   Slightly more air on mobile for breathing room between the
-                   three-line cadence. */
                 lineHeight: "clamp(1.06, 1.3 - 0.06vw, 1.2)",
-                /* Em-based optical tracking — slightly tighter so the
-                   headline single-line fits comfortably on small phones. */
                 letterSpacing: "-0.028em",
                 wordSpacing: "normal",
               }}
