@@ -99,25 +99,28 @@
   /* Mobile defaults — softer cinematic wash. We use a mid slate ink
      instead of near-black so the photograph still breathes through while
      keeping the white headline readable (WCAG AA on the left third). */
-  --hero-ink: oklch(0.28 0.018 250);              /* mid slate ink */
-  --hero-veil: oklch(0.34 0.022 250);             /* lighter slate veil */
+  /* Mid-grey wash — image is desaturated to light grey at the <img>
+     level, then this overlay tints the left side a touch darker so the
+     white headline keeps WCAG AA contrast without the photo feeling dark. */
+  --hero-ink: oklch(0.42 0.008 250);              /* mid grey ink */
+  --hero-veil: oklch(0.55 0.006 250);             /* lighter grey veil */
   --hero-overlay-h: linear-gradient(180deg,
-    color-mix(in oklab, var(--hero-ink) 62%, transparent) 0%,
-    color-mix(in oklab, var(--hero-veil) 44%, transparent) 55%,
-    color-mix(in oklab, var(--hero-veil) 22%, transparent) 100%);
+    color-mix(in oklab, var(--hero-ink) 55%, transparent) 0%,
+    color-mix(in oklab, var(--hero-veil) 38%, transparent) 55%,
+    color-mix(in oklab, var(--hero-veil) 18%, transparent) 100%);
   --hero-overlay-v: linear-gradient(180deg,
-    color-mix(in oklab, var(--hero-ink) 38%, transparent) 0%,
-    color-mix(in oklab, var(--hero-ink) 10%, transparent) 38%,
+    color-mix(in oklab, var(--hero-ink) 28%, transparent) 0%,
+    transparent 38%,
     transparent 70%,
-    color-mix(in oklab, var(--hero-ink) 50%, transparent) 100%);
+    color-mix(in oklab, var(--hero-ink) 38%, transparent) 100%);
   --hero-overlay-glow: radial-gradient(60% 55% at 25% 60%,
-    color-mix(in oklab, var(--accent) 16%, transparent) 0%,
+    color-mix(in oklab, var(--accent) 14%, transparent) 0%,
     transparent 75%);
   --hero-halo-primary: oklch(from var(--primary) l c h / 0.12);
   --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.16);
   --hero-halo-blur: 32px;
-  --hero-glow-opacity: 0.5;
-  --hero-grid-opacity: 0.035;
+  --hero-glow-opacity: 0.4;
+  --hero-grid-opacity: 0.03;
 }
 
 /* Tablet+ : two-column layout — left side gets a slate-to-clear gradient

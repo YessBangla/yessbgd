@@ -165,6 +165,7 @@ function Index() {
           decoding="async"
           fetchPriority="high"
           className="absolute inset-0 -z-10 h-full w-full object-cover object-center sm:object-[60%_center]"
+          style={{ filter: "grayscale(0.85) brightness(1.05) contrast(0.92)" }}
         />
         {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
         <HeroOverlays imageSrc={heroImg} />
