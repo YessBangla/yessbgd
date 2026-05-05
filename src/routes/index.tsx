@@ -170,7 +170,7 @@ function Index() {
         {/* Overlay stack — tokens in styles.css, parallax + auto-contrast */}
         <HeroOverlays imageSrc={heroImg} />
 
-        <div className="container-tight relative grid gap-3 py-2 sm:gap-5 sm:py-4 lg:grid-cols-12 lg:items-center lg:gap-6 lg:py-5">
+        <div className="container-tight relative grid gap-4 py-8 sm:gap-6 sm:py-12 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-16">
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
             {/* Eyebrow chip */}
@@ -210,15 +210,16 @@ function Index() {
                   • wordSpacing: normal — international parity */}
             <h1
               ref={headlineRef}
-              className="hero-fade mt-3 sm:mt-5 lg:mt-6 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
+              className="hero-fade mt-5 sm:mt-7 lg:mt-8 max-w-[18ch] sm:max-w-none font-display font-semibold text-balance text-background"
               style={{
                 animationDelay: "80ms",
                 /* Balanced editorial scale: 26px floor → 56px ceiling.
-                   Tuned so "Youth Entrepreneurship" (22 chars) fits on
-                   one line from 320px upward without overflow. */
+                   "Youth Entrepreneurship" stays one-line from 320px+. */
                 fontSize: "clamp(1.625rem, 0.7rem + 2.8vw, 3.5rem)",
-                /* Premium leading: relaxed mobile (1.1) → tight desktop (1.05). */
-                lineHeight: "clamp(1.05, 1.24 - 0.05vw, 1.18)",
+                /* Premium leading: relaxed mobile (1.14) → tight desktop (1.06).
+                   Slightly more air on mobile for breathing room between the
+                   three-line cadence. */
+                lineHeight: "clamp(1.06, 1.3 - 0.06vw, 1.2)",
                 /* Em-based optical tracking — slightly tighter so the
                    headline single-line fits comfortably on small phones. */
                 letterSpacing: "-0.028em",
@@ -257,7 +258,7 @@ function Index() {
                 Slightly higher contrast (/80) and wider max-width on desktop
                 for editorial readability without losing the airy feel. */}
             <p
-              className="hero-fade mt-3.5 sm:mt-6 lg:mt-7 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/80"
+              className="hero-fade mt-5 sm:mt-7 lg:mt-8 max-w-[34ch] sm:max-w-xl lg:max-w-2xl text-background/85"
               style={{
                 animationDelay: "160ms",
                 /* 14.5px mobile → 18px desktop — premium body scale */
@@ -282,28 +283,32 @@ function Index() {
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
             <div
-              className="hero-fade mt-4 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3"
+              className="hero-fade mt-7 sm:mt-9 lg:mt-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4"
               style={{ animationDelay: "220ms" }}
+              role="group"
+              aria-label="Primary hero actions"
             >
               <Link
                 to="/contact"
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-background px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[15px] font-semibold tracking-[-0.005em] text-foreground shadow-xl ring-1 ring-background/10 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                aria-label="Start a project — go to contact page"
+                className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-background px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] font-semibold tracking-[-0.005em] text-foreground shadow-xl ring-1 ring-background/15 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus:outline-none focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-[3px] focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Start a project
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
+                <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
               <Link
                 to="/services"
-                className="group inline-flex items-center justify-center gap-2 rounded-full border border-background/30 bg-background/5 px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[15px] font-semibold tracking-[-0.005em] text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/50 hover:bg-background/10 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                aria-label="Explore our services"
+                className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-background/40 bg-background/5 px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] font-semibold tracking-[-0.005em] text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/60 hover:bg-background/10 focus:outline-none focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-[3px] focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 Explore services
-                <ArrowRight className="h-4 w-4 opacity-70 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
+                <ArrowRight aria-hidden="true" className="h-4 w-4 opacity-80 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
             </div>
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-5 sm:mt-7 flex items-center gap-4"
+              className="hero-fade mt-7 sm:mt-9 lg:mt-10 flex items-center gap-4"
               style={{ animationDelay: "320ms" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
