@@ -306,8 +306,8 @@ function Index() {
 
             {/* Trust signals — divider + caps label for editorial weight */}
             <div
-              className="hero-fade mt-7 sm:mt-9 lg:mt-10 flex items-center gap-4"
-              style={{ animationDelay: "320ms" }}
+              className="hero-fade flex items-center gap-4"
+              style={{ animationDelay: "320ms", marginTop: "var(--hero-rhythm-md)" }}
             >
               <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/45 sm:inline">
                 Why teams choose us
