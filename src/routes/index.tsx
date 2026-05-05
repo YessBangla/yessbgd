@@ -12,14 +12,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Check } from "lucide-react";
+import { ventures } from "@/data/ventures";
 import {
   ArrowRight,
   Tv,
