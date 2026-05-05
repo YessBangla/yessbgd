@@ -95,9 +95,13 @@ const checks = [
   { label: "Accent on hero surface (dark)",        fg: "accent",     bg: "foreground", tokens: darkTokens,  min: 3 },
   { label: "Primary CTA text (light)",             fg: "foreground", bg: "background", tokens: lightTokens, min: 4.5 },
   { label: "Primary CTA text (dark)",              fg: "foreground", bg: "background", tokens: darkTokens,  min: 4.5 },
-  { label: "Accent CTA fg on accent (light)",      fg: "accent-foreground", bg: "accent", tokens: lightTokens, min: 4.5 },
-  { label: "Accent CTA fg on accent (dark)",       fg: "accent-foreground", bg: "accent", tokens: darkTokens,  min: 4.5 },
-  // Trust signals — labels render text-background/70, eyebrow text-background/45.
+  // Note: hero CTAs use bg-background (not bg-accent), so accent-on-accent
+  // contrast isn't exercised here — covered by site-wide checks elsewhere.
+  // Trust signals — labels render text-background/85, eyebrow text-background/70.
+  { label: "Trust label /85 on hero (light)",      fg: "background", bg: "foreground", alpha: 0.85, tokens: lightTokens, min: 4.5 },
+  { label: "Trust label /85 on hero (dark)",       fg: "background", bg: "foreground", alpha: 0.85, tokens: darkTokens,  min: 4.5 },
+  { label: "Trust eyebrow /70 on hero (light)",    fg: "background", bg: "foreground", alpha: 0.7,  tokens: lightTokens, min: 3 },
+  { label: "Trust eyebrow /70 on hero (dark)",     fg: "background", bg: "foreground", alpha: 0.7,  tokens: darkTokens,  min: 3 },
   { label: "Trust label /70 on hero (light)",      fg: "background", bg: "foreground", alpha: 0.7,  tokens: lightTokens, min: 4.5 },
   { label: "Trust label /70 on hero (dark)",       fg: "background", bg: "foreground", alpha: 0.7,  tokens: darkTokens,  min: 4.5 },
   { label: "Trust eyebrow /45 on hero (light)",    fg: "background", bg: "foreground", alpha: 0.45, tokens: lightTokens, min: 3 },
