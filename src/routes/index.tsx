@@ -110,7 +110,6 @@ const impactMetrics: ImpactMetric[] = [
 ];
 
 function Index() {
-  const [openVenture, setOpenVenture] = useState<Venture | null>(null);
   const [hydrated, setHydrated] = useState(false);
   // Pause water-ripple shimmer when the headline scrolls offscreen
   const headlineRef = useOffscreenPause<HTMLHeadingElement>();
