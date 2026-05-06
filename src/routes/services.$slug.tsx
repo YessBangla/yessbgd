@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
-import { getService, services } from "@/data/services";
+import { getService, services, type ServiceItem } from "@/data/services";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }) => {
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/services/$slug")({
 });
 
 function ServiceDetail() {
-  const { service: s } = Route.useLoaderData();
+  const { service: s } = Route.useLoaderData() as { service: ServiceItem };
   const Icon = s.icon;
 
   return (

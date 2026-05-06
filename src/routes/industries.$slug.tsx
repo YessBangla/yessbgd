@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, Sparkles, ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
-import { getIndustry, industries } from "@/data/industries";
+import { getIndustry, industries, type IndustryItem } from "@/data/industries";
 
 export const Route = createFileRoute("/industries/$slug")({
   loader: ({ params }) => {
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/industries/$slug")({
 });
 
 function IndustryDetail() {
-  const { industry: i } = Route.useLoaderData();
+  const { industry: i } = Route.useLoaderData() as { industry: IndustryItem };
   const Icon = i.icon;
 
   return (
