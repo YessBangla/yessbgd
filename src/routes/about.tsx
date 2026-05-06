@@ -1,7 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
+import {
+  CheckCircle2, Target, Eye, Heart, ShieldCheck, Award, Users, Globe2, Zap,
+  Trophy, Building2, Sparkles, ArrowRight,
+} from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
