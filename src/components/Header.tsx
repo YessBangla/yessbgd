@@ -43,13 +43,12 @@ const MobilePanel = memo(function MobilePanel({
       animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
       transition={panelTransition(reduceMotion)}
-      style={{ transformOrigin: "top", willChange: "transform, opacity" }}
+      style={{ transformOrigin: "top", willChange: "transform, opacity", paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       id="mobile-nav-panel"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
       className="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain glass-strong border-t border-glass-border shadow-elegant lg:hidden"
-      style={{ transformOrigin: "top", willChange: "transform, opacity", paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
       <div className="container-tight flex flex-col gap-1 py-3">
         <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
