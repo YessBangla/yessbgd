@@ -11,9 +11,28 @@ import {
   CalendarDays,
   Globe2,
   Quote,
+  Milestone,
+  Package,
+  HelpCircle,
+  Star,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { getVenture, getVentureCase, getVentureGallery, getVentureTestimonial, ventures } from "@/data/ventures";
+import {
+  getVenture,
+  getVentureCase,
+  getVentureGallery,
+  getVentureTestimonial,
+  getVentureMilestones,
+  getVenturePackages,
+  getVentureFaqs,
+  ventures,
+} from "@/data/ventures";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/ventures/$slug")({
   loader: ({ params }) => {
