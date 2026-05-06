@@ -43,21 +43,24 @@ const MobilePanel = memo(function MobilePanel({
       animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
       transition={panelTransition(reduceMotion)}
-      style={{ transformOrigin: "top", willChange: "transform, opacity" }}
+      style={{ transformOrigin: "top", willChange: "transform, opacity", paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       id="mobile-nav-panel"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
-      className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto glass-strong border-t border-glass-border lg:hidden"
+      className="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain glass-strong border-t border-glass-border shadow-elegant lg:hidden"
     >
       <div className="container-tight flex flex-col gap-1 py-3">
+        <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          Explore
+        </p>
         {nav.slice(0, 3).map((n) => (
           <Link
             key={n.to}
             to={n.to}
             preload="intent"
             onClick={onClose}
-            className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary active:bg-secondary"
+            className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary active:bg-secondary"
             activeProps={{ className: "text-primary bg-secondary" }}
             activeOptions={{ exact: n.to === "/" }}
           >
@@ -69,7 +72,7 @@ const MobilePanel = memo(function MobilePanel({
           type="button"
           onClick={toggleMobileVentures}
           aria-expanded={mobileVenturesOpen}
-          className={`flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
+          className={`flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
         >
           <span>Ventures</span>
           <ChevronDown
@@ -88,25 +91,34 @@ const MobilePanel = memo(function MobilePanel({
         >
           <div className="min-h-0">
             <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3 py-1">
-              {ventures.map((v) => (
-                <Link
-                  key={v.slug}
-                  to="/ventures/$slug"
-                  params={{ slug: v.slug }}
-                  preload="intent"
-                  onClick={onClose}
-                  tabIndex={mobileVenturesOpen ? 0 : -1}
-                  className="rounded-md px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary"
-                >
-                  {v.title}
-                </Link>
-              ))}
+              {ventures.map((v) => {
+                const Icon = v.icon;
+                return (
+                  <Link
+                    key={v.slug}
+                    to="/ventures/$slug"
+                    params={{ slug: v.slug }}
+                    preload="intent"
+                    onClick={onClose}
+                    tabIndex={mobileVenturesOpen ? 0 : -1}
+                    className="flex min-h-11 items-center gap-3 rounded-xl px-2 py-2 text-[14px] text-foreground/85 transition-colors hover:bg-secondary"
+                  >
+                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
+                      <Icon className="h-4 w-4" strokeWidth={1.6} />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-medium">{v.title}</span>
+                      <span className="block text-[11px] text-muted-foreground truncate">{v.category}</span>
+                    </span>
+                  </Link>
+                );
+              })}
               <Link
                 to="/projects"
                 preload="intent"
                 onClick={onClose}
                 tabIndex={mobileVenturesOpen ? 0 : -1}
-                className="rounded-md px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-secondary"
+                className="mt-1 rounded-xl px-2 py-2 text-[13px] font-semibold text-primary transition-colors hover:bg-secondary"
               >
                 View all ventures →
               </Link>
@@ -114,13 +126,16 @@ const MobilePanel = memo(function MobilePanel({
           </div>
         </div>
 
+        <p className="px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          Company
+        </p>
         {nav.slice(3).map((n) => (
           <Link
             key={n.to}
             to={n.to}
             preload="intent"
             onClick={onClose}
-            className="rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+            className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
             {n.label}
@@ -130,9 +145,9 @@ const MobilePanel = memo(function MobilePanel({
           to="/contact"
           preload="intent"
           onClick={onClose}
-          className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-center text-sm font-semibold text-background transition-transform active:scale-[0.98]"
+          className="mt-3 inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-5 py-3 text-center text-sm font-semibold text-background shadow-sm transition-transform active:scale-[0.98]"
         >
-          Let's Talk
+          Let's Talk →
         </Link>
       </div>
     </motion.div>
