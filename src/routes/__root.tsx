@@ -82,6 +82,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      <ScrollUpDown />
       
     </div>
   );
