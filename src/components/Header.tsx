@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
@@ -21,6 +21,7 @@ interface MobilePanelProps {
   mobileVenturesOpen: boolean;
   toggleMobileVentures: () => void;
   reduceMotion: boolean;
+  venturesActive: boolean;
 }
 
 const panelTransition = (reduce: boolean): Transition =>
@@ -33,6 +34,7 @@ const MobilePanel = memo(function MobilePanel({
   mobileVenturesOpen,
   toggleMobileVentures,
   reduceMotion,
+  venturesActive,
 }: MobilePanelProps) {
   return (
     <motion.div
@@ -67,7 +69,7 @@ const MobilePanel = memo(function MobilePanel({
           type="button"
           onClick={toggleMobileVentures}
           aria-expanded={mobileVenturesOpen}
-          className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+          className={`flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
         >
           <span>Ventures</span>
           <ChevronDown
@@ -171,6 +173,9 @@ export function Header() {
   const toggleMenu = useCallback(() => setOpen((v) => !v), []);
   const toggleMobileVentures = useCallback(() => setMobileVenturesOpen((v) => !v), []);
 
+  const pathname = useLocation({ select: (l) => l.pathname });
+  const venturesActive = pathname === "/ventures" || pathname.startsWith("/ventures/") || pathname === "/projects";
+
   return (
     <header className="sticky top-0 z-50 glass-nav">
       <div className="container-tight relative flex h-16 items-center justify-between">
@@ -221,9 +226,8 @@ export function Header() {
             onMouseLeave={() => setVenturesOpen(false)}
           >
             <Link
-              to="/projects"
-              className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-              activeProps={{ className: "text-primary bg-secondary" }}
+              to="/ventures"
+              className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
             >
               Ventures <ChevronDown className="h-3.5 w-3.5" />
             </Link>
@@ -311,6 +315,7 @@ export function Header() {
               mobileVenturesOpen={mobileVenturesOpen}
               toggleMobileVentures={toggleMobileVentures}
               reduceMotion={reduceMotion}
+              venturesActive={venturesActive}
             />
           )}
         </AnimatePresence>
