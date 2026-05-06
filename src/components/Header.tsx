@@ -34,6 +34,7 @@ const MobilePanel = memo(function MobilePanel({
   mobileVenturesOpen,
   toggleMobileVentures,
   reduceMotion,
+  venturesActive,
 }: MobilePanelProps) {
   return (
     <motion.div
