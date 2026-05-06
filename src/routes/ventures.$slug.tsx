@@ -23,8 +23,11 @@ import {
   Zap,
   Heart,
   Briefcase,
+  Download,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
+import { downloadVentureBrief } from "@/lib/ventureBrief";
 import {
   getVenture,
   getVentureCase,
