@@ -49,7 +49,7 @@ function Industries() {
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {industries.map((i) => (
-            <div key={i.title} className="rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <Link key={i.slug} to="/industries/$slug" params={{ slug: i.slug }} className="group rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <i.icon className="h-5 w-5" />
               </div>
@@ -63,7 +63,10 @@ function Industries() {
                   </li>
                 ))}
               </ul>
-            </div>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:gap-2 transition-all">
+                Learn more <ArrowRight className="h-3.5 w-3.5" />
+              </span>
+            </Link>
           ))}
         </div>
 
