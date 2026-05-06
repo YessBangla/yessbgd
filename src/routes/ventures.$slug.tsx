@@ -377,6 +377,150 @@ function VenturePage() {
         </div>
       </section>
 
+      {/* Milestones timeline */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div className="flex items-center gap-3">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+              <Milestone className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Our journey
+              </p>
+              <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+                Milestones that shaped {v.title}.
+              </h2>
+            </div>
+          </div>
+          <ol className="relative mt-10 space-y-6 border-l border-border pl-6">
+            {milestones.map((m, i) => (
+              <Reveal key={m.year + m.title} delay={i * 0.05}>
+                <li className="relative">
+                  <span className="absolute -left-[34px] top-1.5 grid h-5 w-5 place-items-center rounded-full bg-gradient-primary text-[10px] font-bold text-primary-foreground shadow-glow ring-4 ring-background">
+                    •
+                  </span>
+                  <div className="rounded-2xl border border-border bg-background/60 p-5 backdrop-blur">
+                    <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                      {m.year}
+                    </p>
+                    <h3 className="mt-1 font-display text-lg font-semibold">{m.title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{m.desc}</p>
+                  </div>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Packages / Engagement tiers */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div className="flex items-center gap-3">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+              <Package className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Ways to engage
+              </p>
+              <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+                Choose how you want to work with {v.title}.
+              </h2>
+            </div>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {packages.map((p, i) => (
+              <Reveal key={p.name} delay={i * 0.05}>
+                <article
+                  className={`relative flex h-full flex-col rounded-3xl border p-7 transition-all ${
+                    p.highlight
+                      ? "border-primary/50 bg-gradient-to-br from-primary/10 via-background to-background shadow-elegant"
+                      : "border-border bg-secondary/20 hover:border-primary/30"
+                  }`}
+                >
+                  {p.highlight && (
+                    <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-glow">
+                      <Star className="h-3 w-3" /> Most chosen
+                    </span>
+                  )}
+                  <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+                  <div className="mt-3 flex items-baseline gap-2">
+                    <span className="font-display text-3xl font-bold">{p.price}</span>
+                    {p.cadence && (
+                      <span className="text-xs font-medium text-muted-foreground">{p.cadence}</span>
+                    )}
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
+                  <ul className="mt-5 space-y-2.5">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span className="text-foreground/85">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    to="/contact"
+                    className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+                      p.highlight
+                        ? "bg-gradient-primary text-primary-foreground shadow-glow"
+                        : "border border-border bg-background/60 hover:bg-background"
+                    }`}
+                  >
+                    Talk to us <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQs */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+            <div>
+              <div className="flex items-center gap-3">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                  <HelpCircle className="h-5 w-5" />
+                </div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  Frequently asked
+                </p>
+              </div>
+              <h2 className="mt-4 font-display text-2xl font-semibold sm:text-3xl">
+                Everything you wanted to know about {v.title}.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Can't find what you're looking for? Our specialists answer every enquiry within one
+                business day.
+              </p>
+              <Link
+                to="/contact"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+              >
+                Ask a specialist <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((f, i) => (
+                <AccordionItem key={f.q} value={`faq-${i}`}>
+                  <AccordionTrigger className="text-left font-display text-base font-semibold">
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
       {/* Client testimonial */}
       <section className="py-12">
         <div className="container-tight">
