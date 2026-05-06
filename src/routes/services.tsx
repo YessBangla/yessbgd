@@ -28,56 +28,7 @@ type Service = {
   cta: { label: string; sub: string };
 };
 
-const services: Service[] = [
-  {
-    icon: Tv,
-    title: "Akash OTT",
-    desc: "Bangladesh's new digital streaming platform launched by YESS Bangla Communications under Akash TV.",
-    bullets: ["Multi-device streaming (web, iOS, Android, TV)", "Subscription & ad-supported monetisation", "Content management & DRM"],
-    pricing: { from: "৳ 8,00,000", model: "Fixed-price project", timeline: "12–20 weeks" },
-    cta: { label: "Get a streaming quote", sub: "Free 30-min strategy call" },
-  },
-  {
-    icon: Newspaper,
-    title: "Akash News",
-    desc: "A modern Bangladeshi digital news platform delivering real-time stories with a robust editorial CMS.",
-    bullets: ["Editorial workflow & approvals", "Real-time publishing", "SEO & social distribution"],
-    pricing: { from: "৳ 3,50,000", model: "Fixed-price + retainer", timeline: "8–12 weeks" },
-    cta: { label: "Request newsroom demo", sub: "Live walkthrough in 24 hours" },
-  },
-  {
-    icon: LayoutGrid,
-    title: "YESS One Stop Solution",
-    desc: "Centralised technology services, IT support and home services like cleaning and maintenance — under one trusted roof.",
-    bullets: ["Managed IT services", "On-site technicians", "Vendor consolidation"],
-    pricing: { from: "৳ 35,000 / mo", model: "Monthly retainer", timeline: "Live in 7 days" },
-    cta: { label: "Start managed IT", sub: "Free IT health check" },
-  },
-  {
-    icon: Code2,
-    title: "Web Development",
-    desc: "Frontend (HTML, CSS, JavaScript) and backend (PHP, Laravel, Node) engineering with responsive design.",
-    bullets: ["Custom web applications", "API & system integrations", "Performance & accessibility audits"],
-    pricing: { from: "৳ 1,20,000", model: "Fixed-price or T&M", timeline: "4–10 weeks" },
-    cta: { label: "Get a development quote", sub: "Written proposal in 1–3 days" },
-  },
-  {
-    icon: Palette,
-    title: "Web Design",
-    desc: "Visually appealing, functional websites combining layout, colour, typography and user experience.",
-    bullets: ["Brand-aligned UI design", "UX research & prototyping", "Design systems"],
-    pricing: { from: "৳ 75,000", model: "Design sprint", timeline: "2–4 weeks" },
-    cta: { label: "Book a design sprint", sub: "Kick-off within a week" },
-  },
-  {
-    icon: ShoppingBag,
-    title: "Yess Bangla Shop",
-    desc: "End-to-end e-commerce — websites, mobile apps, secure payments and doorstep delivery for retailers across Bangladesh.",
-    bullets: ["Storefront + mobile apps", "Local payment gateways", "Inventory & logistics"],
-    pricing: { from: "৳ 2,50,000", model: "Fixed-price + GMV %", timeline: "6–12 weeks" },
-    cta: { label: "Launch your store", sub: "Free e-commerce audit" },
-  },
-];
+import { services } from "@/data/services";
 
 const process = [
   { icon: Search, title: "Discover", desc: "Free 30-min discovery call to map your goals, constraints and success metrics." },
@@ -235,10 +186,17 @@ function Services() {
                     <Calendar className="h-3.5 w-3.5" /> Free consultation
                   </Link>
                   <Link
-                    to="/contact"
+                    to="/services/$slug"
+                    params={{ slug: s.slug }}
                     className="inline-flex items-center gap-1.5 rounded-full bg-gradient-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-glow transition-all hover:-translate-y-0.5"
                   >
-                    {s.cta.label} <ArrowRight className="h-3.5 w-3.5" />
+                    Learn more <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-1.5 rounded-full glass px-4 py-2 text-xs font-semibold transition-all hover:-translate-y-0.5"
+                  >
+                    {s.cta.label}
                   </Link>
                 </div>
               </div>

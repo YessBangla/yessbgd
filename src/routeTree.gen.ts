@@ -31,6 +31,11 @@ import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
+import { Route as AboutStandardsRouteImport } from './routes/about.standards'
+import { Route as AboutMethodologyRouteImport } from './routes/about.methodology'
+import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
+import { Route as AboutAwardsRouteImport } from './routes/about.awards'
+import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -142,10 +147,35 @@ const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
   path: '/admin/applications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutStandardsRoute = AboutStandardsRouteImport.update({
+  id: '/standards',
+  path: '/standards',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutMethodologyRoute = AboutMethodologyRouteImport.update({
+  id: '/methodology',
+  path: '/methodology',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutLeadershipRoute = AboutLeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutAwardsRoute = AboutAwardsRouteImport.update({
+  id: '/awards',
+  path: '/awards',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutPillarRoute = AboutPillarRouteImport.update({
+  id: '/$pillar',
+  path: '/$pillar',
+  getParentRoute: () => AboutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
@@ -156,6 +186,11 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/about/$pillar': typeof AboutPillarRoute
+  '/about/awards': typeof AboutAwardsRoute
+  '/about/leadership': typeof AboutLeadershipRoute
+  '/about/methodology': typeof AboutMethodologyRoute
+  '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
@@ -169,7 +204,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
@@ -180,6 +215,11 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/about/$pillar': typeof AboutPillarRoute
+  '/about/awards': typeof AboutAwardsRoute
+  '/about/leadership': typeof AboutLeadershipRoute
+  '/about/methodology': typeof AboutMethodologyRoute
+  '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
@@ -194,7 +234,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
@@ -205,6 +245,11 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/about/$pillar': typeof AboutPillarRoute
+  '/about/awards': typeof AboutAwardsRoute
+  '/about/leadership': typeof AboutLeadershipRoute
+  '/about/methodology': typeof AboutMethodologyRoute
+  '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
@@ -231,6 +276,11 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/about/$pillar'
+    | '/about/awards'
+    | '/about/leadership'
+    | '/about/methodology'
+    | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
@@ -255,6 +305,11 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/about/$pillar'
+    | '/about/awards'
+    | '/about/leadership'
+    | '/about/methodology'
+    | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
@@ -279,6 +334,11 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/about/$pillar'
+    | '/about/awards'
+    | '/about/leadership'
+    | '/about/methodology'
+    | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
@@ -293,7 +353,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AboutRoute: typeof AboutRouteWithChildren
   ApplicationStatusRoute: typeof ApplicationStatusRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
@@ -468,8 +528,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminApplicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about/standards': {
+      id: '/about/standards'
+      path: '/standards'
+      fullPath: '/about/standards'
+      preLoaderRoute: typeof AboutStandardsRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/methodology': {
+      id: '/about/methodology'
+      path: '/methodology'
+      fullPath: '/about/methodology'
+      preLoaderRoute: typeof AboutMethodologyRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/leadership': {
+      id: '/about/leadership'
+      path: '/leadership'
+      fullPath: '/about/leadership'
+      preLoaderRoute: typeof AboutLeadershipRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/awards': {
+      id: '/about/awards'
+      path: '/awards'
+      fullPath: '/about/awards'
+      preLoaderRoute: typeof AboutAwardsRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/$pillar': {
+      id: '/about/$pillar'
+      path: '/$pillar'
+      fullPath: '/about/$pillar'
+      preLoaderRoute: typeof AboutPillarRouteImport
+      parentRoute: typeof AboutRoute
+    }
   }
 }
+
+interface AboutRouteChildren {
+  AboutPillarRoute: typeof AboutPillarRoute
+  AboutAwardsRoute: typeof AboutAwardsRoute
+  AboutLeadershipRoute: typeof AboutLeadershipRoute
+  AboutMethodologyRoute: typeof AboutMethodologyRoute
+  AboutStandardsRoute: typeof AboutStandardsRoute
+}
+
+const AboutRouteChildren: AboutRouteChildren = {
+  AboutPillarRoute: AboutPillarRoute,
+  AboutAwardsRoute: AboutAwardsRoute,
+  AboutLeadershipRoute: AboutLeadershipRoute,
+  AboutMethodologyRoute: AboutMethodologyRoute,
+  AboutStandardsRoute: AboutStandardsRoute,
+}
+
+const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
 interface CareersRouteChildren {
   CareersSlugRoute: typeof CareersSlugRoute
@@ -520,7 +633,7 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AboutRoute: AboutRouteWithChildren,
   ApplicationStatusRoute: ApplicationStatusRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
