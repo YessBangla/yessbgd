@@ -21,6 +21,7 @@ interface MobilePanelProps {
   mobileVenturesOpen: boolean;
   toggleMobileVentures: () => void;
   reduceMotion: boolean;
+  venturesActive: boolean;
 }
 
 const panelTransition = (reduce: boolean): Transition =>
