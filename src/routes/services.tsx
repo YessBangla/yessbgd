@@ -19,15 +19,6 @@ export const Route = createFileRoute("/services")({
   component: Services,
 });
 
-type Service = {
-  icon: typeof Tv;
-  title: string;
-  desc: string;
-  bullets: string[];
-  pricing: { from: string; model: string; timeline: string };
-  cta: { label: string; sub: string };
-};
-
 import { services } from "@/data/services";
 
 const process = [
