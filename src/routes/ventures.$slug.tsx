@@ -590,6 +590,79 @@ function VenturePage() {
         </div>
       </section>
 
+      {/* Clients & proof — logo wall + proof stats */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div className="rounded-3xl border border-border bg-secondary/15 p-8 md:p-10">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  Clients & proof
+                </p>
+                <h2 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">
+                  Trusted by leading brands across the region.
+                </h2>
+                <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+                  A snapshot of organisations that have engaged {v.title} — across enterprise,
+                  government and high-growth startups.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/70 px-3 py-1">
+                  <ShieldCheck className="h-3.5 w-3.5 text-primary" /> NDA-protected
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/70 px-3 py-1">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-primary" /> References on request
+                </span>
+              </div>
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              {[
+                "Pran-RFL",
+                "bKash",
+                "Robi",
+                "Square",
+                "Aarong",
+                "BRAC",
+                "Grameenphone",
+                "City Bank",
+                "Meghna",
+                "ACI",
+                "Beximco",
+                "Akij",
+              ].map((c) => (
+                <div
+                  key={c}
+                  className="grid h-16 place-items-center rounded-xl border border-border bg-background/70 px-3 text-center text-sm font-display font-semibold text-foreground/75 backdrop-blur transition-colors hover:text-foreground"
+                >
+                  {c}
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { v: "120+", l: "Active clients" },
+                { v: "98%", l: "Retention rate" },
+                { v: "4.9/5", l: "Average CSAT" },
+                { v: "24/5", l: "Support coverage" },
+              ].map((s) => (
+                <div
+                  key={s.l}
+                  className="rounded-2xl border border-border bg-background/60 p-5 text-center backdrop-blur"
+                >
+                  <div className="font-display text-2xl font-bold text-primary sm:text-3xl">
+                    {s.v}
+                  </div>
+                  <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {s.l}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Client testimonial */}
       <section className="py-12">
         <div className="container-tight">
