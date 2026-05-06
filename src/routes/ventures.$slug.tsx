@@ -825,29 +825,37 @@ function VenturePage() {
       <section className="py-16">
         <div className="container-tight">
           <div
-            className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${v.color} p-10 text-center text-primary-foreground shadow-elegant md:p-14`}
+            className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${v.color} p-8 text-primary-foreground shadow-elegant md:p-12`}
           >
-            <Sparkles className="mx-auto h-8 w-8 opacity-80" />
-            <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl">
-              Ready to build with {v.title}?
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm opacity-90 sm:text-base">
-              Tell us about your goals and we'll come back within one business day with a clear next
-              step.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-background/95 px-6 py-3 text-sm font-semibold text-foreground shadow"
-              >
-                Start a conversation <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/ventures"
-                className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm font-semibold"
-              >
-                See all ventures
-              </Link>
+            <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+              <div>
+                <Sparkles className="h-8 w-8 opacity-80" />
+                <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl">
+                  Ready to build with {v.title}?
+                </h2>
+                <p className="mt-3 max-w-xl text-sm opacity-90 sm:text-base">
+                  Share a few details and we'll come back within one business day with a tailored
+                  proposal — or download the full enterprise brief now.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => downloadVentureBrief(v)}
+                    className="inline-flex items-center gap-2 rounded-full bg-background/95 px-5 py-2.5 text-sm font-semibold text-foreground shadow"
+                  >
+                    <Download className="h-4 w-4" /> Download brief (PDF)
+                  </button>
+                  <Link
+                    to="/ventures"
+                    className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-5 py-2.5 text-sm font-semibold"
+                  >
+                    See all ventures
+                  </Link>
+                </div>
+              </div>
+              <div className="rounded-2xl bg-background/10 p-6 backdrop-blur">
+                <LeadCaptureForm variant="onPrimary" source={`Venture · ${v.title}`} />
+              </div>
             </div>
           </div>
         </div>
