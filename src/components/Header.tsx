@@ -224,9 +224,8 @@ export function Header() {
             onMouseLeave={() => setVenturesOpen(false)}
           >
             <Link
-              to="/projects"
-              className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-              activeProps={{ className: "text-primary bg-secondary" }}
+              to="/ventures"
+              className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
             >
               Ventures <ChevronDown className="h-3.5 w-3.5" />
             </Link>
