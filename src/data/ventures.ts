@@ -36,6 +36,17 @@ export type VentureTestimonial = {
   source?: string;
 };
 
+export type VentureMilestone = { year: string; title: string; desc: string };
+export type VenturePackage = {
+  name: string;
+  price: string;
+  cadence?: string;
+  summary: string;
+  features: string[];
+  highlight?: boolean;
+};
+export type VentureFaq = { q: string; a: string };
+
 export type Venture = {
   slug: string;
   title: string;
