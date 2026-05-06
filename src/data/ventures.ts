@@ -708,6 +708,95 @@ export function getVentureTestimonial(v: Venture): VentureTestimonial {
   };
 }
 
+// Generic milestones — uses the venture's founded year as anchor.
+export function getVentureMilestones(v: Venture): VentureMilestone[] {
+  if (v.milestones && v.milestones.length) return v.milestones;
+  const start = parseInt(v.founded ?? "2020", 10) || 2020;
+  return [
+    { year: String(start), title: "Founded", desc: `${v.title} launched with a focused team and a clear mandate: ${v.tagline.toLowerCase()}` },
+    { year: String(start + 1), title: "First scale milestone", desc: `Shipped the v1 platform and onboarded our first cohort of ${v.audience.split(",")[0].toLowerCase()}.` },
+    { year: String(start + 2), title: "National footprint", desc: `Expanded operations across major Bangladesh markets with reliable SLAs and a dedicated success desk.` },
+    { year: String(start + 3), title: "International standard", desc: `Adopted enterprise-grade tooling, audited processes and a public quality scorecard reviewed each quarter.` },
+    { year: "Today", title: "Where we are now", desc: `${v.reach ?? "Trusted by partners across the region"} — and still investing in the team, the tech and the experience.` },
+  ];
+}
+
+// Three-tier offering catalogue — Starter / Growth / Enterprise.
+export function getVenturePackages(v: Venture): VenturePackage[] {
+  if (v.packages && v.packages.length) return v.packages;
+  const svc = v.services[0] ?? v.category;
+  return [
+    {
+      name: "Starter",
+      price: "On request",
+      cadence: "Per project",
+      summary: `A focused engagement to validate fit and ship a first ${svc.toLowerCase()} outcome.`,
+      features: [
+        "Discovery workshop & written scope",
+        "Single delivery sprint",
+        "Email support, business hours",
+        "30-day post-launch warranty",
+      ],
+    },
+    {
+      name: "Growth",
+      price: "Tailored",
+      cadence: "Quarterly retainer",
+      summary: `For teams scaling ${v.title} into a core part of their operation.`,
+      features: [
+        "Dedicated delivery pod",
+        "Quarterly roadmap reviews",
+        "Priority support, 24/5",
+        "Performance & quality scorecard",
+      ],
+      highlight: true,
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      cadence: "Annual partnership",
+      summary: "White-glove partnership with SLAs, dedicated leadership and custom integrations.",
+      features: [
+        "Named account leadership",
+        "Custom SLAs & security review",
+        "24/7 incident response",
+        "Quarterly business reviews",
+      ],
+    },
+  ];
+}
+
+// Six common questions tailored to the venture.
+export function getVentureFaqs(v: Venture): VentureFaq[] {
+  if (v.faqs && v.faqs.length) return v.faqs;
+  return [
+    {
+      q: `How do we get started with ${v.title}?`,
+      a: "Reach out via the contact form. A specialist will respond within one business day to schedule a 30-minute discovery call and share a written scope and indicative timeline.",
+    },
+    {
+      q: `Who is ${v.title} best suited for?`,
+      a: `${v.audience} We work with organisations of every size — from early-stage teams shipping a first product to enterprises modernising legacy operations.`,
+    },
+    {
+      q: "What does pricing look like?",
+      a: "Every engagement is scoped to outcomes rather than hours. Most partners start with our Growth tier; Starter is ideal for a focused proof-of-value and Enterprise unlocks dedicated leadership and custom SLAs.",
+    },
+    {
+      q: "How do you ensure quality and accountability?",
+      a: "Each engagement has a single accountable lead, a written success scorecard reviewed every two weeks, and a transparent change-control process. We publish quarterly business reviews for all retainer clients.",
+    },
+    {
+      q: "Can you work with our existing vendors and tools?",
+      a: `Yes. ${v.title} is designed to integrate cleanly with the platforms you already trust — we'll map dependencies during discovery and propose the lightest-touch integration that meets your goals.`,
+    },
+    {
+      q: "What support is available after launch?",
+      a: "All tiers include a post-launch warranty period. Growth and Enterprise partners receive ongoing support with documented response-time SLAs, monitoring dashboards and an escalation path to senior leadership.",
+    },
+  ];
+}
+
 // Generic case study builder — gives every venture a richer detail page
 // (challenge, solution, phases, tech stack, measurable results).
 export function getVentureCase(v: Venture): VentureCase {
