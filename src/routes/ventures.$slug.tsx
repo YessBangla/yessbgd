@@ -75,6 +75,9 @@ function VenturePage() {
   const { venture: v } = Route.useLoaderData();
   const Icon = v.icon;
   const cs = getVentureCase(v);
+  const milestones = getVentureMilestones(v);
+  const packages = getVenturePackages(v);
+  const faqs = getVentureFaqs(v);
   // Related projects: prioritise same category, then fill from the rest. Cap at 4.
   const sameCat = ventures.filter((x) => x.slug !== v.slug && x.category === v.category);
   const otherCat = ventures.filter((x) => x.slug !== v.slug && x.category !== v.category);
