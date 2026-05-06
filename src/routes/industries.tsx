@@ -3,7 +3,9 @@ import { PageHero } from "@/components/PageHero";
 import {
   Building2, ShoppingCart, GraduationCap, HeartPulse, Landmark,
   Factory, Tv, Truck, ArrowRight, CheckCircle2, Sparkles,
+  ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 
 export const Route = createFileRoute("/industries")({
   head: () => ({
