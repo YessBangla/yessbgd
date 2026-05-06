@@ -31,17 +31,18 @@ function About() {
       <section className="py-20">
         <div className="container-tight grid gap-10 lg:grid-cols-3">
           {[
-            { icon: Target, title: "Our Mission", desc: "Empower organisations across Bangladesh with strategic consulting and technology that drives measurable growth." },
-            { icon: Eye, title: "Our Vision", desc: "To become the most trusted partner for businesses transitioning into the digital era — locally and globally." },
-            { icon: Heart, title: "Our Values", desc: "Integrity, craftsmanship, customer focus and a relentless pursuit of quality in every engagement." },
+            { slug: "mission", icon: Target, title: "Our Mission", desc: "Empower organisations across Bangladesh with strategic consulting and technology that drives measurable growth." },
+            { slug: "vision", icon: Eye, title: "Our Vision", desc: "To become the most trusted partner for businesses transitioning into the digital era — locally and globally." },
+            { slug: "values", icon: Heart, title: "Our Values", desc: "Integrity, craftsmanship, customer focus and a relentless pursuit of quality in every engagement." },
           ].map((c) => (
-            <div key={c.title} className="rounded-2xl glass-card p-8 shadow-sm">
+            <Link key={c.title} to="/about/$pillar" params={{ pillar: c.slug }} className="group rounded-2xl glass-card p-8 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/40">
               <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <c.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-5 font-display text-xl font-semibold">{c.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
-            </div>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:gap-2 transition-all">Read more <ArrowRight className="h-3.5 w-3.5" /></span>
+            </Link>
           ))}
         </div>
       </section>
