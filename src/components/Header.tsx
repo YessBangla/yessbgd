@@ -171,6 +171,9 @@ export function Header() {
   const toggleMenu = useCallback(() => setOpen((v) => !v), []);
   const toggleMobileVentures = useCallback(() => setMobileVenturesOpen((v) => !v), []);
 
+  const pathname = useLocation({ select: (l) => l.pathname });
+  const venturesActive = pathname === "/ventures" || pathname.startsWith("/ventures/") || pathname === "/projects";
+
   return (
     <header className="sticky top-0 z-50 glass-nav">
       <div className="container-tight relative flex h-16 items-center justify-between">
