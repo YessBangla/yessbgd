@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { PageHero } from "@/components/PageHero";
 import { ventures } from "@/data/ventures";
 
-export const Route = createFileRoute("/ventures")({
+export const Route = createFileRoute("/ventures/")({
   head: () => ({
     meta: [
       { title: "Our Ventures — YESS Bangla" },
