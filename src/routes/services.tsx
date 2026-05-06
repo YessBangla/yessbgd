@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag, ArrowRight,
+  ArrowRight,
   Search, PenTool, Rocket, LifeBuoy, CheckCircle2, Sparkles, Calendar, FileText,
   TrendingUp, Clock, DollarSign, ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
+import { services } from "@/data/services";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -18,8 +19,6 @@ export const Route = createFileRoute("/services")({
   }),
   component: Services,
 });
-
-import { services } from "@/data/services";
 
 const process = [
   { icon: Search, title: "Discover", desc: "Free 30-min discovery call to map your goals, constraints and success metrics." },
