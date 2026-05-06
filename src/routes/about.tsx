@@ -123,6 +123,9 @@ function About() {
               </div>
             ))}
           </div>
+          <div className="mt-10 text-center">
+            <Link to="/about/leadership" className="inline-flex items-center gap-2 rounded-full glass px-5 py-2.5 text-sm font-semibold">Meet the leadership team <ArrowRight className="h-4 w-4" /></Link>
+          </div>
         </div>
       </section>
 
@@ -191,6 +194,9 @@ function About() {
                 <span className="truncate">{label}</span>
               </div>
             ))}
+          </div>
+          <div className="mt-6 text-center">
+            <Link to="/about/standards" className="text-sm font-semibold text-primary hover:underline">Read about our standards →</Link>
           </div>
         </div>
       </section>
