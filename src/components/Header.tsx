@@ -69,7 +69,7 @@ const MobilePanel = memo(function MobilePanel({
           type="button"
           onClick={toggleMobileVentures}
           aria-expanded={mobileVenturesOpen}
-          className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
+          className={`flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
         >
           <span>Ventures</span>
           <ChevronDown
