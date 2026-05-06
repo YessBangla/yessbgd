@@ -66,6 +66,9 @@ export type Venture = {
   caseStudy?: VentureCase;
   gallery?: string[];
   testimonial?: VentureTestimonial;
+  milestones?: VentureMilestone[];
+  packages?: VenturePackage[];
+  faqs?: VentureFaq[];
 };
 
 export const ventures: Venture[] = [
