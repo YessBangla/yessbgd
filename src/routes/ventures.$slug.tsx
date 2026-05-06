@@ -15,6 +15,14 @@ import {
   Package,
   HelpCircle,
   Star,
+  ShieldCheck,
+  Award,
+  Users,
+  Building2,
+  Trophy,
+  Zap,
+  Heart,
+  Briefcase,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import {
