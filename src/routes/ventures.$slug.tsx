@@ -51,15 +51,49 @@ export const Route = createFileRoute("/ventures/$slug")({
   head: ({ loaderData }) => {
     const v = loaderData?.venture;
     if (!v) return { meta: [{ title: "Venture — YESS Bangla" }] };
+    const url = `https://yessbgd.lovable.app/ventures/${v.slug}`;
+    const orgLd = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: v.title,
+      alternateName: `${v.title} — YESS Bangla`,
+      description: v.desc,
+      url,
+      logo: v.image,
+      image: v.image,
+      foundingDate: v.founded,
+      areaServed: v.reach ?? "Bangladesh",
+      parentOrganization: { "@type": "Organization", name: "YESS Bangla" },
+      sameAs: ["https://yessbgd.lovable.app"],
+    };
+    const breadcrumbLd = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://yessbgd.lovable.app/" },
+        { "@type": "ListItem", position: 2, name: "Ventures", item: "https://yessbgd.lovable.app/ventures" },
+        { "@type": "ListItem", position: 3, name: v.title, item: url },
+      ],
+    };
     return {
       meta: [
-        { title: `${v.title} — YESS Bangla` },
+        { title: `${v.title} — ${v.category} | YESS Bangla` },
         { name: "description", content: v.desc },
-        { property: "og:title", content: `${v.title} — YESS Bangla` },
+        { name: "keywords", content: [v.title, v.category, ...v.services, "YESS Bangla", "Bangladesh"].join(", ") },
+        { property: "og:title", content: `${v.title} — ${v.category} | YESS Bangla` },
         { property: "og:description", content: v.desc },
         { property: "og:image", content: v.image },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: `${v.title} — YESS Bangla` },
+        { name: "twitter:description", content: v.desc },
         { name: "twitter:image", content: v.image },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(orgLd) },
+        { type: "application/ld+json", children: JSON.stringify(breadcrumbLd) },
       ],
     };
   },
