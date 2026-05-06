@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VenturesRouteImport } from './routes/ventures'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -22,6 +21,7 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ApplicationStatusRouteImport } from './routes/application-status'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VenturesIndexRouteImport } from './routes/ventures.index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
@@ -30,11 +30,6 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
 
-const VenturesRoute = VenturesRouteImport.update({
-  id: '/ventures',
-  path: '/ventures',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -95,10 +90,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VenturesIndexRoute = VenturesIndexRouteImport.update({
+  id: '/ventures/',
+  path: '/ventures/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VenturesSlugRoute = VenturesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => VenturesRoute,
+  id: '/ventures/$slug',
+  path: '/ventures/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
@@ -144,7 +144,6 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
-  '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
@@ -152,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
+  '/ventures/': typeof VenturesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -166,7 +166,6 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
-  '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
@@ -174,6 +173,7 @@ export interface FileRoutesByTo {
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
+  '/ventures': typeof VenturesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -189,7 +189,6 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
-  '/ventures': typeof VenturesRouteWithChildren
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
@@ -197,6 +196,7 @@ export interface FileRoutesById {
   '/careers/$slug': typeof CareersSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
+  '/ventures/': typeof VenturesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -213,7 +213,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
-    | '/ventures'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
@@ -221,6 +220,7 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
+    | '/ventures/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -235,7 +235,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
-    | '/ventures'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
@@ -243,6 +242,7 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
+    | '/ventures'
   id:
     | '__root__'
     | '/'
@@ -257,7 +257,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
-    | '/ventures'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
@@ -265,6 +264,7 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/insights/$slug'
     | '/ventures/$slug'
+    | '/ventures/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -280,22 +280,16 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
-  VenturesRoute: typeof VenturesRouteWithChildren
   AdminApplicationsRoute: typeof AdminApplicationsRoute
   AdminAuditRoute: typeof AdminAuditRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
+  VenturesSlugRoute: typeof VenturesSlugRoute
+  VenturesIndexRoute: typeof VenturesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/ventures': {
-      id: '/ventures'
-      path: '/ventures'
-      fullPath: '/ventures'
-      preLoaderRoute: typeof VenturesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -380,12 +374,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ventures/': {
+      id: '/ventures/'
+      path: '/ventures'
+      fullPath: '/ventures/'
+      preLoaderRoute: typeof VenturesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ventures/$slug': {
       id: '/ventures/$slug'
-      path: '/$slug'
+      path: '/ventures/$slug'
       fullPath: '/ventures/$slug'
       preLoaderRoute: typeof VenturesSlugRouteImport
-      parentRoute: typeof VenturesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/insights/$slug': {
       id: '/insights/$slug'
@@ -455,18 +456,6 @@ const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
   InsightsRouteChildren,
 )
 
-interface VenturesRouteChildren {
-  VenturesSlugRoute: typeof VenturesSlugRoute
-}
-
-const VenturesRouteChildren: VenturesRouteChildren = {
-  VenturesSlugRoute: VenturesSlugRoute,
-}
-
-const VenturesRouteWithChildren = VenturesRoute._addFileChildren(
-  VenturesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -480,12 +469,22 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
-  VenturesRoute: VenturesRouteWithChildren,
   AdminApplicationsRoute: AdminApplicationsRoute,
   AdminAuditRoute: AdminAuditRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminMessagesRoute: AdminMessagesRoute,
+  VenturesSlugRoute: VenturesSlugRoute,
+  VenturesIndexRoute: VenturesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
