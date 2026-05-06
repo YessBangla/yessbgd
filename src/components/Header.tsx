@@ -315,6 +315,7 @@ export function Header() {
               mobileVenturesOpen={mobileVenturesOpen}
               toggleMobileVentures={toggleMobileVentures}
               reduceMotion={reduceMotion}
+              venturesActive={venturesActive}
             />
           )}
         </AnimatePresence>
