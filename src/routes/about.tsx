@@ -227,6 +227,9 @@ function About() {
               </div>
             ))}
           </div>
+          <div className="mt-8 text-center">
+            <Link to="/about/awards" className="inline-flex items-center gap-2 rounded-full glass px-5 py-2.5 text-sm font-semibold">View all recognition <ArrowRight className="h-4 w-4" /></Link>
+          </div>
         </div>
       </section>
 
@@ -250,6 +253,9 @@ function About() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.d}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link to="/about/methodology" className="inline-flex items-center gap-2 rounded-full glass px-5 py-2.5 text-sm font-semibold">See full methodology <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </section>
