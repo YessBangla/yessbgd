@@ -644,6 +644,100 @@ function VenturePage() {
         </div>
       </section>
 
+      {/* Why choose us — 4 pillars */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div className="flex items-center gap-3">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+              <Trophy className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Why {v.title}
+              </p>
+              <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+                Four reasons enterprise teams stay with us.
+              </h2>
+            </div>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                icon: ShieldCheck,
+                title: "Trust-first delivery",
+                desc: "Signed MSAs, NDAs, IP assignment and a documented change-control process from day one.",
+              },
+              {
+                icon: Users,
+                title: "Senior-only pods",
+                desc: "Every engagement is staffed with a tech lead, designer and PM — no hand-offs to juniors.",
+              },
+              {
+                icon: Globe2,
+                title: "Global standard, local context",
+                desc: "International best practices delivered with deep understanding of Bangladesh's market.",
+              },
+              {
+                icon: Heart,
+                title: "Long-term partnership",
+                desc: "Quarterly reviews, dedicated success manager and 24/5 support — for years, not sprints.",
+              },
+            ].map((p, i) => (
+              <Reveal key={p.title} delay={i * 0.05}>
+                <article className="group h-full rounded-2xl border border-border bg-background/60 p-6 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                    <p.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-5 font-display text-base font-semibold">{p.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Industries served */}
+      <section className="py-12">
+        <div className="container-tight">
+          <div className="rounded-3xl border border-border bg-secondary/15 p-8 md:p-10">
+            <div className="flex items-center gap-3">
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                <Briefcase className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  Industries we serve
+                </p>
+                <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+                  Trusted across sectors that matter.
+                </h2>
+              </div>
+            </div>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                "Banking & Fintech",
+                "Telecom & Media",
+                "Manufacturing & FMCG",
+                "Healthcare & Pharma",
+                "Retail & E-commerce",
+                "Government & Public",
+                "Education & EdTech",
+                "Hospitality & Travel",
+              ].map((ind) => (
+                <div
+                  key={ind}
+                  className="flex items-center gap-2 rounded-xl border border-border bg-background/70 px-4 py-3 text-sm font-medium text-foreground/85 backdrop-blur"
+                >
+                  <Building2 className="h-4 w-4 shrink-0 text-primary" />
+                  <span>{ind}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-16">
         <div className="container-tight">
