@@ -3,7 +3,9 @@ import { PageHero } from "@/components/PageHero";
 import {
   Building2, ShoppingCart, GraduationCap, HeartPulse, Landmark,
   Factory, Tv, Truck, ArrowRight, CheckCircle2, Sparkles,
+  ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 
 export const Route = createFileRoute("/industries")({
   head: () => ({
@@ -77,19 +79,46 @@ function Industries() {
         </div>
 
         <div className="container-tight mt-16">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-10 text-center text-primary-foreground shadow-glow md:p-14">
-            <Sparkles className="mx-auto h-8 w-8 opacity-90" />
-            <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Don't see your industry?</h2>
-            <p className="mx-auto mt-3 max-w-xl text-primary-foreground/85">
-              We've worked across more sectors than we can list. Tell us about yours — we adapt fast.
+          {/* Standards strip */}
+          <div className="rounded-3xl border border-border bg-secondary/15 p-6 md:p-8">
+            <p className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              Sector-specific compliance & standards
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-semibold text-foreground shadow-elegant transition-all hover:-translate-y-0.5">
-                Discuss your industry <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/services" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/40 px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-foreground/10">
-                Explore services
-              </Link>
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              {[
+                { icon: ShieldCheck, label: "ISO-aligned QMS" },
+                { icon: Award, label: "PCI-aware fintech" },
+                { icon: Users, label: "Healthcare HIPAA-aware" },
+                { icon: Globe2, label: "GDPR-ready" },
+                { icon: Zap, label: "24/5 SLA support" },
+                { icon: Heart, label: "Senior-led delivery" },
+              ].map(({ icon: I, label }) => (
+                <div key={label} className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2.5 text-center text-[11px] font-semibold text-foreground/80 backdrop-blur">
+                  <I className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  <span className="truncate">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Final CTA with lead form */}
+        <div className="container-tight mt-16">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-8 text-primary-foreground shadow-glow md:p-12">
+            <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+              <div>
+                <Sparkles className="h-8 w-8 opacity-90" />
+                <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl">Don't see your industry?</h2>
+                <p className="mt-3 max-w-xl text-primary-foreground/85">
+                  We've worked across more sectors than we can list. Tell us about yours — we adapt fast.
+                </p>
+                <Link to="/services" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline">
+                  Explore services <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="rounded-2xl bg-background/10 p-6 backdrop-blur">
+                <LeadCaptureForm variant="onPrimary" source="Industries page" />
+              </div>
             </div>
           </div>
         </div>

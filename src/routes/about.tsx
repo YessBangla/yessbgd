@@ -1,7 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
+import {
+  CheckCircle2, Target, Eye, Heart, ShieldCheck, Award, Users, Globe2, Zap,
+  Trophy, Building2, Sparkles, ArrowRight,
+} from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -144,6 +148,123 @@ function About() {
                   <p className="mt-1 text-sm text-muted-foreground">{m.desc}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Proof stats */}
+      <section className="py-12">
+        <div className="container-tight grid grid-cols-2 gap-4 md:grid-cols-4">
+          {[
+            { v: "11+", l: "Years in business" },
+            { v: "250+", l: "Projects delivered" },
+            { v: "120+", l: "Active clients" },
+            { v: "98%", l: "Client retention" },
+          ].map((s) => (
+            <div key={s.l} className="rounded-2xl glass-card p-6 text-center">
+              <div className="font-display text-3xl font-bold text-primary">{s.v}</div>
+              <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Standards strip */}
+      <section className="border-y border-border/60 bg-secondary/15 py-8">
+        <div className="container-tight">
+          <p className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            Operated to international standards
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              { icon: ShieldCheck, label: "ISO-aligned processes" },
+              { icon: Award, label: "Quality assured" },
+              { icon: Users, label: "Senior-led team" },
+              { icon: Globe2, label: "Global delivery" },
+              { icon: Zap, label: "24/5 support" },
+              { icon: Heart, label: "NPS 60+" },
+            ].map(({ icon: I, label }) => (
+              <div key={label} className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2.5 text-center text-[11px] font-semibold text-foreground/80 backdrop-blur">
+                <I className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <span className="truncate">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Awards & certifications */}
+      <section className="py-16">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Recognition</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">Awards, partnerships & certifications</h2>
+            <p className="mt-4 text-muted-foreground">A snapshot of the recognition our team and partners have earned along the way.</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {[
+              { icon: Trophy, title: "BASIS Member", desc: "Member of Bangladesh Association of Software & Information Services." },
+              { icon: Award, title: "ISO-aligned QMS", desc: "Internal quality processes aligned with ISO 9001 principles." },
+              { icon: ShieldCheck, title: "GDPR-aware delivery", desc: "Privacy-by-design for clients with EU and global obligations." },
+              { icon: Globe2, title: "Cross-border partner", desc: "Delivery partner for agencies in UK, UAE, Singapore and US." },
+              { icon: Building2, title: "Enterprise vendor", desc: "Empanelled with leading banks, telcos and government bodies." },
+              { icon: Heart, title: "Best place to work 2024", desc: "Internal recognition for engineering culture & retention." },
+            ].map((a) => (
+              <div key={a.title} className="rounded-2xl glass-card p-6">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                  <a.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold">{a.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Methodology */}
+      <section className="py-16">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Methodology</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">How we work with clients</h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              { n: "01", t: "Discover", d: "Free 30-min discovery, success metrics and constraints mapped." },
+              { n: "02", t: "Design", d: "Architecture, UX flows and a written proposal in 1–3 days." },
+              { n: "03", t: "Deliver", d: "Two-week sprints, weekly demos and transparent progress." },
+              { n: "04", t: "Support", d: "Warranty, monitoring and a long-term improvement retainer." },
+            ].map((p) => (
+              <div key={p.n} className="relative rounded-2xl glass-card p-6">
+                <span className="absolute right-4 top-4 font-mono text-xs font-semibold text-primary/60">{p.n}</span>
+                <h3 className="mt-2 font-display text-lg font-semibold">{p.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA with lead form */}
+      <section className="py-20">
+        <div className="container-tight">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-8 text-primary-foreground shadow-glow md:p-12">
+            <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+              <div>
+                <Sparkles className="h-8 w-8 opacity-90" />
+                <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl">Let's discuss your next move.</h2>
+                <p className="mt-3 max-w-xl text-primary-foreground/85">
+                  Tell us about your goals — we'll respond within one business day with a tailored next step.
+                </p>
+                <Link to="/contact" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline">
+                  Or visit our contact page <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="rounded-2xl bg-background/10 p-6 backdrop-blur">
+                <LeadCaptureForm variant="onPrimary" source="About page" />
+              </div>
             </div>
           </div>
         </div>

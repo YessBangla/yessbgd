@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag, ArrowRight,
   Search, PenTool, Rocket, LifeBuoy, CheckCircle2, Sparkles, Calendar, FileText,
-  TrendingUp, Clock, DollarSign,
+  TrendingUp, Clock, DollarSign, ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -304,21 +305,83 @@ function Services() {
         </div>
       </section>
 
+      {/* Standards strip */}
+      <section className="border-y border-border/60 bg-secondary/15 py-8">
+        <div className="container-tight">
+          <p className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            Operated to international standards
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              { icon: ShieldCheck, label: "ISO-aligned processes" },
+              { icon: Award, label: "Quality assured" },
+              { icon: Users, label: "Senior-led pods" },
+              { icon: Globe2, label: "Global delivery" },
+              { icon: Zap, label: "24/5 support" },
+              { icon: Heart, label: "NPS 60+" },
+            ].map(({ icon: I, label }) => (
+              <div key={label} className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2.5 text-center text-[11px] font-semibold text-foreground/80 backdrop-blur">
+                <I className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <span className="truncate">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing comparison table */}
+      <section className="py-16">
+        <div className="container-tight">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Engagement models</p>
+            <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">Choose the right way to engage</h2>
+            <p className="mt-4 text-muted-foreground">Three transparent engagement models — pick what fits your stage and risk profile.</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {[
+              { name: "Fixed scope", price: "From ৳ 1,20,000", best: "Defined deliverables", features: ["Clear scope & milestones", "Predictable budget", "Best for launches"] },
+              { name: "Time & materials", price: "From ৳ 6,500 / day", best: "Evolving requirements", features: ["Dedicated senior pod", "Weekly demos & invoicing", "Flexible scope"], highlight: true },
+              { name: "Managed retainer", price: "From ৳ 35,000 / mo", best: "Ongoing partnership", features: ["SLA-backed support", "Quarterly roadmap reviews", "Priority access to team"] },
+            ].map((p) => (
+              <article key={p.name} className={`relative flex flex-col rounded-2xl border p-6 ${p.highlight ? "border-primary/50 bg-gradient-to-br from-primary/10 via-background to-background shadow-elegant" : "border-border bg-secondary/20"}`}>
+                {p.highlight && <span className="absolute -top-3 left-6 rounded-full bg-gradient-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-glow">Most chosen</span>}
+                <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+                <div className="mt-2 font-display text-2xl font-bold text-primary">{p.price}</div>
+                <p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">Best for: {p.best}</p>
+                <ul className="mt-4 space-y-2">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA with lead form */}
       <section className="py-20">
         <div className="container-tight">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-10 text-center text-primary-foreground shadow-glow md:p-16">
-            <Sparkles className="mx-auto h-8 w-8 opacity-90" />
-            <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Have a project in mind?</h2>
-            <p className="mx-auto mt-3 max-w-xl text-primary-foreground/85">
-              Tell us your goals — we'll send back a written proposal with scope, timeline and pricing within 1–3 business days.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-semibold text-foreground shadow-elegant transition-all hover:-translate-y-0.5">
-                Start a project <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/projects" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/40 px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-foreground/10">
-                See our ventures
-              </Link>
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-8 text-primary-foreground shadow-glow md:p-12">
+            <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+              <div>
+                <Sparkles className="h-8 w-8 opacity-90" />
+                <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl">Have a project in mind?</h2>
+                <p className="mt-3 max-w-xl text-primary-foreground/85">
+                  Share a few details — we'll send back a written proposal with scope, timeline and pricing within 1–3 business days.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <Link to="/projects" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/40 px-5 py-2.5 text-sm font-semibold transition-all hover:bg-primary-foreground/10">
+                    See our ventures <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+              <div className="rounded-2xl bg-background/10 p-6 backdrop-blur">
+                <LeadCaptureForm variant="onPrimary" source="Services page" />
+              </div>
             </div>
           </div>
         </div>
