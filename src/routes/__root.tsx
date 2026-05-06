@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 // Debug overlay removed for cleaner preview
 import { WaterBackground } from "@/components/WaterBackground";
+import { ScrollUpDown } from "@/components/ScrollUpDown";
 
 function NotFoundComponent() {
   return (
