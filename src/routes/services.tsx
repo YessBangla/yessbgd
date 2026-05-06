@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag, ArrowRight,
   Search, PenTool, Rocket, LifeBuoy, CheckCircle2, Sparkles, Calendar, FileText,
-  TrendingUp, Clock, DollarSign,
+  TrendingUp, Clock, DollarSign, ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
+import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
