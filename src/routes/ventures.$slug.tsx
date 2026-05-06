@@ -272,6 +272,33 @@ function VenturePage() {
         </div>
       </section>
 
+      {/* Trust & standards strip */}
+      <section className="border-y border-border/60 bg-secondary/15 py-8">
+        <div className="container-tight">
+          <p className="text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            Operated to international standards
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              { icon: ShieldCheck, label: "ISO-aligned processes" },
+              { icon: Award, label: "Quality assured" },
+              { icon: Users, label: "Senior-led team" },
+              { icon: Globe2, label: "Global delivery" },
+              { icon: Zap, label: "24/5 support" },
+              { icon: Heart, label: "NPS 60+" },
+            ].map(({ icon: I, label }) => (
+              <div
+                key={label}
+                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2.5 text-center text-[11px] font-semibold text-foreground/80 backdrop-blur"
+              >
+                <I className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <span className="truncate">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Signature features */}
       {v.features.length > 0 && (
         <section className="py-12">
