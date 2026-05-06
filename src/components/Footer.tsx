@@ -48,10 +48,15 @@ export function Footer() {
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Company</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
+              <li><Link to="/about/$pillar" params={{ pillar: "mission" }} className="hover:text-primary">Our Mission</Link></li>
+              <li><Link to="/about/$pillar" params={{ pillar: "vision" }} className="hover:text-primary">Our Vision</Link></li>
+              <li><Link to="/about/$pillar" params={{ pillar: "values" }} className="hover:text-primary">Our Values</Link></li>
+              <li><Link to="/about/leadership" className="hover:text-primary">Leadership</Link></li>
+              <li><Link to="/about/methodology" className="hover:text-primary">Methodology</Link></li>
+              <li><Link to="/about/awards" className="hover:text-primary">Awards</Link></li>
+              <li><Link to="/about/standards" className="hover:text-primary">Standards</Link></li>
               <li><Link to="/industries" className="hover:text-primary">Industries</Link></li>
               <li><Link to="/projects" className="hover:text-primary">Projects</Link></li>
-              <li><Link to="/ventures" className="hover:text-primary">Ventures</Link></li>
-              <li><Link to="/insights" className="hover:text-primary">Insights</Link></li>
               <li><Link to="/careers" className="hover:text-primary">Careers</Link></li>
               <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
             </ul>

@@ -23,12 +23,19 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenturesIndexRouteImport } from './routes/ventures.index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
+import { Route as AboutStandardsRouteImport } from './routes/about.standards'
+import { Route as AboutMethodologyRouteImport } from './routes/about.methodology'
+import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
+import { Route as AboutAwardsRouteImport } from './routes/about.awards'
+import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -100,10 +107,20 @@ const VenturesSlugRoute = VenturesSlugRouteImport.update({
   path: '/ventures/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServicesRoute,
+} as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => InsightsRoute,
+} as any)
+const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => IndustriesRoute,
 } as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
   id: '/$slug',
@@ -130,71 +147,117 @@ const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
   path: '/admin/applications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutStandardsRoute = AboutStandardsRouteImport.update({
+  id: '/standards',
+  path: '/standards',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutMethodologyRoute = AboutMethodologyRouteImport.update({
+  id: '/methodology',
+  path: '/methodology',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutLeadershipRoute = AboutLeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutAwardsRoute = AboutAwardsRouteImport.update({
+  id: '/awards',
+  path: '/awards',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutPillarRoute = AboutPillarRouteImport.update({
+  id: '/$pillar',
+  path: '/$pillar',
+  getParentRoute: () => AboutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/industries': typeof IndustriesRoute
+  '/industries': typeof IndustriesRouteWithChildren
   '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/about/$pillar': typeof AboutPillarRoute
+  '/about/awards': typeof AboutAwardsRoute
+  '/about/leadership': typeof AboutLeadershipRoute
+  '/about/methodology': typeof AboutMethodologyRoute
+  '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures/': typeof VenturesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/industries': typeof IndustriesRoute
+  '/industries': typeof IndustriesRouteWithChildren
   '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/about/$pillar': typeof AboutPillarRoute
+  '/about/awards': typeof AboutAwardsRoute
+  '/about/leadership': typeof AboutLeadershipRoute
+  '/about/methodology': typeof AboutMethodologyRoute
+  '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures': typeof VenturesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/industries': typeof IndustriesRoute
+  '/industries': typeof IndustriesRouteWithChildren
   '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
+  '/about/$pillar': typeof AboutPillarRoute
+  '/about/awards': typeof AboutAwardsRoute
+  '/about/leadership': typeof AboutLeadershipRoute
+  '/about/methodology': typeof AboutMethodologyRoute
+  '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures/': typeof VenturesIndexRoute
 }
@@ -213,12 +276,19 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/about/$pillar'
+    | '/about/awards'
+    | '/about/leadership'
+    | '/about/methodology'
+    | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
+    | '/industries/$slug'
     | '/insights/$slug'
+    | '/services/$slug'
     | '/ventures/$slug'
     | '/ventures/'
   fileRoutesByTo: FileRoutesByTo
@@ -235,12 +305,19 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/about/$pillar'
+    | '/about/awards'
+    | '/about/leadership'
+    | '/about/methodology'
+    | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
+    | '/industries/$slug'
     | '/insights/$slug'
+    | '/services/$slug'
     | '/ventures/$slug'
     | '/ventures'
   id:
@@ -257,28 +334,35 @@ export interface FileRouteTypes {
     | '/projects'
     | '/services'
     | '/terms'
+    | '/about/$pillar'
+    | '/about/awards'
+    | '/about/leadership'
+    | '/about/methodology'
+    | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
+    | '/industries/$slug'
     | '/insights/$slug'
+    | '/services/$slug'
     | '/ventures/$slug'
     | '/ventures/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AboutRoute: typeof AboutRouteWithChildren
   ApplicationStatusRoute: typeof ApplicationStatusRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
-  IndustriesRoute: typeof IndustriesRoute
+  IndustriesRoute: typeof IndustriesRouteWithChildren
   InsightsRoute: typeof InsightsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRoute
-  ServicesRoute: typeof ServicesRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
   TermsRoute: typeof TermsRoute
   AdminApplicationsRoute: typeof AdminApplicationsRoute
   AdminAuditRoute: typeof AdminAuditRoute
@@ -388,12 +472,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VenturesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof ServicesRoute
+    }
     '/insights/$slug': {
       id: '/insights/$slug'
       path: '/$slug'
       fullPath: '/insights/$slug'
       preLoaderRoute: typeof InsightsSlugRouteImport
       parentRoute: typeof InsightsRoute
+    }
+    '/industries/$slug': {
+      id: '/industries/$slug'
+      path: '/$slug'
+      fullPath: '/industries/$slug'
+      preLoaderRoute: typeof IndustriesSlugRouteImport
+      parentRoute: typeof IndustriesRoute
     }
     '/careers/$slug': {
       id: '/careers/$slug'
@@ -430,8 +528,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminApplicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about/standards': {
+      id: '/about/standards'
+      path: '/standards'
+      fullPath: '/about/standards'
+      preLoaderRoute: typeof AboutStandardsRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/methodology': {
+      id: '/about/methodology'
+      path: '/methodology'
+      fullPath: '/about/methodology'
+      preLoaderRoute: typeof AboutMethodologyRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/leadership': {
+      id: '/about/leadership'
+      path: '/leadership'
+      fullPath: '/about/leadership'
+      preLoaderRoute: typeof AboutLeadershipRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/awards': {
+      id: '/about/awards'
+      path: '/awards'
+      fullPath: '/about/awards'
+      preLoaderRoute: typeof AboutAwardsRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/$pillar': {
+      id: '/about/$pillar'
+      path: '/$pillar'
+      fullPath: '/about/$pillar'
+      preLoaderRoute: typeof AboutPillarRouteImport
+      parentRoute: typeof AboutRoute
+    }
   }
 }
+
+interface AboutRouteChildren {
+  AboutPillarRoute: typeof AboutPillarRoute
+  AboutAwardsRoute: typeof AboutAwardsRoute
+  AboutLeadershipRoute: typeof AboutLeadershipRoute
+  AboutMethodologyRoute: typeof AboutMethodologyRoute
+  AboutStandardsRoute: typeof AboutStandardsRoute
+}
+
+const AboutRouteChildren: AboutRouteChildren = {
+  AboutPillarRoute: AboutPillarRoute,
+  AboutAwardsRoute: AboutAwardsRoute,
+  AboutLeadershipRoute: AboutLeadershipRoute,
+  AboutMethodologyRoute: AboutMethodologyRoute,
+  AboutStandardsRoute: AboutStandardsRoute,
+}
+
+const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
 interface CareersRouteChildren {
   CareersSlugRoute: typeof CareersSlugRoute
@@ -443,6 +594,18 @@ const CareersRouteChildren: CareersRouteChildren = {
 
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
+
+interface IndustriesRouteChildren {
+  IndustriesSlugRoute: typeof IndustriesSlugRoute
+}
+
+const IndustriesRouteChildren: IndustriesRouteChildren = {
+  IndustriesSlugRoute: IndustriesSlugRoute,
+}
+
+const IndustriesRouteWithChildren = IndustriesRoute._addFileChildren(
+  IndustriesRouteChildren,
+)
 
 interface InsightsRouteChildren {
   InsightsSlugRoute: typeof InsightsSlugRoute
@@ -456,18 +619,30 @@ const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
   InsightsRouteChildren,
 )
 
+interface ServicesRouteChildren {
+  ServicesSlugRoute: typeof ServicesSlugRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesSlugRoute: ServicesSlugRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AboutRoute: AboutRouteWithChildren,
   ApplicationStatusRoute: ApplicationStatusRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
-  IndustriesRoute: IndustriesRoute,
+  IndustriesRoute: IndustriesRouteWithChildren,
   InsightsRoute: InsightsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRoute,
-  ServicesRoute: ServicesRoute,
+  ServicesRoute: ServicesRouteWithChildren,
   TermsRoute: TermsRoute,
   AdminApplicationsRoute: AdminApplicationsRoute,
   AdminAuditRoute: AdminAuditRoute,

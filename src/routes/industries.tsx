@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import {
-  Building2, ShoppingCart, GraduationCap, HeartPulse, Landmark,
-  Factory, Tv, Truck, ArrowRight, CheckCircle2, Sparkles,
+  ArrowRight, CheckCircle2, Sparkles,
   ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
+import { industries } from "@/data/industries";
 
 export const Route = createFileRoute("/industries")({
   head: () => ({
@@ -18,17 +18,6 @@ export const Route = createFileRoute("/industries")({
   }),
   component: Industries,
 });
-
-const industries = [
-  { icon: Tv, title: "Media & Broadcasting", desc: "OTT platforms, digital news and content distribution at national scale.", outcomes: ["Akash OTT launch", "Editorial CMS", "Live streaming infra"] },
-  { icon: ShoppingCart, title: "Retail & E-commerce", desc: "Storefronts, marketplaces, payments and last-mile delivery integrations.", outcomes: ["Multi-vendor stores", "bKash / Nagad / cards", "Nationwide delivery"] },
-  { icon: GraduationCap, title: "Education", desc: "Learning management, school ERPs and digital classroom solutions.", outcomes: ["LMS platforms", "Student portals", "Online assessment"] },
-  { icon: HeartPulse, title: "Healthcare", desc: "Clinic management, telemedicine and patient engagement platforms.", outcomes: ["Clinic ERP", "Telemedicine apps", "Patient portals"] },
-  { icon: Landmark, title: "Banking & Finance", desc: "Secure portals, dashboards and fintech integrations.", outcomes: ["Customer portals", "Internal dashboards", "API integrations"] },
-  { icon: Factory, title: "Manufacturing", desc: "ERP, inventory and operations digitisation for factories.", outcomes: ["Production tracking", "Inventory control", "Quality reporting"] },
-  { icon: Truck, title: "Logistics & Supply Chain", desc: "Tracking, dispatch and fleet management systems.", outcomes: ["Live tracking", "Dispatch ops", "Driver apps"] },
-  { icon: Building2, title: "Government & NGOs", desc: "Public-sector portals, citizen services and reporting tools.", outcomes: ["Citizen portals", "Reporting dashboards", "Survey tools"] },
-];
 
 const stats = [
   { value: "10+", label: "Years of experience" },
@@ -60,7 +49,7 @@ function Industries() {
       <section className="py-20">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {industries.map((i) => (
-            <div key={i.title} className="rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
+            <Link key={i.slug} to="/industries/$slug" params={{ slug: i.slug }} className="group rounded-2xl glass-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-elegant">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                 <i.icon className="h-5 w-5" />
               </div>
@@ -74,7 +63,10 @@ function Industries() {
                   </li>
                 ))}
               </ul>
-            </div>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary group-hover:gap-2 transition-all">
+                Learn more <ArrowRight className="h-3.5 w-3.5" />
+              </span>
+            </Link>
           ))}
         </div>
 
