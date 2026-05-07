@@ -735,3 +735,201 @@ export function BriefDownloadControls({
     </div>
   );
 }
+
+// ───────────────────────── Visual diff viewer ─────────────────────────
+
+function statusBadge(status: PageDiffResult["status"]) {
+  const map: Record<
+    PageDiffResult["status"],
+    { label: string; cls: string }
+  > = {
+    match: {
+      label: "Match",
+      cls: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+    },
+    mismatch: {
+      label: "Mismatch",
+      cls: "bg-destructive/15 text-destructive",
+    },
+    added: {
+      label: "Added",
+      cls: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+    },
+    missing: {
+      label: "Missing",
+      cls: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+    },
+    "no-baseline": {
+      label: "No baseline",
+      cls: "bg-muted text-muted-foreground",
+    },
+  };
+  const m = map[status];
+  return (
+    <span
+      className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${m.cls}`}
+    >
+      {m.label}
+    </span>
+  );
+}
+
+function VisualDiffSection({
+  run,
+  onClose,
+}: {
+  run: VisualDiffRun;
+  onClose: () => void;
+}) {
+  return (
+    <section className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+      <header className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h3 className="text-sm font-semibold">Visual regression</h3>
+          <p className="text-xs text-muted-foreground">
+            Preset <strong>{run.presetName}</strong> · {run.totalCompared}{" "}
+            page(s) compared ·{" "}
+            <span
+              className={
+                run.totalMismatched === 0
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : "text-destructive"
+              }
+            >
+              {run.totalMismatched} mismatched
+            </span>{" "}
+            · generated {new Date(run.generatedAt).toLocaleTimeString()}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => downloadHtmlReport(run)}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted"
+          >
+            <FileDown className="h-3.5 w-3.5" /> HTML report
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadPdfReport(run)}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted"
+          >
+            <FileDown className="h-3.5 w-3.5" /> PDF report
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Dismiss"
+            className="rounded-full border border-border bg-background p-1.5 hover:bg-muted"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </header>
+
+      <div className="space-y-4">
+        {run.combos.map((c) => {
+          const flagged = c.pages.filter((p) => p.status !== "match");
+          return (
+            <article
+              key={c.combo}
+              className="rounded-lg border border-border bg-background p-3"
+            >
+              <header className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+                <div className="text-sm font-semibold uppercase">
+                  {c.format} · {c.orientation}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {c.pages.length} page(s) · build {c.buildMs} ms ·{" "}
+                  {c.hasBaseline ? (
+                    c.pagesMismatched === 0 ? (
+                      <span className="text-emerald-600 dark:text-emerald-400">
+                        all match
+                      </span>
+                    ) : (
+                      <span className="text-destructive">
+                        {c.pagesMismatched} flagged
+                      </span>
+                    )
+                  ) : (
+                    <span className="text-amber-600 dark:text-amber-400">
+                      no baseline
+                    </span>
+                  )}
+                </div>
+              </header>
+
+              {(flagged.length === 0 ? c.pages.slice(0, 1) : flagged).map(
+                (p) => (
+                  <div
+                    key={p.page}
+                    className="mt-3 border-t border-border pt-3 first:mt-0 first:border-0 first:pt-0"
+                  >
+                    <div className="mb-2 flex items-center justify-between gap-2 text-xs">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">Page {p.page}</span>
+                        {statusBadge(p.status)}
+                      </div>
+                      <span className="tabular-nums text-muted-foreground">
+                        {p.mismatchPct}% pixels differ
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      <DiffCell label="Baseline" src={p.baseline} />
+                      <DiffCell label="Current" src={p.current} />
+                      <DiffCell label="Diff" src={p.diff} highlight />
+                    </div>
+                  </div>
+                ),
+              )}
+              {flagged.length === 0 && c.pages.length > 1 && (
+                <p className="mt-2 text-[11px] text-muted-foreground">
+                  Showing page 1 — every page in this combo matches the
+                  baseline.
+                </p>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function DiffCell({
+  label,
+  src,
+  highlight,
+}: {
+  label: string;
+  src: string | null;
+  highlight?: boolean;
+}) {
+  return (
+    <figure className="m-0">
+      <figcaption className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+        {label}
+      </figcaption>
+      {src ? (
+        <a
+          href={src}
+          download={`brief-${label.toLowerCase()}.png`}
+          className="block overflow-hidden rounded-md border border-border bg-muted"
+        >
+          <img
+            src={src}
+            alt={`${label} preview`}
+            loading="lazy"
+            className={`block h-auto w-full ${
+              highlight ? "bg-white" : ""
+            }`}
+          />
+        </a>
+      ) : (
+        <div className="flex aspect-[1/1.4] items-center justify-center rounded-md border border-dashed border-border bg-muted/40 text-[10px] text-muted-foreground">
+          n/a
+        </div>
+      )}
+    </figure>
+  );
+}
