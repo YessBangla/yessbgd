@@ -11,6 +11,15 @@ import logoUrl from "@/assets/yess-bangla-logo.jpeg";
 export type PageFormat = "a4" | "letter";
 export type PageOrientation = "portrait" | "landscape";
 
+export interface WatermarkOptions {
+  /** 0..1, default 0.08. Clamped to [0.02, 0.4]. */
+  opacity?: number;
+  /** Fraction of usable content area, default 0.6. Clamped to [0.2, 0.95]. */
+  sizeFraction?: number;
+  /** When true, force the canvas-faded fallback instead of GState alpha. */
+  forceFallback?: boolean;
+}
+
 export interface BriefOptions {
   format?: PageFormat;
   orientation?: PageOrientation;
@@ -18,6 +27,27 @@ export interface BriefOptions {
   logoDataUrl?: string | null;
   /** Skip triggering doc.save() — the doc is returned for callers/tests. */
   skipSave?: boolean;
+  /** Watermark tuning — surfaced through the UI settings popover. */
+  watermark?: WatermarkOptions;
+  /** Override the saved file name (extension added automatically). */
+  fileName?: string;
+}
+
+export const DEFAULT_WATERMARK: Required<WatermarkOptions> = {
+  opacity: 0.08,
+  sizeFraction: 0.6,
+  forceFallback: false,
+};
+
+function clampWatermark(w: WatermarkOptions = {}): Required<WatermarkOptions> {
+  return {
+    opacity: Math.max(0.02, Math.min(0.4, w.opacity ?? DEFAULT_WATERMARK.opacity)),
+    sizeFraction: Math.max(
+      0.2,
+      Math.min(0.95, w.sizeFraction ?? DEFAULT_WATERMARK.sizeFraction),
+    ),
+    forceFallback: w.forceFallback ?? DEFAULT_WATERMARK.forceFallback,
+  };
 }
 
 /** Detection markers — written invisibly on every page so a PDF parser
