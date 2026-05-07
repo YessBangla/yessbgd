@@ -56,10 +56,12 @@ const REGIONS = {
 };
 
 function cropPng(src, region) {
-  const out = new PNG({ width: Math.round(src.width * region.w), height: Math.round(src.height * region.h) });
-  const sx = Math.round(src.width * region.x);
-  const sy = Math.round(src.height * region.y);
-  PNG.bitblt(src, out, sx, sy, out.width, out.height, 0, 0);
+  const sx = Math.max(0, Math.min(src.width - 1, Math.round(src.width * region.x)));
+  const sy = Math.max(0, Math.min(src.height - 1, Math.round(src.height * region.y)));
+  const w = Math.max(1, Math.min(src.width - sx, Math.round(src.width * region.w)));
+  const h = Math.max(1, Math.min(src.height - sy, Math.round(src.height * region.h)));
+  const out = new PNG({ width: w, height: h });
+  PNG.bitblt(src, out, sx, sy, w, h, 0, 0);
   return out;
 }
 
