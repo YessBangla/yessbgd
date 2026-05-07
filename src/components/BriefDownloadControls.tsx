@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Download,
   Settings2,
@@ -8,6 +8,8 @@ import {
   Building2,
   AlertTriangle,
   X,
+  FileDown,
+  ImageIcon,
 } from "lucide-react";
 import {
   downloadVentureBrief,
@@ -24,6 +26,11 @@ import {
   DEFAULT_BRANDING,
   type BriefBranding,
 } from "@/lib/briefBranding";
+import {
+  runQaPreview,
+  disposeQaRun,
+  type QaRunResult,
+} from "@/lib/briefQaPreview";
 import type { Venture } from "@/data/ventures";
 import {
   Popover,
