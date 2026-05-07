@@ -7,6 +7,13 @@ import {
   getVentureFaqs,
 } from "@/data/ventures";
 import logoUrl from "@/assets/yess-bangla-logo.jpeg";
+import {
+  type BriefBranding,
+  DEFAULT_BRANDING,
+  resolveBranding,
+} from "./briefBranding";
+
+export type { BriefBranding };
 
 export type PageFormat = "a4" | "letter";
 export type PageOrientation = "portrait" | "landscape";
