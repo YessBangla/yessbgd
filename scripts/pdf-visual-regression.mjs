@@ -38,7 +38,9 @@ const baselineDir = path.resolve("tests/visual/__pdf_baselines__");
 const outDir = path.resolve("tests/visual/__pdf_output__");
 const diffDir = path.resolve("tests/visual/__pdf_diffs__");
 fs.mkdirSync(baselineDir, { recursive: true });
+fs.rmSync(outDir, { recursive: true, force: true });
 fs.mkdirSync(outDir, { recursive: true });
+fs.rmSync(diffDir, { recursive: true, force: true });
 fs.mkdirSync(diffDir, { recursive: true });
 
 const matrix = [
