@@ -357,6 +357,20 @@ export async function buildVentureBriefDoc(
   const d = computeDims(format, orientation);
   const logo =
     opts.logoDataUrl !== undefined ? opts.logoDataUrl : await loadLogo();
+  const settings = clampWatermark(opts.watermark);
+  // Pre-bake fallback once. Reused on every page via the alias below.
+  const faded =
+    opts.logoDataUrl === null
+      ? null
+      : settings.forceFallback || !logo
+        ? await getFadedLogo(settings.opacity)
+        : null;
+  const assets: WatermarkAssets = {
+    logo,
+    faded,
+    settings,
+    imageAlias: "yess-wm-img",
+  };
 
   const doc = new jsPDF({ unit: "mm", format, orientation });
   let y = d.topY;
@@ -366,7 +380,7 @@ export async function buildVentureBriefDoc(
   const newPage = () => {
     doc.addPage(format, orientation);
     drawLetterhead(doc, d, logo, subtitle);
-    drawWatermark(doc, d, logo);
+    drawWatermark(doc, d, assets);
     y = d.topY;
   };
 
