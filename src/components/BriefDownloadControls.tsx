@@ -500,7 +500,50 @@ export function BriefDownloadControls({
             </button>
           </PopoverContent>
         </Popover>
+
+        <button
+          type="button"
+          onClick={handleCaptureBaseline}
+          disabled={busy !== null}
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-2.5 text-sm font-semibold backdrop-blur hover:bg-background disabled:opacity-60"
+          title="Snapshot every page across A4/Letter × portrait/landscape for the active preset"
+        >
+          {busy === "baseline" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Camera className="h-4 w-4" />
+          )}
+          <span className="hidden sm:inline">Capture baseline</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={handleRunDiff}
+          disabled={busy !== null}
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-2.5 text-sm font-semibold backdrop-blur hover:bg-background disabled:opacity-60"
+          title="Render every format combo and diff against baseline"
+        >
+          {busy === "diff" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <GitCompare className="h-4 w-4" />
+          )}
+          <span className="hidden sm:inline">Run visual diff</span>
+        </button>
       </div>
+
+      {diffMessage && (
+        <div className="rounded-md border border-border bg-muted/40 px-3 py-2 text-xs">
+          {diffMessage}
+        </div>
+      )}
+
+      {diffRun && (
+        <VisualDiffSection
+          run={diffRun}
+          onClose={() => setDiffRun(null)}
+        />
+      )}
 
       {integrityWarn && !integrityWarn.ok && (
         <div
