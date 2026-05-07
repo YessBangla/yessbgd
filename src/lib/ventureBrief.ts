@@ -382,11 +382,12 @@ export async function buildVentureBriefDoc(
   const doc = new jsPDF({ unit: "mm", format, orientation });
   let y = d.topY;
 
+  const brand = resolveBranding(opts.branding);
   const subtitle = v.category.toUpperCase() + " · " + v.title;
 
   const newPage = () => {
     doc.addPage(format, orientation);
-    drawLetterhead(doc, d, logo, subtitle);
+    drawLetterhead(doc, d, logo, subtitle, brand);
     drawWatermark(doc, d, assets);
     y = d.topY;
   };
