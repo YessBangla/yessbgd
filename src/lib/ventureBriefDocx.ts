@@ -66,7 +66,7 @@ async function bakeWatermark(
 ): Promise<Uint8Array | null> {
   if (typeof document === "undefined") return null;
   try {
-    const blob = new Blob([bytes], { type: "image/jpeg" });
+    const blob = new Blob([bytes as BlobPart], { type: "image/jpeg" });
     const url = URL.createObjectURL(blob);
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const i = new Image();
