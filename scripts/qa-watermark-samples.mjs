@@ -64,12 +64,12 @@ for (const variant of variants) {
 
   // Render page 1 + 2 to JPEG for visual proof
   spawnSync(
-    "nix",
+    "$PDFTOPPM",
     [
-      "shell",
-      "nixpkgs#poppler-utils",
-      "-c",
-      "pdftoppm",
+      
+      
+      
+      
       "-jpeg",
       "-r",
       "110",
