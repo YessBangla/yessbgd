@@ -89,30 +89,45 @@ function drawLetterhead(doc: jsPDF, logo: string | null, subtitle: string) {
 
 function drawWatermark(doc: jsPDF, logo: string | null) {
   if (!logo) return;
+  // Mobile PDF readers (iOS Quick Look, Android Chrome / WPS) are inconsistent
+  // with extended GState alpha. We:
+  //  1. Register the GState via addGState (more portable than ad-hoc setGState)
+  //  2. Use a moderate opacity (0.08) so the mark survives mobile down-sampling
+  //     without bleeding into body text.
+  //  3. Constrain size to ~46% of page width so it stays inside content area
+  //     on small-screen rendering and doesn't clip the header/footer bands.
   try {
-    // Large faded center watermark
-    // jsPDF supports GState via internal; fallback: draw at light scale
-    const gs = (doc as unknown as {
+    const gs = doc as unknown as {
       GState?: new (opts: { opacity: number }) => unknown;
+      addGState?: (key: string, gs: unknown) => void;
       setGState?: (s: unknown) => void;
-    });
+    };
+    let restore: (() => void) | null = null;
     if (gs.GState && gs.setGState) {
-      gs.setGState(new gs.GState({ opacity: 0.05 }));
+      const wm = new gs.GState({ opacity: 0.08 });
+      if (gs.addGState) {
+        try {
+          gs.addGState("yess-wm", wm);
+        } catch {
+          /* already registered */
+        }
+      }
+      gs.setGState(wm);
+      restore = () => {
+        try {
+          gs.setGState!(new gs.GState!({ opacity: 1 }));
+        } catch {
+          /* ignore */
+        }
+      };
     }
-    const size = 110;
-    doc.addImage(
-      logo,
-      "JPEG",
-      (PAGE_W - size) / 2,
-      (PAGE_H - size) / 2,
-      size,
-      size,
-    );
-    if (gs.GState && gs.setGState) {
-      gs.setGState(new gs.GState({ opacity: 1 }));
-    }
+    const size = 96; // mm — ~46% of A4 width, safely inside content area
+    const x = (PAGE_W - size) / 2;
+    const y = (PAGE_H - size) / 2;
+    doc.addImage(logo, "JPEG", x, y, size, size, undefined, "FAST");
+    if (restore) restore();
   } catch {
-    /* ignore */
+    /* ignore — letterhead + footer still provide branding */
   }
 }
 
