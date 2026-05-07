@@ -558,21 +558,50 @@ export function verifyBriefIntegrity(doc: jsPDF): void {
   }
 }
 
+export interface IntegrityReport {
+  ok: boolean;
+  failures: PagePresence[];
+  message?: string;
+}
+
+/** Compute integrity without throwing. */
+export function checkBriefIntegrity(doc: jsPDF): IntegrityReport {
+  const presence = inspectBriefDoc(doc);
+  if (presence.length === 0) {
+    return { ok: false, failures: [], message: "Brief PDF has no pages" };
+  }
+  const failures = presence.filter(
+    (p) => !p.letterhead || !p.watermark || !p.footer,
+  );
+  if (!failures.length) return { ok: true, failures: [] };
+  const message = failures
+    .map(
+      (f) =>
+        `page ${f.page}: missing ${[
+          !f.letterhead && "letterhead",
+          !f.watermark && "watermark",
+          !f.footer && "footer",
+        ]
+          .filter(Boolean)
+          .join(", ")}`,
+    )
+    .join("; ");
+  return { ok: false, failures, message };
+}
+
+export interface DownloadResult {
+  doc: jsPDF;
+  integrity: IntegrityReport;
+}
+
 export async function downloadVentureBrief(
   v: Venture,
   opts: BriefOptions = {},
-) {
+): Promise<DownloadResult> {
   const doc = await buildVentureBriefDoc(v, opts);
-  // Defensive runtime guard — if a future edit drops a draw call we'll find
-  // out at download time rather than after the user shares a broken PDF.
-  try {
-    verifyBriefIntegrity(doc);
-  } catch (e) {
-    // Surface to console but still let the user download — branding is best
-    // effort, content is the priority.
-    if (typeof console !== "undefined") {
-      console.error("[ventureBrief]", (e as Error).message);
-    }
+  const integrity = checkBriefIntegrity(doc);
+  if (!integrity.ok && typeof console !== "undefined") {
+    console.error("[ventureBrief]", integrity.message);
   }
   if (!opts.skipSave) {
     const suffix =
@@ -584,5 +613,5 @@ export async function downloadVentureBrief(
     const name = opts.fileName ?? `${v.slug}-enterprise-brief${suffix}`;
     doc.save(name.endsWith(".pdf") ? name : name + ".pdf");
   }
-  return doc;
+  return { doc, integrity };
 }
