@@ -114,6 +114,53 @@ async function loadLogo(): Promise<string | null> {
   }
 }
 
+/** Pre-baked faded watermark cache, keyed by opacity (rounded to 2dp).
+ *  Avoids re-rasterising the logo for every page — one Canvas pass per
+ *  opacity level is reused across all pages and all sample PDFs. */
+const fadedLogoCache = new Map<string, string>();
+async function getFadedLogo(opacity: number): Promise<string | null> {
+  const base = await loadLogo();
+  if (!base) return null;
+  if (typeof document === "undefined") return null;
+  const key = opacity.toFixed(2);
+  const hit = fadedLogoCache.get(key);
+  if (hit) return hit;
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = reject;
+      i.src = base;
+    });
+    // Cap at 480px — watermark is drawn at content-area scale, so any
+    // larger source pixels just inflate the PDF without visible benefit
+    // on mobile screens.
+    const max = 480;
+    const scale = Math.min(1, max / Math.max(img.width, img.height));
+    const w = Math.round(img.width * scale);
+    const h = Math.round(img.height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    // Paint white background then logo at requested alpha — bakes the
+    // fade into the JPEG so viewers without GState alpha still see a
+    // soft watermark instead of a solid logo.
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalAlpha = opacity;
+    ctx.drawImage(img, 0, 0, w, h);
+    // JPEG @ 0.6 quality — small file, mobile-friendly
+    const out = canvas.toDataURL("image/jpeg", 0.6);
+    fadedLogoCache.set(key, out);
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+
 /** Write text in a near-invisible white color so the marker is present in
  *  the PDF content stream (detectable by tests) but doesn't show on paper. */
 function writeMarker(doc: jsPDF, marker: string, x: number, y: number) {
