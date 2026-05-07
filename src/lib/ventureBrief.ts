@@ -423,7 +423,7 @@ export async function buildVentureBriefDoc(
 
   // First page chrome
   drawLetterhead(doc, d, logo, subtitle);
-  drawWatermark(doc, d, logo);
+  drawWatermark(doc, d, assets);
 
   h1(v.title);
   text(v.tagline, { size: 11, bold: true, color: [80, 80, 80], gap: 1.5 });
