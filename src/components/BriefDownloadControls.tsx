@@ -103,35 +103,44 @@ export function BriefDownloadControls({
   const handleGenerateSamples = async () => {
     setBusy("samples");
     setIntegrityWarn(null);
+    // Dispose any previous run to release blob URLs.
+    disposeQaRun(qaRun);
+    setQaRun(null);
     try {
-      const variants = [
-        { label: "gstate", watermark: { opacity, sizeFraction, forceFallback: false } },
-        { label: "fallback-raster", watermark: { opacity, sizeFraction, forceFallback: true } },
-        {
-          label: "high-contrast",
-          watermark: {
-            opacity: Math.min(0.18, opacity * 2),
-            sizeFraction,
-            forceFallback: false,
-          },
-        },
-      ];
-      let lastBad: IntegrityReport | null = null;
-      for (const v of variants) {
-        const { integrity } = await downloadVentureBrief(venture, {
-          format,
-          orientation,
-          watermark: v.watermark,
-          branding,
-          fileName: `${venture.slug}-brief-sample-${v.label}`,
-        });
-        if (!integrity.ok) lastBad = integrity;
-        await new Promise((r) => setTimeout(r, 250));
-      }
-      if (lastBad) setIntegrityWarn(lastBad);
+      const run = await runQaPreview(venture, {
+        format,
+        orientation,
+        branding,
+        baseWatermark: { opacity, sizeFraction, forceFallback },
+      });
+      setQaRun(run);
+      const bad = run.variants.find((v) => !v.integrity.ok);
+      if (bad) setIntegrityWarn(bad.integrity);
     } finally {
       setBusy(null);
     }
+  };
+
+  const downloadReport = () => {
+    if (!qaRun) return;
+    const a = document.createElement("a");
+    a.href = qaRun.reportBlobUrl;
+    a.download = `${qaRun.ventureSlug}-pdf-qa-report.md`;
+    a.click();
+  };
+
+  const downloadVariantPdf = (label: string, url: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${venture.slug}-brief-sample-${label}.pdf`;
+    a.click();
+  };
+
+  const downloadThumbnail = (label: string, page: number, url: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${venture.slug}-brief-${label}-page${page}.jpg`;
+    a.click();
   };
 
   const updateBrand = <K extends keyof BriefBranding>(k: K, val: BriefBranding[K]) => {
