@@ -573,7 +573,8 @@ export async function downloadVentureBrief(
         : opts.orientation === "landscape"
           ? "-landscape"
           : "";
-    doc.save(`${v.slug}-enterprise-brief${suffix}.pdf`);
+    const name = opts.fileName ?? `${v.slug}-enterprise-brief${suffix}`;
+    doc.save(name.endsWith(".pdf") ? name : name + ".pdf");
   }
   return doc;
 }
