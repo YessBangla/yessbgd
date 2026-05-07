@@ -15,7 +15,9 @@
     "check:a11y": "npm run check:typography && npm run check:contrast",
     "ci:a11y-summary": "node scripts/ci-a11y-summary.mjs",
     "test:visual": "playwright test tests/visual",
-    "test:visual:update": "playwright test tests/visual --update-snapshots"
+    "test:visual:update": "playwright test tests/visual --update-snapshots",
+    "test:unit": "bun test tests/unit",
+    "test:pdf": "bun test tests/unit/ventureBrief.test.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
