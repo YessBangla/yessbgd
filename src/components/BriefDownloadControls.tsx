@@ -10,6 +10,10 @@ import {
   X,
   FileDown,
   ImageIcon,
+  Camera,
+  GitCompare,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import {
   downloadVentureBrief,
@@ -23,14 +27,28 @@ import { downloadVentureBriefDocx } from "@/lib/ventureBriefDocx";
 import {
   loadBranding,
   saveBranding,
+  listPresets,
+  getActivePresetId,
+  setActivePreset,
+  createPreset,
+  deletePreset,
   DEFAULT_BRANDING,
   type BriefBranding,
+  type BrandingPreset,
 } from "@/lib/briefBranding";
 import {
   runQaPreview,
   disposeQaRun,
   type QaRunResult,
 } from "@/lib/briefQaPreview";
+import {
+  captureBaseline,
+  runVisualDiff,
+  downloadHtmlReport,
+  downloadPdfReport,
+  type VisualDiffRun,
+  type PageDiffResult,
+} from "@/lib/briefVisualDiff";
 import type { Venture } from "@/data/ventures";
 import {
   Popover,
