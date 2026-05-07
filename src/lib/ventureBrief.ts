@@ -7,6 +7,13 @@ import {
   getVentureFaqs,
 } from "@/data/ventures";
 import logoUrl from "@/assets/yess-bangla-logo.jpeg";
+import {
+  type BriefBranding,
+  DEFAULT_BRANDING,
+  resolveBranding,
+} from "./briefBranding";
+
+export type { BriefBranding };
 
 export type PageFormat = "a4" | "letter";
 export type PageOrientation = "portrait" | "landscape";
@@ -31,6 +38,8 @@ export interface BriefOptions {
   watermark?: WatermarkOptions;
   /** Override the saved file name (extension added automatically). */
   fileName?: string;
+  /** Custom branding — falls back to DEFAULT_BRANDING for missing fields. */
+  branding?: Partial<BriefBranding>;
 }
 
 export const DEFAULT_WATERMARK: Required<WatermarkOptions> = {
@@ -175,6 +184,7 @@ function drawLetterhead(
   d: PageDims,
   logo: string | null,
   subtitle: string,
+  brand: BriefBranding,
 ) {
   doc.setFillColor(15, 35, 80);
   doc.rect(0, 0, d.w, d.headerH, "F");
@@ -194,17 +204,17 @@ function drawLetterhead(
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
-  doc.text("YESS BANGLA", textX, 12);
+  doc.text(brand.companyName, textX, 12);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(220, 226, 240);
-  doc.text("Enterprise Solutions · Media · Technology", textX, 17.5);
+  doc.text(brand.tagline, textX, 17.5);
   doc.text(subtitle, textX, 22.5);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(255, 255, 255);
-  doc.text("ENTERPRISE BRIEF", d.w - d.margin, 12, { align: "right" });
+  doc.text(brand.documentLabel, d.w - d.margin, 12, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(220, 226, 240);
@@ -218,7 +228,7 @@ function drawLetterhead(
     17.5,
     { align: "right" },
   );
-  doc.text("Confidential · For intended recipient", d.w - d.margin, 22.5, {
+  doc.text(brand.confidentialityNote, d.w - d.margin, 22.5, {
     align: "right",
   });
 
@@ -297,6 +307,7 @@ function drawFooter(
   pageNum: number,
   total: number,
   slug: string,
+  brand: BriefBranding,
 ) {
   const top = d.h - d.footerH;
   doc.setDrawColor(232, 184, 64);
@@ -306,22 +317,18 @@ function drawFooter(
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.setTextColor(15, 35, 80);
-  doc.text("YESS Bangla Ltd.", d.margin, top + 5);
+  doc.text(brand.companyName, d.margin, top + 5);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.8);
   doc.setTextColor(70, 70, 70);
+  doc.text(brand.address, d.margin, top + 9.5);
   doc.text(
-    "Block A, Road 3, House 127, Mirpur 12, Dhaka 1216, Bangladesh",
-    d.margin,
-    top + 9.5,
-  );
-  doc.text(
-    "Email: yessbangla.bd@gmail.com   ·   Phone: +880 1805-464343",
+    `Email: ${brand.email}   ·   Phone: ${brand.phone}`,
     d.margin,
     top + 13.5,
   );
-  doc.text("Web: https://yessbgd.lovable.app/ventures/" + slug, d.margin, top + 17.5);
+  doc.text(`Web: ${brand.web}/ventures/${slug}`, d.margin, top + 17.5);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
@@ -333,7 +340,7 @@ function drawFooter(
   doc.setFontSize(7.5);
   doc.setTextColor(140, 140, 140);
   doc.text(
-    "© " + new Date().getFullYear() + " YESS Bangla",
+    `© ${new Date().getFullYear()} ${brand.copyrightHolder}`,
     d.w - d.margin,
     top + 13.5,
     { align: "right" },
@@ -375,11 +382,12 @@ export async function buildVentureBriefDoc(
   const doc = new jsPDF({ unit: "mm", format, orientation });
   let y = d.topY;
 
+  const brand = resolveBranding(opts.branding);
   const subtitle = v.category.toUpperCase() + " · " + v.title;
 
   const newPage = () => {
     doc.addPage(format, orientation);
-    drawLetterhead(doc, d, logo, subtitle);
+    drawLetterhead(doc, d, logo, subtitle, brand);
     drawWatermark(doc, d, assets);
     y = d.topY;
   };
@@ -422,7 +430,7 @@ export async function buildVentureBriefDoc(
   const bullet = (s: string) => text("•  " + s, { size: 10, color: [55, 55, 55], gap: 1.2 });
 
   // First page chrome
-  drawLetterhead(doc, d, logo, subtitle);
+  drawLetterhead(doc, d, logo, subtitle, brand);
   drawWatermark(doc, d, assets);
 
   h1(v.title);
@@ -489,7 +497,7 @@ export async function buildVentureBriefDoc(
   const pages = doc.getNumberOfPages();
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i);
-    drawFooter(doc, d, i, pages, v.slug);
+    drawFooter(doc, d, i, pages, v.slug, brand);
   }
 
   return doc;
@@ -550,21 +558,50 @@ export function verifyBriefIntegrity(doc: jsPDF): void {
   }
 }
 
+export interface IntegrityReport {
+  ok: boolean;
+  failures: PagePresence[];
+  message?: string;
+}
+
+/** Compute integrity without throwing. */
+export function checkBriefIntegrity(doc: jsPDF): IntegrityReport {
+  const presence = inspectBriefDoc(doc);
+  if (presence.length === 0) {
+    return { ok: false, failures: [], message: "Brief PDF has no pages" };
+  }
+  const failures = presence.filter(
+    (p) => !p.letterhead || !p.watermark || !p.footer,
+  );
+  if (!failures.length) return { ok: true, failures: [] };
+  const message = failures
+    .map(
+      (f) =>
+        `page ${f.page}: missing ${[
+          !f.letterhead && "letterhead",
+          !f.watermark && "watermark",
+          !f.footer && "footer",
+        ]
+          .filter(Boolean)
+          .join(", ")}`,
+    )
+    .join("; ");
+  return { ok: false, failures, message };
+}
+
+export interface DownloadResult {
+  doc: jsPDF;
+  integrity: IntegrityReport;
+}
+
 export async function downloadVentureBrief(
   v: Venture,
   opts: BriefOptions = {},
-) {
+): Promise<DownloadResult> {
   const doc = await buildVentureBriefDoc(v, opts);
-  // Defensive runtime guard — if a future edit drops a draw call we'll find
-  // out at download time rather than after the user shares a broken PDF.
-  try {
-    verifyBriefIntegrity(doc);
-  } catch (e) {
-    // Surface to console but still let the user download — branding is best
-    // effort, content is the priority.
-    if (typeof console !== "undefined") {
-      console.error("[ventureBrief]", (e as Error).message);
-    }
+  const integrity = checkBriefIntegrity(doc);
+  if (!integrity.ok && typeof console !== "undefined") {
+    console.error("[ventureBrief]", integrity.message);
   }
   if (!opts.skipSave) {
     const suffix =
@@ -576,5 +613,5 @@ export async function downloadVentureBrief(
     const name = opts.fileName ?? `${v.slug}-enterprise-brief${suffix}`;
     doc.save(name.endsWith(".pdf") ? name : name + ".pdf");
   }
-  return doc;
+  return { doc, integrity };
 }
