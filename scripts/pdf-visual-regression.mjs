@@ -98,7 +98,7 @@ for (const { format, orientation } of matrix) {
 
   const pageFiles = fs
     .readdirSync(outDir)
-    .filter((f) => f.startsWith(tag + "-") && f.endsWith(".png"))
+    .filter((f) => /^[a-z0-9-]+-\d+\.png$/.test(f) && f.startsWith(tag + "-"))
     .sort();
 
   for (const pf of pageFiles) {
