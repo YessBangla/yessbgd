@@ -64,22 +64,8 @@ for (const variant of variants) {
 
   // Render page 1 + 2 to JPEG for visual proof
   spawnSync(
-    "$PDFTOPPM",
-    [
-      
-      
-      
-      
-      "-jpeg",
-      "-r",
-      "110",
-      "-f",
-      "1",
-      "-l",
-      "2",
-      pdfPath,
-      path.join(outDir, variant.label),
-    ],
+    process.env.PDFTOPPM || "pdftoppm",
+    ["-jpeg", "-r", "110", "-f", "1", "-l", "2", pdfPath, path.join(outDir, variant.label)],
     { stdio: "inherit" },
   );
 
