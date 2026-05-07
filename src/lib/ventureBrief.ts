@@ -38,6 +38,8 @@ export interface BriefOptions {
   watermark?: WatermarkOptions;
   /** Override the saved file name (extension added automatically). */
   fileName?: string;
+  /** Custom branding — falls back to DEFAULT_BRANDING for missing fields. */
+  branding?: Partial<BriefBranding>;
 }
 
 export const DEFAULT_WATERMARK: Required<WatermarkOptions> = {
