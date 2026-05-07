@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Download,
   Settings2,
@@ -8,6 +8,8 @@ import {
   Building2,
   AlertTriangle,
   X,
+  FileDown,
+  ImageIcon,
 } from "lucide-react";
 import {
   downloadVentureBrief,
@@ -24,6 +26,11 @@ import {
   DEFAULT_BRANDING,
   type BriefBranding,
 } from "@/lib/briefBranding";
+import {
+  runQaPreview,
+  disposeQaRun,
+  type QaRunResult,
+} from "@/lib/briefQaPreview";
 import type { Venture } from "@/data/ventures";
 import {
   Popover,
@@ -54,6 +61,14 @@ export function BriefDownloadControls({
   const [integrityWarn, setIntegrityWarn] = useState<IntegrityReport | null>(
     null,
   );
+  const [qaRun, setQaRun] = useState<QaRunResult | null>(null);
+
+  useEffect(() => {
+    return () => {
+      disposeQaRun(qaRun);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const watermark: WatermarkOptions = { opacity, sizeFraction, forceFallback };
 
@@ -88,35 +103,44 @@ export function BriefDownloadControls({
   const handleGenerateSamples = async () => {
     setBusy("samples");
     setIntegrityWarn(null);
+    // Dispose any previous run to release blob URLs.
+    disposeQaRun(qaRun);
+    setQaRun(null);
     try {
-      const variants = [
-        { label: "gstate", watermark: { opacity, sizeFraction, forceFallback: false } },
-        { label: "fallback-raster", watermark: { opacity, sizeFraction, forceFallback: true } },
-        {
-          label: "high-contrast",
-          watermark: {
-            opacity: Math.min(0.18, opacity * 2),
-            sizeFraction,
-            forceFallback: false,
-          },
-        },
-      ];
-      let lastBad: IntegrityReport | null = null;
-      for (const v of variants) {
-        const { integrity } = await downloadVentureBrief(venture, {
-          format,
-          orientation,
-          watermark: v.watermark,
-          branding,
-          fileName: `${venture.slug}-brief-sample-${v.label}`,
-        });
-        if (!integrity.ok) lastBad = integrity;
-        await new Promise((r) => setTimeout(r, 250));
-      }
-      if (lastBad) setIntegrityWarn(lastBad);
+      const run = await runQaPreview(venture, {
+        format,
+        orientation,
+        branding,
+        baseWatermark: { opacity, sizeFraction, forceFallback },
+      });
+      setQaRun(run);
+      const bad = run.variants.find((v) => !v.integrity.ok);
+      if (bad) setIntegrityWarn(bad.integrity);
     } finally {
       setBusy(null);
     }
+  };
+
+  const downloadReport = () => {
+    if (!qaRun) return;
+    const a = document.createElement("a");
+    a.href = qaRun.reportBlobUrl;
+    a.download = `${qaRun.ventureSlug}-pdf-qa-report.md`;
+    a.click();
+  };
+
+  const downloadVariantPdf = (label: string, url: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${venture.slug}-brief-sample-${label}.pdf`;
+    a.click();
+  };
+
+  const downloadThumbnail = (label: string, page: number, url: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${venture.slug}-brief-${label}-page${page}.jpg`;
+    a.click();
   };
 
   const updateBrand = <K extends keyof BriefBranding>(k: K, val: BriefBranding[K]) => {
@@ -374,6 +398,150 @@ export function BriefDownloadControls({
             <X className="h-4 w-4" />
           </button>
         </div>
+      )}
+
+      {qaRun && (
+        <section className="rounded-xl border border-border bg-background/60 p-4 backdrop-blur">
+          <header className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 className="text-sm font-semibold">QA preview</h3>
+              <p className="text-xs text-muted-foreground">
+                {qaRun.variants.length} variants ·{" "}
+                {format.toUpperCase()} · {orientation} · generated{" "}
+                {new Date(qaRun.generatedAt).toLocaleTimeString()}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={downloadReport}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted"
+              >
+                <FileDown className="h-3.5 w-3.5" />
+                Download REPORT.md
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  disposeQaRun(qaRun);
+                  setQaRun(null);
+                }}
+                aria-label="Dismiss QA preview"
+                className="rounded-full border border-border bg-background p-1.5 hover:bg-muted"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </header>
+
+          <div className="overflow-x-auto rounded-md border border-border">
+            <table className="w-full text-xs">
+              <thead className="bg-muted/60 text-left">
+                <tr>
+                  <th className="px-2 py-1.5">Variant</th>
+                  <th className="px-2 py-1.5">Watermark</th>
+                  <th className="px-2 py-1.5 text-right">Build</th>
+                  <th className="px-2 py-1.5 text-right">Size</th>
+                  <th className="px-2 py-1.5 text-right">Pages</th>
+                  <th className="px-2 py-1.5 text-center">Markers</th>
+                </tr>
+              </thead>
+              <tbody>
+                {qaRun.variants.map((v) => (
+                  <tr key={v.label} className="border-t border-border">
+                    <td className="px-2 py-1.5 font-mono">{v.label}</td>
+                    <td className="px-2 py-1.5">
+                      {Math.round(v.watermark.opacity * 100)}% ·{" "}
+                      {Math.round(v.watermark.sizeFraction * 100)}%
+                      {v.watermark.forceFallback ? " · raster" : ""}
+                    </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums">
+                      {v.buildMs} ms
+                    </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums">
+                      {v.pdfSizeKb} KB
+                    </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums">
+                      {v.pages}
+                    </td>
+                    <td className="px-2 py-1.5 text-center">
+                      {v.integrity.ok ? (
+                        <span className="text-emerald-500">✅</span>
+                      ) : (
+                        <span className="text-destructive">❌</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {qaRun.variants.map((v) => (
+              <article
+                key={v.label}
+                className="rounded-lg border border-border bg-background p-3"
+              >
+                <header className="mb-2 flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-xs font-semibold">{v.label}</p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {v.description}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => downloadVariantPdf(v.label, v.pdfBlobUrl)}
+                    className="shrink-0 rounded-md border border-border p-1.5 hover:bg-muted"
+                    title="Download PDF"
+                    aria-label={`Download ${v.label} PDF`}
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                  </button>
+                </header>
+                {v.thumbnails.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    {v.thumbnails.map((src, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() =>
+                          downloadThumbnail(v.label, idx + 1, src)
+                        }
+                        className="group relative overflow-hidden rounded-md border border-border bg-muted"
+                        title={`Page ${idx + 1} — click to download JPEG`}
+                      >
+                        <img
+                          src={src}
+                          alt={`${v.label} page ${idx + 1} preview`}
+                          loading="lazy"
+                          className="block h-auto w-full"
+                        />
+                        <span className="absolute bottom-1 right-1 rounded bg-background/80 px-1.5 py-0.5 text-[10px] font-medium opacity-0 transition group-hover:opacity-100">
+                          p{idx + 1}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex h-32 items-center justify-center rounded-md border border-dashed border-border text-xs text-muted-foreground">
+                    <ImageIcon className="mr-1 h-3.5 w-3.5" /> preview
+                    unavailable
+                  </div>
+                )}
+                <a
+                  href={v.pdfBlobUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 block text-center text-[11px] text-primary hover:underline"
+                >
+                  Open PDF in new tab ↗
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );
