@@ -430,7 +430,7 @@ export async function buildVentureBriefDoc(
   const bullet = (s: string) => text("•  " + s, { size: 10, color: [55, 55, 55], gap: 1.2 });
 
   // First page chrome
-  drawLetterhead(doc, d, logo, subtitle);
+  drawLetterhead(doc, d, logo, subtitle, brand);
   drawWatermark(doc, d, assets);
 
   h1(v.title);
@@ -497,7 +497,7 @@ export async function buildVentureBriefDoc(
   const pages = doc.getNumberOfPages();
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i);
-    drawFooter(doc, d, i, pages, v.slug);
+    drawFooter(doc, d, i, pages, v.slug, brand);
   }
 
   return doc;
