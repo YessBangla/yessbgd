@@ -307,6 +307,7 @@ function drawFooter(
   pageNum: number,
   total: number,
   slug: string,
+  brand: BriefBranding,
 ) {
   const top = d.h - d.footerH;
   doc.setDrawColor(232, 184, 64);
@@ -316,22 +317,18 @@ function drawFooter(
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.setTextColor(15, 35, 80);
-  doc.text("YESS Bangla Ltd.", d.margin, top + 5);
+  doc.text(brand.companyName, d.margin, top + 5);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.8);
   doc.setTextColor(70, 70, 70);
+  doc.text(brand.address, d.margin, top + 9.5);
   doc.text(
-    "Block A, Road 3, House 127, Mirpur 12, Dhaka 1216, Bangladesh",
-    d.margin,
-    top + 9.5,
-  );
-  doc.text(
-    "Email: yessbangla.bd@gmail.com   ·   Phone: +880 1805-464343",
+    `Email: ${brand.email}   ·   Phone: ${brand.phone}`,
     d.margin,
     top + 13.5,
   );
-  doc.text("Web: https://yessbgd.lovable.app/ventures/" + slug, d.margin, top + 17.5);
+  doc.text(`Web: ${brand.web}/ventures/${slug}`, d.margin, top + 17.5);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
@@ -343,7 +340,7 @@ function drawFooter(
   doc.setFontSize(7.5);
   doc.setTextColor(140, 140, 140);
   doc.text(
-    "© " + new Date().getFullYear() + " YESS Bangla",
+    `© ${new Date().getFullYear()} ${brand.copyrightHolder}`,
     d.w - d.margin,
     top + 13.5,
     { align: "right" },
