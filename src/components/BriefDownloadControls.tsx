@@ -297,21 +297,68 @@ export function BriefDownloadControls({
           </PopoverTrigger>
           <PopoverContent align="start" className="w-96 max-w-[90vw] space-y-3 p-4 text-sm">
             <div className="flex items-center justify-between">
-              <p className="font-semibold">Custom branding</p>
+              <p className="font-semibold">Branding presets</p>
+              <button
+                type="button"
+                onClick={handleCreatePreset}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+              >
+                <Plus className="h-3.5 w-3.5" /> Save current as new
+              </button>
+            </div>
+            <div className="space-y-1.5">
+              {presets.map((p) => (
+                <div
+                  key={p.id}
+                  className={`flex items-center gap-2 rounded-md border px-2 py-1.5 ${
+                    p.id === activeId
+                      ? "border-primary bg-primary/10"
+                      : "border-border"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => handleSelectPreset(p.id)}
+                    className="flex-1 text-left text-xs font-medium"
+                  >
+                    {p.name}
+                    {p.id === "default" && (
+                      <span className="ml-1 text-[10px] uppercase text-muted-foreground">
+                        · built-in
+                      </span>
+                    )}
+                  </button>
+                  {p.id !== "default" && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeletePreset(p.id)}
+                      aria-label={`Delete preset ${p.name}`}
+                      className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between border-t border-border pt-3">
+              <p className="font-semibold">Edit active preset</p>
               <button
                 type="button"
                 onClick={() => {
                   setBranding(DEFAULT_BRANDING);
-                  saveBranding(DEFAULT_BRANDING);
+                  const saved = saveBranding(DEFAULT_BRANDING);
+                  if (saved.id !== activeId) refreshPresets();
                 }}
                 className="text-xs text-muted-foreground hover:text-foreground"
               >
-                Reset
+                Reset fields
               </button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Saved locally — applied to every PDF & DOCX you generate from this
-              browser.
+              Editing the built-in default automatically forks a new
+              <strong> Custom </strong>preset so the original stays intact.
             </p>
             {([
               ["companyName", "Company name"],
