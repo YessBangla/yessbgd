@@ -225,47 +225,71 @@ function drawLetterhead(
   writeMarker(doc, MARKERS.letterhead, d.margin, d.headerH - 0.5);
 }
 
-function drawWatermark(doc: jsPDF, d: PageDims, logo: string | null) {
+interface WatermarkAssets {
+  /** Original logo data URL (used when GState alpha is available). */
+  logo: string | null;
+  /** Pre-faded raster baked at requested opacity (used by fallback path). */
+  faded: string | null;
+  settings: Required<WatermarkOptions>;
+  /** Reused image alias inside the PDF — set on first draw, reused after. */
+  imageAlias: string;
+}
+
+function detectGStateSupport(doc: jsPDF): boolean {
+  const gs = doc as unknown as { GState?: unknown; setGState?: unknown };
+  return typeof gs.GState === "function" && typeof gs.setGState === "function";
+}
+
+function drawWatermark(doc: jsPDF, d: PageDims, assets: WatermarkAssets) {
   // Always emit the marker so tests can detect the watermark pass even when
-  // the logo asset isn't available (e.g. in jsdom-less unit tests).
+  // the logo asset isn't available.
   writeMarker(doc, MARKERS.watermark, d.w / 2, d.h / 2);
-  if (!logo) return;
-  // See README: portable mobile rendering needs registered GState + moderate
-  // opacity. Size is anchored to content area so it never clips header/footer.
+  const { logo, faded, settings, imageAlias } = assets;
+  if (!logo && !faded) return;
+
+  const size =
+    Math.min(d.contentW, d.h - d.headerH - d.footerH) * settings.sizeFraction;
+  const x = (d.w - size) / 2;
+  const y = (d.h - size) / 2;
+
+  // Path A — GState alpha (smaller PDF, sharper watermark).
+  // Path B — pre-faded JPEG (works on every viewer, including mobile
+  //          PDF readers without ExtGState alpha support).
+  const useGState = !settings.forceFallback && logo && detectGStateSupport(doc);
+
   try {
-    const gs = doc as unknown as {
-      GState?: new (opts: { opacity: number }) => unknown;
-      addGState?: (key: string, gs: unknown) => void;
-      setGState?: (s: unknown) => void;
-    };
-    let restore: (() => void) | null = null;
-    if (gs.GState && gs.setGState) {
-      const wm = new gs.GState({ opacity: 0.08 });
+    if (useGState) {
+      const gs = doc as unknown as {
+        GState: new (opts: { opacity: number }) => unknown;
+        addGState?: (key: string, gs: unknown) => void;
+        setGState: (s: unknown) => void;
+      };
+      const wm = new gs.GState({ opacity: settings.opacity });
       if (gs.addGState) {
         try {
-          gs.addGState("yess-wm", wm);
+          gs.addGState("yess-wm-" + Math.round(settings.opacity * 100), wm);
         } catch {
           /* already registered */
         }
       }
       gs.setGState(wm);
-      restore = () => {
-        try {
-          gs.setGState!(new gs.GState!({ opacity: 1 }));
-        } catch {
-          /* ignore */
-        }
-      };
+      // Pass alias so jsPDF reuses the embedded XObject across pages — keeps
+      // file size flat regardless of page count.
+      doc.addImage(logo!, "JPEG", x, y, size, size, imageAlias, "FAST");
+      try {
+        gs.setGState(new gs.GState({ opacity: 1 }));
+      } catch {
+        /* ignore */
+      }
+    } else if (faded) {
+      // Fallback — single embedded raster with alpha already baked in.
+      doc.addImage(faded, "JPEG", x, y, size, size, imageAlias, "FAST");
     }
-    const size = Math.min(d.contentW, d.h - d.headerH - d.footerH) * 0.6;
-    const x = (d.w - size) / 2;
-    const y = (d.h - size) / 2;
-    doc.addImage(logo, "JPEG", x, y, size, size, undefined, "FAST");
-    if (restore) restore();
   } catch {
-    /* ignore — letterhead + footer still provide branding */
+    /* swallow — letterhead + footer still provide branding */
   }
 }
+
 
 function drawFooter(
   doc: jsPDF,
