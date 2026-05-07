@@ -242,7 +242,10 @@ export function BriefDownloadControls({
   const updateBrand = <K extends keyof BriefBranding>(k: K, val: BriefBranding[K]) => {
     const next = { ...branding, [k]: val };
     setBranding(next);
-    saveBranding(next);
+    const saved = saveBranding(next);
+    // saveBranding may have spawned a fresh Custom preset (when editing
+    // the immutable default) — refresh state so the picker reflects it.
+    if (saved.id !== activeId) refreshPresets();
   };
 
   const primaryClass =
