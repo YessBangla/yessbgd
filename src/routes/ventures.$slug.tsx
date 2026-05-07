@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
+import { BriefDownloadControls } from "@/components/BriefDownloadControls";
 import { downloadVentureBrief } from "@/lib/ventureBrief";
 import {
   getVenture,
@@ -181,13 +182,7 @@ function VenturePage() {
             >
               Work with {v.title} <ArrowRight className="h-4 w-4" />
             </Link>
-            <button
-              type="button"
-              onClick={() => downloadVentureBrief(v)}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-5 py-2.5 text-sm font-semibold backdrop-blur transition-transform hover:-translate-y-0.5 hover:bg-background"
-            >
-              <Download className="h-4 w-4" /> Download enterprise brief (PDF)
-            </button>
+            <BriefDownloadControls venture={v} variant="ghost" />
             <Link
               to="/ventures"
               className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-5 py-2.5 text-sm font-semibold backdrop-blur hover:bg-background"
