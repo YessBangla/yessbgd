@@ -74,12 +74,18 @@ export function BriefDownloadControls({
   const [forceFallback, setForceFallback] = useState(false);
   const [format, setFormat] = useState<PageFormat>("a4");
   const [orientation, setOrientation] = useState<PageOrientation>("portrait");
-  const [busy, setBusy] = useState<null | "pdf" | "docx" | "samples">(null);
+  const [busy, setBusy] = useState<
+    null | "pdf" | "docx" | "samples" | "baseline" | "diff"
+  >(null);
+  const [presets, setPresets] = useState<BrandingPreset[]>(() => listPresets());
+  const [activeId, setActiveId] = useState<string>(() => getActivePresetId());
   const [branding, setBranding] = useState<BriefBranding>(() => loadBranding());
   const [integrityWarn, setIntegrityWarn] = useState<IntegrityReport | null>(
     null,
   );
   const [qaRun, setQaRun] = useState<QaRunResult | null>(null);
+  const [diffRun, setDiffRun] = useState<VisualDiffRun | null>(null);
+  const [diffMessage, setDiffMessage] = useState<string | null>(null);
 
   useEffect(() => {
     return () => {
@@ -87,6 +93,78 @@ export function BriefDownloadControls({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const refreshPresets = () => {
+    setPresets(listPresets());
+    setActiveId(getActivePresetId());
+    setBranding(loadBranding());
+  };
+
+  const handleSelectPreset = (id: string) => {
+    setActivePreset(id);
+    refreshPresets();
+  };
+
+  const handleCreatePreset = () => {
+    const name = window.prompt("Name this preset (e.g. 'Acme Group')");
+    if (!name) return;
+    createPreset(name, branding);
+    refreshPresets();
+  };
+
+  const handleDeletePreset = (id: string) => {
+    if (id === "default") return;
+    if (!window.confirm("Delete this branding preset?")) return;
+    deletePreset(id);
+    refreshPresets();
+  };
+
+  const activePreset =
+    presets.find((p) => p.id === activeId) ?? presets[0];
+
+  const handleCaptureBaseline = async () => {
+    setBusy("baseline");
+    setDiffMessage(null);
+    try {
+      const summary = await captureBaseline(venture, {
+        presetId: activeId,
+        presetName: activePreset?.name ?? "default",
+        branding,
+      });
+      const total = summary.reduce((s, r) => s + r.pages, 0);
+      setDiffMessage(
+        `Baseline captured: ${total} page(s) across ${summary.length} format combos.`,
+      );
+      setDiffRun(null);
+    } catch (e) {
+      setDiffMessage(`Baseline failed: ${(e as Error).message}`);
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const handleRunDiff = async () => {
+    setBusy("diff");
+    setDiffMessage(null);
+    try {
+      const run = await runVisualDiff(venture, {
+        presetId: activeId,
+        presetName: activePreset?.name ?? "default",
+        branding,
+      });
+      setDiffRun(run);
+      const noBaseline = run.combos.every((c) => !c.hasBaseline);
+      if (noBaseline) {
+        setDiffMessage(
+          "No baseline yet for this preset — use “Capture baseline” first, then re-run.",
+        );
+      }
+    } catch (e) {
+      setDiffMessage(`Visual diff failed: ${(e as Error).message}`);
+    } finally {
+      setBusy(null);
+    }
+  };
 
   const watermark: WatermarkOptions = { opacity, sizeFraction, forceFallback };
 
