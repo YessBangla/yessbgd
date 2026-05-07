@@ -17,7 +17,10 @@
     "test:visual": "playwright test tests/visual",
     "test:visual:update": "playwright test tests/visual --update-snapshots",
     "test:unit": "bun test tests/unit",
-    "test:pdf": "bun test tests/unit/ventureBrief.test.ts"
+    "test:pdf": "bun test tests/unit/ventureBrief.test.ts",
+    "test:pdf-visual": "bun scripts/pdf-visual-regression.mjs",
+    "test:pdf-visual:update": "bun scripts/pdf-visual-regression.mjs --update",
+    "bench:pdf": "bun scripts/pdf-perf-bench.mjs"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
