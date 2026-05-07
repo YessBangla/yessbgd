@@ -61,6 +61,14 @@ export function BriefDownloadControls({
   const [integrityWarn, setIntegrityWarn] = useState<IntegrityReport | null>(
     null,
   );
+  const [qaRun, setQaRun] = useState<QaRunResult | null>(null);
+
+  useEffect(() => {
+    return () => {
+      disposeQaRun(qaRun);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const watermark: WatermarkOptions = { opacity, sizeFraction, forceFallback };
 
