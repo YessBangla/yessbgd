@@ -184,6 +184,7 @@ function drawLetterhead(
   d: PageDims,
   logo: string | null,
   subtitle: string,
+  brand: BriefBranding,
 ) {
   doc.setFillColor(15, 35, 80);
   doc.rect(0, 0, d.w, d.headerH, "F");
@@ -203,17 +204,17 @@ function drawLetterhead(
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
-  doc.text("YESS BANGLA", textX, 12);
+  doc.text(brand.companyName, textX, 12);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(220, 226, 240);
-  doc.text("Enterprise Solutions · Media · Technology", textX, 17.5);
+  doc.text(brand.tagline, textX, 17.5);
   doc.text(subtitle, textX, 22.5);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(255, 255, 255);
-  doc.text("ENTERPRISE BRIEF", d.w - d.margin, 12, { align: "right" });
+  doc.text(brand.documentLabel, d.w - d.margin, 12, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(220, 226, 240);
@@ -227,7 +228,7 @@ function drawLetterhead(
     17.5,
     { align: "right" },
   );
-  doc.text("Confidential · For intended recipient", d.w - d.margin, 22.5, {
+  doc.text(brand.confidentialityNote, d.w - d.margin, 22.5, {
     align: "right",
   });
 
