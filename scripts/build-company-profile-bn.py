@@ -482,6 +482,7 @@ def render_html() -> str:
 </style>
 </head>
 <body>
+<div class="page-bg" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
 
 <div class="cover">
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
