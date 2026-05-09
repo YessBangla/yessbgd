@@ -63,57 +63,31 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
-  { icon: Tv, title: "Akash OTT", desc: "Bangladesh's new digital streaming platform launched under Akash TV by YESS Bangla." },
-  { icon: Newspaper, title: "Akash News", desc: "A modern Bangladeshi digital news platform powered by YESS Bangla Communications." },
-  { icon: LayoutGrid, title: "One Stop Solution", desc: "Centralised technology, IT support and home services — all under one trusted roof." },
-  { icon: Code2, title: "Web Development", desc: "Frontend & backend development with modern stacks — responsive, scalable, secure." },
-  { icon: Palette, title: "Web Design", desc: "Visually stunning, user-centric design that elevates your brand experience." },
-  { icon: ShoppingBag, title: "Yess Bangla Shop", desc: "End-to-end e-commerce — websites, mobile apps, payments and doorstep delivery." },
-];
-
-
-const features = [
-  { icon: ShieldCheck, title: "Trusted & Reliable", desc: "Long-term guarantees and a proven track record across industries." },
-  { icon: Sparkles, title: "Industry Experts", desc: "A team of consultants and engineers with deep domain expertise." },
-  { icon: Users, title: "Customer-Centric", desc: "We design every engagement around your goals and your customers." },
-  { icon: TrendingUp, title: "Scalable Solutions", desc: "From startup MVPs to enterprise platforms — built to grow with you." },
-];
-
-const process = [
-  { icon: Search, title: "Discover", desc: "We listen, audit and understand your business, customers and constraints." },
-  { icon: Lightbulb, title: "Strategise", desc: "We design a clear, prioritised roadmap with measurable outcomes." },
-  { icon: Rocket, title: "Build & Launch", desc: "Our cross-functional team executes with speed, quality and transparency." },
-  { icon: LineChart, title: "Grow", desc: "We measure, iterate and scale what works — together with you." },
-];
-
-const testimonials = [
-  { name: "Tanvir Ahmed", role: "CEO, Retail Group", quote: "YESS Bangla rebuilt our e-commerce platform end-to-end. Sales grew 3x in nine months and our team finally has tools we love using." },
-  { name: "Nusrat Jahan", role: "Director, EdTech Startup", quote: "Their consulting clarified our strategy and their engineers shipped faster than any agency we've worked with. Easy partnership." },
-  { name: "Rakib Hasan", role: "Head of Operations, Logistics", quote: "From discovery to launch they treated our business as their own. Reliable, transparent and genuinely strategic." },
-];
+const serviceIcons = [Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag];
+const featureIcons = [ShieldCheck, Sparkles, Users, TrendingUp];
+const processIcons = [Search, Lightbulb, Rocket, LineChart];
 
 const clients = ["Akash TV", "Akash News", "Akash OTT", "One Stop", "Yess Shop", "Bangla Media", "BD Logistics", "EduConnect"];
-
 
 type ImpactMetric = {
   id: string;
   icon: typeof Briefcase;
   /** Raw numeric target — drives the counter. */
   target: number;
-  label: string;
-  note: string;
   format?: import("@/components/CountUp").CountFormat;
 };
 
 const impactMetrics: ImpactMetric[] = [
-  { id: "projects",  icon: Briefcase,      target: 250,    label: "Projects delivered",  note: "Across 12 industries",     format: { plus: true } },
-  { id: "users",     icon: Users,          target: 180000, label: "End users served",    note: "Monthly active reach",     format: { compact: true, plus: true } },
-  { id: "clients",   icon: Building2,      target: 120,    label: "Enterprise clients",  note: "From startups to groups",  format: { plus: true } },
-  { id: "districts", icon: Globe,          target: 64,     label: "Districts covered",   note: "Nationwide footprint" },
-  { id: "years",     icon: Award,          target: 11,     label: "Years of expertise",  note: "Trusted since 2014",       format: { plus: true } },
-  { id: "retention", icon: HeartHandshake, target: 98,     label: "Client retention",    note: "Long-term partnerships",   format: { percent: true } },
+  { id: "projects",  icon: Briefcase,      target: 250,    format: { plus: true } },
+  { id: "users",     icon: Users,          target: 180000, format: { compact: true, plus: true } },
+  { id: "clients",   icon: Building2,      target: 120,    format: { plus: true } },
+  { id: "districts", icon: Globe,          target: 64 },
+  { id: "years",     icon: Award,          target: 11,     format: { plus: true } },
+  { id: "retention", icon: HeartHandshake, target: 98,     format: { percent: true } },
 ];
+
+type LocalizedItem = { title: string; desc: string };
+type Testimonial = { name: string; role: string; quote: string };
 
 function Index() {
   const { t } = useTranslation();
