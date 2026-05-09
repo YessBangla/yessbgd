@@ -185,6 +185,8 @@
         "kicker": "English Edition",
         "title": "Company Profile · PDF",
         "meta": "17 pages · v1.1 · 09 May 2026",
+        "version": "v1.1 · 09 May 2026",
+        "gateMeta": "17 pages · ~150 KB · A4 PDF",
         "lock": "PIN protected",
         "ariaButton": "ইংরেজি সংস্করণ কোম্পানি প্রোফাইল ডাউনলোড (PIN সুরক্ষিত)"
       },
@@ -192,7 +194,9 @@
         "badge": "BN · বাংলা",
         "kicker": "বাংলা সংস্করণ",
         "title": "কোম্পানি প্রোফাইল · PDF",
-        "meta": "১৭ পৃষ্ঠা · v1.2 · ০৯ মে ২০২৬",
+        "meta": "১৭ পৃষ্ঠা · v১.২ · ০৯ মে ২০২৬",
+        "version": "v১.২ · ০৯ মে ২০২৬",
+        "gateMeta": "১৭ পৃষ্ঠা · A4 PDF · নোটো সান্স বাংলা",
         "lock": "PIN সুরক্ষিত",
         "ariaButton": "বাংলা সংস্করণ কোম্পানি প্রোফাইল ডাউনলোড (PIN সুরক্ষিত)"
       }
