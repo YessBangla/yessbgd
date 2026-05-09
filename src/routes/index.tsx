@@ -403,6 +403,12 @@ function Index() {
               <p className="mt-2 text-sm text-muted-foreground">
                 Talk to our team, browse what we deliver, or take our profile with you.
               </p>
+              <div className="mt-4 flex flex-col gap-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
+                  Theme preview · check logo readability before export
+                </p>
+                <ThemePreviewSwitch />
+              </div>
             </Reveal>
 
             <div className="grid gap-3 sm:grid-cols-3">
