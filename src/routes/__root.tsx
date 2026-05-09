@@ -1,10 +1,12 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { useEffect } from "react";
 import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 // Debug overlay removed for cleaner preview
 import { WaterBackground } from "@/components/WaterBackground";
 import { ScrollUpDown } from "@/components/ScrollUpDown";
+import { applyHeaderFooterCssVars, loadLogoSettings } from "@/lib/logoSettings";
 
 function NotFoundComponent() {
   return (
@@ -74,6 +76,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  // Apply persisted per-surface logo tuning (scale + opacity) before paint.
+  useEffect(() => {
+    applyHeaderFooterCssVars(loadLogoSettings());
+  }, []);
   return (
     <div className="relative flex min-h-screen flex-col">
       <WaterBackground />
@@ -83,7 +89,6 @@ function RootComponent() {
       </main>
       <Footer />
       <ScrollUpDown />
-      
     </div>
   );
 }

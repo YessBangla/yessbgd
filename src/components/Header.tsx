@@ -200,15 +200,18 @@ export function Header() {
           aria-label="YESS Bangla — home"
         >
           <span className="logo-halo pointer-events-none absolute inset-0 -z-10 rounded-2xl" aria-hidden />
-          <span className="logo-plate">
+          <span className="logo-plate" role="img" aria-label="YESS Bangla — home">
             <img
               src={logo}
-              alt="YESS Bangla logo"
+              srcSet={`${logo} 1x, ${logo} 2x, ${logo} 3x`}
+              alt="YESS Bangla — Enterprise Solutions, Media & Technology"
               width={279}
               height={153}
               decoding="async"
               fetchPriority="high"
-              className="logo-mark h-9 w-auto max-w-[44vw] bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04] sm:h-10 lg:h-11"
+              data-surface="header"
+              style={{ imageRendering: "auto" }}
+              className="logo-mark h-8 w-auto max-w-[44vw] bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04] [@media(min-width:380px)]:h-9 sm:h-10 lg:h-11 [@media(min-width:1440px)]:h-12"
             />
           </span>
         </Link>

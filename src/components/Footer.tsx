@@ -10,15 +10,18 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link to="/" className="inline-flex items-center" aria-label="YESS Bangla — home">
-              <span className="logo-plate">
+              <span className="logo-plate" role="img" aria-label="YESS Bangla">
                 <img
                   src={logo}
-                  alt="YESS Bangla logo"
+                  srcSet={`${logo} 1x, ${logo} 2x, ${logo} 3x`}
+                  alt="YESS Bangla — Enterprise Solutions, Media & Technology"
                   loading="lazy"
                   decoding="async"
                   width={279}
                   height={153}
-                  className="h-12 w-auto max-w-[60vw] bg-transparent object-contain sm:h-14 lg:h-16"
+                  data-surface="footer"
+                  style={{ imageRendering: "auto" }}
+                  className="logo-mark h-11 w-auto max-w-[60vw] bg-transparent object-contain [@media(min-width:380px)]:h-12 sm:h-14 lg:h-16 [@media(min-width:1440px)]:h-[72px]"
                 />
               </span>
             </Link>

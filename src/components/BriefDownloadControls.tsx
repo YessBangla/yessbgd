@@ -14,7 +14,14 @@ import {
   GitCompare,
   Plus,
   Trash2,
+  Sparkles,
 } from "lucide-react";
+import {
+  loadLogoSettings,
+  saveLogoSettings,
+  DEFAULT_LOGO_SETTINGS,
+  type LogoSettings,
+} from "@/lib/logoSettings";
 import {
   downloadVentureBrief,
   DEFAULT_WATERMARK,
@@ -86,6 +93,12 @@ export function BriefDownloadControls({
   const [qaRun, setQaRun] = useState<QaRunResult | null>(null);
   const [diffRun, setDiffRun] = useState<VisualDiffRun | null>(null);
   const [diffMessage, setDiffMessage] = useState<string | null>(null);
+  const [logoSettings, setLogoSettings] = useState<LogoSettings>(() => loadLogoSettings());
+
+  const updateLogo = <K extends keyof LogoSettings>(k: K, v: LogoSettings[K]) => {
+    const next = { ...logoSettings, [k]: v };
+    setLogoSettings(saveLogoSettings(next));
+  };
 
   useEffect(() => {
     return () => {
@@ -177,6 +190,8 @@ export function BriefDownloadControls({
         orientation,
         watermark,
         branding,
+        logoScale: logoSettings.pdfScale,
+        logoOpacity: logoSettings.pdfOpacity,
       });
       if (!integrity.ok) setIntegrityWarn(integrity);
     } finally {
@@ -190,6 +205,7 @@ export function BriefDownloadControls({
       await downloadVentureBriefDocx(venture, {
         branding,
         watermarkOpacity: opacity,
+        logoScale: logoSettings.docxScale,
       });
     } finally {
       setBusy(null);
@@ -498,6 +514,88 @@ export function BriefDownloadControls({
               )}
               Generate 3 QA sample PDFs
             </button>
+          </PopoverContent>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              aria-label="Logo settings"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-2.5 text-sm font-semibold backdrop-blur hover:bg-background"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span className="hidden sm:inline">Logo</span>
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="start" className="w-96 max-w-[92vw] space-y-4 p-4 text-sm">
+            <div className="flex items-center justify-between">
+              <p className="font-semibold">Logo per surface</p>
+              <button
+                type="button"
+                onClick={() => setLogoSettings(saveLogoSettings(DEFAULT_LOGO_SETTINGS))}
+                className="text-xs text-muted-foreground hover:text-foreground"
+              >
+                Reset all
+              </button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Adjust the wordmark independently in each context. Header &amp; Footer
+              update live; PDF &amp; DOCX values apply to your next download.
+            </p>
+
+            {([
+              ["Header (live)", "headerScale", "headerOpacity"],
+              ["Footer (live)", "footerScale", "footerOpacity"],
+              ["PDF letterhead", "pdfScale", "pdfOpacity"],
+              ["DOCX letterhead", "docxScale", "docxOpacity"],
+            ] as const).map(([label, scaleKey, opKey]) => (
+              <fieldset key={label} className="space-y-2 rounded-lg border border-border p-3">
+                <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {label}
+                </legend>
+                <div>
+                  <div className="mb-1 flex items-center justify-between">
+                    <label htmlFor={`logo-${scaleKey}`} className="text-xs font-medium">
+                      Scale
+                    </label>
+                    <span className="tabular-nums text-xs text-muted-foreground">
+                      {Math.round(logoSettings[scaleKey] * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    id={`logo-${scaleKey}`}
+                    type="range"
+                    min={0.6}
+                    max={1.4}
+                    step={0.05}
+                    value={logoSettings[scaleKey]}
+                    onChange={(e) => updateLogo(scaleKey, parseFloat(e.target.value))}
+                    className="w-full accent-primary"
+                  />
+                </div>
+                <div>
+                  <div className="mb-1 flex items-center justify-between">
+                    <label htmlFor={`logo-${opKey}`} className="text-xs font-medium">
+                      Opacity
+                    </label>
+                    <span className="tabular-nums text-xs text-muted-foreground">
+                      {Math.round(logoSettings[opKey] * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    id={`logo-${opKey}`}
+                    type="range"
+                    min={0.2}
+                    max={1}
+                    step={0.05}
+                    value={logoSettings[opKey]}
+                    onChange={(e) => updateLogo(opKey, parseFloat(e.target.value))}
+                    className="w-full accent-primary"
+                  />
+                </div>
+              </fieldset>
+            ))}
           </PopoverContent>
         </Popover>
 

@@ -40,6 +40,10 @@ export interface BriefOptions {
   fileName?: string;
   /** Custom branding — falls back to DEFAULT_BRANDING for missing fields. */
   branding?: Partial<BriefBranding>;
+  /** Letterhead logo scale (0.6–1.4). Default 1. */
+  logoScale?: number;
+  /** Letterhead logo opacity (0–1). Default 1. Uses GState alpha when available. */
+  logoOpacity?: number;
 }
 
 export const DEFAULT_WATERMARK: Required<WatermarkOptions> = {
@@ -141,10 +145,9 @@ async function getFadedLogo(opacity: number): Promise<string | null> {
       i.onerror = reject;
       i.src = base;
     });
-    // Cap at 480px — watermark is drawn at content-area scale, so any
-    // larger source pixels just inflate the PDF without visible benefit
-    // on mobile screens.
-    const max = 480;
+    // Cap at 1024px — sharper watermark on high-DPI mobile / print zoom,
+    // while still keeping the embedded raster small thanks to JPEG q=0.6.
+    const max = 1024;
     const scale = Math.min(1, max / Math.max(img.width, img.height));
     const w = Math.round(img.width * scale);
     const h = Math.round(img.height * scale);
@@ -185,6 +188,7 @@ function drawLetterhead(
   logo: string | null,
   subtitle: string,
   brand: BriefBranding,
+  letterhead: { scale: number; opacity: number } = { scale: 1, opacity: 1 },
 ) {
   doc.setFillColor(15, 35, 80);
   doc.rect(0, 0, d.w, d.headerH, "F");
@@ -196,14 +200,16 @@ function drawLetterhead(
   // portrait stays compact while Letter/A4 landscape gets a larger,
   // more readable wordmark in the header band.
   const LOGO_ASPECT = 279 / 153;
-  const logoH = Math.max(13, Math.min(d.headerH - 6, d.contentW * 0.07, 22));
-  const logoW = Math.min(logoH * LOGO_ASPECT, d.contentW * 0.32);
+  const scale = Math.max(0.6, Math.min(1.4, letterhead.scale));
+  const baseH = Math.max(13, Math.min(d.headerH - 6, d.contentW * 0.07, 22));
+  // Keep at least 2mm of clearance from the gold divider line at headerH.
+  const maxH = d.headerH - 4;
+  const logoH = Math.max(10, Math.min(baseH * scale, maxH));
+  const logoW = Math.min(logoH * LOGO_ASPECT, d.contentW * 0.34);
   const logoY = (d.headerH - logoH) / 2;
   if (logo) {
     try {
-      // Theme-aware backplate: the header band is navy, so paint a
-      // rounded white plate behind the multi-color wordmark to keep
-      // the brown "bangla" lettering legible against dark backgrounds.
+      // Theme-aware backplate behind the multi-color wordmark.
       const padX = 1.6;
       const padY = 1.2;
       doc.setFillColor(255, 255, 255);
@@ -216,7 +222,15 @@ function drawLetterhead(
         1.4,
         "F",
       );
+      const op = Math.max(0, Math.min(1, letterhead.opacity));
+      const gs = doc as unknown as {
+        GState?: new (o: { opacity: number }) => unknown;
+        setGState?: (s: unknown) => void;
+      };
+      const useAlpha = op < 1 && typeof gs.GState === "function" && typeof gs.setGState === "function";
+      if (useAlpha) gs.setGState!(new gs.GState!({ opacity: op }));
       doc.addImage(logo, "PNG", d.margin, logoY, logoW, logoH);
+      if (useAlpha) gs.setGState!(new gs.GState!({ opacity: 1 }));
     } catch {
       /* ignore */
     }
@@ -414,10 +428,14 @@ export async function buildVentureBriefDoc(
 
   const brand = resolveBranding(opts.branding);
   const subtitle = v.category.toUpperCase() + " · " + v.title;
+  const letterhead = {
+    scale: opts.logoScale ?? 1,
+    opacity: opts.logoOpacity ?? 1,
+  };
 
   const newPage = () => {
     doc.addPage(format, orientation);
-    drawLetterhead(doc, d, logo, subtitle, brand);
+    drawLetterhead(doc, d, logo, subtitle, brand, letterhead);
     drawWatermark(doc, d, assets);
     y = d.topY;
   };
@@ -460,7 +478,7 @@ export async function buildVentureBriefDoc(
   const bullet = (s: string) => text("•  " + s, { size: 10, color: [55, 55, 55], gap: 1.2 });
 
   // First page chrome
-  drawLetterhead(doc, d, logo, subtitle, brand);
+  drawLetterhead(doc, d, logo, subtitle, brand, letterhead);
   drawWatermark(doc, d, assets);
 
   h1(v.title);

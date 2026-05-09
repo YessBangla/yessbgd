@@ -44,6 +44,8 @@ export interface DocxBriefOptions {
   fileName?: string;
   /** Watermark opacity (0-1). Default 0.08 — baked into a faded raster. */
   watermarkOpacity?: number;
+  /** Letterhead logo scale (0.6–1.4). Default 1. */
+  logoScale?: number;
 }
 
 const NAVY = "0F2350";
@@ -102,6 +104,7 @@ async function bakeWatermark(
 function makeLetterhead(
   brand: BriefBranding,
   logo: Uint8Array | null,
+  logoScale: number = 1,
 ): Header {
   const cells: TableCell[] = [];
 
@@ -122,11 +125,14 @@ function makeLetterhead(
                 type: "png",
                 data: logo,
                 // Wordmark aspect ≈ 1.82:1 — keep it readable in the header band.
-                transformation: { width: 96, height: 53 },
+                transformation: {
+                  width: Math.round(96 * Math.max(0.6, Math.min(1.4, logoScale))),
+                  height: Math.round(53 * Math.max(0.6, Math.min(1.4, logoScale))),
+                },
                 altText: {
                   title: brand.companyName,
-                  description: `${brand.companyName} logo`,
-                  name: brand.companyName,
+                  description: `${brand.companyName} — Enterprise Solutions, Media & Technology. Document letterhead logo.`,
+                  name: `${brand.companyName} logo`,
                 },
               }),
             ],
@@ -484,7 +490,7 @@ export async function buildVentureBriefDocx(
             },
           },
         },
-        headers: { default: makeLetterhead(brand, logo) },
+        headers: { default: makeLetterhead(brand, logo, opts.logoScale ?? 1) },
         footers: { default: makeFooter(brand, v.slug) },
         children: body,
       },

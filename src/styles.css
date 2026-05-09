@@ -652,6 +652,17 @@
 }
 .logo-mark {
   animation: logo-breathe 4.5s ease-in-out infinite;
+  /* Per-surface tuning hooked into the user-facing Logo settings panel.
+   * Defaults to 1; saved values applied via applyHeaderFooterCssVars(). */
+  transform-origin: center;
+}
+.logo-mark[data-surface="header"] {
+  transform: scale(var(--logo-header-scale, 1));
+  opacity: var(--logo-header-opacity, 1);
+}
+.logo-mark[data-surface="footer"] {
+  transform: scale(var(--logo-footer-scale, 1));
+  opacity: var(--logo-footer-opacity, 1);
 }
 .logo-halo {
   background: radial-gradient(closest-side,
