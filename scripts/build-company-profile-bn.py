@@ -482,10 +482,7 @@ def render_html() -> str:
   tbody tr:nth-child(even) td {{ background: #F8F6F1; }}
   .sig {{ font-weight: 700; color: var(--navy); margin-top: 8pt; }}
   .page-break {{ page-break-after: always; }}
-</style>
-</head>
 <body>
-<div class="page-bg" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
 
 <div class="cover">
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
