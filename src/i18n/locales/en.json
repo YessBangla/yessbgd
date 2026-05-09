@@ -185,6 +185,8 @@
         "kicker": "English Edition",
         "title": "Company Profile · PDF",
         "meta": "17 pages · v1.1 · 09 May 2026",
+        "version": "v1.1 · 09 May 2026",
+        "gateMeta": "17 pages · ~150 KB · A4 PDF",
         "lock": "PIN protected",
         "ariaButton": "Download Company Profile — English Edition (PIN protected)"
       },
@@ -193,6 +195,8 @@
         "kicker": "Bangla Edition",
         "title": "Company Profile · PDF",
         "meta": "17 pages · v1.2 · 09 May 2026",
+        "version": "v1.2 · 09 May 2026",
+        "gateMeta": "17 pages · A4 PDF · Noto Sans Bengali",
         "lock": "PIN protected",
         "ariaButton": "Download Company Profile — Bangla Edition (PIN protected)"
       }
