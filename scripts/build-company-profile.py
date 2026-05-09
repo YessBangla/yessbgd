@@ -42,14 +42,46 @@ from reportlab.platypus import (
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 from reportlab.pdfgen import canvas as _canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 LETTERHEAD = "/dev-server/public/yess-bangla-letterhead.jpeg"
 PDF_OUT = "/dev-server/public/yess-bangla-company-profile.pdf"
 
-VERSION = "v1.1"
+VERSION = "v1.2"
 GENERATED = datetime.date.today().strftime("%d %B %Y")
 DOC_TITLE = "Yess Bangla — Company Profile"
 DOC_AUTHOR = "Yess Bangla Private Limited"
+EDITION = "International English Edition"
+
+# ---------------------------------------------------------------------------
+# Font registration — embed real TTFs (with subsetting) so the document
+# looks identical on every reader / OS, instead of relying on the base-14
+# Helvetica metrics that are NOT embedded.
+# ---------------------------------------------------------------------------
+LIBERATION_DIR = (
+    "/nix/store/0hdgmcjy7q8zn7h3amz8nf96l9qh7wv0-liberation-fonts-2.1.5/"
+    "share/fonts/truetype"
+)
+BODY_FONT = "YBSans"
+BODY_BOLD = "YBSans-Bold"
+BODY_ITALIC = "YBSans-Italic"
+BODY_BOLDITALIC = "YBSans-BoldItalic"
+
+def _register_fonts():
+    pdfmetrics.registerFont(TTFont(BODY_FONT,
+        f"{LIBERATION_DIR}/LiberationSans-Regular.ttf", subfontIndex=0))
+    pdfmetrics.registerFont(TTFont(BODY_BOLD,
+        f"{LIBERATION_DIR}/LiberationSans-Bold.ttf", subfontIndex=0))
+    pdfmetrics.registerFont(TTFont(BODY_ITALIC,
+        f"{LIBERATION_DIR}/LiberationSans-Italic.ttf", subfontIndex=0))
+    pdfmetrics.registerFont(TTFont(BODY_BOLDITALIC,
+        f"{LIBERATION_DIR}/LiberationSans-BoldItalic.ttf", subfontIndex=0))
+    from reportlab.pdfbase.pdfmetrics import registerFontFamily
+    registerFontFamily(BODY_FONT, normal=BODY_FONT, bold=BODY_BOLD,
+                       italic=BODY_ITALIC, boldItalic=BODY_BOLDITALIC)
+
+_register_fonts()
 
 # ---------------------------------------------------------------------------
 # Content model
