@@ -454,7 +454,7 @@ export function ProfileDownloadGate({
                 <div className="mt-6">
                   <div className="rounded-2xl border border-primary/30 bg-primary/[0.04] p-4">
                     <div className="flex items-center justify-between gap-3">
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="font-display text-sm font-semibold text-foreground">
                           {editionDisplayName} · PDF
                         </p>
