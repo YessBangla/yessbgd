@@ -196,59 +196,18 @@ function tableNoBorders() {
   };
 }
 
-function makeFooter(brand: BriefBranding, slug: string): Footer {
+function makeFooter(): Footer {
+  // Pad already shows the navy contact band — footer just carries the
+  // page number, anchored above the band so it stays visible.
   return new Footer({
     children: [
       new Paragraph({
-        spacing: { before: 60, after: 0 },
-        border: {
-          top: {
-            style: BorderStyle.SINGLE,
-            size: 8,
-            color: GOLD,
-            space: 4,
-          },
-        },
-        children: [new TextRun({ text: "", size: 2 })],
-      }),
-      new Paragraph({
+        alignment: AlignmentType.RIGHT,
         children: [
-          new TextRun({
-            text: brand.companyName,
-            bold: true,
-            color: NAVY,
-            size: 18,
-          }),
-          new PositionalTab({
-            alignment: PositionalTabAlignment.RIGHT,
-            relativeTo: PositionalTabRelativeTo.MARGIN,
-            leader: PositionalTabLeader.NONE,
-          }),
-          new TextRun({ text: "Page ", color: NAVY, size: 16 }),
-          new TextRun({ children: [PageNumber.CURRENT], color: NAVY, size: 16 }),
-          new TextRun({ text: " of ", color: NAVY, size: 16 }),
-          new TextRun({ children: [PageNumber.TOTAL_PAGES], color: NAVY, size: 16 }),
-        ],
-      }),
-      new Paragraph({
-        children: [new TextRun({ text: brand.address, color: "464646", size: 15 })],
-      }),
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `Email: ${brand.email}   ·   Phone: ${brand.phone}`,
-            color: "464646",
-            size: 15,
-          }),
-        ],
-      }),
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `Web: ${brand.web}/ventures/${slug}   ·   © ${new Date().getFullYear()} ${brand.copyrightHolder}`,
-            color: "8C8C8C",
-            size: 14,
-          }),
+          new TextRun({ text: "Page ", color: "808080", size: 14 }),
+          new TextRun({ children: [PageNumber.CURRENT], color: "808080", size: 14 }),
+          new TextRun({ text: " of ", color: "808080", size: 14 }),
+          new TextRun({ children: [PageNumber.TOTAL_PAGES], color: "808080", size: 14 }),
         ],
       }),
     ],
