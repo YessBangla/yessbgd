@@ -267,7 +267,7 @@ function Index() {
                 }}
               >
                 <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/75 sm:inline">
-                  Why teams choose us
+                  {t("home.hero.whyTeams")}
                 </span>
                 <span
                   data-testid="hero-trust-divider"
