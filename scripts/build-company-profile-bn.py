@@ -315,12 +315,13 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Full-bleed letterhead pad: repeated on every printed page via the
-     html background image (Chromium repeats the html background on each
-     page when @page margin is 0). */
+  /* Letterhead pad: full-page JPEG painted on the html element so it
+     repeats on every printed page. The @page margins keep body content
+     inside the safe zone (clear of the logo at top and footer band at
+     bottom) on every page automatically. */
   @page {{
     size: A4 portrait;
-    margin: 0;
+    margin: 36mm 20mm 48mm 20mm;
   }}
   html {{
     background-image: url("file://{LETTERHEAD}");
@@ -332,11 +333,7 @@ def render_html() -> str:
   }}
   body {{ margin: 0; background: transparent; }}
   .lh-header, .lh-footer, .lh-watermark, .pad-bg {{ display: none; }}
-  .page-frame {{
-    /* Clear the letterhead logo (top) and footer band (bottom). */
-    padding: 36mm 20mm 48mm 20mm;
-    box-sizing: border-box;
-  }}
+  .page-frame {{ box-sizing: border-box; }}
 
   :root {{
     --navy: #0E2A3A;
