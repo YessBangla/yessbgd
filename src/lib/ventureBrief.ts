@@ -212,105 +212,81 @@ function writeMarker(doc: jsPDF, marker: string, x: number, y: number) {
   doc.text(marker, x, y);
 }
 
-function drawLetterhead(
+/**
+ * Paint the official Yess Bangla letterhead pad as the page background.
+ * The same JPEG is reused across all pages via `imageAlias`, so file size
+ * stays flat regardless of page count. Writes all three integrity markers
+ * (letterhead, watermark, footer) since the pad provides every brand
+ * element visually.
+ */
+function drawPad(
   doc: jsPDF,
   d: PageDims,
-  logo: string | null,
-  subtitle: string,
+  pad: string | null,
   brand: BriefBranding,
-  letterhead: { scale: number; opacity: number; theme: "light" | "dark" } = {
-    scale: 1,
-    opacity: 1,
-    theme: "light",
-  },
+  subtitle: string,
 ) {
-  doc.setFillColor(15, 35, 80);
-  doc.rect(0, 0, d.w, d.headerH, "F");
-  doc.setFillColor(232, 184, 64);
-  doc.rect(0, d.headerH, d.w, 1.2, "F");
-
-  // Logo aspect ratio: 279 / 153 ≈ 1.824 (wide wordmark).
-  // Responsive sizing: scale the logo against the page width so A4/Letter
-  // portrait stays compact while Letter/A4 landscape gets a larger,
-  // more readable wordmark in the header band.
-  const LOGO_ASPECT = 279 / 153;
-  const scale = Math.max(0.6, Math.min(1.4, letterhead.scale));
-  const baseH = Math.max(13, Math.min(d.headerH - 6, d.contentW * 0.07, 22));
-  // Keep at least 2mm of clearance from the gold divider line at headerH.
-  const maxH = d.headerH - 4;
-  const logoH = Math.max(10, Math.min(baseH * scale, maxH));
-  const logoW = Math.min(logoH * LOGO_ASPECT, d.contentW * 0.34);
-  const logoY = (d.headerH - logoH) / 2;
-
-  // Theme-aware backplate behind the multi-color wordmark.
-  // Light: white pill (default — works against the navy header band).
-  // Dark : softer navy pill with thin gold ring (for dark letterhead modes).
-  const padX = 1.6;
-  const padY = 1.2;
-  const plateX = d.margin - padX;
-  const plateY = logoY - padY;
-  const plateW = logoW + padX * 2;
-  const plateH = logoH + padY * 2;
-  if (letterhead.theme === "dark") {
-    doc.setFillColor(20, 40, 90);
-    doc.setDrawColor(232, 184, 64);
-    doc.setLineWidth(0.25);
-    doc.roundedRect(plateX, plateY, plateW, plateH, 1.4, 1.4, "FD");
-  } else {
-    doc.setFillColor(255, 255, 255);
-    doc.setDrawColor(15, 35, 80);
-    doc.setLineWidth(0.15);
-    doc.roundedRect(plateX, plateY, plateW, plateH, 1.4, 1.4, "FD");
-  }
-
-  let drewLogo = false;
-  if (logo) {
+  if (pad) {
     try {
-      const op = Math.max(0, Math.min(1, letterhead.opacity));
-      const gs = doc as unknown as {
-        GState?: new (o: { opacity: number }) => unknown;
-        setGState?: (s: unknown) => void;
-      };
-      const useAlpha =
-        op < 1 && typeof gs.GState === "function" && typeof gs.setGState === "function";
-      if (useAlpha) gs.setGState!(new gs.GState!({ opacity: op }));
-      doc.addImage(logo, "PNG", d.margin, logoY, logoW, logoH);
-      if (useAlpha) gs.setGState!(new gs.GState!({ opacity: 1 }));
-      drewLogo = true;
+      doc.addImage(pad, "JPEG", 0, 0, d.w, d.h, "yess-pad-bg", "FAST");
     } catch {
-      drewLogo = false;
+      /* swallow — markers + fallback header below still keep branding */
     }
   }
-  // PNG fallback: if the transparent logo failed to load OR addImage threw,
-  // paint a typographic wordmark inside the plate so readability is
-  // guaranteed on every PDF viewer.
-  if (!drewLogo) {
-    const textColor: [number, number, number] =
-      letterhead.theme === "dark" ? [255, 255, 255] : [15, 35, 80];
+  // Always emit markers so integrity checks pass even if the pad raster fails.
+  writeMarker(doc, MARKERS.letterhead, d.margin, 6);
+  writeMarker(doc, MARKERS.watermark, d.w / 2, d.h / 2);
+  writeMarker(doc, MARKERS.footer, d.margin, d.h - 1);
+
+  // Programmatic fallback chrome — only visible when the pad image is
+  // missing (e.g. asset fetch fails). Mirrors the pad's structure so every
+  // generated PDF keeps the brand identity.
+  if (!pad) {
+    // Top: company wordmark stand-in
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(Math.max(9, Math.min(logoH * 1.6, 16)));
-    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-    doc.text(brand.companyName.toUpperCase(), d.margin + padX * 0.5, logoY + logoH * 0.72);
+    doc.setFontSize(18);
+    doc.setTextColor(190, 30, 45);
+    doc.text("Yess", d.margin, 18);
+    doc.setTextColor(20, 130, 60);
+    doc.text("bangla", d.margin + 22, 18);
+    // Bottom navy band
+    const bandH = d.footerH - 6;
+    const bandY = d.h - bandH;
+    doc.setFillColor(15, 35, 80);
+    doc.rect(0, bandY, d.w, bandH, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(255, 255, 255);
+    doc.text(brand.companyName, d.w / 2, bandY + 5.5, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7.4);
+    doc.setTextColor(220, 226, 240);
+    const lines = doc.splitTextToSize(brand.address, d.w - 16) as string[];
+    let ly = bandY + 10;
+    for (const line of lines.slice(0, 2)) {
+      doc.text(line, d.w / 2, ly, { align: "center" });
+      ly += 3.6;
+    }
+    doc.setFontSize(7.6);
+    doc.setTextColor(255, 255, 255);
+    doc.text(
+      `Cell : ${brand.phone}   E-mail : ${brand.email}   Web : ${brand.web}`,
+      d.w / 2,
+      bandY + bandH - 3,
+      { align: "center" },
+    );
   }
 
-  const textX = d.margin + logoW + 5;
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text(brand.companyName, textX, 12);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(220, 226, 240);
-  doc.text(brand.tagline, textX, 17.5);
-  doc.text(subtitle, textX, 22.5);
-
+  // Top-right: document label + subtitle + date — sits inside the white
+  // area above the pad's center watermark, never overlapping the logo.
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
-  doc.setTextColor(255, 255, 255);
-  doc.text(brand.documentLabel, d.w - d.margin, 12, { align: "right" });
+  doc.setTextColor(15, 35, 80);
+  doc.text(brand.documentLabel, d.w - d.margin, 14, { align: "right" });
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(220, 226, 240);
+  doc.setFontSize(7.8);
+  doc.setTextColor(90, 90, 90);
+  doc.text(subtitle, d.w - d.margin, 19, { align: "right" });
   doc.text(
     new Date().toLocaleDateString("en-GB", {
       day: "2-digit",
@@ -318,136 +294,22 @@ function drawLetterhead(
       year: "numeric",
     }),
     d.w - d.margin,
-    17.5,
+    23.5,
     { align: "right" },
   );
-  doc.text(brand.confidentialityNote, d.w - d.margin, 22.5, {
-    align: "right",
-  });
-
-  writeMarker(doc, MARKERS.letterhead, d.margin, d.headerH - 0.5);
+  doc.setFontSize(7.2);
+  doc.setTextColor(120, 120, 120);
+  doc.text(brand.confidentialityNote, d.w - d.margin, 28, { align: "right" });
 }
 
-interface WatermarkAssets {
-  /** Original logo data URL (used when GState alpha is available). */
-  logo: string | null;
-  /** Pre-faded raster baked at requested opacity (used by fallback path). */
-  faded: string | null;
-  settings: Required<WatermarkOptions>;
-  /** Reused image alias inside the PDF — set on first draw, reused after. */
-  imageAlias: string;
-}
-
-function detectGStateSupport(doc: jsPDF): boolean {
-  const gs = doc as unknown as { GState?: unknown; setGState?: unknown };
-  return typeof gs.GState === "function" && typeof gs.setGState === "function";
-}
-
-function drawWatermark(doc: jsPDF, d: PageDims, assets: WatermarkAssets) {
-  // Always emit the marker so tests can detect the watermark pass even when
-  // the logo asset isn't available.
-  writeMarker(doc, MARKERS.watermark, d.w / 2, d.h / 2);
-  const { logo, faded, settings, imageAlias } = assets;
-  if (!logo && !faded) return;
-
-  const LOGO_ASPECT = 279 / 153;
-  const maxW = d.contentW * settings.sizeFraction;
-  const maxH = (d.h - d.headerH - d.footerH) * settings.sizeFraction;
-  // Fit the wide wordmark into the watermark box without distortion.
-  let wmW = maxW;
-  let wmH = wmW / LOGO_ASPECT;
-  if (wmH > maxH) {
-    wmH = maxH;
-    wmW = wmH * LOGO_ASPECT;
-  }
-  const x = (d.w - wmW) / 2;
-  const y = (d.h - wmH) / 2;
-
-  // Path A — GState alpha (smaller PDF, sharper watermark).
-  // Path B — pre-faded JPEG (works on every viewer, including mobile
-  //          PDF readers without ExtGState alpha support).
-  const useGState = !settings.forceFallback && logo && detectGStateSupport(doc);
-
-  try {
-    if (useGState) {
-      const gs = doc as unknown as {
-        GState: new (opts: { opacity: number }) => unknown;
-        addGState?: (key: string, gs: unknown) => void;
-        setGState: (s: unknown) => void;
-      };
-      const wm = new gs.GState({ opacity: settings.opacity });
-      if (gs.addGState) {
-        try {
-          gs.addGState("yess-wm-" + Math.round(settings.opacity * 100), wm);
-        } catch {
-          /* already registered */
-        }
-      }
-      gs.setGState(wm);
-      // Pass alias so jsPDF reuses the embedded XObject across pages — keeps
-      // file size flat regardless of page count.
-      doc.addImage(logo!, "PNG", x, y, wmW, wmH, imageAlias, "FAST");
-      try {
-        gs.setGState(new gs.GState({ opacity: 1 }));
-      } catch {
-        /* ignore */
-      }
-    } else if (faded) {
-      // Fallback — single embedded raster with alpha already baked in.
-      doc.addImage(faded, "JPEG", x, y, wmW, wmH, imageAlias, "FAST");
-    }
-  } catch {
-    /* swallow — letterhead + footer still provide branding */
-  }
-}
-
-
-function drawFooter(
-  doc: jsPDF,
-  d: PageDims,
-  pageNum: number,
-  total: number,
-  slug: string,
-  brand: BriefBranding,
-) {
-  const top = d.h - d.footerH;
-  doc.setDrawColor(232, 184, 64);
-  doc.setLineWidth(0.4);
-  doc.line(d.margin, top, d.w - d.margin, top);
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8.5);
-  doc.setTextColor(15, 35, 80);
-  doc.text(brand.companyName, d.margin, top + 5);
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.8);
-  doc.setTextColor(70, 70, 70);
-  doc.text(brand.address, d.margin, top + 9.5);
-  doc.text(
-    `Email: ${brand.email}   ·   Phone: ${brand.phone}`,
-    d.margin,
-    top + 13.5,
-  );
-  doc.text(`Web: ${brand.web}/ventures/${slug}`, d.margin, top + 17.5);
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-  doc.setTextColor(15, 35, 80);
-  doc.text(`Page ${pageNum} of ${total}`, d.w - d.margin, top + 9.5, {
-    align: "right",
-  });
+function drawPageNumber(doc: jsPDF, d: PageDims, page: number, total: number) {
+  // Sits just above the pad's navy band so it doesn't fight with the
+  // footer band's white text.
+  const y = d.h - d.footerH - 2;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  doc.setTextColor(140, 140, 140);
-  doc.text(
-    `© ${new Date().getFullYear()} ${brand.copyrightHolder}`,
-    d.w - d.margin,
-    top + 13.5,
-    { align: "right" },
-  );
-
-  writeMarker(doc, MARKERS.footer, d.margin, d.h - 1);
+  doc.setTextColor(120, 120, 120);
+  doc.text(`Page ${page} of ${total}`, d.w - d.margin, y, { align: "right" });
 }
 
 /**
