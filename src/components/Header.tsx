@@ -169,6 +169,7 @@ const MobilePanel = memo(function MobilePanel({
 });
 
 export function Header() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
@@ -211,10 +212,10 @@ export function Header() {
         <Link
           to="/"
           className="group relative flex items-center"
-          aria-label="YESS Bangla — home"
+          aria-label={t("nav.homeAria")}
         >
           <span className="logo-halo pointer-events-none absolute inset-0 -z-10 rounded-2xl" aria-hidden />
-          <span className="logo-plate" role="img" aria-label="YESS Bangla — home">
+          <span className="logo-plate" role="img" aria-label={t("nav.homeAria")}>
             <img
               src={logo}
               srcSet={`${logo} 1x, ${logo} 2x, ${logo} 3x`}
@@ -237,21 +238,21 @@ export function Header() {
             activeProps={{ className: "text-primary bg-secondary" }}
             activeOptions={{ exact: true }}
           >
-            Home
+            {t("nav.home")}
           </Link>
           <Link
             to="/about"
             className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
-            About
+            {t("nav.about")}
           </Link>
           <Link
             to="/services"
             className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
-            Services
+            {t("nav.services")}
           </Link>
 
           <div
@@ -263,7 +264,7 @@ export function Header() {
               to="/ventures"
               className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
             >
-              Ventures <ChevronDown className="h-3.5 w-3.5" />
+              {t("nav.ventures")} <ChevronDown className="h-3.5 w-3.5" />
             </Link>
             {venturesOpen && (
               <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
@@ -296,32 +297,37 @@ export function Header() {
                     onClick={() => setVenturesOpen(false)}
                     className="mt-2 block rounded-xl bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-primary"
                   >
-                    View all ventures →
+                    {t("nav.viewAllVentures")}
                   </Link>
                 </div>
               </div>
             )}
           </div>
 
-          <Link to="/industries" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Industries</Link>
-          <Link to="/insights" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Insights</Link>
-          <Link to="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Careers</Link>
-          <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Contact</Link>
+          <Link to="/industries" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.industries")}</Link>
+          <Link to="/insights" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.insights")}</Link>
+          <Link to="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.careers")}</Link>
+          <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.contact")}</Link>
         </nav>
 
-        <div className="hidden lg:block">
-          <Link
-            to="/contact"
-            className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
-          >
-            Let's Talk
-          </Link>
+        {/* Right cluster — language + CTA on desktop, language only on mobile */}
+        <div className="flex items-center gap-2">
+          <LanguageSwitch variant="pill" className="hidden sm:inline-flex" />
+          <LanguageSwitch variant="compact" className="sm:hidden" />
+          <div className="hidden lg:block">
+            <Link
+              to="/contact"
+              className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
+            >
+              {t("nav.letsTalk")}
+            </Link>
+          </div>
         </div>
 
         <button
           ref={toggleBtnRef}
           type="button"
-          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
           aria-expanded={open}
           aria-controls="mobile-nav-panel"
           aria-haspopup="menu"
