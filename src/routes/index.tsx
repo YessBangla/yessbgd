@@ -46,6 +46,7 @@ import {
   Mail,
   Layers,
   Phone,
+  Lock as LockIcon,
 } from "lucide-react";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
