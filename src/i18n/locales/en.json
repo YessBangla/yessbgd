@@ -1,0 +1,116 @@
+{
+  "lang": {
+    "name": "English",
+    "switchTo": "বাংলায় দেখুন",
+    "switchAria": "Switch language to Bangla",
+    "current": "EN",
+    "other": "BN"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "ventures": "Ventures",
+    "industries": "Industries",
+    "insights": "Insights",
+    "careers": "Careers",
+    "contact": "Contact",
+    "explore": "Explore",
+    "company": "Company",
+    "viewAllVentures": "View all ventures →",
+    "letsTalk": "Let's Talk",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "homeAria": "YESS Bangla — home"
+  },
+  "footer": {
+    "tagline": "A full-service business consulting and IT solutions company helping organisations across Bangladesh scale with confidence.",
+    "company": "Company",
+    "ourVentures": "Our Ventures",
+    "getInTouch": "Get in touch",
+    "subscribe": "Subscribe",
+    "yourEmail": "Your email",
+    "newsletterAria": "Email for newsletter",
+    "rights": "All rights reserved.",
+    "links": {
+      "about": "About Us",
+      "mission": "Our Mission",
+      "vision": "Our Vision",
+      "values": "Our Values",
+      "leadership": "Leadership",
+      "methodology": "Methodology",
+      "awards": "Awards",
+      "standards": "Standards",
+      "industries": "Industries",
+      "projects": "Projects",
+      "careers": "Careers",
+      "contact": "Contact",
+      "viewAll": "View all →",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "faq": "FAQ"
+    }
+  },
+  "home": {
+    "ctaStrip": {
+      "kicker": "Ready when you are",
+      "title": "Let's build what's next — together.",
+      "subtitle": "Talk to our team, browse what we deliver, or take our profile with you.",
+      "themePreview": "Theme preview · check logo readability before export",
+      "contactTitle": "Contact us",
+      "contactDesc": "Reply within one business day",
+      "servicesTitle": "Explore services",
+      "servicesDesc": "Consulting, IT, OTT & commerce"
+    },
+    "downloadCards": {
+      "compareLabel": "Choose your edition",
+      "english": {
+        "badge": "EN · English",
+        "kicker": "English Edition",
+        "title": "Company Profile · PDF",
+        "meta": "17 pages · v1.1 · 09 May 2026",
+        "lock": "PIN protected",
+        "ariaButton": "Download Company Profile — English Edition (PIN protected)"
+      },
+      "bangla": {
+        "badge": "BN · বাংলা",
+        "kicker": "Bangla Edition",
+        "title": "Company Profile · PDF",
+        "meta": "17 pages · v1.2 · 09 May 2026",
+        "lock": "PIN protected",
+        "ariaButton": "Download Company Profile — Bangla Edition (PIN protected)"
+      }
+    }
+  },
+  "gate": {
+    "confidential": "Confidential document",
+    "accessGranted": "Access granted",
+    "preparing": "Preparing your file…",
+    "confirmTitle": "Confirm your download",
+    "confirmSubtitle": "Please confirm the edition you're requesting before entering the PIN.",
+    "edition": "Edition",
+    "language": "Language",
+    "pages": "Pages",
+    "format": "Format",
+    "continue": "Continue to PIN",
+    "back": "Back",
+    "cancel": "Cancel",
+    "pinTitle": "Enter access PIN",
+    "pinSubtitle": "{{edition}} is shared on a need-to-know basis.",
+    "pinLabel": "4-digit PIN",
+    "remainingOne": "{{count}} more digit needed.",
+    "remainingOther": "{{count}} more digits needed.",
+    "incorrect": "Incorrect access PIN. Please try again.",
+    "noPin": "Don't have a PIN? Email",
+    "unlock": "Unlock download",
+    "confidentialNote": "This document is confidential and provided for evaluation purposes only.",
+    "readyTitle": "Your download is ready",
+    "readySubtitle": "{{edition}} is now released for download.",
+    "downloadPdf": "Download PDF",
+    "downloading": "Downloading…",
+    "downloaded": "Download started",
+    "footer": "YESS Bangla Private Limited · Dhaka",
+    "close": "Close",
+    "verifying": "Verifying…"
+  }
+}
