@@ -546,8 +546,12 @@ def _footer_template(settings) -> str:
         # Chromium's footer template (pageNumber is filled as latin numerals).
         page_num_html = f"""
         <div style="position:absolute;right:{right}mm;bottom:{bottom}mm;
-                    font-family:'Noto Sans Bengali','Noto Sans',sans-serif;
+                    font-family:'Inter','Helvetica Neue',Arial,sans-serif;
                     font-size:{size}pt;color:{color};text-align:{align};
+                    font-weight:600;letter-spacing:0.06em;
+                    background:rgba(14,42,58,0.55);
+                    padding:2.2pt 8pt;border-radius:99pt;
+                    backdrop-filter:blur(2px);
                     -webkit-print-color-adjust:exact;">
           {fmt}
         </div>
