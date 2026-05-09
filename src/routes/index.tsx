@@ -13,6 +13,7 @@ import { HeroOverlays } from "@/components/HeroOverlays";
 import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
+import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
 import { ventures } from "@/data/ventures";
 import {
   ArrowRight,
@@ -45,6 +46,7 @@ import {
   Mail,
   Layers,
   Phone,
+  Lock as LockIcon,
 } from "lucide-react";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
@@ -446,25 +448,33 @@ function Index() {
                 </div>
               </Link>
 
-              <a
-                href="/yess-bangla-company-profile.pdf"
-                download
-                aria-label="Download Yess Bangla Company Profile (PDF, version 1.0, 17 pages, ~150 KB)"
-                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-5 text-background transition-all hover:-translate-y-1 hover:shadow-xl"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-background/15 text-background">
-                    <Download className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                  <ArrowRight className="h-4 w-4 opacity-70 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" aria-hidden="true" />
-                </div>
-                <div className="mt-6">
-                  <div className="font-display text-base font-semibold">Company profile · PDF</div>
-                  <div className="mt-1 text-xs opacity-75">
-                    17 pages · ~150 KB · v1.0 · Generated 09 May 2026
-                  </div>
-                </div>
-              </a>
+              <ProfileDownloadGate
+                versionLabel="v1.1 · Generated 09 May 2026"
+                metaLabel="17 pages · ~150 KB · A4 PDF"
+                trigger={({ open }) => (
+                  <button
+                    type="button"
+                    onClick={open}
+                    aria-label="Download Yess Bangla Company Profile (PIN protected)"
+                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-5 text-left text-background transition-all hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-background/15 text-background">
+                        <Download className="h-5 w-5" aria-hidden="true" />
+                      </div>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-background/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]">
+                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN
+                      </span>
+                    </div>
+                    <div className="mt-6">
+                      <div className="font-display text-base font-semibold">Company profile · PDF</div>
+                      <div className="mt-1 text-xs opacity-75">
+                        17 pages · ~150 KB · v1.1 · Generated 09 May 2026
+                      </div>
+                    </div>
+                  </button>
+                )}
+              />
 
             </div>
           </div>

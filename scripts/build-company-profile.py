@@ -42,14 +42,46 @@ from reportlab.platypus import (
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 from reportlab.pdfgen import canvas as _canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 LETTERHEAD = "/dev-server/public/yess-bangla-letterhead.jpeg"
 PDF_OUT = "/dev-server/public/yess-bangla-company-profile.pdf"
 
-VERSION = "v1.1"
+VERSION = "v1.2"
 GENERATED = datetime.date.today().strftime("%d %B %Y")
 DOC_TITLE = "Yess Bangla — Company Profile"
 DOC_AUTHOR = "Yess Bangla Private Limited"
+EDITION = "International English Edition"
+
+# ---------------------------------------------------------------------------
+# Font registration — embed real TTFs (with subsetting) so the document
+# looks identical on every reader / OS, instead of relying on the base-14
+# Helvetica metrics that are NOT embedded.
+# ---------------------------------------------------------------------------
+LIBERATION_DIR = (
+    "/nix/store/0hdgmcjy7q8zn7h3amz8nf96l9qh7wv0-liberation-fonts-2.1.5/"
+    "share/fonts/truetype"
+)
+BODY_FONT = "YBSans"
+BODY_BOLD = "YBSans-Bold"
+BODY_ITALIC = "YBSans-Italic"
+BODY_BOLDITALIC = "YBSans-BoldItalic"
+
+def _register_fonts():
+    pdfmetrics.registerFont(TTFont(BODY_FONT,
+        f"{LIBERATION_DIR}/LiberationSans-Regular.ttf", subfontIndex=0))
+    pdfmetrics.registerFont(TTFont(BODY_BOLD,
+        f"{LIBERATION_DIR}/LiberationSans-Bold.ttf", subfontIndex=0))
+    pdfmetrics.registerFont(TTFont(BODY_ITALIC,
+        f"{LIBERATION_DIR}/LiberationSans-Italic.ttf", subfontIndex=0))
+    pdfmetrics.registerFont(TTFont(BODY_BOLDITALIC,
+        f"{LIBERATION_DIR}/LiberationSans-BoldItalic.ttf", subfontIndex=0))
+    from reportlab.pdfbase.pdfmetrics import registerFontFamily
+    registerFontFamily(BODY_FONT, normal=BODY_FONT, bold=BODY_BOLD,
+                       italic=BODY_ITALIC, boldItalic=BODY_BOLDITALIC)
+
+_register_fonts()
 
 # ---------------------------------------------------------------------------
 # Content model
@@ -307,63 +339,63 @@ M_BOTTOM = 32 * mm  # above the navy footer band
 
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(
-    name="Body", parent=styles["BodyText"], fontName="Helvetica",
+    name="Body", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK, spaceAfter=6,
     alignment=TA_JUSTIFY))
 styles.add(ParagraphStyle(
-    name="BodyLeft", parent=styles["BodyText"], fontName="Helvetica",
+    name="BodyLeft", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK, spaceAfter=4,
     alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="H3", parent=styles["Heading3"], fontName="Helvetica-Bold",
+    name="H3", parent=styles["Heading3"], fontName=BODY_BOLD,
     fontSize=11.5, leading=15, textColor=TEAL,
     spaceBefore=10, spaceAfter=4))
 styles.add(ParagraphStyle(
-    name="Bullet2", parent=styles["BodyText"], fontName="Helvetica",
+    name="Bullet2", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK,
     leftIndent=14, bulletIndent=2, spaceAfter=2, alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="DLTerm", parent=styles["BodyText"], fontName="Helvetica-Bold",
+    name="DLTerm", parent=styles["BodyText"], fontName=BODY_BOLD,
     fontSize=10.5, leading=14, textColor=NAVY, spaceAfter=1))
 styles.add(ParagraphStyle(
-    name="DLDef", parent=styles["BodyText"], fontName="Helvetica",
+    name="DLDef", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK, spaceAfter=8,
     alignment=TA_JUSTIFY))
 
 # Cover styles
 styles.add(ParagraphStyle(
-    name="CoverEyebrow", parent=styles["BodyText"], fontName="Helvetica-Bold",
+    name="CoverEyebrow", parent=styles["BodyText"], fontName=BODY_BOLD,
     fontSize=9, leading=12, textColor=GOLD, spaceAfter=10,
     alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="CoverTitle", parent=styles["Title"], fontName="Helvetica-Bold",
+    name="CoverTitle", parent=styles["Title"], fontName=BODY_BOLD,
     fontSize=44, leading=48, textColor=NAVY, alignment=TA_LEFT,
     spaceAfter=8))
 styles.add(ParagraphStyle(
-    name="CoverSubtitle", parent=styles["BodyText"], fontName="Helvetica",
+    name="CoverSubtitle", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=13.5, leading=20, textColor=INK, alignment=TA_LEFT,
     spaceAfter=12))
 styles.add(ParagraphStyle(
-    name="CoverMeta", parent=styles["BodyText"], fontName="Helvetica",
+    name="CoverMeta", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=9, leading=13, textColor=MUTED, alignment=TA_LEFT))
 
 # Section heading styles
 styles.add(ParagraphStyle(
-    name="SecKicker", parent=styles["BodyText"], fontName="Helvetica-Bold",
+    name="SecKicker", parent=styles["BodyText"], fontName=BODY_BOLD,
     fontSize=8.5, leading=11, textColor=GOLD, spaceAfter=4,
     alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="SecTitle", parent=styles["Title"], fontName="Helvetica-Bold",
+    name="SecTitle", parent=styles["Title"], fontName=BODY_BOLD,
     fontSize=22, leading=26, textColor=NAVY, alignment=TA_LEFT,
     spaceAfter=12))
 
 # TOC styles (used by TableOfContents flowable)
 styles.add(ParagraphStyle(
-    name="TOCHeading", parent=styles["Title"], fontName="Helvetica-Bold",
+    name="TOCHeading", parent=styles["Title"], fontName=BODY_BOLD,
     fontSize=22, leading=26, textColor=NAVY, alignment=TA_LEFT,
     spaceAfter=18))
 TOC_ENTRY = ParagraphStyle(
-    name="TOCEntry", parent=styles["BodyText"], fontName="Helvetica",
+    name="TOCEntry", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=11, leading=22, textColor=NAVY, leftIndent=0, firstLineIndent=0)
 
 
@@ -397,7 +429,7 @@ class ProfileDocTemplate(BaseDocTemplate):
             pass
         # Meta strap above the navy footer band.
         meta_y = M_BOTTOM - 6 * mm
-        canvas.setFont("Helvetica", 7.5)
+        canvas.setFont(BODY_FONT, 7.5)
         canvas.setFillColor(MUTED)
         canvas.drawString(M_LEFT, meta_y, "Confidential · For intended recipient")
         canvas.drawCentredString(PAGE_W / 2, meta_y,
@@ -484,7 +516,7 @@ def data_table(spec):
     header = spec["header"]
     rows = spec["rows"]
     data = [[Paragraph(c, ParagraphStyle(
-                "h", parent=styles["BodyLeft"], fontName="Helvetica-Bold",
+                "h", parent=styles["BodyLeft"], fontName=BODY_BOLD,
                 textColor=HexColor("#FFFFFF"), fontSize=9.5, leading=12))
              for c in header]]
     for r in rows:
@@ -516,7 +548,7 @@ def section_heading(num: str, kicker: str, title: str, anchor: str):
     # Build a 2-col table: left = navy chip with the number; right = kicker + title
     chip = Table(
         [[Paragraph(f'<font color="#FFFFFF">{num}</font>',
-                    ParagraphStyle("chipNum", fontName="Helvetica-Bold",
+                    ParagraphStyle("chipNum", fontName=BODY_BOLD,
                                    fontSize=20, leading=22,
                                    alignment=TA_CENTER, textColor=HexColor("#FFFFFF")))]],
         colWidths=[20 * mm], rowHeights=[20 * mm])
@@ -571,8 +603,9 @@ def build_pdf():
 
     # ---- Cover ---------------------------------------------------------
     story.append(Spacer(1, 4 * mm))
-    story.append(Paragraph("YESS BANGLA PRIVATE LIMITED · DHAKA",
-                           styles["CoverEyebrow"]))
+    story.append(Paragraph(
+        f"YESS BANGLA PRIVATE LIMITED · DHAKA &nbsp;·&nbsp; {EDITION.upper()}",
+        styles["CoverEyebrow"]))
     story.append(AnchorPara("Company Profile",
                             styles["CoverTitle"], anchor="cover",
                             outline_level=0, outline_text="Cover"))
@@ -586,8 +619,8 @@ def build_pdf():
     # Classification strip
     strip = Table(
         [[Paragraph(f'<font color="#FFFFFF"><b>CONFIDENTIAL</b> · '
-                    f'For intended recipient · {VERSION} · {GENERATED}</font>',
-                    ParagraphStyle("strip", fontName="Helvetica",
+                    f'For intended recipient · {EDITION} · {VERSION} · {GENERATED}</font>',
+                    ParagraphStyle("strip", fontName=BODY_FONT,
                                    fontSize=8.5, leading=11,
                                    textColor=HexColor("#FFFFFF"),
                                    alignment=TA_LEFT))]],
@@ -613,7 +646,8 @@ def build_pdf():
         ("Web", WEB),
         ("Sector", "Technology · Media · Broadcasting · E-commerce · Lifestyle services"),
         ("Operating ventures", "11 specialised brands under one parent company"),
-        ("Document version", f"{VERSION} · Generated {GENERATED}"),
+        ("Languages", "Bangla &amp; English (this edition: English)"),
+        ("Document version", f"{VERSION} · Generated {GENERATED} · {EDITION}"),
     ])
     glance_card = Table([[glance_inner]], colWidths=[None])
     glance_card.setStyle(TableStyle([
