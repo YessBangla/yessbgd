@@ -456,7 +456,7 @@ function Index() {
                         <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#7a9ce0]/25 text-[#3b5ea8] sm:h-10 sm:w-10">
                           <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-white text-[#3b5ea8] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm sm:px-2.5 sm:text-[12px]">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-[#7a9ce0]/40 bg-background/70 text-[#3b5ea8] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm backdrop-blur sm:px-2.5 sm:text-[12px]">
                           <span aria-hidden="true" className="text-base leading-none">🇬🇧</span> EN
                         </span>
                       </div>
