@@ -2,17 +2,21 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { ventures } from "@/data/ventures";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
 
+// Nav items reference i18n keys; labels are resolved at render time so they
+// re-render when the user toggles language without remounting the header.
 const nav = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/industries", label: "Industries" },
-  { to: "/insights", label: "Insights" },
-  { to: "/careers", label: "Careers" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", key: "home" },
+  { to: "/about", key: "about" },
+  { to: "/services", key: "services" },
+  { to: "/industries", key: "industries" },
+  { to: "/insights", key: "insights" },
+  { to: "/careers", key: "careers" },
+  { to: "/contact", key: "contact" },
 ] as const;
 
 // ---- Memoized mobile panel ----------------------------------------------
