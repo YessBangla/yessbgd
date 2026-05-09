@@ -315,33 +315,24 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Letterhead pad: a position:fixed full-page image that Chromium
-     repeats on every overflow page. The cover page also gets an
-     absolutely-positioned copy because fixed elements may skip page 1. */
+  /* Letterhead pad: full-page JPEG painted on the html element so it
+     repeats on every printed page. Per-section top padding keeps the
+     section header from colliding with the YESS logo on each new page. */
   @page {{ size: A4 portrait; margin: 0; }}
-  body {{ margin: 0; }}
-  .lh-header, .lh-footer, .lh-watermark {{ display: none; }}
-  .pad-bg {{
-    position: fixed;
-    top: 0; left: 0;
-    width: 210mm; height: 297mm;
-    z-index: -1;
-    pointer-events: none;
+  html {{
+    background-image: url("file://{LETTERHEAD}");
+    background-size: 210mm 297mm;
+    background-repeat: no-repeat;
+    background-position: top left;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }}
-  .pad-bg img {{ width: 210mm; height: 297mm; display: block; }}
-  .cover-pad {{
-    position: absolute;
-    top: 0; left: 0;
-    width: 210mm; height: 297mm;
-    z-index: -1;
-    pointer-events: none;
-  }}
-  .cover-pad img {{ width: 210mm; height: 297mm; display: block; }}
+  body {{ margin: 0; background: transparent; }}
+  .lh-header, .lh-footer, .lh-watermark, .pad-bg, .cover-pad {{ display: none; }}
   .page-frame {{ box-sizing: border-box; }}
   .cover, .toc, .profile-section {{
     padding: 42mm 20mm 50mm 20mm;
     box-sizing: border-box;
-    position: relative;
   }}
   html {{
     background-image: url("file://{LETTERHEAD}");
