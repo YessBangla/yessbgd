@@ -183,28 +183,25 @@ function Index() {
               {/* Editorial three-line cadence — YESS acronym expanded:
                   Y outh E ntrepreneurship · S mart S uccess · with our
                   Excellence & Solutions. */}
-              <span className="water-text block whitespace-nowrap">Youth Entrepreneurship</span>
+              <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
               <span
                 className="block text-background/95"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
               >
-                for{" "}
+                {t("home.hero.h1Line2Pre")}{" "}
                 <span
                   className="font-light text-background/90"
                   style={{ letterSpacing: "-0.008em" }}
                 >
-                  smart success
+                  {t("home.hero.h1Line2Smart")}
                 </span>
               </span>
               <span
                 className="water-text-accent block"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
-                with excellence{" "}
-                {/* nowrap only ≥sm — keeps "& solutions." together on
-                    tablet/desktop, allows wrapping on ≤360px to avoid
-                    horizontal overflow on small phones. */}
-                <span className="sm:whitespace-nowrap">&amp; solutions.</span>
+                {t("home.hero.h1Line3Pre")}{" "}
+                <span className="sm:whitespace-nowrap">{t("home.hero.h1Line3Tail")}</span>
               </span>
             </h1>
 
