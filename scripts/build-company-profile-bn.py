@@ -315,9 +315,10 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
+  /* A4 with room for the letterhead header (top) and footer (bottom). */
   @page {{
     size: A4 portrait;
-    margin: 22mm 20mm 22mm 20mm;
+    margin: 32mm 18mm 30mm 18mm;
     @bottom-center {{
       content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
@@ -325,10 +326,30 @@ def render_html() -> str:
       color: #5A5A5A;
     }}
   }}
+  /* Cover keeps full bleed — own branding, no repeated letterhead. */
   @page :first {{
     margin: 22mm 20mm 22mm 20mm;
     @bottom-center {{ content: ""; }}
   }}
+  /* Fixed elements repeat on every printed page in Chromium headless.
+     Cover hides them via .cover ~ overrides below. */
+  .lh-header, .lh-footer, .lh-watermark {{
+    position: fixed;
+    left: 0; right: 0;
+    pointer-events: none;
+    z-index: -1;
+  }}
+  .lh-header {{ top: 0; height: 26mm; }}
+  .lh-header img {{ width: 100%; height: 100%; object-fit: contain; object-position: left top; padding: 6mm 18mm 0 18mm; }}
+  .lh-footer {{ bottom: 0; height: 22mm; }}
+  .lh-footer img {{ width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }}
+  .lh-watermark {{
+    top: 50%; transform: translateY(-50%);
+    height: 90mm; opacity: 0.06;
+    display: flex; align-items: center; justify-content: center;
+  }}
+  .lh-watermark img {{ height: 100%; width: auto; }}
+
   :root {{
     --navy: #0E2A3A;
     --teal: #0F4C5C;
