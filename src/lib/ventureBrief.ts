@@ -40,6 +40,10 @@ export interface BriefOptions {
   fileName?: string;
   /** Custom branding — falls back to DEFAULT_BRANDING for missing fields. */
   branding?: Partial<BriefBranding>;
+  /** Letterhead logo scale (0.6–1.4). Default 1. */
+  logoScale?: number;
+  /** Letterhead logo opacity (0–1). Default 1. Uses GState alpha when available. */
+  logoOpacity?: number;
 }
 
 export const DEFAULT_WATERMARK: Required<WatermarkOptions> = {
@@ -144,8 +148,9 @@ async function getFadedLogo(opacity: number): Promise<string | null> {
     // Cap at 480px — watermark is drawn at content-area scale, so any
     // larger source pixels just inflate the PDF without visible benefit
     // on mobile screens.
-    const max = 480;
-    const scale = Math.min(1, max / Math.max(img.width, img.height));
+    // Cap at 1024px — sharper watermark on high-DPI mobile / print zoom,
+    // while still keeping the embedded raster small thanks to JPEG q=0.6.
+    const max = 1024;
     const w = Math.round(img.width * scale);
     const h = Math.round(img.height * scale);
     const canvas = document.createElement("canvas");
