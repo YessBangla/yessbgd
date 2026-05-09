@@ -303,8 +303,8 @@ function Index() {
                     <TrendingUp className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-[11px] uppercase tracking-wider text-background/60">Average client outcome</div>
-                    <div className="font-display text-2xl font-semibold leading-none text-background">3× growth</div>
+                    <div className="text-[11px] uppercase tracking-wider text-background/60">{t("home.hero.cardOutcomeLabel")}</div>
+                    <div className="font-display text-2xl font-semibold leading-none text-background">{t("home.hero.cardOutcomeValue")}</div>
                   </div>
                 </div>
               </div>
