@@ -190,6 +190,8 @@ export function BriefDownloadControls({
         orientation,
         watermark,
         branding,
+        logoScale: logoSettings.pdfScale,
+        logoOpacity: logoSettings.pdfOpacity,
       });
       if (!integrity.ok) setIntegrityWarn(integrity);
     } finally {
@@ -203,6 +205,7 @@ export function BriefDownloadControls({
       await downloadVentureBriefDocx(venture, {
         branding,
         watermarkOpacity: opacity,
+        logoScale: logoSettings.docxScale,
       });
     } finally {
       setBusy(null);
