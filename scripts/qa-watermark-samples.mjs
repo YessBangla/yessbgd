@@ -16,9 +16,9 @@ globalThis.HTMLCanvasElement = dom.window.HTMLCanvasElement;
 globalThis.Image = dom.window.Image;
 globalThis.fetch = async () => {
   const buf = fs.readFileSync(
-    path.resolve("src/assets/yess-bangla-logo.jpeg"),
+    path.resolve("src/assets/yess-bangla-logo.png"),
   );
-  return { blob: async () => new dom.window.Blob([buf], { type: "image/jpeg" }) };
+  return { blob: async () => new dom.window.Blob([buf], { type: "image/png" }) };
 };
 globalThis.FileReader = dom.window.FileReader;
 
