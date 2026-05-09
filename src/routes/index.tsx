@@ -13,6 +13,7 @@ import { HeroOverlays } from "@/components/HeroOverlays";
 import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
+import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
 import { ventures } from "@/data/ventures";
 import {
   ArrowRight,
