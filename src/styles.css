@@ -743,3 +743,37 @@
   .logo-plate { animation: none !important; background-image: none !important; }
 }
 
+
+/* ---------------------------------------------------------------
+   Bangla typography normalization
+   ---------------------------------------------------------------
+   Bengali script does not have uppercase forms and does not
+   benefit from wide letter-spacing — em tracking visually breaks
+   conjunct ligatures. When the document language is Bangla we:
+     • neutralise wide letter-spacing on tracking-* utilities
+     • drop text-transform:uppercase on labels (no effect on
+       Bangla glyphs but removes mixed Latin loanwords being
+       awkwardly capitalised)
+     • allow line breaking on long Bangla compound phrases that
+       were marked nowrap for English cadence
+   Components can opt-out by adding the `.allow-tracking` class.
+   ----------------------------------------------------------- */
+:lang(bn) [class*="tracking-"]:not(.allow-tracking),
+[lang="bn"] [class*="tracking-"]:not(.allow-tracking) {
+  letter-spacing: 0 !important;
+  word-spacing: normal !important;
+}
+:lang(bn) .uppercase:not(.allow-uppercase),
+[lang="bn"] .uppercase:not(.allow-uppercase) {
+  text-transform: none;
+}
+/* Hero headline: allow Bangla compounds to wrap rather than overflow */
+:lang(bn) [data-testid="hero-headline"] .whitespace-nowrap,
+[lang="bn"] [data-testid="hero-headline"] .whitespace-nowrap {
+  white-space: normal;
+}
+/* Chip / trust signals: ensure rows can wrap without clipping */
+:lang(bn) .whitespace-nowrap.lang-flex,
+[lang="bn"] .whitespace-nowrap.lang-flex {
+  white-space: normal;
+}
