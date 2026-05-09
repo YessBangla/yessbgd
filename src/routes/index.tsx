@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { useOffscreenPause } from "@/hooks/useOffscreenPause";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -90,7 +91,8 @@ type LocalizedItem = { title: string; desc: string };
 type Testimonial = { name: string; role: string; quote: string };
 
 function Index() {
-  const { t } = useTranslation();
+  const { t, i18n: i18nInst } = useTranslation();
+  const isBn = (i18nInst?.language || i18n.language || "en").startsWith("bn");
   const [hydrated, setHydrated] = useState(false);
   // Pause water-ripple shimmer when the headline scrolls offscreen
   const headlineRef = useOffscreenPause<HTMLHeadingElement>();
@@ -152,7 +154,7 @@ function Index() {
               style={{
                 animationDelay: "40ms",
                 marginTop: "var(--hero-rhythm-xs)",
-                letterSpacing: "0.32em",
+                letterSpacing: isBn ? "0" : "0.32em",
                 wordSpacing: "normal",
               }}
             >
