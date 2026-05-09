@@ -315,38 +315,27 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Full-bleed letterhead pad: the original A4 letterhead JPEG fills every
-     printed page exactly (210 × 297 mm) as a fixed background sheet. The
-     content sits inside the safe zone via padding on .page-frame. */
+  /* Full-bleed letterhead pad: repeated on every printed page via the
+     html background image (Chromium repeats the html background on each
+     page when @page margin is 0). */
   @page {{
     size: A4 portrait;
     margin: 0;
   }}
-  .lh-header, .lh-footer, .lh-watermark {{ display: none; }}
-  .pad-bg {{
-    position: fixed;
-    top: 0; left: 0;
-    width: 210mm; height: 297mm;
-    z-index: -1;
-    pointer-events: none;
+  html {{
+    background-image: url("file://{LETTERHEAD}");
+    background-size: 210mm 297mm;
+    background-repeat: no-repeat;
+    background-position: top left;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }}
-  .pad-bg img {{
-    width: 210mm; height: 297mm;
-    display: block;
-  }}
+  body {{ margin: 0; background: transparent; }}
+  .lh-header, .lh-footer, .lh-watermark, .pad-bg {{ display: none; }}
   .page-frame {{
     /* Clear the letterhead logo (top) and footer band (bottom). */
     padding: 36mm 20mm 48mm 20mm;
-    min-height: 297mm;
     box-sizing: border-box;
-  }}
-  .page-folio {{
-    position: fixed;
-    bottom: 8mm;
-    right: 14mm;
-    font-family: 'Noto Sans Bengali', sans-serif;
-    font-size: 8pt;
-    color: #5A5A5A;
   }}
 
   :root {{
