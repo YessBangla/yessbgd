@@ -127,7 +127,7 @@ export function ProfileDownloadGate({
     else inputs.current[data.length]?.focus();
   };
 
-  const downloadHref = useMemo(() => PDF_HREF, []);
+  const downloadHref = useMemo(() => href, []);
 
   return (
     <>
@@ -310,7 +310,7 @@ export function ProfileDownloadGate({
 
                   <a
                     href={downloadHref}
-                    download={PDF_FILENAME}
+                    download={filename}
                     onClick={() => setTimeout(closeAndReset, 600)}
                     className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
                   >
