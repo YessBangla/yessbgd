@@ -38,6 +38,7 @@ import {
 } from "@/data/ventures";
 import { resolveBranding, type BriefBranding } from "./briefBranding";
 import logoUrl from "@/assets/yess-bangla-logo.png";
+import letterheadUrl from "@/assets/yess-bangla-letterhead.jpeg";
 
 export interface DocxBriefOptions {
   branding?: Partial<BriefBranding>;
