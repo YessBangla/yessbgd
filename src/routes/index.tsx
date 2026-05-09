@@ -722,23 +722,26 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="How we work"
-            title="A proven, four-step delivery process"
-            lede="Clarity at every stage — from first conversation to long-term growth."
+            eyebrow={t("home.process.eyebrow")}
+            title={t("home.process.title")}
+            lede={t("home.process.lede")}
           />
           <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {process.map((p, i) => (
-              <StaggerItem key={p.title}>
-                <div className="relative h-full rounded-2xl glass-card p-5 sm:p-6">
-                  <div className="absolute right-5 top-5 font-display text-4xl font-semibold text-primary/10">0{i + 1}</div>
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                    <p.icon className="h-5 w-5" />
+            {(t("home.process.items", { returnObjects: true }) as LocalizedItem[]).map((p, i) => {
+              const Icon = processIcons[i];
+              return (
+                <StaggerItem key={p.title}>
+                  <div className="relative h-full rounded-2xl glass-card p-5 sm:p-6">
+                    <div className="absolute right-5 top-5 font-display text-4xl font-semibold text-primary/10">0{i + 1}</div>
+                    <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
+                    <p className="mt-1.5 text-[13px] text-muted-foreground sm:text-sm">{p.desc}</p>
                   </div>
-                  <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
-                  <p className="mt-1.5 text-[13px] text-muted-foreground sm:text-sm">{p.desc}</p>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
