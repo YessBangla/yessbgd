@@ -683,9 +683,9 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="Impact & metrics"
-            title="Numbers that tell our story"
-            lede="A decade of measurable impact for businesses, partners and communities across Bangladesh."
+            eyebrow={t("home.impact.eyebrow")}
+            title={t("home.impact.title")}
+            lede={t("home.impact.lede")}
           />
 
           <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
