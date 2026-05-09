@@ -14,7 +14,14 @@ import {
   GitCompare,
   Plus,
   Trash2,
+  Sparkles,
 } from "lucide-react";
+import {
+  loadLogoSettings,
+  saveLogoSettings,
+  DEFAULT_LOGO_SETTINGS,
+  type LogoSettings,
+} from "@/lib/logoSettings";
 import {
   downloadVentureBrief,
   DEFAULT_WATERMARK,
