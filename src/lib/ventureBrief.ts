@@ -192,9 +192,12 @@ function drawLetterhead(
   doc.rect(0, d.headerH, d.w, 1.2, "F");
 
   // Logo aspect ratio: 279 / 153 ≈ 1.824 (wide wordmark).
+  // Responsive sizing: scale the logo against the page width so A4/Letter
+  // portrait stays compact while Letter/A4 landscape gets a larger,
+  // more readable wordmark in the header band.
   const LOGO_ASPECT = 279 / 153;
-  const logoH = Math.min(d.headerH - 8, 18);
-  const logoW = logoH * LOGO_ASPECT;
+  const logoH = Math.max(13, Math.min(d.headerH - 6, d.contentW * 0.07, 22));
+  const logoW = Math.min(logoH * LOGO_ASPECT, d.contentW * 0.32);
   const logoY = (d.headerH - logoH) / 2;
   if (logo) {
     try {

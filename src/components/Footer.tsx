@@ -17,7 +17,7 @@ export function Footer() {
                 decoding="async"
                 width={279}
                 height={153}
-                className="h-14 w-auto bg-transparent object-contain"
+                className="h-12 w-auto max-w-[60vw] bg-transparent object-contain sm:h-14 lg:h-16"
               />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
