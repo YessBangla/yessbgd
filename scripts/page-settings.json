@@ -19,12 +19,12 @@
     "heightMm": 29.7,
     "pageNumber": {
       "enabled": true,
-      "format": "পৃষ্ঠা {page} / {total}",
+      "format": "Page {page} / {total}",
       "alignment": "right",
-      "fontSizePt": 8,
-      "color": "#0E2A3A",
-      "marginBottomMm": 6,
-      "marginRightMm": 14
+      "fontSizePt": 8.5,
+      "color": "#FFFFFF",
+      "marginBottomMm": 8,
+      "marginRightMm": 16
     }
   },
   "skipHeaderFooterOnFirstPage": false
