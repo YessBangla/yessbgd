@@ -335,20 +335,19 @@ def render_html() -> str:
      Cover hides them via .cover ~ overrides below. */
   .lh-header, .lh-footer, .lh-watermark {{
     position: fixed;
-    left: 0; right: 0;
     pointer-events: none;
     z-index: -1;
   }}
-  .lh-header {{ top: 0; height: 26mm; }}
-  .lh-header img {{ width: 100%; height: 100%; object-fit: contain; object-position: left top; padding: 6mm 18mm 0 18mm; }}
-  .lh-footer {{ bottom: 0; height: 22mm; }}
-  .lh-footer img {{ width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }}
+  .lh-header {{ top: 8mm; left: 18mm; width: 45mm; }}
+  .lh-header img {{ width: 100%; height: auto; display: block; }}
+  .lh-footer {{ bottom: 0; left: 0; right: 0; height: 22mm; overflow: hidden; }}
+  .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark {{
-    top: 50%; transform: translateY(-50%);
-    height: 90mm; opacity: 0.06;
-    display: flex; align-items: center; justify-content: center;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110mm; opacity: 0.05;
   }}
-  .lh-watermark img {{ height: 100%; width: auto; }}
+  .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
   :root {{
     --navy: #0E2A3A;
