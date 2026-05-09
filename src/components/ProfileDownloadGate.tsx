@@ -1,17 +1,26 @@
 /**
  * ProfileDownloadGate — premium PIN-protected download dialog for the
- * Yess Bangla company profile PDF. Designed to feel like an international
- * data-room handoff: monogrammed seal, classification chip, segmented PIN
- * input, and a quietly confident success state.
+ * Yess Bangla company profile PDF. International data-room feel with:
  *
- * Access PIN: 7007 (see docs).
+ *   1. Confirm step  → user explicitly sees which language/edition they're
+ *                       about to request before being asked for the PIN.
+ *   2. PIN step      → 4-digit segmented input with live "X more digits
+ *                       needed" hint, shake on incorrect.
+ *   3. Verifying     → brief loading state after the 4th digit lands.
+ *   4. Ready/Success → success state with download CTA, then auto-close.
+ *
+ * Access PIN: 7007.
  */
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { ArrowRight, Check, Download, KeyRound, Lock, ShieldCheck, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ArrowRight, Check, Download, FileText, KeyRound, Languages, Loader2, Lock, ShieldCheck, X } from "lucide-react";
 
 const ACCESS_PIN = "7007";
 const DEFAULT_HREF = "/yess-bangla-company-profile.pdf";
 const DEFAULT_FILENAME = "yess-bangla-company-profile.pdf";
+
+type Step = "confirm" | "pin" | "verifying" | "ready";
+type Edition = "en" | "bn";
 
 interface ProfileDownloadGateProps {
   trigger: (props: { open: () => void }) => React.ReactNode;
@@ -21,9 +30,16 @@ interface ProfileDownloadGateProps {
   href?: string;
   /** Suggested filename. */
   filename?: string;
-  /** Edition label shown in dialog header, e.g. "Bangla edition". */
+  /** Edition label shown in dialog header. */
   editionLabel?: string;
+  /** Which edition is being downloaded — drives flag, badge, and tinting. */
+  edition?: Edition;
 }
+
+const EDITIONS: Record<Edition, { flag: string; code: string; name: string; nameLocal: string }> = {
+  en: { flag: "🇬🇧", code: "EN", name: "English", nameLocal: "English" },
+  bn: { flag: "🇧🇩", code: "BN", name: "Bangla", nameLocal: "বাংলা" },
+};
 
 export function ProfileDownloadGate({
   trigger,
@@ -32,34 +48,40 @@ export function ProfileDownloadGate({
   href = DEFAULT_HREF,
   filename = DEFAULT_FILENAME,
   editionLabel,
+  edition = "en",
 }: ProfileDownloadGateProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [step, setStep] = useState<Step>("confirm");
   const [digits, setDigits] = useState<string[]>(["", "", "", ""]);
   const [error, setError] = useState<string | null>(null);
-  const [unlocked, setUnlocked] = useState(false);
   const [shake, setShake] = useState(false);
   const inputs = useRef<Array<HTMLInputElement | null>>([]);
   const headingId = useId();
   const descId = useId();
-  const dialogRef = useRef<HTMLDivElement | null>(null);
+
+  const editionMeta = EDITIONS[edition];
+  const editionDisplayName = editionLabel ?? `${editionMeta.name} Edition`;
 
   const pin = digits.join("");
-  const filled = digits.every((d) => d !== "");
+  const filledCount = digits.filter((d) => d !== "").length;
+  const remaining = 4 - filledCount;
+  const filled = remaining === 0;
 
+  // Auto-focus the first PIN cell once we transition to the PIN step.
   useEffect(() => {
-    if (!open) return;
-    // Focus first empty cell when opening / after reset
+    if (!open || step !== "pin") return;
     const idx = digits.findIndex((d) => d === "");
     inputs.current[idx === -1 ? 0 : idx]?.focus();
-  }, [open, digits]);
+  }, [open, step, digits]);
 
+  // Esc to close + scroll lock while open.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeAndReset();
     };
     document.addEventListener("keydown", onKey);
-    // Lock background scroll
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -70,31 +92,36 @@ export function ProfileDownloadGate({
 
   const closeAndReset = () => {
     setOpen(false);
+    // delay state reset so exit animation feels clean
     setTimeout(() => {
+      setStep("confirm");
       setDigits(["", "", "", ""]);
       setError(null);
-      setUnlocked(false);
     }, 220);
   };
 
   const tryUnlock = (candidate: string) => {
     if (candidate.length < 4) return;
-    if (candidate === ACCESS_PIN) {
-      setUnlocked(true);
-      setError(null);
-    } else {
-      setShake(true);
-      setError("Incorrect access PIN. Please try again.");
-      setTimeout(() => {
-        setShake(false);
-        setDigits(["", "", "", ""]);
-        inputs.current[0]?.focus();
-      }, 320);
-    }
+    setStep("verifying");
+    // Brief delay so the user perceives "verification" rather than instant flip.
+    window.setTimeout(() => {
+      if (candidate === ACCESS_PIN) {
+        setError(null);
+        setStep("ready");
+      } else {
+        setShake(true);
+        setError(t("gate.incorrect"));
+        setStep("pin");
+        setTimeout(() => {
+          setShake(false);
+          setDigits(["", "", "", ""]);
+          inputs.current[0]?.focus();
+        }, 320);
+      }
+    }, 480);
   };
 
   const handleChange = (i: number, raw: string) => {
-    // Accept only digits; pasting handled separately
     const v = raw.replace(/\D/g, "").slice(0, 1);
     const next = [...digits];
     next[i] = v;
@@ -127,7 +154,31 @@ export function ProfileDownloadGate({
     else inputs.current[data.length]?.focus();
   };
 
-  const downloadHref = useMemo(() => href, []);
+  const downloadHref = useMemo(() => href, [href]);
+
+  // ----- Headline + sub copy per step ---------------------------------------
+  const heading =
+    step === "ready"
+      ? t("gate.readyTitle")
+      : step === "verifying"
+        ? t("gate.verifying")
+        : step === "pin"
+          ? t("gate.pinTitle")
+          : t("gate.confirmTitle");
+
+  const sub =
+    step === "ready"
+      ? t("gate.readySubtitle", { edition: editionDisplayName })
+      : step === "verifying"
+        ? t("gate.preparing")
+        : step === "pin"
+          ? t("gate.pinSubtitle", { edition: editionDisplayName })
+          : t("gate.confirmSubtitle");
+
+  const kicker =
+    step === "ready"
+      ? t("gate.accessGranted")
+      : t("gate.confidential");
 
   return (
     <>
@@ -149,7 +200,6 @@ export function ProfileDownloadGate({
 
           {/* Dialog */}
           <div
-            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby={headingId}
@@ -172,18 +222,18 @@ export function ProfileDownloadGate({
               className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gradient-to-br from-primary/25 to-accent/25 blur-3xl"
             />
 
-            {/* Close */}
             <button
               type="button"
               onClick={closeAndReset}
-              aria-label="Close"
+              aria-label={t("gate.close")}
               className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="h-4 w-4" aria-hidden />
             </button>
 
             <div className="relative px-6 pb-6 pt-7 sm:px-8 sm:pb-8 sm:pt-9">
-              {/* Seal */}
+              {/* Header — seal + edition flag chip always visible so the user
+                   can never lose track of which file they're getting. */}
               <div className="flex items-start gap-4">
                 <div className="relative">
                   <div
@@ -191,8 +241,10 @@ export function ProfileDownloadGate({
                     className="absolute inset-0 -m-1 rounded-2xl bg-gradient-to-br from-primary/40 to-accent/40 blur-md"
                   />
                   <div className="relative grid h-12 w-12 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow">
-                    {unlocked ? (
+                    {step === "ready" ? (
                       <Check className="h-5 w-5" aria-hidden />
+                    ) : step === "verifying" ? (
+                      <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
                     ) : (
                       <Lock className="h-5 w-5" aria-hidden />
                     )}
@@ -200,34 +252,108 @@ export function ProfileDownloadGate({
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-                    {unlocked ? "Access granted" : (editionLabel ?? "Confidential document")}
+                    {kicker}
                   </p>
                   <h2
                     id={headingId}
                     className="mt-1 font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
                   >
-                    {unlocked ? "Your download is ready" : "Enter access PIN"}
+                    {heading}
                   </h2>
                   <p id={descId} className="mt-1 text-sm text-muted-foreground">
-                    {unlocked
-                      ? "Yess Bangla — Company Profile is now released for download."
-                      : "Yess Bangla — Company Profile is shared on a need-to-know basis."}
+                    {sub}
                   </p>
                 </div>
+                {/* Persistent edition flag chip in the corner */}
+                <span
+                  className="ml-1 inline-flex shrink-0 items-center gap-1 self-start rounded-full border border-border/70 bg-background/80 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-foreground/85 shadow-sm"
+                  aria-label={`${editionMeta.name} edition`}
+                >
+                  <span aria-hidden className="text-base leading-none">{editionMeta.flag}</span>
+                  {editionMeta.code}
+                </span>
               </div>
 
-              {/* Body */}
-              {!unlocked ? (
+              {/* ============ STEP: CONFIRM ============ */}
+              {step === "confirm" && (
+                <div className="mt-6">
+                  <div className="overflow-hidden rounded-2xl border border-border/70 bg-muted/30">
+                    <div className="flex items-center gap-3 border-b border-border/60 bg-background/60 px-4 py-3">
+                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                        <FileText className="h-5 w-5" aria-hidden />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-display text-sm font-semibold text-foreground">
+                          Yess Bangla — Company Profile
+                        </p>
+                        <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
+                          {versionLabel}
+                        </p>
+                      </div>
+                    </div>
+                    <dl className="grid grid-cols-2 gap-px bg-border/60 text-sm">
+                      <ConfirmRow
+                        label={t("gate.language")}
+                        value={
+                          <span className="inline-flex items-center gap-1.5">
+                            <span aria-hidden className="text-base leading-none">{editionMeta.flag}</span>
+                            <span className="font-semibold">{editionMeta.code}</span>
+                            <span className="text-muted-foreground">· {editionMeta.nameLocal}</span>
+                          </span>
+                        }
+                        icon={<Languages className="h-3.5 w-3.5" aria-hidden />}
+                      />
+                      <ConfirmRow
+                        label={t("gate.edition")}
+                        value={<span className="font-semibold">{editionDisplayName}</span>}
+                      />
+                      <ConfirmRow
+                        label={t("gate.format")}
+                        value="PDF · A4"
+                      />
+                      <ConfirmRow
+                        label={t("gate.pages")}
+                        value={metaLabel}
+                      />
+                    </dl>
+                  </div>
+
+                  <div className="mt-4 flex items-center gap-2 rounded-xl border border-border/60 bg-muted/40 p-3 text-xs text-muted-foreground">
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                    <span>{t("gate.confidentialNote")}</span>
+                  </div>
+
+                  <div className="mt-5 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={closeAndReset}
+                      className="inline-flex flex-1 items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                    >
+                      {t("gate.cancel")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStep("pin")}
+                      className="inline-flex flex-[1.4] items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                    >
+                      {t("gate.continue")} <ArrowRight className="h-4 w-4" aria-hidden />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* ============ STEP: PIN ============ */}
+              {step === "pin" && (
                 <div className="mt-6">
                   <label
                     htmlFor={`${headingId}-pin-0`}
                     className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
                   >
-                    4-digit PIN
+                    {t("gate.pinLabel")}
                   </label>
                   <div
                     role="group"
-                    aria-label="Enter 4-digit access PIN"
+                    aria-label={t("gate.pinLabel")}
                     className="mt-2 flex items-center justify-between gap-2 sm:gap-3"
                   >
                     {digits.map((d, i) => (
@@ -255,47 +381,81 @@ export function ProfileDownloadGate({
                     ))}
                   </div>
 
-                  <div className="mt-4 min-h-[1.25rem] text-sm" aria-live="polite">
+                  {/* Live status: remaining digit count OR error */}
+                  <div className="mt-3 min-h-[1.5rem] text-sm" aria-live="polite">
                     {error ? (
-                      <p className="text-destructive">{error}</p>
-                    ) : (
+                      <p className="font-medium text-destructive">{error}</p>
+                    ) : remaining > 0 ? (
                       <p className="text-muted-foreground">
-                        Don&rsquo;t have a PIN? Email{" "}
-                        <a
-                          href="mailto:info@yessbangla.com"
-                          className="font-medium text-primary underline-offset-4 hover:underline"
-                        >
-                          info@yessbangla.com
-                        </a>
-                        .
+                        {remaining === 1
+                          ? t("gate.remainingOne", { count: remaining })
+                          : t("gate.remainingOther", { count: remaining })}
                       </p>
+                    ) : (
+                      <p className="text-muted-foreground">·</p>
                     )}
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => tryUnlock(pin)}
-                    disabled={!filled}
-                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
-                  >
-                    <KeyRound className="h-4 w-4" aria-hidden />
-                    Unlock download
-                  </button>
+                  <p className="text-xs text-muted-foreground">
+                    {t("gate.noPin")}{" "}
+                    <a
+                      href="mailto:info@yessbangla.com"
+                      className="font-medium text-primary underline-offset-4 hover:underline"
+                    >
+                      info@yessbangla.com
+                    </a>
+                    .
+                  </p>
+
+                  <div className="mt-5 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { setStep("confirm"); setDigits(["", "", "", ""]); setError(null); }}
+                      className="inline-flex items-center justify-center rounded-xl border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                    >
+                      {t("gate.back")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => tryUnlock(pin)}
+                      disabled={!filled}
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
+                    >
+                      <KeyRound className="h-4 w-4" aria-hidden />
+                      {t("gate.unlock")}
+                    </button>
+                  </div>
 
                   <div className="mt-5 flex items-center gap-2 rounded-xl border border-border/60 bg-muted/40 p-3 text-xs text-muted-foreground">
                     <ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden />
-                    <span>
-                      This document is confidential and provided for evaluation purposes only.
-                    </span>
+                    <span>{t("gate.confidentialNote")}</span>
                   </div>
                 </div>
-              ) : (
+              )}
+
+              {/* ============ STEP: VERIFYING ============ */}
+              {step === "verifying" && (
+                <div className="mt-8 grid place-items-center gap-3 py-8 text-center">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-primary">
+                    <Loader2 className="h-6 w-6 animate-spin" aria-hidden />
+                  </div>
+                  <p className="font-display text-base font-semibold text-foreground">
+                    {t("gate.verifying")}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("gate.preparing")}
+                  </p>
+                </div>
+              )}
+
+              {/* ============ STEP: READY ============ */}
+              {step === "ready" && (
                 <div className="mt-6">
                   <div className="rounded-2xl border border-primary/30 bg-primary/[0.04] p-4">
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="font-display text-sm font-semibold text-foreground">
-                          Company profile · PDF
+                          {editionDisplayName} · PDF
                         </p>
                         <p className="mt-0.5 text-xs text-muted-foreground">{metaLabel}</p>
                         <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
@@ -314,18 +474,17 @@ export function ProfileDownloadGate({
                     onClick={() => setTimeout(closeAndReset, 600)}
                     className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
                   >
-                    Download PDF <ArrowRight className="h-4 w-4" aria-hidden />
+                    {t("gate.downloadPdf")} <ArrowRight className="h-4 w-4" aria-hidden />
                   </a>
 
                   <p className="mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                    Yess Bangla Private Limited · Dhaka
+                    {t("gate.footer")}
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Tiny shake keyframes scoped via global */}
           <style>{`
             @keyframes shake {
               0%, 100% { transform: translateX(0); }
@@ -338,5 +497,17 @@ export function ProfileDownloadGate({
         </div>
       )}
     </>
+  );
+}
+
+function ConfirmRow({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-0.5 bg-background/80 px-4 py-3">
+      <dt className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
+        {icon}
+        {label}
+      </dt>
+      <dd className="text-sm text-foreground">{value}</dd>
+    </div>
   );
 }
