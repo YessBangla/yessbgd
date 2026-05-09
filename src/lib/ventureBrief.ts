@@ -325,38 +325,19 @@ export async function buildVentureBriefDoc(
   const format: PageFormat = opts.format ?? "a4";
   const orientation: PageOrientation = opts.orientation ?? "portrait";
   const d = computeDims(format, orientation);
-  const logo =
-    opts.logoDataUrl !== undefined ? opts.logoDataUrl : await loadLogo();
-  const settings = clampWatermark(opts.watermark);
-  // Pre-bake fallback once. Reused on every page via the alias below.
-  const faded =
-    opts.logoDataUrl === null
-      ? null
-      : settings.forceFallback || !logo
-        ? await getFadedLogo(settings.opacity)
-        : null;
-  const assets: WatermarkAssets = {
-    logo,
-    faded,
-    settings,
-    imageAlias: "yess-wm-img",
-  };
+  // logoDataUrl override is preserved for tests; runtime always pulls the
+  // official letterhead pad as the page background.
+  const pad = opts.logoDataUrl === null ? null : await loadPad();
 
   const doc = new jsPDF({ unit: "mm", format, orientation });
   let y = d.topY;
 
   const brand = resolveBranding(opts.branding);
   const subtitle = v.category.toUpperCase() + " · " + v.title;
-  const letterhead: { scale: number; opacity: number; theme: "light" | "dark" } = {
-    scale: opts.logoScale ?? 1,
-    opacity: opts.logoOpacity ?? 1,
-    theme: opts.letterheadTheme ?? "light",
-  };
 
   const newPage = () => {
     doc.addPage(format, orientation);
-    drawLetterhead(doc, d, logo, subtitle, brand, letterhead);
-    drawWatermark(doc, d, assets);
+    drawPad(doc, d, pad, brand, subtitle);
     y = d.topY;
   };
 
@@ -398,8 +379,7 @@ export async function buildVentureBriefDoc(
   const bullet = (s: string) => text("•  " + s, { size: 10, color: [55, 55, 55], gap: 1.2 });
 
   // First page chrome
-  drawLetterhead(doc, d, logo, subtitle, brand, letterhead);
-  drawWatermark(doc, d, assets);
+  drawPad(doc, d, pad, brand, subtitle);
 
   h1(v.title);
   text(v.tagline, { size: 11, bold: true, color: [80, 80, 80], gap: 1.5 });
@@ -461,11 +441,11 @@ export async function buildVentureBriefDoc(
   h2("Talk to us");
   p("Reach out to our enterprise desk for a tailored proposal, references on request, and NDA-ready discovery.");
 
-  // Footers on every page
+  // Page numbers on every page (above the pad's navy footer band).
   const pages = doc.getNumberOfPages();
   for (let i = 1; i <= pages; i++) {
     doc.setPage(i);
-    drawFooter(doc, d, i, pages, v.slug, brand);
+    drawPageNumber(doc, d, i, pages);
   }
 
   return doc;
