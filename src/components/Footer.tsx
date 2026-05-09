@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import logo from "@/assets/yess-bangla-logo.png";
 import { ventures } from "@/data/ventures";
+import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
 export function Footer() {
   return (
@@ -88,16 +89,18 @@ export function Footer() {
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Get in touch</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li className="flex gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                <span>Block A, Road 3, House 127 (Green View), 1st Floor, Mirpur 12, Dhaka 1216</span>
+                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
+                <span>{COMPANY_CONTACT.office}</span>
               </li>
               <li className="flex gap-3">
-                <Phone className="h-4 w-4 flex-shrink-0 text-primary" />
-                <a href="tel:+8801805464343" className="hover:text-primary">+880 1805-464343</a>
+                <Phone className="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
+                <a href={phoneHref} className="tabular-nums hover:text-primary" aria-label={`Call ${COMPANY_CONTACT.phone.display}`}>
+                  {COMPANY_CONTACT.phone.display}
+                </a>
               </li>
               <li className="flex gap-3">
-                <Mail className="h-4 w-4 flex-shrink-0 text-primary" />
-                <a href="mailto:yessbangla.bd@gmail.com" className="hover:text-primary">yessbangla.bd@gmail.com</a>
+                <Mail className="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
+                <a href={`mailto:${COMPANY_CONTACT.email}`} className="hover:text-primary">{COMPANY_CONTACT.email}</a>
               </li>
             </ul>
 
