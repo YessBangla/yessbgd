@@ -788,7 +788,7 @@ function Index() {
                   <Link
                     to="/ventures/$slug"
                     params={{ slug: v.slug }}
-                    aria-label={`Read about ${v.title}`}
+                    aria-label={`${t("home.venturesSection.readAbout")} ${v.title}`}
                     className="group relative block h-full w-full overflow-hidden rounded-2xl glass-card p-5 text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6"
                   >
                     <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
