@@ -228,7 +228,7 @@ export function ProfileDownloadGate({
                       <input
                         key={i}
                         id={i === 0 ? `${headingId}-pin-0` : undefined}
-                        ref={(el) => (inputs.current[i] = el)}
+                        ref={(el) => { inputs.current[i] = el; }}
                         inputMode="numeric"
                         autoComplete="one-time-code"
                         pattern="[0-9]*"
