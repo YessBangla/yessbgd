@@ -318,19 +318,25 @@ def render_html() -> str:
   /* A4 with room for the letterhead header (top) and footer (bottom). */
   @page {{
     size: A4 portrait;
-    margin: 30mm 18mm 38mm 18mm;
+    /* Top margin clears the letterhead logo (~10mm tall + 6mm pad + breathing room).
+       Bottom margin clears the footer band (~37mm tall + 6mm pad). */
+    margin: 38mm 18mm 50mm 18mm;
     @bottom-center {{
       content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
       font-size: 8pt;
       color: #5A5A5A;
+      margin-bottom: 6mm;
     }}
   }}
   @page :first {{
-    margin: 30mm 18mm 38mm 18mm;
+    margin: 38mm 18mm 50mm 18mm;
     @bottom-center {{ content: ""; }}
   }}
-  /* Fixed letterhead chrome — repeats on every printed page in Chromium. */
+  /* Fixed letterhead chrome — repeats on every printed page in Chromium.
+     In Chromium print, position:fixed is relative to the page content area
+     (inside @page margins), so we use negative offsets to place chrome
+     inside the page-margin band. */
   .lh-header, .lh-footer {{
     position: fixed;
     pointer-events: none;
@@ -344,9 +350,9 @@ def render_html() -> str:
     transform: translate(-50%, -50%);
     width: 110mm; opacity: 0.05;
   }}
-  .lh-header {{ top: 6mm; left: 15mm; width: 42mm; }}
+  .lh-header {{ top: -32mm; left: -3mm; width: 50mm; }}
   .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{ bottom: 6mm; left: 15mm; right: 15mm; }}
+  .lh-footer {{ bottom: -44mm; left: -3mm; right: -3mm; }}
   .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
