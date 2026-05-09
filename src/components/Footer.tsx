@@ -6,8 +6,8 @@ import { ventures } from "@/data/ventures";
 export function Footer() {
   return (
     <footer
-      data-on-dark={undefined}
-      className="mt-24 border-t border-glass-border-soft bg-gradient-to-b from-transparent to-secondary/30 backdrop-blur-xl dark:bg-[oklch(0.18_0.04_260)] dark:[&]:data-on-dark"
+      data-on-dark
+      className="mt-24 border-t border-glass-border-soft bg-gradient-to-b from-transparent to-secondary/30 backdrop-blur-xl dark:bg-[oklch(0.18_0.04_260)]"
     >
       <div className="container-tight py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
