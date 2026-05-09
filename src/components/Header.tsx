@@ -2,17 +2,21 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { ventures } from "@/data/ventures";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
 
+// Nav items reference i18n keys; labels are resolved at render time so they
+// re-render when the user toggles language without remounting the header.
 const nav = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/industries", label: "Industries" },
-  { to: "/insights", label: "Insights" },
-  { to: "/careers", label: "Careers" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", key: "home" },
+  { to: "/about", key: "about" },
+  { to: "/services", key: "services" },
+  { to: "/industries", key: "industries" },
+  { to: "/insights", key: "insights" },
+  { to: "/careers", key: "careers" },
+  { to: "/contact", key: "contact" },
 ] as const;
 
 // ---- Memoized mobile panel ----------------------------------------------
@@ -36,6 +40,7 @@ const MobilePanel = memo(function MobilePanel({
   reduceMotion,
   venturesActive,
 }: MobilePanelProps) {
+  const { t } = useTranslation();
   return (
     <motion.div
       key="mobile-menu"
@@ -52,7 +57,7 @@ const MobilePanel = memo(function MobilePanel({
     >
       <div className="container-tight flex flex-col gap-1 py-3">
         <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          Explore
+          {t("nav.explore")}
         </p>
         {nav.slice(0, 3).map((n) => (
           <Link
@@ -64,7 +69,7 @@ const MobilePanel = memo(function MobilePanel({
             activeProps={{ className: "text-primary bg-secondary" }}
             activeOptions={{ exact: n.to === "/" }}
           >
-            {n.label}
+            {t(`nav.${n.key}`)}
           </Link>
         ))}
 
@@ -74,7 +79,7 @@ const MobilePanel = memo(function MobilePanel({
           aria-expanded={mobileVenturesOpen}
           className={`flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
         >
-          <span>Ventures</span>
+          <span>{t("nav.ventures")}</span>
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`}
           />
@@ -120,14 +125,14 @@ const MobilePanel = memo(function MobilePanel({
                 tabIndex={mobileVenturesOpen ? 0 : -1}
                 className="mt-1 rounded-xl px-2 py-2 text-[13px] font-semibold text-primary transition-colors hover:bg-secondary"
               >
-                View all ventures →
+                {t("nav.viewAllVentures")}
               </Link>
             </div>
           </div>
         </div>
 
         <p className="px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          Company
+          {t("nav.company")}
         </p>
         {nav.slice(3).map((n) => (
           <Link
@@ -138,16 +143,25 @@ const MobilePanel = memo(function MobilePanel({
             className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
-            {n.label}
+            {t(`nav.${n.key}`)}
           </Link>
         ))}
+
+        {/* Mobile language switch — kept inside the panel for reachability */}
+        <div className="mt-3 flex items-center justify-between rounded-xl border border-border/60 bg-background/60 px-3 py-2.5">
+          <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            {t("nav.explore")} · EN / BN
+          </span>
+          <LanguageSwitch variant="pill" />
+        </div>
+
         <Link
           to="/contact"
           preload="intent"
           onClick={onClose}
           className="mt-3 inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-5 py-3 text-center text-sm font-semibold text-background shadow-sm transition-transform active:scale-[0.98]"
         >
-          Let's Talk →
+          {t("nav.letsTalk")} →
         </Link>
       </div>
     </motion.div>
@@ -155,6 +169,7 @@ const MobilePanel = memo(function MobilePanel({
 });
 
 export function Header() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
@@ -197,10 +212,10 @@ export function Header() {
         <Link
           to="/"
           className="group relative flex items-center"
-          aria-label="YESS Bangla — home"
+          aria-label={t("nav.homeAria")}
         >
           <span className="logo-halo pointer-events-none absolute inset-0 -z-10 rounded-2xl" aria-hidden />
-          <span className="logo-plate" role="img" aria-label="YESS Bangla — home">
+          <span className="logo-plate" role="img" aria-label={t("nav.homeAria")}>
             <img
               src={logo}
               srcSet={`${logo} 1x, ${logo} 2x, ${logo} 3x`}
@@ -223,21 +238,21 @@ export function Header() {
             activeProps={{ className: "text-primary bg-secondary" }}
             activeOptions={{ exact: true }}
           >
-            Home
+            {t("nav.home")}
           </Link>
           <Link
             to="/about"
             className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
-            About
+            {t("nav.about")}
           </Link>
           <Link
             to="/services"
             className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
-            Services
+            {t("nav.services")}
           </Link>
 
           <div
@@ -249,7 +264,7 @@ export function Header() {
               to="/ventures"
               className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
             >
-              Ventures <ChevronDown className="h-3.5 w-3.5" />
+              {t("nav.ventures")} <ChevronDown className="h-3.5 w-3.5" />
             </Link>
             {venturesOpen && (
               <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
@@ -282,32 +297,37 @@ export function Header() {
                     onClick={() => setVenturesOpen(false)}
                     className="mt-2 block rounded-xl bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-primary"
                   >
-                    View all ventures →
+                    {t("nav.viewAllVentures")}
                   </Link>
                 </div>
               </div>
             )}
           </div>
 
-          <Link to="/industries" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Industries</Link>
-          <Link to="/insights" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Insights</Link>
-          <Link to="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Careers</Link>
-          <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>Contact</Link>
+          <Link to="/industries" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.industries")}</Link>
+          <Link to="/insights" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.insights")}</Link>
+          <Link to="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.careers")}</Link>
+          <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.contact")}</Link>
         </nav>
 
-        <div className="hidden lg:block">
-          <Link
-            to="/contact"
-            className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
-          >
-            Let's Talk
-          </Link>
+        {/* Right cluster — language + CTA on desktop, language only on mobile */}
+        <div className="flex items-center gap-2">
+          <LanguageSwitch variant="pill" className="hidden sm:inline-flex" />
+          <LanguageSwitch variant="compact" className="sm:hidden" />
+          <div className="hidden lg:block">
+            <Link
+              to="/contact"
+              className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
+            >
+              {t("nav.letsTalk")}
+            </Link>
+          </div>
         </div>
 
         <button
           ref={toggleBtnRef}
           type="button"
-          aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
           aria-expanded={open}
           aria-controls="mobile-nav-panel"
           aria-haspopup="menu"

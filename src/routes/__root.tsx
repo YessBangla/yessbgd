@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { WaterBackground } from "@/components/WaterBackground";
 import { ScrollUpDown } from "@/components/ScrollUpDown";
 import { applyHeaderFooterCssVars, loadLogoSettings } from "@/lib/logoSettings";
+import { useTranslation } from "react-i18next";
 
 function NotFoundComponent() {
   return (
@@ -76,10 +77,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  const { i18n } = useTranslation();
   // Apply persisted per-surface logo tuning (scale + opacity) before paint.
   useEffect(() => {
     applyHeaderFooterCssVars(loadLogoSettings());
   }, []);
+  // Mirror the active language onto <html lang> for assistive tech and SEO.
+  useEffect(() => {
+    const lang = i18n.resolvedLanguage || i18n.language || "en";
+    if (typeof document !== "undefined") document.documentElement.lang = lang;
+  }, [i18n.resolvedLanguage, i18n.language]);
   return (
     <div className="relative flex min-h-screen flex-col">
       <WaterBackground />

@@ -1,0 +1,116 @@
+{
+  "lang": {
+    "name": "বাংলা",
+    "switchTo": "View in English",
+    "switchAria": "ভাষা পরিবর্তন করুন: ইংরেজি",
+    "current": "BN",
+    "other": "EN"
+  },
+  "nav": {
+    "home": "হোম",
+    "about": "আমাদের সম্পর্কে",
+    "services": "সেবাসমূহ",
+    "ventures": "ভেঞ্চার",
+    "industries": "ইন্ডাস্ট্রি",
+    "insights": "ইনসাইট",
+    "careers": "ক্যারিয়ার",
+    "contact": "যোগাযোগ",
+    "explore": "এক্সপ্লোর",
+    "company": "কোম্পানি",
+    "viewAllVentures": "সব ভেঞ্চার দেখুন →",
+    "letsTalk": "কথা বলুন",
+    "openMenu": "নেভিগেশন মেনু খুলুন",
+    "closeMenu": "নেভিগেশন মেনু বন্ধ করুন",
+    "homeAria": "YESS বাংলা — হোম"
+  },
+  "footer": {
+    "tagline": "একটি ফুল-সার্ভিস বিজনেস কনসাল্টিং ও আইটি সলিউশন কোম্পানি — বাংলাদেশের প্রতিষ্ঠানগুলোকে আত্মবিশ্বাসের সাথে স্কেল করতে সহায়তা করে।",
+    "company": "কোম্পানি",
+    "ourVentures": "আমাদের ভেঞ্চার",
+    "getInTouch": "যোগাযোগ করুন",
+    "subscribe": "সাবস্ক্রাইব",
+    "yourEmail": "আপনার ইমেইল",
+    "newsletterAria": "নিউজলেটারের জন্য ইমেইল",
+    "rights": "সর্বস্বত্ব সংরক্ষিত।",
+    "links": {
+      "about": "আমাদের সম্পর্কে",
+      "mission": "আমাদের মিশন",
+      "vision": "আমাদের ভিশন",
+      "values": "আমাদের মূল্যবোধ",
+      "leadership": "নেতৃত্ব",
+      "methodology": "পদ্ধতি",
+      "awards": "অ্যাওয়ার্ড",
+      "standards": "মানদণ্ড",
+      "industries": "ইন্ডাস্ট্রি",
+      "projects": "প্রকল্প",
+      "careers": "ক্যারিয়ার",
+      "contact": "যোগাযোগ",
+      "viewAll": "সব দেখুন →",
+      "privacy": "গোপনীয়তা",
+      "terms": "শর্তাবলী",
+      "faq": "FAQ"
+    }
+  },
+  "home": {
+    "ctaStrip": {
+      "kicker": "যখনই প্রস্তুত হবেন",
+      "title": "চলুন মিলেমিশে গড়ি পরবর্তী অধ্যায়।",
+      "subtitle": "আমাদের টিমের সাথে কথা বলুন, সেবাগুলো দেখুন, অথবা আমাদের প্রোফাইল ডাউনলোড করুন।",
+      "themePreview": "থিম প্রিভিউ · এক্সপোর্টের আগে লোগো রিডেবিলিটি যাচাই করুন",
+      "contactTitle": "যোগাযোগ",
+      "contactDesc": "এক কর্মদিবসের মধ্যে উত্তর",
+      "servicesTitle": "সেবা দেখুন",
+      "servicesDesc": "কনসাল্টিং, আইটি, OTT ও ই-কমার্স"
+    },
+    "downloadCards": {
+      "compareLabel": "আপনার সংস্করণ বেছে নিন",
+      "english": {
+        "badge": "EN · English",
+        "kicker": "English Edition",
+        "title": "Company Profile · PDF",
+        "meta": "17 pages · v1.1 · 09 May 2026",
+        "lock": "PIN protected",
+        "ariaButton": "ইংরেজি সংস্করণ কোম্পানি প্রোফাইল ডাউনলোড (PIN সুরক্ষিত)"
+      },
+      "bangla": {
+        "badge": "BN · বাংলা",
+        "kicker": "বাংলা সংস্করণ",
+        "title": "কোম্পানি প্রোফাইল · PDF",
+        "meta": "১৭ পৃষ্ঠা · v1.2 · ০৯ মে ২০২৬",
+        "lock": "PIN সুরক্ষিত",
+        "ariaButton": "বাংলা সংস্করণ কোম্পানি প্রোফাইল ডাউনলোড (PIN সুরক্ষিত)"
+      }
+    }
+  },
+  "gate": {
+    "confidential": "গোপনীয় নথি",
+    "accessGranted": "অ্যাক্সেস অনুমোদিত",
+    "preparing": "আপনার ফাইল প্রস্তুত হচ্ছে…",
+    "confirmTitle": "ডাউনলোড নিশ্চিত করুন",
+    "confirmSubtitle": "PIN দেওয়ার আগে অনুগ্রহ করে আপনার সংস্করণটি যাচাই করুন।",
+    "edition": "সংস্করণ",
+    "language": "ভাষা",
+    "pages": "পৃষ্ঠা",
+    "format": "ফরম্যাট",
+    "continue": "PIN-এ যান",
+    "back": "পেছনে",
+    "cancel": "বাতিল",
+    "pinTitle": "অ্যাক্সেস PIN দিন",
+    "pinSubtitle": "{{edition}} শুধুমাত্র অনুমোদিত ব্যক্তিদের জন্য।",
+    "pinLabel": "৪ ডিজিটের PIN",
+    "remainingOne": "আরও {{count}} ডিজিট প্রয়োজন।",
+    "remainingOther": "আরও {{count}} ডিজিট প্রয়োজন।",
+    "incorrect": "ভুল PIN। আবার চেষ্টা করুন।",
+    "noPin": "PIN নেই? ইমেইল করুন",
+    "unlock": "ডাউনলোড আনলক",
+    "confidentialNote": "এই নথিটি গোপনীয় এবং শুধুমাত্র মূল্যায়নের উদ্দেশ্যে প্রদান করা হয়েছে।",
+    "readyTitle": "আপনার ডাউনলোড প্রস্তুত",
+    "readySubtitle": "{{edition}} এখন ডাউনলোডের জন্য উন্মুক্ত।",
+    "downloadPdf": "PDF ডাউনলোড",
+    "downloading": "ডাউনলোড হচ্ছে…",
+    "downloaded": "ডাউনলোড শুরু হয়েছে",
+    "footer": "YESS বাংলা প্রাইভেট লিমিটেড · ঢাকা",
+    "close": "বন্ধ",
+    "verifying": "যাচাই হচ্ছে…"
+  }
+}
