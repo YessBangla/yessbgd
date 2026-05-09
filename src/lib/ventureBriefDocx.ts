@@ -37,7 +37,7 @@ import {
   getVentureFaqs,
 } from "@/data/ventures";
 import { resolveBranding, type BriefBranding } from "./briefBranding";
-import logoUrl from "@/assets/yess-bangla-logo.jpeg";
+import logoUrl from "@/assets/yess-bangla-logo.png";
 
 export interface DocxBriefOptions {
   branding?: Partial<BriefBranding>;

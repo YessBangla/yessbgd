@@ -2,7 +2,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
-import logo from "@/assets/yess-bangla-logo.jpeg";
+import logo from "@/assets/yess-bangla-logo.png";
 import { ventures } from "@/data/ventures";
 
 const nav = [
