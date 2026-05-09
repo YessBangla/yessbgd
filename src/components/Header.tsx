@@ -192,7 +192,7 @@ export function Header() {
   const venturesActive = pathname === "/ventures" || pathname.startsWith("/ventures/") || pathname === "/projects";
 
   return (
-    <header className="sticky top-0 z-50 glass-nav">
+    <header data-on-dark className="sticky top-0 z-50 glass-nav">
       <div className="container-tight relative flex h-16 items-center justify-between">
         <Link
           to="/"
