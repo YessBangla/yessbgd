@@ -65,6 +65,17 @@ async function fetchLogoBytes(): Promise<Uint8Array | null> {
   }
 }
 
+async function fetchPadBytes(): Promise<Uint8Array | null> {
+  if (typeof fetch !== "function") return null;
+  try {
+    const res = await fetch(letterheadUrl);
+    const buf = await res.arrayBuffer();
+    return new Uint8Array(buf);
+  } catch {
+    return null;
+  }
+}
+
 async function bakeWatermark(
   bytes: Uint8Array,
   opacity: number,
