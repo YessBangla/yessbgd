@@ -428,10 +428,14 @@ export async function buildVentureBriefDoc(
 
   const brand = resolveBranding(opts.branding);
   const subtitle = v.category.toUpperCase() + " · " + v.title;
+  const letterhead = {
+    scale: opts.logoScale ?? 1,
+    opacity: opts.logoOpacity ?? 1,
+  };
 
   const newPage = () => {
     doc.addPage(format, orientation);
-    drawLetterhead(doc, d, logo, subtitle, brand);
+    drawLetterhead(doc, d, logo, subtitle, brand, letterhead);
     drawWatermark(doc, d, assets);
     y = d.topY;
   };
@@ -474,7 +478,7 @@ export async function buildVentureBriefDoc(
   const bullet = (s: string) => text("•  " + s, { size: 10, color: [55, 55, 55], gap: 1.2 });
 
   // First page chrome
-  drawLetterhead(doc, d, logo, subtitle, brand);
+  drawLetterhead(doc, d, logo, subtitle, brand, letterhead);
   drawWatermark(doc, d, assets);
 
   h1(v.title);
