@@ -639,7 +639,7 @@ def build_pdf():
 
     # ---- Sections ------------------------------------------------------
     for s in SECTIONS:
-        story.append(section_heading(s["number"], s["kicker"], s["title"], s["id"]))
+        story.extend(section_heading(s["number"], s["kicker"], s["title"], s["id"]))
         for kind, payload in s["body"]:
             if kind == "p":
                 story.append(Paragraph(payload, styles["Body"]))
