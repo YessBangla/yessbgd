@@ -342,13 +342,13 @@ function Index() {
         <div className="relative border-t border-background/10 bg-foreground/40 backdrop-blur-md">
           <div className="container-tight grid grid-cols-2 gap-y-4 py-4 sm:grid-cols-4">
             {[
-              { target: 250, label: "Projects delivered", format: { plus: true } as const },
-              { target: 120, label: "Enterprise clients", format: { plus: true } as const },
-              { target: 64,  label: "Districts covered" },
-              { target: 11,  label: "Years of expertise", format: { plus: true } as const },
+              { id: "projects",  target: 250, format: { plus: true } as const },
+              { id: "clients",   target: 120, format: { plus: true } as const },
+              { id: "districts", target: 64 },
+              { id: "years",     target: 11,  format: { plus: true } as const },
             ].map((s, i) => (
               <div
-                key={s.label}
+                key={s.id}
                 className={"min-w-0 px-4 sm:px-6 " + (i > 0 ? "sm:border-l sm:border-background/10" : "")}
               >
                 <div className="flex h-8 items-baseline font-display text-2xl font-semibold leading-none tracking-tight text-background tabular-nums sm:text-3xl">
