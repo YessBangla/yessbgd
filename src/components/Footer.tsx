@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { ventures } from "@/data/ventures";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <footer
       data-on-dark
@@ -13,7 +15,7 @@ export function Footer() {
       <div className="container-tight py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link to="/" className="inline-flex items-center" aria-label="YESS Bangla — home">
+            <Link to="/" className="inline-flex items-center" aria-label={t("nav.homeAria")}>
               <span className="logo-plate" role="img" aria-label="YESS Bangla">
                 <img
                   src={logo}
@@ -30,8 +32,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              A full-service business consulting and IT solutions company helping organisations
-              across Bangladesh scale with confidence.
+              {t("footer.tagline")}
             </p>
             <div className="mt-5 flex gap-2">
               {[
@@ -54,25 +55,25 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Company</h4>
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.company")}</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
-              <li><Link to="/about/$pillar" params={{ pillar: "mission" }} className="hover:text-primary">Our Mission</Link></li>
-              <li><Link to="/about/$pillar" params={{ pillar: "vision" }} className="hover:text-primary">Our Vision</Link></li>
-              <li><Link to="/about/$pillar" params={{ pillar: "values" }} className="hover:text-primary">Our Values</Link></li>
-              <li><Link to="/about/leadership" className="hover:text-primary">Leadership</Link></li>
-              <li><Link to="/about/methodology" className="hover:text-primary">Methodology</Link></li>
-              <li><Link to="/about/awards" className="hover:text-primary">Awards</Link></li>
-              <li><Link to="/about/standards" className="hover:text-primary">Standards</Link></li>
-              <li><Link to="/industries" className="hover:text-primary">Industries</Link></li>
-              <li><Link to="/projects" className="hover:text-primary">Projects</Link></li>
-              <li><Link to="/careers" className="hover:text-primary">Careers</Link></li>
-              <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
+              <li><Link to="/about" className="hover:text-primary">{t("footer.links.about")}</Link></li>
+              <li><Link to="/about/$pillar" params={{ pillar: "mission" }} className="hover:text-primary">{t("footer.links.mission")}</Link></li>
+              <li><Link to="/about/$pillar" params={{ pillar: "vision" }} className="hover:text-primary">{t("footer.links.vision")}</Link></li>
+              <li><Link to="/about/$pillar" params={{ pillar: "values" }} className="hover:text-primary">{t("footer.links.values")}</Link></li>
+              <li><Link to="/about/leadership" className="hover:text-primary">{t("footer.links.leadership")}</Link></li>
+              <li><Link to="/about/methodology" className="hover:text-primary">{t("footer.links.methodology")}</Link></li>
+              <li><Link to="/about/awards" className="hover:text-primary">{t("footer.links.awards")}</Link></li>
+              <li><Link to="/about/standards" className="hover:text-primary">{t("footer.links.standards")}</Link></li>
+              <li><Link to="/industries" className="hover:text-primary">{t("footer.links.industries")}</Link></li>
+              <li><Link to="/projects" className="hover:text-primary">{t("footer.links.projects")}</Link></li>
+              <li><Link to="/careers" className="hover:text-primary">{t("footer.links.careers")}</Link></li>
+              <li><Link to="/contact" className="hover:text-primary">{t("footer.links.contact")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Our Ventures</h4>
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.ourVentures")}</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
               {ventures.slice(0, 8).map((v) => (
                 <li key={v.slug}>
@@ -81,12 +82,12 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link to="/ventures" className="font-semibold text-primary hover:underline">View all →</Link></li>
+              <li><Link to="/ventures" className="font-semibold text-primary hover:underline">{t("footer.links.viewAll")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">Get in touch</h4>
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.getInTouch")}</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
@@ -111,26 +112,26 @@ export function Footer() {
               <input
                 type="email"
                 required
-                placeholder="Your email"
-                aria-label="Email for newsletter"
+                placeholder={t("footer.yourEmail")}
+                aria-label={t("footer.newsletterAria")}
                 className="flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground"
               />
               <button
                 type="submit"
                 className="bg-gradient-primary px-4 text-sm font-semibold text-primary-foreground"
               >
-                Subscribe
+                {t("footer.subscribe")}
               </button>
             </form>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
-          <p>© {new Date().getFullYear()} YESS Bangla Private Limited. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} YESS Bangla Private Limited. {t("footer.rights")}</p>
           <div className="flex items-center gap-5">
-            <Link to="/privacy" className="hover:text-primary">Privacy</Link>
-            <Link to="/terms" className="hover:text-primary">Terms</Link>
-            <Link to="/faq" className="hover:text-primary">FAQ</Link>
+            <Link to="/privacy" className="hover:text-primary">{t("footer.links.privacy")}</Link>
+            <Link to="/terms" className="hover:text-primary">{t("footer.links.terms")}</Link>
+            <Link to="/faq" className="hover:text-primary">{t("footer.links.faq")}</Link>
           </div>
         </div>
       </div>
