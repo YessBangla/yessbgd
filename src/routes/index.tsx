@@ -284,9 +284,9 @@ function Index() {
                   rowGap: "var(--hero-rhythm-xs)",
                 }}
               >
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
-                <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
-                <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> 98% client retention</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustIso")}</span>
+                <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustYears")}</span>
+                <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustRetention")}</span>
               </div>
             </div>
           </div>
