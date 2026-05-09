@@ -328,10 +328,10 @@ function Index() {
                   ))}
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-background/85">
-                  &ldquo;The most strategic technology partner we&rsquo;ve worked with in the region.&rdquo;
+                  &ldquo;{t("home.hero.cardQuote")}&rdquo;
                 </p>
                 <p className="mt-2 text-[11px] uppercase tracking-wider text-background/55">
-                  CEO · Retail Group
+                  {t("home.hero.cardQuoteRole")}
                 </p>
               </div>
             </div>
