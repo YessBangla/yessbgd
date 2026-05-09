@@ -449,27 +449,33 @@ function Index() {
               </Link>
 
               <ProfileDownloadGate
+                editionLabel="English Edition · Confidential"
                 versionLabel="v1.1 · Generated 09 May 2026"
                 metaLabel="17 pages · ~150 KB · A4 PDF"
                 trigger={({ open }) => (
                   <button
                     type="button"
                     onClick={open}
-                    aria-label="Download Yess Bangla Company Profile (PIN protected)"
+                    aria-label="Download Company Profile — English Edition (PIN protected)"
+                    lang="en"
                     className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-5 text-left text-background transition-all hover:-translate-y-1 hover:shadow-xl"
                   >
                     <div className="flex items-center justify-between">
                       <div className="grid h-10 w-10 place-items-center rounded-xl bg-background/15 text-background">
                         <Download className="h-5 w-5" aria-hidden="true" />
                       </div>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-background/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]">
-                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-background/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em]">
+                        <span aria-hidden="true">🇬🇧</span> EN · English
                       </span>
                     </div>
                     <div className="mt-6">
-                      <div className="font-display text-base font-semibold">Company profile · PDF</div>
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">English Edition</div>
+                      <div className="mt-1 font-display text-base font-semibold">Company Profile · PDF</div>
                       <div className="mt-1 text-xs opacity-75">
-                        17 pages · ~150 KB · v1.1 · Generated 09 May 2026
+                        17 pages · v1.1 · Generated 09 May 2026
+                      </div>
+                      <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-background/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]">
+                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN protected
                       </div>
                     </div>
                   </button>
@@ -479,28 +485,33 @@ function Index() {
               <ProfileDownloadGate
                 href="/yess-bangla-company-profile-bn.pdf"
                 filename="yess-bangla-company-profile-bn.pdf"
-                editionLabel="বাংলা সংস্করণ · Confidential"
+                editionLabel="বাংলা সংস্করণ · Bangla Edition · Confidential"
                 versionLabel="v1.2 · প্রকাশিত ০৯ মে ২০২৬"
                 metaLabel="১৭ পৃষ্ঠা · A4 PDF · Noto Sans Bengali"
                 trigger={({ open }) => (
                   <button
                     type="button"
                     onClick={open}
-                    aria-label="ইয়েস বাংলা কোম্পানি প্রোফাইল ডাউনলোড করুন (পিন সুরক্ষিত)"
+                    aria-label="বাংলা সংস্করণ কোম্পানি প্রোফাইল ডাউনলোড (PIN protected) — Bangla Edition"
+                    lang="bn"
                     className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/[0.08] via-background to-accent/[0.08] p-5 text-left transition-all hover:-translate-y-1 hover:border-primary/70 hover:shadow-xl"
                   >
                     <div className="flex items-center justify-between">
                       <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
                         <Download className="h-5 w-5" aria-hidden="true" />
                       </div>
-                      <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
-                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN · BN
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-background/70 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
+                        <span aria-hidden="true">🇧🇩</span> BN · বাংলা
                       </span>
                     </div>
                     <div className="mt-6">
-                      <div className="font-display text-base font-semibold">কোম্পানি প্রোফাইল · বাংলা</div>
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary/80">Bangla Edition · বাংলা সংস্করণ</div>
+                      <div className="mt-1 font-display text-base font-semibold">কোম্পানি প্রোফাইল · PDF</div>
                       <div className="mt-1 text-xs text-muted-foreground">
                         ১৭ পৃষ্ঠা · v1.2 · প্রকাশিত ০৯ মে ২০২৬
+                      </div>
+                      <div className="mt-3 inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN সুরক্ষিত
                       </div>
                     </div>
                   </button>
