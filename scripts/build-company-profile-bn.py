@@ -281,10 +281,8 @@ def _render_block(kind, payload):
 
 
 def _render_section(s):
-    """Render a section as one OR MORE .page divs, splitting at pagebreak.
-
-    Each printed sheet maps 1:1 to one `.page` so the fixed-position
-    letterhead always lines up cleanly with content padding."""
+    """Render one section as a flowing block; Playwright + @page margins
+    repeat the letterhead header/footer on every sheet automatically."""
     head = f"""
       <header class="sec-head">
         <div class="sec-chip">{s['n']}</div>
@@ -295,26 +293,14 @@ def _render_section(s):
       </header>
       <div class="sec-rule"></div>
     """
-    cont_head = f"""
-      <header class="sec-head sec-head-cont">
-        <p class="sec-kicker">{s['kicker']} · {s['title']} (চলমান)</p>
-      </header>
-      <div class="sec-rule sec-rule-cont"></div>
-    """
-    pages = [[]]  # list of block-html lists
+    parts = [head, "<div class='sec-body'>"]
     for kind, payload in s['blocks']:
         if kind == "pagebreak":
-            pages.append([])
+            parts.append("</div><div class='page-break'></div><div class='sec-body'>")
         else:
-            pages[-1].append(_render_block(kind, payload))
-    out = []
-    for i, blocks in enumerate(pages):
-        h = head if i == 0 else cont_head
-        out.append(
-            f"<section class='page profile-section'>"
-            f"{h}<div class='sec-body'>{''.join(blocks)}</div>"
-            f"</section>")
-    return "\n".join(out)
+            parts.append(_render_block(kind, payload))
+    parts.append("</div>")
+    return f"<section class='profile-section'>{''.join(parts)}</section>"
 
 
 def render_html() -> str:
@@ -335,30 +321,8 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Each `.page` is a fixed A4-sized container that explicitly insets
-     content from the letterhead's logo (top) and contact strip (bottom).
-     `@page margin: 0` lets us paint full-bleed letterhead per sheet. */
-  @page {{ size: A4 portrait; margin: 0; }}
-  html, body {{ margin: 0; padding: 0; background: #fff; }}
-
-  .page {{
-    position: relative;
-    width: 210mm;
-    height: 297mm;
-    padding: 38mm 22mm 44mm 22mm;
-    box-sizing: border-box;
-    overflow: hidden;
-    page-break-after: always;
-    background-image: url("file://{LETTERHEAD}");
-    background-size: 210mm 297mm;
-    background-repeat: no-repeat;
-    background-position: top left;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }}
-  .page:last-child {{ page-break-after: auto; }}
-  .page > * {{ position: relative; z-index: 1; }}
-
+  /* Flowing layout — Playwright handles per-page header/footer via
+     printOptions, so content here only worries about typography & rhythm. */
   :root {{
     --navy: #0E2A3A;
     --teal: #0F4C5C;
@@ -369,116 +333,78 @@ def render_html() -> str:
   }}
   * {{ box-sizing: border-box; }}
   html, body {{
+    margin: 0; padding: 0; background: #fff;
     font-family: 'Noto Sans Bengali', 'Noto Sans', sans-serif;
     font-size: 10.5pt;
-    line-height: 1.55;
+    line-height: 1.6;
     color: var(--ink);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }}
-  p {{ margin: 0 0 6pt 0; text-align: justify; }}
+  p {{ margin: 0 0 7pt 0; text-align: justify; }}
   h2, h3 {{ font-weight: 700; color: var(--navy); margin: 0; }}
-  ul {{ padding-left: 16pt; margin: 0 0 6pt 0; }}
+  ul {{ padding-left: 16pt; margin: 0 0 7pt 0; }}
   li {{ margin-bottom: 3pt; }}
 
+  /* Section-level page break — Playwright respects these */
+  .cover, .toc, .profile-section {{ page-break-after: always; break-after: page; }}
+  .profile-section:last-of-type {{ page-break-after: auto; break-after: auto; }}
+  .page-break {{ page-break-after: always; break-after: page; height: 0; }}
+
+  /* Avoid breaking inside small content units */
+  .sec-head, .kv-row, .dl-row, table, tr {{ page-break-inside: avoid; break-inside: avoid; }}
+  h2, h3 {{ page-break-after: avoid; break-after: avoid; }}
+
   /* Cover */
-  .cover {{
-    page-break-after: always;
-  }}
   .cover .eyebrow {{
-    color: var(--gold);
-    font-weight: 700;
-    font-size: 9pt;
-    letter-spacing: 0.06em;
-    margin-bottom: 8pt;
+    color: var(--gold); font-weight: 700; font-size: 9pt;
+    letter-spacing: 0.06em; margin-bottom: 8pt;
   }}
   .cover h1 {{
-    font-size: 38pt;
-    line-height: 1.05;
-    color: var(--navy);
-    margin: 0 0 6pt 0;
-    font-weight: 800;
+    font-size: 38pt; line-height: 1.1; color: var(--navy);
+    margin: 0 0 8pt 0; font-weight: 800;
   }}
-  .cover .subtitle {{
-    font-size: 13pt;
-    line-height: 1.55;
-    margin: 0 0 14pt 0;
-  }}
+  .cover .subtitle {{ font-size: 13pt; line-height: 1.55; margin: 0 0 16pt 0; }}
   .strip {{
-    background: var(--navy);
-    color: #fff;
-    font-size: 9pt;
-    padding: 7pt 10pt;
-    margin-bottom: 10mm;
+    background: var(--navy); color: #fff; font-size: 9pt;
+    padding: 8pt 12pt; margin-bottom: 12mm;
   }}
   .glance {{
     border: 0.5pt solid var(--rule);
     border-top: 2pt solid var(--gold);
-    background: #fff;
-    padding: 12pt 14pt;
+    background: #fff; padding: 14pt 16pt;
   }}
 
   /* TOC */
-  .toc {{ page-break-after: always; }}
-  .toc h2 {{ font-size: 22pt; margin-bottom: 14pt; }}
+  .toc h2 {{ font-size: 24pt; margin-bottom: 16pt; color: var(--navy); }}
   .toc ol {{ list-style: none; padding: 0; margin: 0; }}
   .toc li {{
-    display: flex;
-    gap: 10pt;
-    padding: 6pt 0;
+    display: flex; gap: 12pt; padding: 7pt 0;
     border-bottom: 0.25pt dotted var(--rule);
-    font-size: 11pt;
-    color: var(--navy);
+    font-size: 11pt; color: var(--navy);
   }}
-  .toc-num {{
-    font-weight: 700;
-    min-width: 28pt;
-  }}
+  .toc-num {{ font-weight: 700; min-width: 30pt; color: var(--gold); }}
 
   /* Sections */
-  .profile-section {{ page-break-after: always; }}
-  .profile-section:last-of-type {{ page-break-after: auto; }}
   .sec-head {{
-    display: flex;
-    align-items: stretch;
-    gap: 10pt;
-    margin-bottom: 4pt;
+    display: flex; align-items: stretch; gap: 12pt;
+    margin: 0 0 4pt 0;
   }}
   .sec-chip {{
     width: 56pt; height: 56pt;
-    background: var(--navy);
-    color: #fff;
-    font-size: 18pt;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: var(--navy); color: #fff;
+    font-size: 18pt; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }}
   .sec-titles {{ flex: 1; padding-top: 4pt; }}
   .sec-kicker {{
-    color: var(--gold);
-    font-weight: 700;
-    font-size: 8.5pt;
-    letter-spacing: 0.04em;
-    margin: 0 0 3pt 0;
-    text-transform: none;
+    color: var(--gold); font-weight: 700; font-size: 8.5pt;
+    letter-spacing: 0.05em; margin: 0 0 3pt 0;
   }}
-  .sec-title {{
-    font-size: 20pt;
-    line-height: 1.2;
-    margin: 0;
-  }}
-  .sec-rule {{
-    height: 2pt;
-    background: var(--gold);
-    margin: 6pt 0 12pt 0;
-  }}
-  .sec-body h3 {{
-    font-size: 11.5pt;
-    color: var(--teal);
-    margin: 10pt 0 4pt 0;
-  }}
+  .sec-title {{ font-size: 20pt; line-height: 1.2; margin: 0; }}
+  .sec-rule {{ height: 2pt; background: var(--gold); margin: 8pt 0 14pt 0; }}
+  .sec-body h3 {{ font-size: 11.5pt; color: var(--teal); margin: 12pt 0 5pt 0; }}
 
   /* dl / kv / tables */
   dl {{ margin: 0 0 8pt 0; }}
@@ -487,39 +413,30 @@ def render_html() -> str:
   dd {{ margin: 0; text-align: justify; }}
   .kv {{ margin: 0 0 8pt 0; }}
   .kv-row {{
-    display: flex;
-    gap: 10pt;
-    padding: 6pt 0;
+    display: flex; gap: 12pt; padding: 6pt 0;
     border-bottom: 0.25pt solid var(--rule);
   }}
   .kv-k {{ flex: 0 0 38%; font-weight: 700; color: var(--navy); }}
   .kv-v {{ flex: 1; }}
   table {{
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 0 8pt 0;
-    font-size: 10pt;
+    width: 100%; border-collapse: collapse;
+    margin: 0 0 8pt 0; font-size: 10pt;
   }}
   th {{
-    background: var(--navy);
-    color: #fff;
-    text-align: left;
-    padding: 7pt 8pt;
-    font-weight: 700;
+    background: var(--navy); color: #fff;
+    text-align: left; padding: 7pt 8pt; font-weight: 700;
   }}
   td {{
-    padding: 7pt 8pt;
-    border-bottom: 0.25pt solid var(--rule);
+    padding: 7pt 8pt; border-bottom: 0.25pt solid var(--rule);
     vertical-align: top;
   }}
   tbody tr:nth-child(even) td {{ background: #F8F6F1; }}
-  .sig {{ font-weight: 700; color: var(--navy); margin-top: 8pt; }}
-  .page-break {{ page-break-after: always; }}
+  .sig {{ font-weight: 700; color: var(--navy); margin-top: 10pt; }}
 </style>
 </head>
 <body>
 
-<div class="page cover">
+<div class="cover">
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
   <h1>কোম্পানি প্রোফাইল</h1>
   <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড।</p>
@@ -540,41 +457,122 @@ def render_html() -> str:
   </div>
 </div>
 
-<section class="page toc">
+<section class="toc">
   <h2>সূচিপত্র</h2>
   <ol>{toc_items}</ol>
 </section>
 
 {''.join(sections_html)}
 
-
 </body>
 </html>
 """
 
 
+# ---------------------------------------------------------------------------
+# Playwright PDF generation — header/footer templates repeat letterhead
+# reliably on every page, page numbering driven by page-settings.json.
+# ---------------------------------------------------------------------------
+import base64
+
+SETTINGS_PATH = "/dev-server/scripts/page-settings.json"
+
+
+def _load_settings():
+    with open(SETTINGS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _data_uri(path: str) -> str:
+    with open(path, "rb") as f:
+        b64 = base64.b64encode(f.read()).decode("ascii")
+    ext = "png" if path.lower().endswith(".png") else "jpeg"
+    return f"data:image/{ext};base64,{b64}"
+
+
+def _header_template(settings) -> str:
+    if not settings["header"]["enabled"]:
+        return "<div></div>"
+    img = _data_uri(os.path.join("/dev-server", settings["header"]["image"]))
+    h = settings["header"]["heightMm"]
+    # Playwright header template runs in its own document with default zero
+    # margins; width: 100% maps to full A4 width. Use mm units explicitly.
+    return f"""
+    <div style="margin:0;padding:0;width:100%;-webkit-print-color-adjust:exact;">
+      <img src="{img}" style="display:block;width:100%;height:{h}mm;object-fit:cover;object-position:top;" />
+    </div>
+    """
+
+
+def _footer_template(settings) -> str:
+    if not settings["footer"]["enabled"]:
+        return "<div></div>"
+    img = _data_uri(os.path.join("/dev-server", settings["footer"]["image"]))
+    fh = settings["footer"]["heightMm"]
+    pn = settings["footer"].get("pageNumber", {})
+    page_num_html = ""
+    if pn.get("enabled"):
+        fmt = pn["format"].replace("{page}",
+            "<span class='pageNumber'></span>").replace("{total}",
+            "<span class='totalPages'></span>")
+        align = pn.get("alignment", "right")
+        right = pn.get("marginRightMm", 14)
+        bottom = pn.get("marginBottomMm", 6)
+        size = pn.get("fontSizePt", 8)
+        color = pn.get("color", "#0E2A3A")
+        # Bengali-digit page numbers via CSS counter aren't possible inside
+        # Chromium's footer template (pageNumber is filled as latin numerals).
+        page_num_html = f"""
+        <div style="position:absolute;right:{right}mm;bottom:{bottom}mm;
+                    font-family:'Noto Sans Bengali','Noto Sans',sans-serif;
+                    font-size:{size}pt;color:{color};text-align:{align};
+                    -webkit-print-color-adjust:exact;">
+          {fmt}
+        </div>
+        """
+    return f"""
+    <div style="margin:0;padding:0;width:100%;position:relative;-webkit-print-color-adjust:exact;">
+      <img src="{img}" style="display:block;width:100%;height:{fh}mm;object-fit:cover;object-position:bottom;" />
+      {page_num_html}
+    </div>
+    """
+
+
 def build():
+    from playwright.sync_api import sync_playwright
+    settings = _load_settings()
     html = render_html()
     with tempfile.TemporaryDirectory() as td:
         html_path = os.path.join(td, "profile-bn.html")
         with open(html_path, "w", encoding="utf-8") as f:
             f.write(html)
-        cmd = [
-            "/bin/chromium",
-            "--headless=new",
-            "--no-sandbox",
-            "--disable-gpu",
-            "--hide-scrollbars",
-            "--no-pdf-header-footer",
-            "--virtual-time-budget=6000",
-            f"--print-to-pdf={PDF_OUT}",
-            f"file://{html_path}",
-        ]
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        if not os.path.exists(PDF_OUT):
-            print("STDOUT:", proc.stdout)
-            print("STDERR:", proc.stderr)
-            raise SystemExit("Chromium failed to produce PDF")
+
+        m = settings["margins"]
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                executable_path="/bin/chromium",
+                args=["--no-sandbox", "--disable-gpu"],
+            )
+            ctx = browser.new_context()
+            page = ctx.new_page()
+            page.goto(f"file://{html_path}", wait_until="networkidle")
+            page.pdf(
+                path=PDF_OUT,
+                format=settings.get("format", "A4"),
+                landscape=(settings.get("orientation") == "landscape"),
+                print_background=True,
+                display_header_footer=True,
+                header_template=_header_template(settings),
+                footer_template=_footer_template(settings),
+                margin={
+                    "top": m["top"],
+                    "right": m["right"],
+                    "bottom": m["bottom"],
+                    "left": m["left"],
+                },
+                prefer_css_page_size=False,
+            )
+            browser.close()
         print(f"[pdf-bn] wrote {PDF_OUT} ({os.path.getsize(PDF_OUT):,} bytes)")
 
 
