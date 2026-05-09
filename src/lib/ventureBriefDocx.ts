@@ -503,7 +503,7 @@ export async function buildVentureBriefDocx(
             },
           },
         },
-        headers: { default: makeLetterhead(brand, logo, opts.logoScale ?? 1) },
+        headers: { default: makeLetterhead(brand, logo, opts.logoScale ?? 1, opts.letterheadTheme ?? "light") },
         footers: { default: makeFooter(brand, v.slug) },
         children: body,
       },
