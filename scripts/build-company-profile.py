@@ -553,7 +553,13 @@ def section_heading(num: str, kicker: str, title: str, anchor: str):
         ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
     ]))
 
-    return KeepTogether([head, Spacer(1, 6), rule, Spacer(1, 12)])
+    marker = TocAnchor(
+        anchor=anchor,
+        toc_text=f"{num}  ·  {title}",
+        outline_text=f"{num} · {title.replace('&amp;', '&')}",
+        outline_level=0,
+    )
+    return [marker, KeepTogether([head, Spacer(1, 6), rule, Spacer(1, 12)])]
 
 
 # ---------------------------------------------------------------------------
