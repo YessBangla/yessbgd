@@ -347,9 +347,11 @@ def render_html() -> str:
     transform: translate(-50%, -50%);
     width: 110mm; opacity: 0.05;
   }}
-  .lh-header {{ top: 4mm; left: 15mm; width: 22mm; }}
+  /* Negative offsets push the chrome into the page-margin band, since
+     Chromium print treats position:fixed as relative to the content area. */
+  .lh-header {{ top: -22mm; left: -3mm; width: 22mm; }}
   .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{ bottom: 4mm; left: 15mm; right: 15mm; }}
+  .lh-footer {{ bottom: -42mm; left: -3mm; right: -3mm; }}
   .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
