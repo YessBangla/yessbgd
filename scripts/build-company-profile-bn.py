@@ -16,6 +16,9 @@ import tempfile
 
 PUBLIC = "/dev-server/public"
 LETTERHEAD = f"{PUBLIC}/yess-bangla-letterhead.jpeg"
+LH_HEADER = f"{PUBLIC}/letterhead-header.png"
+LH_FOOTER = f"{PUBLIC}/letterhead-footer.png"
+LH_WATERMARK = f"{PUBLIC}/letterhead-watermark.png"
 PDF_OUT = f"{PUBLIC}/yess-bangla-company-profile-bn.pdf"
 
 with open("/dev-server/src/data/company-contact.json", encoding="utf-8") as _f:
@@ -312,9 +315,10 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
+  /* A4 with room for the letterhead header (top) and footer (bottom). */
   @page {{
     size: A4 portrait;
-    margin: 22mm 20mm 22mm 20mm;
+    margin: 30mm 18mm 38mm 18mm;
     @bottom-center {{
       content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
@@ -323,9 +327,29 @@ def render_html() -> str:
     }}
   }}
   @page :first {{
-    margin: 22mm 20mm 22mm 20mm;
+    margin: 30mm 18mm 38mm 18mm;
     @bottom-center {{ content: ""; }}
   }}
+  /* Fixed letterhead chrome — repeats on every printed page in Chromium. */
+  .lh-header, .lh-footer {{
+    position: fixed;
+    pointer-events: none;
+    z-index: 10;
+  }}
+  .lh-watermark {{
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110mm; opacity: 0.05;
+  }}
+  .lh-header {{ top: 6mm; left: 15mm; width: 42mm; }}
+  .lh-header img {{ width: 100%; height: auto; display: block; }}
+  .lh-footer {{ bottom: 6mm; left: 15mm; right: 15mm; }}
+  .lh-footer img {{ width: 100%; height: auto; display: block; }}
+  .lh-watermark img {{ width: 100%; height: auto; display: block; }}
+
   :root {{
     --navy: #0E2A3A;
     --teal: #0F4C5C;
@@ -485,6 +509,10 @@ def render_html() -> str:
 </style>
 </head>
 <body>
+
+<div class="lh-watermark" aria-hidden="true"><img src="file://{LH_WATERMARK}" alt=""></div>
+<div class="lh-header"   aria-hidden="true"><img src="file://{LH_HEADER}" alt=""></div>
+<div class="lh-footer"   aria-hidden="true"><img src="file://{LH_FOOTER}" alt=""></div>
 
 
 <div class="cover">
