@@ -315,8 +315,8 @@ function Index() {
                     <Award className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[11px] uppercase tracking-wider text-background/60">Trusted by</div>
-                    <div className="font-display text-base font-semibold leading-tight text-background">120+ enterprise clients across 64 districts</div>
+                    <div className="text-[11px] uppercase tracking-wider text-background/60">{t("home.hero.cardTrustedLabel")}</div>
+                    <div className="font-display text-base font-semibold leading-tight text-background">{t("home.hero.cardTrustedValue")}</div>
                   </div>
                 </div>
               </div>
