@@ -393,130 +393,169 @@ function Index() {
         </div>
       </section>
 
-      {/* QUICK CTA STRIP */}
+      {/* QUICK CTA STRIP — translated chrome + clearly labelled bilingual download cards.
+          On mobile we keep EN and BN side-by-side (2 cols) so visitors can compare
+          the editions on a single screen without scrolling. */}
+      <CtaStripSection hydrated={hydrated} />
+    </>
+  );
+}
+
+function CtaStripSection({ hydrated: _hydrated }: { hydrated: boolean }) {
+  const { t } = useTranslation();
+  return (
+    <>
       <section className="relative -mt-px border-y border-border/60 bg-gradient-to-br from-primary/8 via-background to-accent/8">
         <div className="container-tight py-12 sm:py-14">
           <div className="grid gap-6 lg:grid-cols-[1.2fr_2fr] lg:items-center">
             <Reveal>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                Ready when you are
+                {t("home.ctaStrip.kicker")}
               </p>
               <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-                Let&rsquo;s build what&rsquo;s next — together.
+                {t("home.ctaStrip.title")}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Talk to our team, browse what we deliver, or take our profile with you.
+                {t("home.ctaStrip.subtitle")}
               </p>
               <div className="mt-4 flex flex-col gap-2">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
-                  Theme preview · check logo readability before export
+                  {t("home.ctaStrip.themePreview")}
                 </p>
                 <ThemePreviewSwitch />
               </div>
             </Reveal>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <Link
-                to="/contact"
-                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                    <Mail className="h-5 w-5" />
+            <div>
+              {/* Section label above the bilingual download pair */}
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80 sm:hidden">
+                {t("home.downloadCards.compareLabel")}
+              </p>
+
+              {/* Top row: generic CTAs — stay full width on mobile (1 col) */}
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
+                <Link
+                  to="/contact"
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <Mail className="h-5 w-5" />
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
-                </div>
-                <div className="mt-6">
-                  <div className="font-display text-base font-semibold">Contact us</div>
-                  <div className="mt-1 text-xs text-muted-foreground">Reply within one business day</div>
-                </div>
-              </Link>
-
-              <Link
-                to="/services"
-                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-glow">
-                    <Layers className="h-5 w-5" />
+                  <div className="mt-6">
+                    <div className="font-display text-base font-semibold">{t("home.ctaStrip.contactTitle")}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">{t("home.ctaStrip.contactDesc")}</div>
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
-                </div>
-                <div className="mt-6">
-                  <div className="font-display text-base font-semibold">Explore services</div>
-                  <div className="mt-1 text-xs text-muted-foreground">Consulting, IT, OTT &amp; commerce</div>
-                </div>
-              </Link>
+                </Link>
 
-              <ProfileDownloadGate
-                editionLabel="English Edition · Confidential"
-                versionLabel="v1.1 · Generated 09 May 2026"
-                metaLabel="17 pages · ~150 KB · A4 PDF"
-                trigger={({ open }) => (
-                  <button
-                    type="button"
-                    onClick={open}
-                    aria-label="Download Company Profile — English Edition (PIN protected)"
-                    lang="en"
-                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-5 text-left text-background transition-all hover:-translate-y-1 hover:shadow-xl"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-background/15 text-background">
-                        <Download className="h-5 w-5" aria-hidden="true" />
-                      </div>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-background/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em]">
-                        <span aria-hidden="true">🇬🇧</span> EN · English
-                      </span>
+                <Link
+                  to="/services"
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-border/60 bg-background/70 p-5 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-accent text-accent-foreground shadow-glow">
+                      <Layers className="h-5 w-5" />
                     </div>
-                    <div className="mt-6">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">English Edition</div>
-                      <div className="mt-1 font-display text-base font-semibold">Company Profile · PDF</div>
-                      <div className="mt-1 text-xs opacity-75">
-                        17 pages · v1.1 · Generated 09 May 2026
-                      </div>
-                      <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-background/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]">
-                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN protected
-                      </div>
-                    </div>
-                  </button>
-                )}
-              />
+                    <ArrowRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                  </div>
+                  <div className="mt-6">
+                    <div className="font-display text-base font-semibold">{t("home.ctaStrip.servicesTitle")}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">{t("home.ctaStrip.servicesDesc")}</div>
+                  </div>
+                </Link>
+              </div>
 
-              <ProfileDownloadGate
-                href="/yess-bangla-company-profile-bn.pdf"
-                filename="yess-bangla-company-profile-bn.pdf"
-                editionLabel="বাংলা সংস্করণ · Bangla Edition · Confidential"
-                versionLabel="v1.2 · প্রকাশিত ০৯ মে ২০২৬"
-                metaLabel="১৭ পৃষ্ঠা · A4 PDF · Noto Sans Bengali"
-                trigger={({ open }) => (
-                  <button
-                    type="button"
-                    onClick={open}
-                    aria-label="বাংলা সংস্করণ কোম্পানি প্রোফাইল ডাউনলোড (PIN protected) — Bangla Edition"
-                    lang="bn"
-                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/[0.08] via-background to-accent/[0.08] p-5 text-left transition-all hover:-translate-y-1 hover:border-primary/70 hover:shadow-xl"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                        <Download className="h-5 w-5" aria-hidden="true" />
+              {/* Bilingual download row — KEEP 2 columns even on mobile so EN/BN
+                  cards sit side-by-side for instant comparison. Larger flag
+                  badges and a clear "Choose your edition" label on mobile help
+                  visitors scan the language at a glance. */}
+              <p className="mt-5 hidden text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80 sm:mb-3 sm:block">
+                {t("home.downloadCards.compareLabel")}
+              </p>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-0">
+                <ProfileDownloadGate
+                  edition="en"
+                  editionLabel={t("home.downloadCards.english.kicker")}
+                  versionLabel="v1.1 · 09 May 2026"
+                  metaLabel="17 pages · ~150 KB · A4 PDF"
+                  trigger={({ open }) => (
+                    <button
+                      type="button"
+                      onClick={open}
+                      aria-label={t("home.downloadCards.english.ariaButton")}
+                      lang="en"
+                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-4 text-left text-background transition-all hover:-translate-y-1 hover:shadow-xl sm:p-5"
+                    >
+                      {/* Prominent flag + lang badge — sized larger on mobile */}
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-background/15 text-background sm:h-10 sm:w-10">
+                          <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+                        </div>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-background text-foreground px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm sm:px-2.5 sm:text-[12px]">
+                          <span aria-hidden="true" className="text-base leading-none">🇬🇧</span> EN
+                        </span>
                       </div>
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-background/70 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
-                        <span aria-hidden="true">🇧🇩</span> BN · বাংলা
-                      </span>
-                    </div>
-                    <div className="mt-6">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary/80">Bangla Edition · বাংলা সংস্করণ</div>
-                      <div className="mt-1 font-display text-base font-semibold">কোম্পানি প্রোফাইল · PDF</div>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        ১৭ পৃষ্ঠা · v1.2 · প্রকাশিত ০৯ মে ২০২৬
+                      <div className="mt-5 sm:mt-6">
+                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] opacity-70">
+                          {t("home.downloadCards.english.kicker")}
+                        </div>
+                        <div className="mt-1 font-display text-[13px] font-semibold leading-snug sm:text-base">
+                          {t("home.downloadCards.english.title")}
+                        </div>
+                        <div className="mt-1 text-[10px] opacity-75 sm:text-xs">
+                          {t("home.downloadCards.english.meta")}
+                        </div>
+                        <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-background/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] sm:mt-3 sm:text-[10px]">
+                          <LockIcon className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.english.lock")}
+                        </div>
                       </div>
-                      <div className="mt-3 inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
-                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN সুরক্ষিত
+                    </button>
+                  )}
+                />
+
+                <ProfileDownloadGate
+                  edition="bn"
+                  href="/yess-bangla-company-profile-bn.pdf"
+                  filename="yess-bangla-company-profile-bn.pdf"
+                  editionLabel={t("home.downloadCards.bangla.kicker")}
+                  versionLabel="v1.2 · 09 May 2026"
+                  metaLabel="17 pages · A4 PDF · Noto Sans Bengali"
+                  trigger={({ open }) => (
+                    <button
+                      type="button"
+                      onClick={open}
+                      aria-label={t("home.downloadCards.bangla.ariaButton")}
+                      lang="bn"
+                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary/50 bg-gradient-to-br from-primary/[0.10] via-background to-accent/[0.10] p-4 text-left transition-all hover:-translate-y-1 hover:border-primary/80 hover:shadow-xl sm:p-5"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow sm:h-10 sm:w-10">
+                          <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+                        </div>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm sm:px-2.5 sm:text-[12px]">
+                          <span aria-hidden="true" className="text-base leading-none">🇧🇩</span> BN
+                        </span>
                       </div>
-                    </div>
-                  </button>
-                )}
-              />
+                      <div className="mt-5 sm:mt-6">
+                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                          {t("home.downloadCards.bangla.kicker")}
+                        </div>
+                        <div className="mt-1 font-display text-[13px] font-semibold leading-snug sm:text-base">
+                          {t("home.downloadCards.bangla.title")}
+                        </div>
+                        <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
+                          {t("home.downloadCards.bangla.meta")}
+                        </div>
+                        <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-primary sm:mt-3 sm:text-[10px]">
+                          <LockIcon className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.bangla.lock")}
+                        </div>
+                      </div>
+                    </button>
+                  )}
+                />
+              </div>
 
             </div>
           </div>
