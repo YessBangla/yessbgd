@@ -344,12 +344,9 @@ def render_html() -> str:
     transform: translate(-50%, -50%);
     width: 110mm; opacity: 0.05;
   }}
-  /* Chromium positions `position: fixed` relative to the page content area
-     (inside the @page margin), so we use negative offsets to push the
-     letterhead chrome out into the physical page margins. */
-  .lh-header {{ top: -22mm; left: -3mm; width: 42mm; }}
+  .lh-header {{ top: 6mm; left: 15mm; width: 42mm; }}
   .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{ bottom: -32mm; left: -3mm; right: -3mm; }}
+  .lh-footer {{ bottom: 6mm; left: 15mm; right: 15mm; }}
   .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
