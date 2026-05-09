@@ -519,15 +519,14 @@ def render_html() -> str:
 </head>
 <body>
 
-<div class="cover">
+<div class="page cover">
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
   <h1>কোম্পানি প্রোফাইল</h1>
-  <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড নিয়ে বাংলাদেশ ও তার বাইরে কাজ করছে।</p>
+  <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড।</p>
   <div class="strip"><b>গোপনীয়</b> · প্রাপকের জন্য · বাংলা সংস্করণ · {VERSION} · {GENERATED_BN}</div>
   <div class="glance">
     <div class="kv">
       <div class="kv-row"><div class="kv-k">আইনি নাম</div><div class="kv-v">ইয়েস বাংলা প্রাইভেট লিমিটেড</div></div>
-      <div class="kv-row"><div class="kv-k">নিবন্ধন</div><div class="kv-v">প্রাইভেট লিমিটেড কোম্পানি, বাংলাদেশ</div></div>
       <div class="kv-row"><div class="kv-k">নিবন্ধিত অফিস</div><div class="kv-v">{OFFICE}</div></div>
       <div class="kv-row"><div class="kv-k">করপোরেট অফিস</div><div class="kv-v">{CORP}</div></div>
       <div class="kv-row"><div class="kv-k">সেল</div><div class="kv-v">{PHONE}</div></div>
@@ -536,12 +535,12 @@ def render_html() -> str:
       <div class="kv-row"><div class="kv-k">খাত</div><div class="kv-v">প্রযুক্তি · মিডিয়া · ব্রডকাস্টিং · ই-কমার্স · লাইফস্টাইল সেবা</div></div>
       <div class="kv-row"><div class="kv-k">ভেঞ্চার সংখ্যা</div><div class="kv-v">এক মূল কোম্পানির অধীনে ১১টি বিশেষায়িত ব্র্যান্ড</div></div>
       <div class="kv-row"><div class="kv-k">ভাষা</div><div class="kv-v">বাংলা ও ইংরেজি (এই সংস্করণ: বাংলা)</div></div>
-      <div class="kv-row"><div class="kv-k">সংস্করণ</div><div class="kv-v">{VERSION} · প্রকাশিত {GENERATED_BN}</div></div>
+      <div class="kv-row"><div class="kv-k">সংস্করণ</div><div class="kv-v">{VERSION} · {GENERATED_BN}</div></div>
     </div>
   </div>
 </div>
 
-<section class="toc">
+<section class="page toc">
   <h2>সূচিপত্র</h2>
   <ol>{toc_items}</ol>
 </section>
