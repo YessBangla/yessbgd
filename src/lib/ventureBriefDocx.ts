@@ -220,7 +220,7 @@ function makeLetterhead(
     }),
   );
 
-  const widths = logo ? [1800, 6000, rightWidth] : [6000, rightWidth];
+  const widths = [1800, 6000, rightWidth];
 
   return new Header({
     children: [
