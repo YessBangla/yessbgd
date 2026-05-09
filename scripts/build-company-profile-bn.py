@@ -326,9 +326,8 @@ def render_html() -> str:
       color: #5A5A5A;
     }}
   }}
-  /* Cover keeps full bleed — own branding, no repeated letterhead. */
+  /* Cover keeps the same letterhead frame as inner pages. */
   @page :first {{
-    margin: 22mm 20mm 22mm 20mm;
     @bottom-center {{ content: ""; }}
   }}
   /* Fixed elements repeat on every printed page in Chromium headless.
