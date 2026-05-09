@@ -331,9 +331,7 @@ def render_html() -> str:
     position: fixed;
     top: -47mm; left: -22mm;
     width: 210mm; height: 297mm;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.18;
+    z-index: -2;
   }}
   .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
   /* Full-strength letterhead anchored to the top of a section's first page.
