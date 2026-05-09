@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
@@ -36,12 +37,13 @@ export const Route = createFileRoute("/services/$slug")({
 });
 
 function ServiceDetail() {
+  const { t } = useTranslation();
   const { service: s } = Route.useLoaderData() as { service: ServiceItem };
   const Icon = s.icon;
 
   return (
     <>
-      <PageHero eyebrow="Service" title={s.title} subtitle={s.desc}>
+      <PageHero eyebrow={t("pages.serviceDetail.eyebrow")} title={s.title} subtitle={s.desc}>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow">
             {s.cta.label} <ArrowRight className="h-4 w-4" />

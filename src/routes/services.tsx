@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import {
   ArrowRight,
   Search, PenTool, Rocket, LifeBuoy, CheckCircle2, Sparkles, Calendar, FileText,
@@ -105,12 +106,13 @@ const caseStudies: CaseStudy[] = [
 ];
 
 function Services() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Services & engagement models"
-        title="A full portfolio of business & IT services."
-        subtitle="Transparent pricing, written proposals in 1–3 days and a free 30-minute consultation to start."
+        eyebrow={t("pages.services.eyebrow")}
+        title={t("pages.services.title")}
+        subtitle={t("pages.services.subtitle")}
       >
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link

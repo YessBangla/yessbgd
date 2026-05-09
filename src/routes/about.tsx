@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import {
   CheckCircle2, Target, Eye, Heart, ShieldCheck, Award, Users, Globe2, Zap,
   Trophy, Building2, Sparkles, ArrowRight,
@@ -20,12 +21,13 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Who we are"
-        title="Building Bangladesh's most trusted consulting & IT partner."
-        subtitle="For over 11 years, YESS Bangla Private Limited has helped businesses convert data into strategy and ideas into world-class digital experiences."
+        eyebrow={t("pages.about.eyebrow")}
+        title={t("pages.about.title")}
+        subtitle={t("pages.about.subtitle")}
       />
 
       <section className="py-20">

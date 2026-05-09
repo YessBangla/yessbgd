@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageHero } from "@/components/PageHero";
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/ventures/")({
 type SortKey = "default" | "az" | "za" | "newest" | "oldest";
 
 function VenturesPage() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [service, setService] = useState<string>("all");
@@ -75,9 +77,9 @@ function VenturesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Portfolio"
-        title="Our Ventures"
-        subtitle="A growing family of companies — each solving a meaningful problem in its industry."
+        eyebrow={t("pages.ventures.eyebrow")}
+        title={t("pages.ventures.title")}
+        subtitle={t("pages.ventures.subtitle")}
       />
       <section className="pb-24">
         <div className="container-tight">

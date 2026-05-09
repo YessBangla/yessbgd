@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
@@ -45,14 +46,19 @@ const groups = [
 ];
 
 function FAQ() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Help center"
-        title="Frequently asked questions."
+        eyebrow={t("pages.faq.eyebrow")}
+        title={t("pages.faq.title")}
         subtitle={
           <>
-            Can't find what you're looking for? <Link to="/contact" className="text-primary underline underline-offset-4">Get in touch</Link> — we usually reply within one business day.
+            {t("pages.faq.subtitleLead")}{" "}
+            <Link to="/contact" className="text-primary underline underline-offset-4">
+              {t("pages.faq.subtitleLink")}
+            </Link>{" "}
+            {t("pages.faq.subtitleTail")}
           </>
         }
       />

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
@@ -45,6 +46,7 @@ type Status =
 type Errors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
 
 function Contact() {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [errors, setErrors] = useState<Errors>({});
 
@@ -95,9 +97,9 @@ function Contact() {
   return (
     <>
       <PageHero
-        eyebrow="Contact us"
-        title="Let's build something great together."
-        subtitle="Tell us about your project and our team will get back to you within one business day."
+        eyebrow={t("pages.contact.eyebrow")}
+        title={t("pages.contact.title")}
+        subtitle={t("pages.contact.subtitle")}
       />
 
       <section className="py-20">

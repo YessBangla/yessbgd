@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
@@ -36,12 +37,13 @@ export const Route = createFileRoute("/about/$pillar")({
 });
 
 function PillarPage() {
+  const { t } = useTranslation();
   const { pillar } = Route.useLoaderData() as { pillar: (typeof aboutPillars)[number] };
   const Icon = pillar.icon;
 
   return (
     <>
-      <PageHero eyebrow="About YESS Bangla" title={pillar.title} subtitle={pillar.short} />
+      <PageHero eyebrow={t("pages.aboutPillar.eyebrow")} title={pillar.title} subtitle={pillar.short} />
 
       <section className="py-12">
         <div className="container-tight max-w-3xl">

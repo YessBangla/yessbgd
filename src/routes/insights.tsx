@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Calendar, Mail } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { insights } from "@/data/insights";
@@ -24,12 +25,13 @@ const posts = insights.slice(1);
 const categories = ["All", "Strategy", "Technology", "E-commerce", "Leadership", "IT Services", "Design"];
 
 function Insights() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Insights"
-        title="Thinking, research & stories from the field."
-        subtitle="Practical perspectives on strategy, technology and design from our consultants and engineers."
+        eyebrow={t("pages.insights.eyebrow")}
+        title={t("pages.insights.title")}
+        subtitle={t("pages.insights.subtitle")}
       />
 
       <section className="pb-6">
