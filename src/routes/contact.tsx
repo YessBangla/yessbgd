@@ -116,7 +116,13 @@ function Contact() {
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{c.title}</div>
                   {c.href ? (
-                    <a href={c.href} className="mt-1 block text-sm font-medium hover:text-primary">{c.value}</a>
+                    <a
+                      href={c.href}
+                      aria-label={c.ariaLabel}
+                      className={`mt-1 block text-sm font-medium hover:text-primary ${c.tabular ? "tabular-nums" : ""}`}
+                    >
+                      {c.value}
+                    </a>
                   ) : (
                     <div className="mt-1 text-sm font-medium">{c.value}</div>
                   )}
