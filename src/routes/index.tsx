@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useOffscreenPause } from "@/hooks/useOffscreenPause";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
@@ -115,6 +116,7 @@ const impactMetrics: ImpactMetric[] = [
 ];
 
 function Index() {
+  const { t } = useTranslation();
   const [hydrated, setHydrated] = useState(false);
   // Pause water-ripple shimmer when the headline scrolls offscreen
   const headlineRef = useOffscreenPause<HTMLHeadingElement>();
@@ -396,15 +398,6 @@ function Index() {
       {/* QUICK CTA STRIP — translated chrome + clearly labelled bilingual download cards.
           On mobile we keep EN and BN side-by-side (2 cols) so visitors can compare
           the editions on a single screen without scrolling. */}
-      <CtaStripSection hydrated={hydrated} />
-    </>
-  );
-}
-
-function CtaStripSection({ hydrated: _hydrated }: { hydrated: boolean }) {
-  const { t } = useTranslation();
-  return (
-    <>
       <section className="relative -mt-px border-y border-border/60 bg-gradient-to-br from-primary/8 via-background to-accent/8">
         <div className="container-tight py-12 sm:py-14">
           <div className="grid gap-6 lg:grid-cols-[1.2fr_2fr] lg:items-center">
