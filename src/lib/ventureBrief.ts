@@ -137,6 +137,26 @@ async function loadLogo(): Promise<string | null> {
   }
 }
 
+// Cache the official letterhead pad (full page background JPEG).
+let cachedPadDataUrl: string | null = null;
+async function loadPad(): Promise<string | null> {
+  if (cachedPadDataUrl) return cachedPadDataUrl;
+  if (typeof fetch !== "function" || typeof FileReader === "undefined") return null;
+  try {
+    const res = await fetch(letterheadUrl);
+    const blob = await res.blob();
+    cachedPadDataUrl = await new Promise<string>((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = reject;
+      r.readAsDataURL(blob);
+    });
+    return cachedPadDataUrl;
+  } catch {
+    return null;
+  }
+}
+
 /** Pre-baked faded watermark cache, keyed by opacity (rounded to 2dp).
  *  Avoids re-rasterising the logo for every page — one Canvas pass per
  *  opacity level is reused across all pages and all sample PDFs. */
