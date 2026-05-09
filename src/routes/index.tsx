@@ -862,17 +862,16 @@ function Index() {
               <div className="relative grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div>
                   <h2 className="font-display font-semibold tracking-tight">
-                    Offering the best experience of business and IT services.
+                    {t("home.finalCta.title")}
                   </h2>
                   <p className="mt-3 text-muted-foreground">
-                    Tell us about your goals — we'll respond within one business day with a tailored
-                    proposal.
+                    {t("home.finalCta.lede")}
                   </p>
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
                   <a
                     href={phoneHref}
-                    aria-label={`Call ${COMPANY_CONTACT.phone.display}`}
+                    aria-label={t("home.finalCta.callAria", { phone: COMPANY_CONTACT.phone.display })}
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-transform hover:scale-[1.03]"
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" />
@@ -882,7 +881,7 @@ function Index() {
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.03]"
                   >
-                    Send a message
+                    {t("home.finalCta.sendMessage")}
                   </Link>
                 </div>
               </div>
