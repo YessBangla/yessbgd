@@ -476,6 +476,37 @@ function Index() {
                 )}
               />
 
+              <ProfileDownloadGate
+                href="/yess-bangla-company-profile-bn.pdf"
+                filename="yess-bangla-company-profile-bn.pdf"
+                editionLabel="বাংলা সংস্করণ · Confidential"
+                versionLabel="v1.2 · প্রকাশিত ০৯ মে ২০২৬"
+                metaLabel="১৭ পৃষ্ঠা · A4 PDF · Noto Sans Bengali"
+                trigger={({ open }) => (
+                  <button
+                    type="button"
+                    onClick={open}
+                    aria-label="ইয়েস বাংলা কোম্পানি প্রোফাইল ডাউনলোড করুন (পিন সুরক্ষিত)"
+                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/[0.08] via-background to-accent/[0.08] p-5 text-left transition-all hover:-translate-y-1 hover:border-primary/70 hover:shadow-xl"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                        <Download className="h-5 w-5" aria-hidden="true" />
+                      </div>
+                      <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN · BN
+                      </span>
+                    </div>
+                    <div className="mt-6">
+                      <div className="font-display text-base font-semibold">কোম্পানি প্রোফাইল · বাংলা</div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        ১৭ পৃষ্ঠা · v1.2 · প্রকাশিত ০৯ মে ২০২৬
+                      </div>
+                    </div>
+                  </button>
+                )}
+              />
+
             </div>
           </div>
         </div>
