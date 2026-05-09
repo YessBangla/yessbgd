@@ -318,7 +318,7 @@ def render_html() -> str:
   /* A4 with room for the letterhead header (top) and footer (bottom). */
   @page {{
     size: A4 portrait;
-    margin: 32mm 18mm 30mm 18mm;
+    margin: 30mm 18mm 38mm 18mm;
     @bottom-center {{
       content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
@@ -326,21 +326,19 @@ def render_html() -> str:
       color: #5A5A5A;
     }}
   }}
-  /* Cover keeps the same letterhead frame as inner pages. */
   @page :first {{
-    margin: 32mm 18mm 30mm 18mm;
+    margin: 30mm 18mm 38mm 18mm;
     @bottom-center {{ content: ""; }}
   }}
-  /* Fixed elements repeat on every printed page in Chromium headless.
-     Cover hides them via .cover ~ overrides below. */
+  /* Fixed letterhead chrome — repeats on every printed page in Chromium. */
   .lh-header, .lh-footer, .lh-watermark {{
     position: fixed;
     pointer-events: none;
     z-index: -1;
   }}
-  .lh-header {{ top: 8mm; left: 18mm; width: 45mm; }}
+  .lh-header {{ top: 8mm; left: 18mm; width: 42mm; }}
   .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{ bottom: 0; left: 0; right: 0; height: 22mm; overflow: hidden; }}
+  .lh-footer {{ bottom: 6mm; left: 15mm; right: 15mm; }}
   .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark {{
     top: 50%; left: 50%;
