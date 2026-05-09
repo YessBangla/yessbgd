@@ -418,16 +418,30 @@ class ProfileDocTemplate(BaseDocTemplate):
         self.addPageTemplates([
             PageTemplate(id="main", frames=[frame], onPage=self._on_page),
         ])
+        # Pages that should keep the letterhead at full strength.
+        # Page 1 (cover) is always included; TOC + section heading pages are
+        # discovered during multiBuild via afterFlowable and persist across
+        # passes so the final pass paints them at full opacity.
+        self.full_color_pages: set[int] = {1}
+        # Faded watermark opacity for inner content pages.
+        self.watermark_alpha: float = 0.18
 
     def _on_page(self, canvas: _canvas.Canvas, doc):
         canvas.saveState()
-        # Letterhead full-page background.
+        full = doc.page in self.full_color_pages
+        # Letterhead background — full colour on cover/TOC/section openers,
+        # faded on every other (inner) page so body copy reads cleanly.
         try:
+            if not full:
+                canvas.setFillAlpha(self.watermark_alpha)
+                canvas.setStrokeAlpha(self.watermark_alpha)
             canvas.drawImage(LETTERHEAD, 0, 0, width=PAGE_W, height=PAGE_H,
                              preserveAspectRatio=False, mask="auto")
         except Exception:
             pass
-        # Meta strap above the navy footer band.
+        canvas.restoreState()
+        # Meta strap above the navy footer band — always at full opacity.
+        canvas.saveState()
         meta_y = M_BOTTOM - 6 * mm
         canvas.setFont(BODY_FONT, 7.5)
         canvas.setFillColor(MUTED)
@@ -446,10 +460,16 @@ class ProfileDocTemplate(BaseDocTemplate):
                 flowable._bookmarkName,
                 level=getattr(flowable, "_outlineLevel", 0),
                 closed=False)
+            # Cover, Contents, and each top-level section opener should keep
+            # the letterhead at full strength. Track the page they land on.
+            if getattr(flowable, "_outlineLevel", 0) == 0:
+                self.full_color_pages.add(self.page)
         # Notify TOC
         if hasattr(flowable, "_tocEntry"):
             level, text, anchor = flowable._tocEntry
             self.notify("TOCEntry", (level, text, self.page, anchor))
+            if level == 0:
+                self.full_color_pages.add(self.page)
 
 
 # ---------------------------------------------------------------------------

@@ -297,6 +297,10 @@ def render_html() -> str:
         </section>
         """)
 
+    # (per-section full-bleed overlay disabled — caused logo overlap with
+    # body content after page breaks in Chromium print rendering. The fixed
+    # .page-bg layer at opacity 0.55 provides a balanced watermark instead.)
+
     toc_items = "".join(
         f"<li><span class='toc-num'>{s['n']}</span>"
         f"<span class='toc-title'>{s['title']}</span></li>"
@@ -314,13 +318,17 @@ def render_html() -> str:
   }}
   /* Fixed elements repeat on every printed page in Chromium headless.
      Negative offsets extend the letterhead beyond the content margin
-     to fill the entire physical A4 sheet. */
+     to fill the entire physical A4 sheet. The watermark is held at a
+     soft opacity so body copy reads cleanly on inner pages; cover,
+     TOC and section openers stay legible because their hero blocks
+     (heading chip, gold rule, navy strap) carry full colour. */
   .page-bg {{
     position: fixed;
     top: -47mm; left: -22mm;
     width: 210mm; height: 297mm;
     z-index: -1;
     pointer-events: none;
+    opacity: 0.22;
   }}
   .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
   :root {{
