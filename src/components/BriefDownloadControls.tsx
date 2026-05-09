@@ -93,6 +93,12 @@ export function BriefDownloadControls({
   const [qaRun, setQaRun] = useState<QaRunResult | null>(null);
   const [diffRun, setDiffRun] = useState<VisualDiffRun | null>(null);
   const [diffMessage, setDiffMessage] = useState<string | null>(null);
+  const [logoSettings, setLogoSettings] = useState<LogoSettings>(() => loadLogoSettings());
+
+  const updateLogo = <K extends keyof LogoSettings>(k: K, v: LogoSettings[K]) => {
+    const next = { ...logoSettings, [k]: v };
+    setLogoSettings(saveLogoSettings(next));
+  };
 
   useEffect(() => {
     return () => {
