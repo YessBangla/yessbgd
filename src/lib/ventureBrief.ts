@@ -201,6 +201,21 @@ function drawLetterhead(
   const logoY = (d.headerH - logoH) / 2;
   if (logo) {
     try {
+      // Theme-aware backplate: the header band is navy, so paint a
+      // rounded white plate behind the multi-color wordmark to keep
+      // the brown "bangla" lettering legible against dark backgrounds.
+      const padX = 1.6;
+      const padY = 1.2;
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(
+        d.margin - padX,
+        logoY - padY,
+        logoW + padX * 2,
+        logoH + padY * 2,
+        1.4,
+        1.4,
+        "F",
+      );
       doc.addImage(logo, "PNG", d.margin, logoY, logoW, logoH);
     } catch {
       /* ignore */

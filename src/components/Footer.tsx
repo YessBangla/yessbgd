@@ -10,15 +10,17 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link to="/" className="inline-flex items-center" aria-label="YESS Bangla — home">
-              <img
-                src={logo}
-                alt="YESS Bangla logo"
-                loading="lazy"
-                decoding="async"
-                width={279}
-                height={153}
-                className="h-12 w-auto max-w-[60vw] bg-transparent object-contain sm:h-14 lg:h-16"
-              />
+              <span className="logo-plate">
+                <img
+                  src={logo}
+                  alt="YESS Bangla logo"
+                  loading="lazy"
+                  decoding="async"
+                  width={279}
+                  height={153}
+                  className="h-12 w-auto max-w-[60vw] bg-transparent object-contain sm:h-14 lg:h-16"
+                />
+              </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               A full-service business consulting and IT solutions company helping organisations

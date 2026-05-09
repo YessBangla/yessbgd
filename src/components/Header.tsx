@@ -200,15 +200,17 @@ export function Header() {
           aria-label="YESS Bangla — home"
         >
           <span className="logo-halo pointer-events-none absolute inset-0 -z-10 rounded-2xl" aria-hidden />
-          <img
-            src={logo}
-            alt="YESS Bangla logo"
-            width={279}
-            height={153}
-            decoding="async"
-            fetchPriority="high"
-            className="logo-mark h-9 w-auto max-w-[44vw] bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04] sm:h-10 lg:h-11"
-          />
+          <span className="logo-plate">
+            <img
+              src={logo}
+              alt="YESS Bangla logo"
+              width={279}
+              height={153}
+              decoding="async"
+              fetchPriority="high"
+              className="logo-mark h-9 w-auto max-w-[44vw] bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04] sm:h-10 lg:h-11"
+            />
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
