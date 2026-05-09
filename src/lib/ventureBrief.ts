@@ -462,9 +462,10 @@ export async function buildVentureBriefDoc(
 
   const brand = resolveBranding(opts.branding);
   const subtitle = v.category.toUpperCase() + " · " + v.title;
-  const letterhead = {
+  const letterhead: { scale: number; opacity: number; theme: "light" | "dark" } = {
     scale: opts.logoScale ?? 1,
     opacity: opts.logoOpacity ?? 1,
+    theme: opts.letterheadTheme ?? "light",
   };
 
   const newPage = () => {
