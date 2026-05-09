@@ -195,7 +195,11 @@ function drawLetterhead(
   logo: string | null,
   subtitle: string,
   brand: BriefBranding,
-  letterhead: { scale: number; opacity: number } = { scale: 1, opacity: 1 },
+  letterhead: { scale: number; opacity: number; theme: "light" | "dark" } = {
+    scale: 1,
+    opacity: 1,
+    theme: "light",
+  },
 ) {
   doc.setFillColor(15, 35, 80);
   doc.rect(0, 0, d.w, d.headerH, "F");
@@ -214,33 +218,56 @@ function drawLetterhead(
   const logoH = Math.max(10, Math.min(baseH * scale, maxH));
   const logoW = Math.min(logoH * LOGO_ASPECT, d.contentW * 0.34);
   const logoY = (d.headerH - logoH) / 2;
+
+  // Theme-aware backplate behind the multi-color wordmark.
+  // Light: white pill (default — works against the navy header band).
+  // Dark : softer navy pill with thin gold ring (for dark letterhead modes).
+  const padX = 1.6;
+  const padY = 1.2;
+  const plateX = d.margin - padX;
+  const plateY = logoY - padY;
+  const plateW = logoW + padX * 2;
+  const plateH = logoH + padY * 2;
+  if (letterhead.theme === "dark") {
+    doc.setFillColor(20, 40, 90);
+    doc.setDrawColor(232, 184, 64);
+    doc.setLineWidth(0.25);
+    doc.roundedRect(plateX, plateY, plateW, plateH, 1.4, 1.4, "FD");
+  } else {
+    doc.setFillColor(255, 255, 255);
+    doc.setDrawColor(15, 35, 80);
+    doc.setLineWidth(0.15);
+    doc.roundedRect(plateX, plateY, plateW, plateH, 1.4, 1.4, "FD");
+  }
+
+  let drewLogo = false;
   if (logo) {
     try {
-      // Theme-aware backplate behind the multi-color wordmark.
-      const padX = 1.6;
-      const padY = 1.2;
-      doc.setFillColor(255, 255, 255);
-      doc.roundedRect(
-        d.margin - padX,
-        logoY - padY,
-        logoW + padX * 2,
-        logoH + padY * 2,
-        1.4,
-        1.4,
-        "F",
-      );
       const op = Math.max(0, Math.min(1, letterhead.opacity));
       const gs = doc as unknown as {
         GState?: new (o: { opacity: number }) => unknown;
         setGState?: (s: unknown) => void;
       };
-      const useAlpha = op < 1 && typeof gs.GState === "function" && typeof gs.setGState === "function";
+      const useAlpha =
+        op < 1 && typeof gs.GState === "function" && typeof gs.setGState === "function";
       if (useAlpha) gs.setGState!(new gs.GState!({ opacity: op }));
       doc.addImage(logo, "PNG", d.margin, logoY, logoW, logoH);
       if (useAlpha) gs.setGState!(new gs.GState!({ opacity: 1 }));
+      drewLogo = true;
     } catch {
-      /* ignore */
+      drewLogo = false;
     }
+  }
+  // PNG fallback: if the transparent logo failed to load OR addImage threw,
+  // paint a typographic wordmark inside the plate so readability is
+  // guaranteed on every PDF viewer.
+  if (!drewLogo) {
+    const textColor: [number, number, number] =
+      letterhead.theme === "dark" ? [255, 255, 255] : [15, 35, 80];
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(Math.max(9, Math.min(logoH * 1.6, 16)));
+    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+    doc.text(brand.companyName.toUpperCase(), d.margin + padX * 0.5, logoY + logoH * 0.72);
   }
 
   const textX = d.margin + logoW + 5;
