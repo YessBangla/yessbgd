@@ -332,18 +332,20 @@ def render_html() -> str:
       margin-left: -3mm;
       margin-bottom: 2mm;
     }}
-    @bottom-center {{
-      content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
+    @bottom-center {{ content: ""; }}
+    @bottom-right {{
+      content: "গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
       font-size: 8pt;
       color: #5A5A5A;
       margin-bottom: 2mm;
+      margin-right: -3mm;
     }}
   }}
   @page :first {{
     @top-left {{ content: ""; }}
     @bottom-left {{ content: ""; }}
-    @bottom-center {{ content: ""; }}
+    @bottom-right {{ content: ""; }}
   }}
   /* Watermark stays as a fixed background sheet behind the body. */
   .lh-header, .lh-footer {{ display: none; }}
