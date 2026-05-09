@@ -449,7 +449,7 @@ function Index() {
                       onClick={open}
                       aria-label={t("home.downloadCards.english.ariaButton")}
                       lang="en"
-                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-foreground/80 bg-foreground p-4 text-left text-background transition-all hover:-translate-y-1 hover:shadow-xl sm:p-5"
+                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[#6f8fd6]/70 bg-[#7a9ce0] p-4 text-left text-white transition-all hover:-translate-y-1 hover:bg-[#6f93dd] hover:shadow-xl sm:p-5"
                     >
                       {/* Prominent flag + lang badge — sized larger on mobile */}
                       <div className="flex items-center justify-between gap-2">
