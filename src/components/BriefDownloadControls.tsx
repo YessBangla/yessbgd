@@ -286,19 +286,6 @@ export function BriefDownloadControls({
           Download brief (PDF)
         </button>
 
-        <button
-          type="button"
-          onClick={handleDownloadDocx}
-          disabled={busy !== null}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-5 py-2.5 text-sm font-semibold backdrop-blur transition-transform hover:-translate-y-0.5 hover:bg-background disabled:opacity-60"
-        >
-          {busy === "docx" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <FileText className="h-4 w-4" />
-          )}
-          Download (DOCX)
-        </button>
 
         <Popover>
           <PopoverTrigger asChild>
