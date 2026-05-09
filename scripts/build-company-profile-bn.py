@@ -318,24 +318,37 @@ def render_html() -> str:
   /* A4 with room for the letterhead header (top) and footer (bottom). */
   @page {{
     size: A4 portrait;
-    margin: 30mm 18mm 38mm 18mm;
-    @bottom-center {{
-      content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
+    /* Top margin holds the letterhead logo, bottom margin holds the footer band. */
+    margin: 26mm 18mm 46mm 18mm;
+    @top-left {{
+      content: url("file://{LH_HEADER}");
+      width: 22mm;
+      margin-left: -3mm;
+      margin-top: 4mm;
+    }}
+    @bottom-left {{
+      content: url("file://{LH_FOOTER}");
+      width: 174mm;
+      margin-left: -3mm;
+      margin-bottom: 2mm;
+    }}
+    @bottom-center {{ content: ""; }}
+    @bottom-right {{
+      content: "গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
       font-size: 8pt;
       color: #5A5A5A;
+      margin-bottom: 2mm;
+      margin-right: -3mm;
     }}
   }}
   @page :first {{
-    margin: 30mm 18mm 38mm 18mm;
-    @bottom-center {{ content: ""; }}
+    @top-left {{ content: ""; }}
+    @bottom-left {{ content: ""; }}
+    @bottom-right {{ content: ""; }}
   }}
-  /* Fixed letterhead chrome — repeats on every printed page in Chromium. */
-  .lh-header, .lh-footer {{
-    position: fixed;
-    pointer-events: none;
-    z-index: 10;
-  }}
+  /* Watermark stays as a fixed background sheet behind the body. */
+  .lh-header, .lh-footer {{ display: none; }}
   .lh-watermark {{
     position: fixed;
     pointer-events: none;
@@ -344,10 +357,6 @@ def render_html() -> str:
     transform: translate(-50%, -50%);
     width: 110mm; opacity: 0.05;
   }}
-  .lh-header {{ top: 6mm; left: 15mm; width: 42mm; }}
-  .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{ bottom: 6mm; left: 15mm; right: 15mm; }}
-  .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
   :root {{
