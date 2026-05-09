@@ -46,6 +46,8 @@ export interface DocxBriefOptions {
   watermarkOpacity?: number;
   /** Letterhead logo scale (0.6–1.4). Default 1. */
   logoScale?: number;
+  /** Letterhead theme — "light" (white plate) or "dark" (navy plate). */
+  letterheadTheme?: "light" | "dark";
 }
 
 const NAVY = "0F2350";
