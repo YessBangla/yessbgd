@@ -44,7 +44,9 @@ import {
   Download,
   Mail,
   Layers,
+  Phone,
 } from "lucide-react";
+import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -829,10 +831,12 @@ function Index() {
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
                   <a
-                    href="tel:+8801805464343"
+                    href={phoneHref}
+                    aria-label={`Call ${COMPANY_CONTACT.phone.display}`}
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-transform hover:scale-[1.03]"
                   >
-                    Request a free call
+                    <Phone className="h-4 w-4" aria-hidden="true" />
+                    <span className="tabular-nums">{COMPANY_CONTACT.phone.display}</span>
                   </a>
                   <Link
                     to="/contact"

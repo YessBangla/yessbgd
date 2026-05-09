@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { z } from "zod";
 import { PageHero } from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
+import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -103,9 +104,9 @@ function Contact() {
         <div className="container-tight grid gap-10 lg:grid-cols-5">
           <div className="lg:col-span-2 space-y-4">
             {[
-              { icon: MapPin, title: "Office Address", value: "Block A, Road 3, House 127 (Green View), 1st Floor, Mirpur 12, Dhaka 1216" },
-              { icon: Phone, title: "Phone", value: "+880 1805-464343", href: "tel:+8801805464343" },
-              { icon: Mail, title: "Email", value: "yessbangla.bd@gmail.com", href: "mailto:yessbangla.bd@gmail.com" },
+              { icon: MapPin, title: "Office Address", value: COMPANY_CONTACT.office },
+              { icon: Phone, title: "Phone", value: COMPANY_CONTACT.phone.display, href: phoneHref, ariaLabel: `Call ${COMPANY_CONTACT.phone.display}`, tabular: true },
+              { icon: Mail, title: "Email", value: COMPANY_CONTACT.email, href: `mailto:${COMPANY_CONTACT.email}` },
               { icon: Clock, title: "Working Hours", value: "Sat – Thu, 10:00 AM – 6:00 PM" },
             ].map((c) => (
               <div key={c.title} className="flex gap-4 rounded-2xl glass-card p-5 shadow-sm">
@@ -115,7 +116,13 @@ function Contact() {
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{c.title}</div>
                   {c.href ? (
-                    <a href={c.href} className="mt-1 block text-sm font-medium hover:text-primary">{c.value}</a>
+                    <a
+                      href={c.href}
+                      aria-label={c.ariaLabel}
+                      className={`mt-1 block text-sm font-medium hover:text-primary ${c.tabular ? "tabular-nums" : ""}`}
+                    >
+                      {c.value}
+                    </a>
                   ) : (
                     <div className="mt-1 text-sm font-medium">{c.value}</div>
                   )}

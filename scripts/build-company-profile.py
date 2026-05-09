@@ -9,8 +9,18 @@ Produces a 17-page document in two formats from a single content model.
 """
 from __future__ import annotations
 import datetime
+import json
 import os
 from copy import deepcopy
+
+# Single source of truth — mirrors src/lib/companyContact.ts.
+with open("/dev-server/src/data/company-contact.json", encoding="utf-8") as _f:
+    CONTACT = json.load(_f)
+PHONE = CONTACT["phone"]["display"]
+EMAIL = CONTACT["email"]
+WEB = CONTACT["web"]
+OFFICE = CONTACT["office"]
+CORP_OFFICE = CONTACT["corporateOffice"]
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
