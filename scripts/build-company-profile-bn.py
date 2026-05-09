@@ -310,16 +310,14 @@ def render_html() -> str:
 <style>
   @page {{
     size: A4 portrait;
-    margin: 0;
+    margin: 47mm 22mm 32mm 22mm;
   }}
-  body {{
-    margin: 0;
-    padding: 47mm 22mm 32mm 22mm;
-  }}
-  /* Chromium repeats position:fixed elements on every printed page. */
+  /* Fixed elements repeat on every printed page in Chromium headless.
+     Negative offsets extend the letterhead beyond the content margin
+     to fill the entire physical A4 sheet. */
   .page-bg {{
     position: fixed;
-    top: 0; left: 0;
+    top: -47mm; left: -22mm;
     width: 210mm; height: 297mm;
     z-index: -1;
     pointer-events: none;
