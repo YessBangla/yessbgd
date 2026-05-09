@@ -331,20 +331,23 @@ def render_html() -> str:
     @bottom-center {{ content: ""; }}
   }}
   /* Fixed letterhead chrome — repeats on every printed page in Chromium. */
-  .lh-header, .lh-footer, .lh-watermark {{
+  .lh-header, .lh-footer {{
+    position: fixed;
+    pointer-events: none;
+    z-index: 10;
+  }}
+  .lh-watermark {{
     position: fixed;
     pointer-events: none;
     z-index: -1;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110mm; opacity: 0.05;
   }}
   .lh-header {{ top: 8mm; left: 18mm; width: 42mm; }}
   .lh-header img {{ width: 100%; height: auto; display: block; }}
   .lh-footer {{ bottom: 6mm; left: 15mm; right: 15mm; }}
   .lh-footer img {{ width: 100%; height: auto; display: block; }}
-  .lh-watermark {{
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 110mm; opacity: 0.05;
-  }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
   :root {{
