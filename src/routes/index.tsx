@@ -560,7 +560,7 @@ function Index() {
               <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-background/60 p-1 shadow-xl backdrop-blur sm:rounded-3xl sm:p-1.5">
                 <img
                   src={aboutImg}
-                  alt="YESS Bangla consultants collaborating in a Dhaka office"
+                  alt={t("home.about.imageAlt")}
                   width={1280}
                   height={960}
                   loading="lazy"
@@ -574,40 +574,41 @@ function Index() {
           <Reveal className="lg:col-span-7">
             <div className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
               <span aria-hidden className="h-px w-6 bg-primary/40" />
-              Simply know about us
+              {t("home.about.eyebrow")}
             </div>
             <h2 className="mt-3 font-display font-semibold tracking-tight text-balance">
-              We help people take their businesses to the next level.
+              {t("home.about.title")}
             </h2>
             <p className="mt-3 text-muted-foreground">
-              We cope with tasks of various complexity levels, provide long-term guarantees, and
-              continuously master new technologies for the industries we serve. Our portfolio
-              spans dozens of successful engagements across Bangladesh.
+              {t("home.about.lede")}
             </p>
 
             <Stagger className="mt-7 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
-              {features.map((f) => (
-                <StaggerItem key={f.title}>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    transition={{ duration: 0.3 }}
-                    className="glass-card h-full rounded-2xl p-4 sm:p-5"
-                  >
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                      <f.icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-3 font-display text-[15px] font-semibold sm:mt-4 sm:text-base">{f.title}</h3>
-                    <p className="mt-1 text-[13px] text-muted-foreground sm:text-sm">{f.desc}</p>
-                  </motion.div>
-                </StaggerItem>
-              ))}
+              {(t("home.about.features", { returnObjects: true }) as LocalizedItem[]).map((f, i) => {
+                const Icon = featureIcons[i];
+                return (
+                  <StaggerItem key={f.title}>
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      transition={{ duration: 0.3 }}
+                      className="glass-card h-full rounded-2xl p-4 sm:p-5"
+                    >
+                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="mt-3 font-display text-[15px] font-semibold sm:mt-4 sm:text-base">{f.title}</h3>
+                      <p className="mt-1 text-[13px] text-muted-foreground sm:text-sm">{f.desc}</p>
+                    </motion.div>
+                  </StaggerItem>
+                );
+              })}
             </Stagger>
 
             <Link
               to="/about"
               className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
             >
-              Read more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {t("home.about.readMore")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Reveal>
         </div>
