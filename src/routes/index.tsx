@@ -355,7 +355,7 @@ function Index() {
                   {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
                 </div>
                 <div className="mt-2 text-[10px] uppercase tracking-[0.18em] text-background/55 sm:text-[11px]">
-                  {s.label}
+                  {t(`home.hero.kpi.${s.id}`)}
                 </div>
               </div>
             ))}
