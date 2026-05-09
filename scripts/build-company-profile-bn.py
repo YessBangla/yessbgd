@@ -310,12 +310,16 @@ def render_html() -> str:
 <style>
   @page {{
     size: A4 portrait;
-    margin: 47mm 22mm 32mm 22mm;
+    margin: 0;
+  }}
+  body {{
+    margin: 0;
+    padding: 47mm 22mm 32mm 22mm;
   }}
   /* Chromium repeats position:fixed elements on every printed page. */
   .page-bg {{
     position: fixed;
-    top: -47mm; left: -22mm;
+    top: 0; left: 0;
     width: 210mm; height: 297mm;
     z-index: -1;
     pointer-events: none;
