@@ -321,10 +321,16 @@ def render_html() -> str:
     /* Top margin holds the letterhead logo, bottom margin holds the footer band. */
     margin: 26mm 18mm 46mm 18mm;
     @top-left {{
-      content: element(pageHeader);
+      content: url("file://{LH_HEADER}");
+      width: 22mm;
+      margin-left: -3mm;
+      margin-top: 4mm;
     }}
     @bottom-left {{
-      content: element(pageFooter);
+      content: url("file://{LH_FOOTER}");
+      width: 174mm;
+      margin-left: -3mm;
+      margin-bottom: 2mm;
     }}
     @bottom-center {{
       content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
@@ -335,19 +341,12 @@ def render_html() -> str:
     }}
   }}
   @page :first {{
+    @top-left {{ content: ""; }}
+    @bottom-left {{ content: ""; }}
     @bottom-center {{ content: ""; }}
   }}
-  /* Running elements rendered into @page margin boxes by Chromium print. */
-  .lh-header {{
-    position: running(pageHeader);
-    width: 22mm;
-  }}
-  .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{
-    position: running(pageFooter);
-    width: 174mm;
-  }}
-  .lh-footer img {{ width: 100%; height: auto; display: block; }}
+  /* Watermark stays as a fixed background sheet behind the body. */
+  .lh-header, .lh-footer {{ display: none; }}
   .lh-watermark {{
     position: fixed;
     pointer-events: none;
@@ -356,7 +355,6 @@ def render_html() -> str:
     transform: translate(-50%, -50%);
     width: 110mm; opacity: 0.05;
   }}
-  .lh-watermark img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
   :root {{
