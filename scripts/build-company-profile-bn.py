@@ -314,23 +314,18 @@ def render_html() -> str:
 <style>
   @page {{
     size: A4 portrait;
-    margin: 47mm 22mm 32mm 22mm;
+    margin: 22mm 20mm 22mm 20mm;
+    @bottom-center {{
+      content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
+      font-family: 'Noto Sans Bengali', sans-serif;
+      font-size: 8pt;
+      color: #5A5A5A;
+    }}
   }}
-  /* Fixed elements repeat on every printed page in Chromium headless.
-     Negative offsets extend the letterhead beyond the content margin
-     to fill the entire physical A4 sheet. The watermark is held at a
-     soft opacity so body copy reads cleanly on inner pages; cover,
-     TOC and section openers stay legible because their hero blocks
-     (heading chip, gold rule, navy strap) carry full colour. */
-  .page-bg {{
-    position: fixed;
-    top: -47mm; left: -22mm;
-    width: 210mm; height: 297mm;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.22;
+  @page :first {{
+    margin: 22mm 20mm 22mm 20mm;
+    @bottom-center {{ content: ""; }}
   }}
-  .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
   :root {{
     --navy: #0E2A3A;
     --teal: #0F4C5C;
