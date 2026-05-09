@@ -288,7 +288,6 @@ def render_html() -> str:
     for s in SECTIONS:
         sections_html.append(f"""
         <section class="profile-section">
-          <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
           <header class="sec-head">
             <div class="sec-chip">{s['n']}</div>
             <div class="sec-titles">
