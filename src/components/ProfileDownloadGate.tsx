@@ -200,7 +200,7 @@ export function ProfileDownloadGate({
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-                    {unlocked ? "Access granted" : "Confidential document"}
+                    {unlocked ? "Access granted" : (editionLabel ?? "Confidential document")}
                   </p>
                   <h2
                     id={headingId}
