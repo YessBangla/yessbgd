@@ -23,13 +23,14 @@ export interface BrandingPreset {
 }
 
 export const DEFAULT_BRANDING: BriefBranding = {
-  companyName: "YESS BANGLA",
+  companyName: "Yess Bangla Private Limited",
   tagline: "Enterprise Solutions · Media · Technology",
-  address: "Block A, Road 3, House 127, Mirpur 12, Dhaka 1216, Bangladesh",
-  phone: "+880 1805-464343",
+  address:
+    "Office: Block-A, Road-3, House-127 (Green View) (1st Floor), Mirpur-12, Dhaka-1216 · Corporate Office: Section-11, Block-A, Main Road-3, Plot-10, Mirpur, Pallabi, Dhaka-1216",
+  phone: "+88 01916211111",
   email: "yessbangla.bd@gmail.com",
-  web: "https://yessbgd.lovable.app",
-  copyrightHolder: "YESS Bangla",
+  web: "www.yessbd.com",
+  copyrightHolder: "Yess Bangla Private Limited",
   documentLabel: "ENTERPRISE BRIEF",
   confidentialityNote: "Confidential · For intended recipient",
 };
