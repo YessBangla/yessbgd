@@ -531,7 +531,7 @@ function Index() {
         <div className="container-tight">
           <Reveal>
             <p className="text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground/80">
-              Trusted by leading organisations across Bangladesh
+              {t("home.clients.trustedBy")}
             </p>
           </Reveal>
           <div className="marquee-mask mt-5 overflow-hidden sm:mt-6">
