@@ -139,10 +139,10 @@ function Index() {
                 <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
                 <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
               </span>
-              <span className="whitespace-nowrap">Bangladesh · Est. 2014</span>
+              <span className="whitespace-nowrap">{t("home.hero.chipLocation")}</span>
               <span aria-hidden className="hidden h-3 w-px bg-background/25 sm:inline" />
               <span className="inline-flex items-center gap-1 whitespace-nowrap text-background/70">
-                <Star className="h-3 w-3 fill-accent text-accent" /> 4.9 / 5
+                <Star className="h-3 w-3 fill-accent text-accent" /> {t("home.hero.chipRating")}
               </span>
             </div>
 
@@ -157,7 +157,7 @@ function Index() {
               }}
             >
               <span aria-hidden className="h-px w-6 sm:w-8 bg-background/45" />
-              <span>A Bangladesh-built consultancy</span>
+              <span>{t("home.hero.eyebrow")}</span>
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
 
