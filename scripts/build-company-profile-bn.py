@@ -288,6 +288,7 @@ def render_html() -> str:
     for s in SECTIONS:
         sections_html.append(f"""
         <section class="profile-section">
+          <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
           <header class="sec-head">
             <div class="sec-chip">{s['n']}</div>
             <div class="sec-titles">
@@ -315,49 +316,45 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* A4 with room for the letterhead header (top) and footer (bottom). */
-  @page {{
-    size: A4 portrait;
-    /* Top margin holds the letterhead logo, bottom margin holds the footer band. */
-    margin: 26mm 18mm 46mm 18mm;
-    @top-left {{
-      content: url("file://{LH_HEADER}");
-      width: 22mm;
-      margin-left: -3mm;
-      margin-top: 4mm;
-    }}
-    @bottom-left {{
-      content: url("file://{LH_FOOTER}");
-      width: 174mm;
-      margin-left: -3mm;
-      margin-bottom: 2mm;
-    }}
-    @bottom-center {{ content: ""; }}
-    @bottom-right {{
-      content: "গোপনীয় · " counter(page) " / " counter(pages);
-      font-family: 'Noto Sans Bengali', sans-serif;
-      font-size: 8pt;
-      color: #5A5A5A;
-      margin-bottom: 2mm;
-      margin-right: -3mm;
-    }}
+  /* Letterhead pad: position:fixed sheet repeats on every overflow page
+     in Chromium print. The cover page additionally embeds an absolutely
+     positioned letterhead because fixed elements can be skipped on the
+     very first page. */
+  @page {{ size: A4 portrait; margin: 0; }}
+  body {{ margin: 0; }}
+  .lh-header, .lh-footer, .lh-watermark {{ display: none; }}
+  .pad-bg {{
+    position: fixed; top: 0; left: 0;
+    width: 210mm; height: 297mm;
+    z-index: 0; pointer-events: none;
   }}
-  @page :first {{
-    @top-left {{ content: ""; }}
-    @bottom-left {{ content: ""; }}
-    @bottom-right {{ content: ""; }}
+  .pad-bg img {{ width: 210mm; height: 297mm; display: block; }}
+  .cover-pad {{
+    position: absolute; top: 0; left: 0;
+    width: 210mm; height: 297mm;
+    z-index: 0; pointer-events: none;
   }}
-  /* Watermark stays as a fixed background sheet behind the body. */
-  .lh-header, .lh-footer {{ display: none; }}
-  .lh-watermark {{
-    position: fixed;
-    pointer-events: none;
-    z-index: -1;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 110mm; opacity: 0.05;
+  .cover-pad img {{ width: 210mm; height: 297mm; display: block; }}
+  .page-frame {{ box-sizing: border-box; position: relative; z-index: 1; }}
+  .cover, .toc, .profile-section {{
+    padding: 42mm 20mm 50mm 20mm;
+    box-sizing: border-box;
+    position: relative;
   }}
-  .lh-watermark img {{ width: 100%; height: auto; display: block; }}
+  .cover > *:not(.cover-pad), .toc > *, .profile-section > * {{
+    position: relative; z-index: 2;
+  }}
+  html {{
+    background-image: url("file://{LETTERHEAD}");
+    background-size: 210mm 297mm;
+    background-repeat: no-repeat;
+    background-position: top left;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }}
+  body {{ margin: 0; background: transparent; }}
+  .lh-header, .lh-footer, .lh-watermark, .pad-bg {{ display: none; }}
+  .page-frame {{ box-sizing: border-box; }}
 
   :root {{
     --navy: #0E2A3A;
@@ -519,12 +516,12 @@ def render_html() -> str:
 </head>
 <body>
 
-<div class="lh-watermark" aria-hidden="true"><img src="file://{LH_WATERMARK}" alt=""></div>
-<div class="lh-header"   aria-hidden="true"><img src="file://{LH_HEADER}" alt=""></div>
-<div class="lh-footer"   aria-hidden="true"><img src="file://{LH_FOOTER}" alt=""></div>
+<div class="pad-bg" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
 
+<div class="page-frame">
 
 <div class="cover">
+  <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
   <h1>কোম্পানি প্রোফাইল</h1>
   <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড নিয়ে বাংলাদেশ ও তার বাইরে কাজ করছে।</p>
@@ -547,11 +544,14 @@ def render_html() -> str:
 </div>
 
 <section class="toc">
+  <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
   <h2>সূচিপত্র</h2>
   <ol>{toc_items}</ol>
 </section>
 
 {''.join(sections_html)}
+
+</div>
 
 </body>
 </html>
