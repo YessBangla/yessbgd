@@ -805,7 +805,7 @@ function Index() {
                         </div>
                         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
                         <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
-                          Explore {v.title} <ArrowRight className="h-3.5 w-3.5" />
+                          {t("home.venturesSection.explore")} {v.title} <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
                     </div>
