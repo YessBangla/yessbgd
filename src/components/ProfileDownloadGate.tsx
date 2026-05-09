@@ -287,7 +287,7 @@ export function ProfileDownloadGate({
                         <p className="font-display text-sm font-semibold text-foreground">
                           Yess Bangla — Company Profile
                         </p>
-                        <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
+                        <p className="mt-0.5 break-words text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
                           {versionLabel}
                         </p>
                       </div>
@@ -458,8 +458,8 @@ export function ProfileDownloadGate({
                         <p className="font-display text-sm font-semibold text-foreground">
                           {editionDisplayName} · PDF
                         </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">{metaLabel}</p>
-                        <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
+                        <p className="mt-0.5 break-words text-xs text-muted-foreground">{metaLabel}</p>
+                        <p className="mt-0.5 break-words text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
                           {versionLabel}
                         </p>
                       </div>
