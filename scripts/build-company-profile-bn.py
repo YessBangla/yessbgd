@@ -327,6 +327,7 @@ def render_html() -> str:
     background-size: 210mm 297mm;
     background-repeat: no-repeat;
     background-position: top left;
+    background-attachment: fixed;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }}
@@ -335,8 +336,9 @@ def render_html() -> str:
   /* Each "page" wrapper sits inside the letterhead safe zone. */
   .page-frame {{ box-sizing: border-box; }}
   .cover, .toc, .profile-section {{
-    padding: 36mm 20mm 48mm 20mm;
+    padding: 42mm 20mm 50mm 20mm;
     box-sizing: border-box;
+    min-height: 297mm;
   }}
   html {{
     background-image: url("file://{LETTERHEAD}");
