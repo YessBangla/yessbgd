@@ -316,15 +316,19 @@ def render_html() -> str:
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
   /* Letterhead pad — repeats on every printed page via position:fixed.
-     Chromium headless --print-to-pdf reliably re-renders fixed elements
-     once per output page, giving us full-bleed letterhead on every sheet. */
-  @page {{ size: A4 portrait; margin: 0; }}
+     `@page margin` reserves a clear band around content so headings and
+     body never collide with the logo (top) or contact strip (bottom),
+     even on continuation pages where content reflows from the top. */
+  @page {{
+    size: A4 portrait;
+    margin: 32mm 20mm 40mm 20mm;
+  }}
   html, body {{ margin: 0; padding: 0; background: #fff; }}
 
   body::before {{
     content: "";
     position: fixed;
-    top: 0; left: 0;
+    top: -32mm; left: -20mm;
     width: 210mm; height: 297mm;
     background-image: url("file://{LETTERHEAD}");
     background-size: 210mm 297mm;
@@ -340,10 +344,6 @@ def render_html() -> str:
     position: relative;
     z-index: 1;
     box-sizing: border-box;
-    /* Top padding clears the logo (≈30mm tall);
-       bottom padding clears the contact strip (≈40mm tall);
-       side padding gives generous, magazine-grade margins. */
-    padding: 44mm 22mm 48mm 22mm;
   }}
 
   :root {{
