@@ -4,7 +4,7 @@ import {
   Settings2,
   FlaskConical,
   Loader2,
-  FileText,
+  
   Building2,
   AlertTriangle,
   X,
