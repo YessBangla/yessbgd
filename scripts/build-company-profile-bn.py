@@ -297,15 +297,9 @@ def render_html() -> str:
         </section>
         """)
 
-    full_bleed = (
-        f"<div class='full-bleed' aria-hidden='true'>"
-        f"<img src='file://{LETTERHEAD}' alt=''></div>"
-    )
-    sections_html = [
-        s.replace('<section class="profile-section">',
-                  f'<section class="profile-section">{full_bleed}')
-        for s in sections_html
-    ]
+    # (per-section full-bleed overlay disabled — caused logo overlap with
+    # body content after page breaks in Chromium print rendering. The fixed
+    # .page-bg layer at opacity 0.55 provides a balanced watermark instead.)
 
     toc_items = "".join(
         f"<li><span class='toc-num'>{s['n']}</span>"
