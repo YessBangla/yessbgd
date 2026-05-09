@@ -110,7 +110,9 @@ function makeLetterhead(
       new TableCell({
         width: { size: 1800, type: WidthType.DXA },
         verticalAlign: VerticalAlign.CENTER,
-        shading: { fill: NAVY, type: ShadingType.CLEAR, color: "auto" },
+        // Theme-aware backplate: white cell behind the multi-color
+        // wordmark keeps it readable against the navy header band.
+        shading: { fill: "FFFFFF", type: ShadingType.CLEAR, color: "auto" },
         margins: { top: 80, bottom: 80, left: 120, right: 80 },
         borders: noBorder(),
         children: [
