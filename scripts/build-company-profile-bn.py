@@ -315,13 +315,28 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Letterhead pad: full-page JPEG painted on the html element so it
-     repeats on every printed page. The @page margins keep body content
-     inside the safe zone (clear of the logo at top and footer band at
-     bottom) on every page automatically. */
+  /* Letterhead pad: full-page JPEG painted on the html element. With
+     @page margin:0 Chromium repeats the html background on every printed
+     page. Per-section padding keeps content inside the safe zone. */
   @page {{
     size: A4 portrait;
-    margin: 36mm 20mm 48mm 20mm;
+    margin: 0;
+  }}
+  html {{
+    background-image: url("file://{LETTERHEAD}");
+    background-size: 210mm 297mm;
+    background-repeat: no-repeat;
+    background-position: top left;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }}
+  body {{ margin: 0; background: transparent; }}
+  .lh-header, .lh-footer, .lh-watermark, .pad-bg {{ display: none; }}
+  /* Each "page" wrapper sits inside the letterhead safe zone. */
+  .page-frame {{ box-sizing: border-box; }}
+  .cover, .toc, .profile-section {{
+    padding: 36mm 20mm 48mm 20mm;
+    box-sizing: border-box;
   }}
   html {{
     background-image: url("file://{LETTERHEAD}");
