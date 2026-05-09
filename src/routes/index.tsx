@@ -823,26 +823,26 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="Client stories"
-            title="Loved by ambitious teams"
-            lede="Honest words from leaders who chose us to ship the work that mattered."
+            eyebrow={t("home.testimonials.eyebrow")}
+            title={t("home.testimonials.title")}
+            lede={t("home.testimonials.lede")}
           />
           <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <StaggerItem key={t.name}>
+            {(t("home.testimonials.items", { returnObjects: true }) as Testimonial[]).map((tm) => (
+              <StaggerItem key={tm.name}>
                 <figure className="relative h-full rounded-2xl glass-card p-5 sm:p-7">
                   <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" />
                   <div className="flex gap-0.5 text-accent">
                     {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
-                  <blockquote className="mt-4 text-[13px] leading-relaxed text-foreground/90 sm:text-sm">"{t.quote}"</blockquote>
+                  <blockquote className="mt-4 text-[13px] leading-relaxed text-foreground/90 sm:text-sm">"{tm.quote}"</blockquote>
                   <figcaption className="mt-5 flex items-center gap-3 border-t border-border/60 pt-4">
                     <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary font-display text-sm font-semibold text-primary-foreground">
-                      {t.name.split(" ").map((n) => n[0]).join("")}
+                      {tm.name.split(" ").map((n: string) => n[0]).join("")}
                     </div>
                     <div>
-                      <div className="text-sm font-semibold">{t.name}</div>
-                      <div className="text-xs text-muted-foreground">{t.role}</div>
+                      <div className="text-sm font-semibold">{tm.name}</div>
+                      <div className="text-xs text-muted-foreground">{tm.role}</div>
                     </div>
                   </figcaption>
                 </figure>
