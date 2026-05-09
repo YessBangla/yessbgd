@@ -40,6 +40,7 @@ const MobilePanel = memo(function MobilePanel({
   reduceMotion,
   venturesActive,
 }: MobilePanelProps) {
+  const { t } = useTranslation();
   return (
     <motion.div
       key="mobile-menu"
@@ -56,7 +57,7 @@ const MobilePanel = memo(function MobilePanel({
     >
       <div className="container-tight flex flex-col gap-1 py-3">
         <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          Explore
+          {t("nav.explore")}
         </p>
         {nav.slice(0, 3).map((n) => (
           <Link
@@ -68,7 +69,7 @@ const MobilePanel = memo(function MobilePanel({
             activeProps={{ className: "text-primary bg-secondary" }}
             activeOptions={{ exact: n.to === "/" }}
           >
-            {n.label}
+            {t(`nav.${n.key}`)}
           </Link>
         ))}
 
@@ -78,7 +79,7 @@ const MobilePanel = memo(function MobilePanel({
           aria-expanded={mobileVenturesOpen}
           className={`flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
         >
-          <span>Ventures</span>
+          <span>{t("nav.ventures")}</span>
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`}
           />
@@ -124,14 +125,14 @@ const MobilePanel = memo(function MobilePanel({
                 tabIndex={mobileVenturesOpen ? 0 : -1}
                 className="mt-1 rounded-xl px-2 py-2 text-[13px] font-semibold text-primary transition-colors hover:bg-secondary"
               >
-                View all ventures →
+                {t("nav.viewAllVentures")}
               </Link>
             </div>
           </div>
         </div>
 
         <p className="px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          Company
+          {t("nav.company")}
         </p>
         {nav.slice(3).map((n) => (
           <Link
@@ -142,16 +143,25 @@ const MobilePanel = memo(function MobilePanel({
             className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary"
             activeProps={{ className: "text-primary bg-secondary" }}
           >
-            {n.label}
+            {t(`nav.${n.key}`)}
           </Link>
         ))}
+
+        {/* Mobile language switch — kept inside the panel for reachability */}
+        <div className="mt-3 flex items-center justify-between rounded-xl border border-border/60 bg-background/60 px-3 py-2.5">
+          <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            {t("nav.explore")} · EN / BN
+          </span>
+          <LanguageSwitch variant="pill" />
+        </div>
+
         <Link
           to="/contact"
           preload="intent"
           onClick={onClose}
           className="mt-3 inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-5 py-3 text-center text-sm font-semibold text-background shadow-sm transition-transform active:scale-[0.98]"
         >
-          Let's Talk →
+          {t("nav.letsTalk")} →
         </Link>
       </div>
     </motion.div>
