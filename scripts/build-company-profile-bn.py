@@ -549,7 +549,10 @@ def build():
 
         m = settings["margins"]
         with sync_playwright() as p:
-            browser = p.chromium.launch(args=["--no-sandbox"])
+            browser = p.chromium.launch(
+                executable_path="/bin/chromium",
+                args=["--no-sandbox", "--disable-gpu"],
+            )
             ctx = browser.new_context()
             page = ctx.new_page()
             page.goto(f"file://{html_path}", wait_until="networkidle")
