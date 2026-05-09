@@ -752,16 +752,16 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="Our ventures"
-            title="Eleven ventures. One ecosystem."
-            lede="A connected portfolio of media, technology, commerce and education brands — each built to lead its category in Bangladesh."
+            eyebrow={t("home.venturesSection.eyebrow")}
+            title={t("home.venturesSection.title")}
+            lede={t("home.venturesSection.lede")}
           />
 
           <Reveal className="mt-8 sm:mt-12">
             <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={venturesImg}
-                alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
+                alt={t("home.venturesSection.imageAlt")}
                 width={1280}
                 height={720}
                 loading="lazy"
@@ -771,9 +771,9 @@ function Index() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent sm:bg-gradient-to-r sm:from-background/85 sm:via-background/40 sm:to-transparent" />
               <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10">
                 <div className="max-w-md">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">From Dhaka, for Bangladesh</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">{t("home.venturesSection.ribbonKicker")}</p>
                   <p className="mt-1.5 font-display text-base font-semibold leading-tight sm:mt-2 sm:text-2xl">
-                    A connected portfolio reaching every corner of the country.
+                    {t("home.venturesSection.ribbonTitle")}
                   </p>
                 </div>
               </div>
