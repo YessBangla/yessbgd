@@ -52,6 +52,122 @@
     }
   },
   "home": {
+    "hero": {
+      "chipLocation": "Bangladesh · Est. 2014",
+      "chipRating": "4.9 / 5",
+      "eyebrow": "A Bangladesh-built consultancy",
+      "h1Line1": "Youth Entrepreneurship",
+      "h1Line2Pre": "for",
+      "h1Line2Smart": "smart success",
+      "h1Line3Pre": "with excellence",
+      "h1Line3Tail": "& solutions.",
+      "ledeBrand": "YESS Bangla",
+      "ledeBody": "partners with ambitious organisations to deliver consulting, technology, media and commerce solutions —",
+      "ledeStandard": "engineered to international standards,",
+      "ledeOrigin": "shipped from Dhaka.",
+      "ctaPrimary": "Start a project",
+      "ctaPrimaryAria": "Start a project — go to contact page",
+      "ctaSecondary": "Explore services",
+      "ctaSecondaryAria": "Explore our services",
+      "whyTeams": "Why teams choose us",
+      "trustIso": "ISO-grade processes",
+      "trustYears": "11+ years expertise",
+      "trustRetention": "98% client retention",
+      "cardOutcomeLabel": "Average client outcome",
+      "cardOutcomeValue": "3× growth",
+      "cardTrustedLabel": "Trusted by",
+      "cardTrustedValue": "120+ enterprise clients across 64 districts",
+      "cardQuote": "The most strategic technology partner we've worked with in the region.",
+      "cardQuoteRole": "CEO · Retail Group",
+      "kpi": {
+        "projects": "Projects delivered",
+        "clients": "Enterprise clients",
+        "districts": "Districts covered",
+        "years": "Years of expertise"
+      }
+    },
+    "clients": {
+      "trustedBy": "Trusted by leading organisations across Bangladesh"
+    },
+    "about": {
+      "eyebrow": "Simply know about us",
+      "title": "We help people take their businesses to the next level.",
+      "lede": "We cope with tasks of various complexity levels, provide long-term guarantees, and continuously master new technologies for the industries we serve. Our portfolio spans dozens of successful engagements across Bangladesh.",
+      "readMore": "Read more",
+      "imageAlt": "YESS Bangla consultants collaborating in a Dhaka office",
+      "features": [
+        { "title": "Trusted & Reliable", "desc": "Long-term guarantees and a proven track record across industries." },
+        { "title": "Industry Experts", "desc": "A team of consultants and engineers with deep domain expertise." },
+        { "title": "Customer-Centric", "desc": "We design every engagement around your goals and your customers." },
+        { "title": "Scalable Solutions", "desc": "From startup MVPs to enterprise platforms — built to grow with you." }
+      ]
+    },
+    "servicesSection": {
+      "eyebrow": "What we offer",
+      "title": "Effective, wide-area business solutions",
+      "lede": "From media platforms to enterprise software — a portfolio of services built for ambitious organisations.",
+      "imageAlt": "Bangladeshi engineers building software in a modern Dhaka studio",
+      "imageCaption": "Engineering, design and consulting — delivered to international standards from Bangladesh.",
+      "learnMore": "Learn more",
+      "items": [
+        { "title": "Akash OTT", "desc": "Bangladesh's new digital streaming platform launched under Akash TV by YESS Bangla." },
+        { "title": "Akash News", "desc": "A modern Bangladeshi digital news platform powered by YESS Bangla Communications." },
+        { "title": "One Stop Solution", "desc": "Centralised technology, IT support and home services — all under one trusted roof." },
+        { "title": "Web Development", "desc": "Frontend & backend development with modern stacks — responsive, scalable, secure." },
+        { "title": "Web Design", "desc": "Visually stunning, user-centric design that elevates your brand experience." },
+        { "title": "Yess Bangla Shop", "desc": "End-to-end e-commerce — websites, mobile apps, payments and doorstep delivery." }
+      ]
+    },
+    "impact": {
+      "eyebrow": "Impact & metrics",
+      "title": "Numbers that tell our story",
+      "lede": "A decade of measurable impact for businesses, partners and communities across Bangladesh.",
+      "items": {
+        "projects":  { "label": "Projects delivered",  "note": "Across 12 industries" },
+        "users":     { "label": "End users served",    "note": "Monthly active reach" },
+        "clients":   { "label": "Enterprise clients",  "note": "From startups to groups" },
+        "districts": { "label": "Districts covered",   "note": "Nationwide footprint" },
+        "years":     { "label": "Years of expertise",  "note": "Trusted since 2014" },
+        "retention": { "label": "Client retention",    "note": "Long-term partnerships" }
+      }
+    },
+    "process": {
+      "eyebrow": "How we work",
+      "title": "A proven, four-step delivery process",
+      "lede": "Clarity at every stage — from first conversation to long-term growth.",
+      "items": [
+        { "title": "Discover",       "desc": "We listen, audit and understand your business, customers and constraints." },
+        { "title": "Strategise",     "desc": "We design a clear, prioritised roadmap with measurable outcomes." },
+        { "title": "Build & Launch", "desc": "Our cross-functional team executes with speed, quality and transparency." },
+        { "title": "Grow",           "desc": "We measure, iterate and scale what works — together with you." }
+      ]
+    },
+    "venturesSection": {
+      "eyebrow": "Our ventures",
+      "title": "Eleven ventures. One ecosystem.",
+      "lede": "A connected portfolio of media, technology, commerce and education brands — each built to lead its category in Bangladesh.",
+      "imageAlt": "Modern Dhaka skyline at golden hour — home to YESS Bangla ventures",
+      "ribbonKicker": "From Dhaka, for Bangladesh",
+      "ribbonTitle": "A connected portfolio reaching every corner of the country.",
+      "explore": "Explore",
+      "readAbout": "Read about"
+    },
+    "testimonials": {
+      "eyebrow": "Client stories",
+      "title": "Loved by ambitious teams",
+      "lede": "Honest words from leaders who chose us to ship the work that mattered.",
+      "items": [
+        { "name": "Tanvir Ahmed",  "role": "CEO, Retail Group",            "quote": "YESS Bangla rebuilt our e-commerce platform end-to-end. Sales grew 3x in nine months and our team finally has tools we love using." },
+        { "name": "Nusrat Jahan",  "role": "Director, EdTech Startup",     "quote": "Their consulting clarified our strategy and their engineers shipped faster than any agency we've worked with. Easy partnership." },
+        { "name": "Rakib Hasan",   "role": "Head of Operations, Logistics","quote": "From discovery to launch they treated our business as their own. Reliable, transparent and genuinely strategic." }
+      ]
+    },
+    "finalCta": {
+      "title": "Offering the best experience of business and IT services.",
+      "lede": "Tell us about your goals — we'll respond within one business day with a tailored proposal.",
+      "callAria": "Call {{phone}}",
+      "sendMessage": "Send a message"
+    },
     "ctaStrip": {
       "kicker": "Ready when you are",
       "title": "Let's build what's next — together.",
