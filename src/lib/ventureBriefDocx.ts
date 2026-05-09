@@ -46,6 +46,8 @@ export interface DocxBriefOptions {
   watermarkOpacity?: number;
   /** Letterhead logo scale (0.6–1.4). Default 1. */
   logoScale?: number;
+  /** Letterhead theme — "light" (white plate) or "dark" (navy plate). */
+  letterheadTheme?: "light" | "dark";
 }
 
 const NAVY = "0F2350";
@@ -105,43 +107,54 @@ function makeLetterhead(
   brand: BriefBranding,
   logo: Uint8Array | null,
   logoScale: number = 1,
+  theme: "light" | "dark" = "light",
 ): Header {
   const cells: TableCell[] = [];
+  const plateFill = theme === "dark" ? NAVY : "FFFFFF";
+  const plateTextColor = theme === "dark" ? "FFFFFF" : NAVY;
 
-  if (logo) {
-    cells.push(
-      new TableCell({
-        width: { size: 1800, type: WidthType.DXA },
-        verticalAlign: VerticalAlign.CENTER,
-        // Theme-aware backplate: white cell behind the multi-color
-        // wordmark keeps it readable against the navy header band.
-        shading: { fill: "FFFFFF", type: ShadingType.CLEAR, color: "auto" },
-        margins: { top: 80, bottom: 80, left: 120, right: 80 },
-        borders: noBorder(),
-        children: [
-          new Paragraph({
-            children: [
-              new ImageRun({
-                type: "png",
-                data: logo,
-                // Wordmark aspect ≈ 1.82:1 — keep it readable in the header band.
-                transformation: {
-                  width: Math.round(96 * Math.max(0.6, Math.min(1.4, logoScale))),
-                  height: Math.round(53 * Math.max(0.6, Math.min(1.4, logoScale))),
-                },
-                altText: {
-                  title: brand.companyName,
-                  description: `${brand.companyName} — Enterprise Solutions, Media & Technology. Document letterhead logo.`,
-                  name: `${brand.companyName} logo`,
-                },
-              }),
-            ],
-          }),
-        ],
-      }),
-    );
-  }
-
+  // Always render a logo cell — embed the PNG when available, else fall
+  // back to a typographic wordmark on a theme-aware plate so readability
+  // is guaranteed even when the transparent logo can't be fetched.
+  cells.push(
+    new TableCell({
+      width: { size: 1800, type: WidthType.DXA },
+      verticalAlign: VerticalAlign.CENTER,
+      shading: { fill: plateFill, type: ShadingType.CLEAR, color: "auto" },
+      margins: { top: 80, bottom: 80, left: 120, right: 80 },
+      borders: noBorder(),
+      children: [
+        logo
+          ? new Paragraph({
+              children: [
+                new ImageRun({
+                  type: "png",
+                  data: logo,
+                  transformation: {
+                    width: Math.round(96 * Math.max(0.6, Math.min(1.4, logoScale))),
+                    height: Math.round(53 * Math.max(0.6, Math.min(1.4, logoScale))),
+                  },
+                  altText: {
+                    title: brand.companyName,
+                    description: `${brand.companyName} — Enterprise Solutions, Media & Technology. Document letterhead logo.`,
+                    name: `${brand.companyName} logo`,
+                  },
+                }),
+              ],
+            })
+          : new Paragraph({
+              children: [
+                new TextRun({
+                  text: brand.companyName.toUpperCase(),
+                  bold: true,
+                  color: plateTextColor,
+                  size: 22,
+                }),
+              ],
+            }),
+      ],
+    }),
+  );
   cells.push(
     new TableCell({
       width: { size: 6000, type: WidthType.DXA },
@@ -173,7 +186,7 @@ function makeLetterhead(
     }),
   );
 
-  const rightWidth = logo ? 9360 - 1800 - 6000 : 9360 - 6000;
+  const rightWidth = 9360 - 1800 - 6000;
   cells.push(
     new TableCell({
       width: { size: rightWidth, type: WidthType.DXA },
@@ -207,7 +220,7 @@ function makeLetterhead(
     }),
   );
 
-  const widths = logo ? [1800, 6000, rightWidth] : [6000, rightWidth];
+  const widths = [1800, 6000, rightWidth];
 
   return new Header({
     children: [
@@ -490,7 +503,7 @@ export async function buildVentureBriefDocx(
             },
           },
         },
-        headers: { default: makeLetterhead(brand, logo, opts.logoScale ?? 1) },
+        headers: { default: makeLetterhead(brand, logo, opts.logoScale ?? 1, opts.letterheadTheme ?? "light") },
         footers: { default: makeFooter(brand, v.slug) },
         children: body,
       },

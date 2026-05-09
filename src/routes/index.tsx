@@ -10,6 +10,7 @@ import trustImg from "@/assets/trust-handshake-bd.jpg";
 import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { HeroOverlays } from "@/components/HeroOverlays";
+import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import { ventures } from "@/data/ventures";
@@ -402,6 +403,12 @@ function Index() {
               <p className="mt-2 text-sm text-muted-foreground">
                 Talk to our team, browse what we deliver, or take our profile with you.
               </p>
+              <div className="mt-4 flex flex-col gap-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
+                  Theme preview · check logo readability before export
+                </p>
+                <ThemePreviewSwitch />
+              </div>
             </Reveal>
 
             <div className="grid gap-3 sm:grid-cols-3">
