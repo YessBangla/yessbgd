@@ -324,27 +324,19 @@ def render_html() -> str:
   }}
   /* Fixed elements repeat on every printed page in Chromium headless.
      Negative offsets extend the letterhead beyond the content margin
-     to fill the entire physical A4 sheet. The fixed layer is faded so
-     inner content pages read as a clean watermark; cover, TOC and each
-     section opener overlay a full-strength copy on top. */
+     to fill the entire physical A4 sheet. The watermark is held at a
+     soft opacity so body copy reads cleanly on inner pages; cover,
+     TOC and section openers stay legible because their hero blocks
+     (heading chip, gold rule, navy strap) carry full colour. */
   .page-bg {{
     position: fixed;
     top: -47mm; left: -22mm;
     width: 210mm; height: 297mm;
-    z-index: -2;
-  }}
-  .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
-  /* Full-strength letterhead anchored to the top of a section's first page.
-     Because it has fixed A4 dimensions, it only covers that opener page. */
-  .full-bleed {{
-    position: absolute;
-    top: -47mm; left: -22mm;
-    width: 210mm; height: 297mm;
     z-index: -1;
     pointer-events: none;
+    opacity: 0.55;
   }}
-  .full-bleed img {{ width: 210mm; height: 297mm; display: block; }}
-  .cover, .toc, .profile-section {{ position: relative; }}
+  .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
   :root {{
     --navy: #0E2A3A;
     --teal: #0F4C5C;
