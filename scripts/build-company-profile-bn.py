@@ -315,45 +315,36 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Letterhead pad: position:fixed sheet repeats on every overflow page
-     in Chromium print. The cover page additionally embeds an absolutely
-     positioned letterhead because fixed elements can be skipped on the
-     very first page. */
+  /* Letterhead pad — repeats on every printed page via position:fixed.
+     Chromium headless --print-to-pdf reliably re-renders fixed elements
+     once per output page, giving us full-bleed letterhead on every sheet. */
   @page {{ size: A4 portrait; margin: 0; }}
-  body {{ margin: 0; }}
-  .lh-header, .lh-footer, .lh-watermark {{ display: none; }}
-  .pad-bg {{
-    position: fixed; top: 0; left: 0;
+  html, body {{ margin: 0; padding: 0; background: #fff; }}
+
+  body::before {{
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
     width: 210mm; height: 297mm;
-    z-index: 0; pointer-events: none;
-  }}
-  .pad-bg img {{ width: 210mm; height: 297mm; display: block; }}
-  .cover-pad {{
-    position: absolute; top: 0; left: 0;
-    width: 210mm; height: 297mm;
-    z-index: 0; pointer-events: none;
-  }}
-  .cover-pad img {{ width: 210mm; height: 297mm; display: block; }}
-  .page-frame {{ box-sizing: border-box; position: relative; z-index: 1; }}
-  .cover, .toc, .profile-section {{
-    padding: 42mm 20mm 50mm 20mm;
-    box-sizing: border-box;
-    position: relative;
-  }}
-  .cover > *:not(.cover-pad), .toc > *, .profile-section > * {{
-    position: relative; z-index: 2;
-  }}
-  html {{
     background-image: url("file://{LETTERHEAD}");
     background-size: 210mm 297mm;
     background-repeat: no-repeat;
     background-position: top left;
+    z-index: 0;
+    pointer-events: none;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }}
-  body {{ margin: 0; background: transparent; }}
-  .lh-header, .lh-footer, .lh-watermark, .pad-bg {{ display: none; }}
-  .page-frame {{ box-sizing: border-box; }}
+
+  .cover, .toc, .profile-section {{
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    /* Top padding clears the logo (≈30mm tall);
+       bottom padding clears the contact strip (≈40mm tall);
+       side padding gives generous, magazine-grade margins. */
+    padding: 44mm 22mm 48mm 22mm;
+  }}
 
   :root {{
     --navy: #0E2A3A;
