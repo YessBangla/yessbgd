@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
@@ -17,9 +18,14 @@ export const Route = createFileRoute("/about/standards")({
 });
 
 function StandardsPage() {
+  const { t } = useTranslation();
   return (
     <>
-      <PageHero eyebrow="Standards" title="Operated to international standards" subtitle="A clear, audited bar for quality, security and delivery on every engagement." />
+      <PageHero
+        eyebrow={t("pages.aboutStandards.eyebrow")}
+        title={t("pages.aboutStandards.title")}
+        subtitle={t("pages.aboutStandards.subtitle")}
+      />
 
       <section className="py-12">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">

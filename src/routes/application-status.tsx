@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -106,6 +107,7 @@ function readSavedLookup(): { ref: string; email: string } | null {
 }
 
 function ApplicationStatusPage() {
+  const { t } = useTranslation();
   const sp = Route.useSearch();
   const saved = useMemo(() => readSavedLookup(), []);
   const [ref, setRef] = useState(sp.ref ?? saved?.ref ?? "");
@@ -288,9 +290,9 @@ function ApplicationStatusPage() {
   return (
     <>
       <PageHero
-        eyebrow="Applicants"
-        title="Application status"
-        subtitle="Enter your reference ID and email to see live updates on your application."
+        eyebrow={t("pages.applicationStatus.eyebrow")}
+        title={t("pages.applicationStatus.title")}
+        subtitle={t("pages.applicationStatus.subtitle")}
       />
       <section className="pb-24">
         <div className="container-tight max-w-3xl">

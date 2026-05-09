@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
@@ -17,9 +18,14 @@ export const Route = createFileRoute("/about/awards")({
 });
 
 function AwardsPage() {
+  const { t } = useTranslation();
   return (
     <>
-      <PageHero eyebrow="Recognition" title="Awards, partnerships & certifications" subtitle="A snapshot of the recognition our team and partners have earned along the way." />
+      <PageHero
+        eyebrow={t("pages.aboutAwards.eyebrow")}
+        title={t("pages.aboutAwards.title")}
+        subtitle={t("pages.aboutAwards.subtitle")}
+      />
 
       <section className="py-12">
         <div className="container-tight grid gap-6 md:grid-cols-2 lg:grid-cols-3">

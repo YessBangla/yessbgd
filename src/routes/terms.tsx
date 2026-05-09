@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/terms")({
@@ -98,12 +99,13 @@ const sections = [
 ];
 
 function Terms() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Legal"
-        title="Terms of Service"
-        subtitle="The agreement between you and YESS Bangla Private Limited — covering engagements, payments, IP, warranties, liability and dispute resolution."
+        eyebrow={t("pages.terms.eyebrow")}
+        title={t("pages.terms.title")}
+        subtitle={t("pages.terms.subtitle")}
       />
       <section className="pb-24">
         <div className="container-tight max-w-3xl">

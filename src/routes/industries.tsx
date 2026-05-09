@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { PageHero } from "@/components/PageHero";
 import {
   ArrowRight, CheckCircle2, Sparkles,
@@ -27,12 +28,13 @@ const stats = [
 ];
 
 function Industries() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Industries"
-        title="Deep expertise across the industries that shape Bangladesh."
-        subtitle="From media and retail to government and healthcare — our team brings sector-specific knowledge to every engagement."
+        eyebrow={t("pages.industries.eyebrow")}
+        title={t("pages.industries.title")}
+        subtitle={t("pages.industries.subtitle")}
       />
 
       <section className="pb-10">

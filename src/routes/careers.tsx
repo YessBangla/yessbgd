@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
 import {
@@ -158,6 +159,7 @@ const applicationSchema = z.object({
 type Errors = Partial<Record<keyof z.infer<typeof applicationSchema> | "resume" | "job" | "desiredRole", string>>;
 
 function Careers() {
+  const { t } = useTranslation();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [query, setQuery] = useState("");
@@ -417,9 +419,9 @@ function Careers() {
   return (
     <>
       <PageHero
-        eyebrow="Careers"
-        title="Build a career that builds Bangladesh."
-        subtitle="Join a team of consultants, engineers and creators shaping the next decade of business and technology in South Asia."
+        eyebrow={t("pages.careers.eyebrow")}
+        title={t("pages.careers.title")}
+        subtitle={t("pages.careers.subtitle")}
       />
 
       {/* Stats strip */}

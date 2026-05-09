@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { PageHero } from "@/components/PageHero";
 
 export const Route = createFileRoute("/privacy")({
@@ -109,12 +110,13 @@ const sections = [
 ];
 
 function Privacy() {
+  const { t } = useTranslation();
   return (
     <>
       <PageHero
-        eyebrow="Legal"
-        title="Privacy Policy"
-        subtitle="How we collect, use, share and protect personal data — written in plain language and aligned with international privacy standards."
+        eyebrow={t("pages.privacy.eyebrow")}
+        title={t("pages.privacy.title")}
+        subtitle={t("pages.privacy.subtitle")}
       />
       <section className="pb-24">
         <div className="container-tight max-w-3xl">

@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, CheckCircle2, Sparkles, ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
@@ -36,12 +37,13 @@ export const Route = createFileRoute("/industries/$slug")({
 });
 
 function IndustryDetail() {
+  const { t } = useTranslation();
   const { industry: i } = Route.useLoaderData() as { industry: IndustryItem };
   const Icon = i.icon;
 
   return (
     <>
-      <PageHero eyebrow="Industry" title={i.title} subtitle={i.intro}>
+      <PageHero eyebrow={t("pages.industryDetail.eyebrow")} title={i.title} subtitle={i.intro}>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow">Talk to a sector specialist <ArrowRight className="h-4 w-4" /></Link>
           <Link to="/industries" className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold">← All industries</Link>
