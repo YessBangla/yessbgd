@@ -204,6 +204,7 @@ export function ProfileDownloadGate({
             aria-modal="true"
             aria-labelledby={headingId}
             aria-describedby={descId}
+            lang={edition}
             className={[
               "relative w-full max-w-md overflow-hidden rounded-3xl border border-border/60",
               "bg-background/95 shadow-[0_30px_80px_-20px_rgba(2,8,23,0.45)]",
@@ -286,7 +287,7 @@ export function ProfileDownloadGate({
                         <p className="font-display text-sm font-semibold text-foreground">
                           Yess Bangla — Company Profile
                         </p>
-                        <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
+                        <p className="mt-0.5 break-words text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
                           {versionLabel}
                         </p>
                       </div>
@@ -453,12 +454,12 @@ export function ProfileDownloadGate({
                 <div className="mt-6">
                   <div className="rounded-2xl border border-primary/30 bg-primary/[0.04] p-4">
                     <div className="flex items-center justify-between gap-3">
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="font-display text-sm font-semibold text-foreground">
                           {editionDisplayName} · PDF
                         </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">{metaLabel}</p>
-                        <p className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
+                        <p className="mt-0.5 break-words text-xs text-muted-foreground">{metaLabel}</p>
+                        <p className="mt-0.5 break-words text-[11px] uppercase tracking-[0.16em] text-muted-foreground/80">
                           {versionLabel}
                         </p>
                       </div>
