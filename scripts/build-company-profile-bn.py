@@ -509,6 +509,7 @@ def render_html() -> str:
 <div class="page-bg" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
 
 <div class="cover">
+  <div class="full-bleed" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
   <h1>কোম্পানি প্রোফাইল</h1>
   <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড নিয়ে বাংলাদেশ ও তার বাইরে কাজ করছে।</p>
