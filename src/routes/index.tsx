@@ -63,57 +63,31 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
-  { icon: Tv, title: "Akash OTT", desc: "Bangladesh's new digital streaming platform launched under Akash TV by YESS Bangla." },
-  { icon: Newspaper, title: "Akash News", desc: "A modern Bangladeshi digital news platform powered by YESS Bangla Communications." },
-  { icon: LayoutGrid, title: "One Stop Solution", desc: "Centralised technology, IT support and home services — all under one trusted roof." },
-  { icon: Code2, title: "Web Development", desc: "Frontend & backend development with modern stacks — responsive, scalable, secure." },
-  { icon: Palette, title: "Web Design", desc: "Visually stunning, user-centric design that elevates your brand experience." },
-  { icon: ShoppingBag, title: "Yess Bangla Shop", desc: "End-to-end e-commerce — websites, mobile apps, payments and doorstep delivery." },
-];
-
-
-const features = [
-  { icon: ShieldCheck, title: "Trusted & Reliable", desc: "Long-term guarantees and a proven track record across industries." },
-  { icon: Sparkles, title: "Industry Experts", desc: "A team of consultants and engineers with deep domain expertise." },
-  { icon: Users, title: "Customer-Centric", desc: "We design every engagement around your goals and your customers." },
-  { icon: TrendingUp, title: "Scalable Solutions", desc: "From startup MVPs to enterprise platforms — built to grow with you." },
-];
-
-const process = [
-  { icon: Search, title: "Discover", desc: "We listen, audit and understand your business, customers and constraints." },
-  { icon: Lightbulb, title: "Strategise", desc: "We design a clear, prioritised roadmap with measurable outcomes." },
-  { icon: Rocket, title: "Build & Launch", desc: "Our cross-functional team executes with speed, quality and transparency." },
-  { icon: LineChart, title: "Grow", desc: "We measure, iterate and scale what works — together with you." },
-];
-
-const testimonials = [
-  { name: "Tanvir Ahmed", role: "CEO, Retail Group", quote: "YESS Bangla rebuilt our e-commerce platform end-to-end. Sales grew 3x in nine months and our team finally has tools we love using." },
-  { name: "Nusrat Jahan", role: "Director, EdTech Startup", quote: "Their consulting clarified our strategy and their engineers shipped faster than any agency we've worked with. Easy partnership." },
-  { name: "Rakib Hasan", role: "Head of Operations, Logistics", quote: "From discovery to launch they treated our business as their own. Reliable, transparent and genuinely strategic." },
-];
+const serviceIcons = [Tv, Newspaper, LayoutGrid, Code2, Palette, ShoppingBag];
+const featureIcons = [ShieldCheck, Sparkles, Users, TrendingUp];
+const processIcons = [Search, Lightbulb, Rocket, LineChart];
 
 const clients = ["Akash TV", "Akash News", "Akash OTT", "One Stop", "Yess Shop", "Bangla Media", "BD Logistics", "EduConnect"];
-
 
 type ImpactMetric = {
   id: string;
   icon: typeof Briefcase;
   /** Raw numeric target — drives the counter. */
   target: number;
-  label: string;
-  note: string;
   format?: import("@/components/CountUp").CountFormat;
 };
 
 const impactMetrics: ImpactMetric[] = [
-  { id: "projects",  icon: Briefcase,      target: 250,    label: "Projects delivered",  note: "Across 12 industries",     format: { plus: true } },
-  { id: "users",     icon: Users,          target: 180000, label: "End users served",    note: "Monthly active reach",     format: { compact: true, plus: true } },
-  { id: "clients",   icon: Building2,      target: 120,    label: "Enterprise clients",  note: "From startups to groups",  format: { plus: true } },
-  { id: "districts", icon: Globe,          target: 64,     label: "Districts covered",   note: "Nationwide footprint" },
-  { id: "years",     icon: Award,          target: 11,     label: "Years of expertise",  note: "Trusted since 2014",       format: { plus: true } },
-  { id: "retention", icon: HeartHandshake, target: 98,     label: "Client retention",    note: "Long-term partnerships",   format: { percent: true } },
+  { id: "projects",  icon: Briefcase,      target: 250,    format: { plus: true } },
+  { id: "users",     icon: Users,          target: 180000, format: { compact: true, plus: true } },
+  { id: "clients",   icon: Building2,      target: 120,    format: { plus: true } },
+  { id: "districts", icon: Globe,          target: 64 },
+  { id: "years",     icon: Award,          target: 11,     format: { plus: true } },
+  { id: "retention", icon: HeartHandshake, target: 98,     format: { percent: true } },
 ];
+
+type LocalizedItem = { title: string; desc: string };
+type Testimonial = { name: string; role: string; quote: string };
 
 function Index() {
   const { t } = useTranslation();
@@ -165,10 +139,10 @@ function Index() {
                 <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
                 <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
               </span>
-              <span className="whitespace-nowrap">Bangladesh · Est. 2014</span>
+              <span className="whitespace-nowrap">{t("home.hero.chipLocation")}</span>
               <span aria-hidden className="hidden h-3 w-px bg-background/25 sm:inline" />
               <span className="inline-flex items-center gap-1 whitespace-nowrap text-background/70">
-                <Star className="h-3 w-3 fill-accent text-accent" /> 4.9 / 5
+                <Star className="h-3 w-3 fill-accent text-accent" /> {t("home.hero.chipRating")}
               </span>
             </div>
 
@@ -183,7 +157,7 @@ function Index() {
               }}
             >
               <span aria-hidden className="h-px w-6 sm:w-8 bg-background/45" />
-              <span>A Bangladesh-built consultancy</span>
+              <span>{t("home.hero.eyebrow")}</span>
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
 
@@ -209,28 +183,25 @@ function Index() {
               {/* Editorial three-line cadence — YESS acronym expanded:
                   Y outh E ntrepreneurship · S mart S uccess · with our
                   Excellence & Solutions. */}
-              <span className="water-text block whitespace-nowrap">Youth Entrepreneurship</span>
+              <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
               <span
                 className="block text-background/95"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
               >
-                for{" "}
+                {t("home.hero.h1Line2Pre")}{" "}
                 <span
                   className="font-light text-background/90"
                   style={{ letterSpacing: "-0.008em" }}
                 >
-                  smart success
+                  {t("home.hero.h1Line2Smart")}
                 </span>
               </span>
               <span
                 className="water-text-accent block"
                 style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
               >
-                with excellence{" "}
-                {/* nowrap only ≥sm — keeps "& solutions." together on
-                    tablet/desktop, allows wrapping on ≤360px to avoid
-                    horizontal overflow on small phones. */}
-                <span className="sm:whitespace-nowrap">&amp; solutions.</span>
+                {t("home.hero.h1Line3Pre")}{" "}
+                <span className="sm:whitespace-nowrap">{t("home.hero.h1Line3Tail")}</span>
               </span>
             </h1>
 
@@ -247,13 +218,10 @@ function Index() {
                 wordSpacing: "normal",
               }}
             >
-              <span className="font-medium text-background/95">YESS Bangla</span>{" "}
-              partners with ambitious organisations to deliver consulting,
-              technology, media and commerce solutions —
-              {/* nowrap only ≥md (768px+) — narrow tablets/large phones still
-                  wrap naturally; desktop keeps the editorial line break. */}
-              <span className="md:whitespace-nowrap"> engineered to international standards,</span>
-              <span className="md:whitespace-nowrap"> shipped from Dhaka.</span>
+              <span className="font-medium text-background/95">{t("home.hero.ledeBrand")}</span>{" "}
+              {t("home.hero.ledeBody")}
+              <span className="md:whitespace-nowrap"> {t("home.hero.ledeStandard")}</span>
+              <span className="md:whitespace-nowrap"> {t("home.hero.ledeOrigin")}</span>
             </p>
 
             {/* CTA row — stacks full-width on small phones for tap-target
@@ -271,18 +239,18 @@ function Index() {
             >
               <Link
                 to="/contact"
-                aria-label="Start a project — go to contact page"
+                aria-label={t("home.hero.ctaPrimaryAria")}
                 className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-background px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] font-semibold tracking-[-0.005em] text-foreground shadow-xl ring-1 ring-background/15 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus:outline-none focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-[3px] focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
-                Start a project
+                {t("home.hero.ctaPrimary")}
                 <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
               <Link
                 to="/services"
-                aria-label="Explore our services"
+                aria-label={t("home.hero.ctaSecondaryAria")}
                 className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-background/40 bg-background/5 px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] font-semibold tracking-[-0.005em] text-background backdrop-blur transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:border-background/60 hover:bg-background/10 focus:outline-none focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-background focus-visible:ring-offset-[3px] focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
-                Explore services
+                {t("home.hero.ctaSecondary")}
                 <ArrowRight aria-hidden="true" className="h-4 w-4 opacity-80 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
               </Link>
             </div>
@@ -299,7 +267,7 @@ function Index() {
                 }}
               >
                 <span className="hidden text-[10px] font-medium uppercase tracking-[0.3em] text-background/75 sm:inline">
-                  Why teams choose us
+                  {t("home.hero.whyTeams")}
                 </span>
                 <span
                   data-testid="hero-trust-divider"
@@ -316,9 +284,9 @@ function Index() {
                   rowGap: "var(--hero-rhythm-xs)",
                 }}
               >
-                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> ISO-grade processes</span>
-                <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> 11+ years expertise</span>
-                <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> 98% client retention</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustIso")}</span>
+                <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustYears")}</span>
+                <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustRetention")}</span>
               </div>
             </div>
           </div>
@@ -335,8 +303,8 @@ function Index() {
                     <TrendingUp className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="text-[11px] uppercase tracking-wider text-background/60">Average client outcome</div>
-                    <div className="font-display text-2xl font-semibold leading-none text-background">3× growth</div>
+                    <div className="text-[11px] uppercase tracking-wider text-background/60">{t("home.hero.cardOutcomeLabel")}</div>
+                    <div className="font-display text-2xl font-semibold leading-none text-background">{t("home.hero.cardOutcomeValue")}</div>
                   </div>
                 </div>
               </div>
@@ -347,8 +315,8 @@ function Index() {
                     <Award className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[11px] uppercase tracking-wider text-background/60">Trusted by</div>
-                    <div className="font-display text-base font-semibold leading-tight text-background">120+ enterprise clients across 64 districts</div>
+                    <div className="text-[11px] uppercase tracking-wider text-background/60">{t("home.hero.cardTrustedLabel")}</div>
+                    <div className="font-display text-base font-semibold leading-tight text-background">{t("home.hero.cardTrustedValue")}</div>
                   </div>
                 </div>
               </div>
@@ -360,10 +328,10 @@ function Index() {
                   ))}
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-background/85">
-                  &ldquo;The most strategic technology partner we&rsquo;ve worked with in the region.&rdquo;
+                  &ldquo;{t("home.hero.cardQuote")}&rdquo;
                 </p>
                 <p className="mt-2 text-[11px] uppercase tracking-wider text-background/55">
-                  CEO · Retail Group
+                  {t("home.hero.cardQuoteRole")}
                 </p>
               </div>
             </div>
@@ -374,20 +342,20 @@ function Index() {
         <div className="relative border-t border-background/10 bg-foreground/40 backdrop-blur-md">
           <div className="container-tight grid grid-cols-2 gap-y-4 py-4 sm:grid-cols-4">
             {[
-              { target: 250, label: "Projects delivered", format: { plus: true } as const },
-              { target: 120, label: "Enterprise clients", format: { plus: true } as const },
-              { target: 64,  label: "Districts covered" },
-              { target: 11,  label: "Years of expertise", format: { plus: true } as const },
+              { id: "projects",  target: 250, format: { plus: true } as const },
+              { id: "clients",   target: 120, format: { plus: true } as const },
+              { id: "districts", target: 64 },
+              { id: "years",     target: 11,  format: { plus: true } as const },
             ].map((s, i) => (
               <div
-                key={s.label}
+                key={s.id}
                 className={"min-w-0 px-4 sm:px-6 " + (i > 0 ? "sm:border-l sm:border-background/10" : "")}
               >
                 <div className="flex h-8 items-baseline font-display text-2xl font-semibold leading-none tracking-tight text-background tabular-nums sm:text-3xl">
                   {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
                 </div>
                 <div className="mt-2 text-[10px] uppercase tracking-[0.18em] text-background/55 sm:text-[11px]">
-                  {s.label}
+                  {t(`home.hero.kpi.${s.id}`)}
                 </div>
               </div>
             ))}
@@ -563,7 +531,7 @@ function Index() {
         <div className="container-tight">
           <Reveal>
             <p className="text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground/80">
-              Trusted by leading organisations across Bangladesh
+              {t("home.clients.trustedBy")}
             </p>
           </Reveal>
           <div className="marquee-mask mt-5 overflow-hidden sm:mt-6">
@@ -592,7 +560,7 @@ function Index() {
               <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-background/60 p-1 shadow-xl backdrop-blur sm:rounded-3xl sm:p-1.5">
                 <img
                   src={aboutImg}
-                  alt="YESS Bangla consultants collaborating in a Dhaka office"
+                  alt={t("home.about.imageAlt")}
                   width={1280}
                   height={960}
                   loading="lazy"
@@ -606,40 +574,41 @@ function Index() {
           <Reveal className="lg:col-span-7">
             <div className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
               <span aria-hidden className="h-px w-6 bg-primary/40" />
-              Simply know about us
+              {t("home.about.eyebrow")}
             </div>
             <h2 className="mt-3 font-display font-semibold tracking-tight text-balance">
-              We help people take their businesses to the next level.
+              {t("home.about.title")}
             </h2>
             <p className="mt-3 text-muted-foreground">
-              We cope with tasks of various complexity levels, provide long-term guarantees, and
-              continuously master new technologies for the industries we serve. Our portfolio
-              spans dozens of successful engagements across Bangladesh.
+              {t("home.about.lede")}
             </p>
 
             <Stagger className="mt-7 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
-              {features.map((f) => (
-                <StaggerItem key={f.title}>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    transition={{ duration: 0.3 }}
-                    className="glass-card h-full rounded-2xl p-4 sm:p-5"
-                  >
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                      <f.icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-3 font-display text-[15px] font-semibold sm:mt-4 sm:text-base">{f.title}</h3>
-                    <p className="mt-1 text-[13px] text-muted-foreground sm:text-sm">{f.desc}</p>
-                  </motion.div>
-                </StaggerItem>
-              ))}
+              {(t("home.about.features", { returnObjects: true }) as LocalizedItem[]).map((f, i) => {
+                const Icon = featureIcons[i];
+                return (
+                  <StaggerItem key={f.title}>
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      transition={{ duration: 0.3 }}
+                      className="glass-card h-full rounded-2xl p-4 sm:p-5"
+                    >
+                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="mt-3 font-display text-[15px] font-semibold sm:mt-4 sm:text-base">{f.title}</h3>
+                      <p className="mt-1 text-[13px] text-muted-foreground sm:text-sm">{f.desc}</p>
+                    </motion.div>
+                  </StaggerItem>
+                );
+              })}
             </Stagger>
 
             <Link
               to="/about"
               className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
             >
-              Read more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {t("home.about.readMore")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Reveal>
         </div>
@@ -651,16 +620,16 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="What we offer"
-            title="Effective, wide-area business solutions"
-            lede="From media platforms to enterprise software — a portfolio of services built for ambitious organisations."
+            eyebrow={t("home.servicesSection.eyebrow")}
+            title={t("home.servicesSection.title")}
+            lede={t("home.servicesSection.lede")}
           />
 
           <Reveal className="mt-8 sm:mt-12">
             <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={servicesImg}
-                alt="Bangladeshi engineers building software in a modern Dhaka studio"
+                alt={t("home.servicesSection.imageAlt")}
                 width={1280}
                 height={960}
                 loading="lazy"
@@ -670,37 +639,40 @@ function Index() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
                 <p className="max-w-xl text-xs font-medium text-foreground sm:text-base">
-                  Engineering, design and consulting — delivered to international standards from Bangladesh.
+                  {t("home.servicesSection.imageCaption")}
                 </p>
               </div>
             </div>
           </Reveal>
 
           <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((s) => (
-              <StaggerItem key={s.title}>
-                <motion.article
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-5 sm:p-7"
-                >
-                  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/8 transition-transform group-hover:scale-125" />
-                  <div className="relative">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                      <s.icon className="h-6 w-6" />
+            {(t("home.servicesSection.items", { returnObjects: true }) as LocalizedItem[]).map((s, i) => {
+              const Icon = serviceIcons[i];
+              return (
+                <StaggerItem key={s.title}>
+                  <motion.article
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                    className="group relative h-full overflow-hidden rounded-2xl glass-card p-5 sm:p-7"
+                  >
+                    <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/8 transition-transform group-hover:scale-125" />
+                    <div className="relative">
+                      <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="mt-4 font-display text-lg font-semibold sm:mt-5 sm:text-xl">{s.title}</h3>
+                      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{s.desc}</p>
+                      <Link
+                        to="/services"
+                        className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-5"
+                      >
+                        {t("home.servicesSection.learnMore")} <ArrowRight className="h-4 w-4" />
+                      </Link>
                     </div>
-                    <h3 className="mt-4 font-display text-lg font-semibold sm:mt-5 sm:text-xl">{s.title}</h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{s.desc}</p>
-                    <Link
-                      to="/services"
-                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-5"
-                    >
-                      Learn more <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </motion.article>
-              </StaggerItem>
-            ))}
+                  </motion.article>
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
@@ -711,9 +683,9 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="Impact & metrics"
-            title="Numbers that tell our story"
-            lede="A decade of measurable impact for businesses, partners and communities across Bangladesh."
+            eyebrow={t("home.impact.eyebrow")}
+            title={t("home.impact.title")}
+            lede={t("home.impact.lede")}
           />
 
           <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -733,10 +705,10 @@ function Index() {
                           <CountUpSkeleton />
                         )}
                       </div>
-                      <div className="mt-1 text-sm font-medium text-foreground/80">{m.label}</div>
+                      <div className="mt-1 text-sm font-medium text-foreground/80">{t(`home.impact.items.${m.id}.label`)}</div>
                     </div>
                   </div>
-                  <p className="mt-4 border-t border-border/60 pt-3 text-xs text-muted-foreground">{m.note}</p>
+                  <p className="mt-4 border-t border-border/60 pt-3 text-xs text-muted-foreground">{t(`home.impact.items.${m.id}.note`)}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -750,23 +722,26 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="How we work"
-            title="A proven, four-step delivery process"
-            lede="Clarity at every stage — from first conversation to long-term growth."
+            eyebrow={t("home.process.eyebrow")}
+            title={t("home.process.title")}
+            lede={t("home.process.lede")}
           />
           <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {process.map((p, i) => (
-              <StaggerItem key={p.title}>
-                <div className="relative h-full rounded-2xl glass-card p-5 sm:p-6">
-                  <div className="absolute right-5 top-5 font-display text-4xl font-semibold text-primary/10">0{i + 1}</div>
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                    <p.icon className="h-5 w-5" />
+            {(t("home.process.items", { returnObjects: true }) as LocalizedItem[]).map((p, i) => {
+              const Icon = processIcons[i];
+              return (
+                <StaggerItem key={p.title}>
+                  <div className="relative h-full rounded-2xl glass-card p-5 sm:p-6">
+                    <div className="absolute right-5 top-5 font-display text-4xl font-semibold text-primary/10">0{i + 1}</div>
+                    <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
+                    <p className="mt-1.5 text-[13px] text-muted-foreground sm:text-sm">{p.desc}</p>
                   </div>
-                  <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
-                  <p className="mt-1.5 text-[13px] text-muted-foreground sm:text-sm">{p.desc}</p>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
@@ -777,16 +752,16 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="Our ventures"
-            title="Eleven ventures. One ecosystem."
-            lede="A connected portfolio of media, technology, commerce and education brands — each built to lead its category in Bangladesh."
+            eyebrow={t("home.venturesSection.eyebrow")}
+            title={t("home.venturesSection.title")}
+            lede={t("home.venturesSection.lede")}
           />
 
           <Reveal className="mt-8 sm:mt-12">
             <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={venturesImg}
-                alt="Modern Dhaka skyline at golden hour — home to YESS Bangla ventures"
+                alt={t("home.venturesSection.imageAlt")}
                 width={1280}
                 height={720}
                 loading="lazy"
@@ -796,9 +771,9 @@ function Index() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent sm:bg-gradient-to-r sm:from-background/85 sm:via-background/40 sm:to-transparent" />
               <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10">
                 <div className="max-w-md">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">From Dhaka, for Bangladesh</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary sm:text-xs">{t("home.venturesSection.ribbonKicker")}</p>
                   <p className="mt-1.5 font-display text-base font-semibold leading-tight sm:mt-2 sm:text-2xl">
-                    A connected portfolio reaching every corner of the country.
+                    {t("home.venturesSection.ribbonTitle")}
                   </p>
                 </div>
               </div>
@@ -813,7 +788,7 @@ function Index() {
                   <Link
                     to="/ventures/$slug"
                     params={{ slug: v.slug }}
-                    aria-label={`Read about ${v.title}`}
+                    aria-label={`${t("home.venturesSection.readAbout")} ${v.title}`}
                     className="group relative block h-full w-full overflow-hidden rounded-2xl glass-card p-5 text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6"
                   >
                     <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
@@ -830,7 +805,7 @@ function Index() {
                         </div>
                         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
                         <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
-                          Explore {v.title} <ArrowRight className="h-3.5 w-3.5" />
+                          {t("home.venturesSection.explore")} {v.title} <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
                     </div>
@@ -848,26 +823,26 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="Client stories"
-            title="Loved by ambitious teams"
-            lede="Honest words from leaders who chose us to ship the work that mattered."
+            eyebrow={t("home.testimonials.eyebrow")}
+            title={t("home.testimonials.title")}
+            lede={t("home.testimonials.lede")}
           />
           <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <StaggerItem key={t.name}>
+            {(t("home.testimonials.items", { returnObjects: true }) as Testimonial[]).map((tm) => (
+              <StaggerItem key={tm.name}>
                 <figure className="relative h-full rounded-2xl glass-card p-5 sm:p-7">
                   <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" />
                   <div className="flex gap-0.5 text-accent">
                     {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
-                  <blockquote className="mt-4 text-[13px] leading-relaxed text-foreground/90 sm:text-sm">"{t.quote}"</blockquote>
+                  <blockquote className="mt-4 text-[13px] leading-relaxed text-foreground/90 sm:text-sm">"{tm.quote}"</blockquote>
                   <figcaption className="mt-5 flex items-center gap-3 border-t border-border/60 pt-4">
                     <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-primary font-display text-sm font-semibold text-primary-foreground">
-                      {t.name.split(" ").map((n) => n[0]).join("")}
+                      {tm.name.split(" ").map((n: string) => n[0]).join("")}
                     </div>
                     <div>
-                      <div className="text-sm font-semibold">{t.name}</div>
-                      <div className="text-xs text-muted-foreground">{t.role}</div>
+                      <div className="text-sm font-semibold">{tm.name}</div>
+                      <div className="text-xs text-muted-foreground">{tm.role}</div>
                     </div>
                   </figcaption>
                 </figure>
@@ -887,17 +862,16 @@ function Index() {
               <div className="relative grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div>
                   <h2 className="font-display font-semibold tracking-tight">
-                    Offering the best experience of business and IT services.
+                    {t("home.finalCta.title")}
                   </h2>
                   <p className="mt-3 text-muted-foreground">
-                    Tell us about your goals — we'll respond within one business day with a tailored
-                    proposal.
+                    {t("home.finalCta.lede")}
                   </p>
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
                   <a
                     href={phoneHref}
-                    aria-label={`Call ${COMPANY_CONTACT.phone.display}`}
+                    aria-label={t("home.finalCta.callAria", { phone: COMPANY_CONTACT.phone.display })}
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-transform hover:scale-[1.03]"
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" />
@@ -907,7 +881,7 @@ function Index() {
                     to="/contact"
                     className="inline-flex items-center justify-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.03]"
                   >
-                    Send a message
+                    {t("home.finalCta.sendMessage")}
                   </Link>
                 </div>
               </div>
