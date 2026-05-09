@@ -532,6 +532,7 @@ def render_html() -> str:
 </div>
 
 <section class="toc">
+  <div class="full-bleed" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
   <h2>সূচিপত্র</h2>
   <ol>{toc_items}</ol>
 </section>
