@@ -10,22 +10,28 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ArrowRight, Check, Download, KeyRound, Lock, ShieldCheck, X } from "lucide-react";
 
 const ACCESS_PIN = "7007";
-const PDF_HREF = "/yess-bangla-company-profile.pdf";
-const PDF_FILENAME = "yess-bangla-company-profile.pdf";
+const DEFAULT_HREF = "/yess-bangla-company-profile.pdf";
+const DEFAULT_FILENAME = "yess-bangla-company-profile.pdf";
 
 interface ProfileDownloadGateProps {
-  /** Triggering button content. Receives an `open` callback. */
   trigger: (props: { open: () => void }) => React.ReactNode;
-  /** Display version label, e.g. "v1.1 · Generated 09 May 2026". */
   versionLabel: string;
-  /** Page count + size hint, e.g. "17 pages · ~150 KB". */
   metaLabel: string;
+  /** PDF URL (defaults to English edition). */
+  href?: string;
+  /** Suggested filename. */
+  filename?: string;
+  /** Edition label shown in dialog header, e.g. "Bangla edition". */
+  editionLabel?: string;
 }
 
 export function ProfileDownloadGate({
   trigger,
   versionLabel,
   metaLabel,
+  href = DEFAULT_HREF,
+  filename = DEFAULT_FILENAME,
+  editionLabel,
 }: ProfileDownloadGateProps) {
   const [open, setOpen] = useState(false);
   const [digits, setDigits] = useState<string[]>(["", "", "", ""]);
