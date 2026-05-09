@@ -186,7 +186,7 @@ function makeLetterhead(
     }),
   );
 
-  const rightWidth = logo ? 9360 - 1800 - 6000 : 9360 - 6000;
+  const rightWidth = 9360 - 1800 - 6000;
   cells.push(
     new TableCell({
       width: { size: rightWidth, type: WidthType.DXA },
