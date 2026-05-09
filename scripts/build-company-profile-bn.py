@@ -281,10 +281,8 @@ def _render_block(kind, payload):
 
 
 def _render_section(s):
-    """Render a section as one OR MORE .page divs, splitting at pagebreak.
-
-    Each printed sheet maps 1:1 to one `.page` so the fixed-position
-    letterhead always lines up cleanly with content padding."""
+    """Render one section as a flowing block; Playwright + @page margins
+    repeat the letterhead header/footer on every sheet automatically."""
     head = f"""
       <header class="sec-head">
         <div class="sec-chip">{s['n']}</div>
@@ -295,26 +293,14 @@ def _render_section(s):
       </header>
       <div class="sec-rule"></div>
     """
-    cont_head = f"""
-      <header class="sec-head sec-head-cont">
-        <p class="sec-kicker">{s['kicker']} · {s['title']} (চলমান)</p>
-      </header>
-      <div class="sec-rule sec-rule-cont"></div>
-    """
-    pages = [[]]  # list of block-html lists
+    parts = [head, "<div class='sec-body'>"]
     for kind, payload in s['blocks']:
         if kind == "pagebreak":
-            pages.append([])
+            parts.append("</div><div class='page-break'></div><div class='sec-body'>")
         else:
-            pages[-1].append(_render_block(kind, payload))
-    out = []
-    for i, blocks in enumerate(pages):
-        h = head if i == 0 else cont_head
-        out.append(
-            f"<section class='page profile-section'>"
-            f"{h}<div class='sec-body'>{''.join(blocks)}</div>"
-            f"</section>")
-    return "\n".join(out)
+            parts.append(_render_block(kind, payload))
+    parts.append("</div>")
+    return f"<section class='profile-section'>{''.join(parts)}</section>"
 
 
 def render_html() -> str:
