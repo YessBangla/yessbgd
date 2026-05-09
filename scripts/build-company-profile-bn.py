@@ -328,6 +328,7 @@ def render_html() -> str:
   }}
   /* Cover keeps the same letterhead frame as inner pages. */
   @page :first {{
+    margin: 32mm 18mm 30mm 18mm;
     @bottom-center {{ content: ""; }}
   }}
   /* Fixed elements repeat on every printed page in Chromium headless.
