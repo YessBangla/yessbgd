@@ -204,6 +204,7 @@ export function ProfileDownloadGate({
             aria-modal="true"
             aria-labelledby={headingId}
             aria-describedby={descId}
+            lang={edition}
             className={[
               "relative w-full max-w-md overflow-hidden rounded-3xl border border-border/60",
               "bg-background/95 shadow-[0_30px_80px_-20px_rgba(2,8,23,0.45)]",
