@@ -145,12 +145,10 @@ async function getFadedLogo(opacity: number): Promise<string | null> {
       i.onerror = reject;
       i.src = base;
     });
-    // Cap at 480px — watermark is drawn at content-area scale, so any
-    // larger source pixels just inflate the PDF without visible benefit
-    // on mobile screens.
     // Cap at 1024px — sharper watermark on high-DPI mobile / print zoom,
     // while still keeping the embedded raster small thanks to JPEG q=0.6.
     const max = 1024;
+    const scale = Math.min(1, max / Math.max(img.width, img.height));
     const w = Math.round(img.width * scale);
     const h = Math.round(img.height * scale);
     const canvas = document.createElement("canvas");
