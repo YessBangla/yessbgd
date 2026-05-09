@@ -705,10 +705,10 @@ function Index() {
                           <CountUpSkeleton />
                         )}
                       </div>
-                      <div className="mt-1 text-sm font-medium text-foreground/80">{m.label}</div>
+                      <div className="mt-1 text-sm font-medium text-foreground/80">{t(`home.impact.items.${m.id}.label`)}</div>
                     </div>
                   </div>
-                  <p className="mt-4 border-t border-border/60 pt-3 text-xs text-muted-foreground">{m.note}</p>
+                  <p className="mt-4 border-t border-border/60 pt-3 text-xs text-muted-foreground">{t(`home.impact.items.${m.id}.note`)}</p>
                 </div>
               </StaggerItem>
             ))}
