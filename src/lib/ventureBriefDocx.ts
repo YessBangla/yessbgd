@@ -44,6 +44,8 @@ export interface DocxBriefOptions {
   fileName?: string;
   /** Watermark opacity (0-1). Default 0.08 — baked into a faded raster. */
   watermarkOpacity?: number;
+  /** Letterhead logo scale (0.6–1.4). Default 1. */
+  logoScale?: number;
 }
 
 const NAVY = "0F2350";
@@ -102,6 +104,7 @@ async function bakeWatermark(
 function makeLetterhead(
   brand: BriefBranding,
   logo: Uint8Array | null,
+  logoScale: number = 1,
 ): Header {
   const cells: TableCell[] = [];
 
