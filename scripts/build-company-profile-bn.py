@@ -318,27 +318,36 @@ def render_html() -> str:
   /* A4 with room for the letterhead header (top) and footer (bottom). */
   @page {{
     size: A4 portrait;
-    /* Top margin clears the letterhead logo (~16mm tall + 4mm pad + breathing room).
-       Bottom margin clears the footer band (~37mm tall + 5mm pad). */
+    /* Top margin holds the letterhead logo, bottom margin holds the footer band. */
     margin: 26mm 18mm 46mm 18mm;
+    @top-left {{
+      content: element(pageHeader);
+    }}
+    @bottom-left {{
+      content: element(pageFooter);
+    }}
     @bottom-center {{
       content: "ইয়েস বাংলা প্রাইভেট লিমিটেড · গোপনীয় · " counter(page) " / " counter(pages);
       font-family: 'Noto Sans Bengali', sans-serif;
       font-size: 8pt;
       color: #5A5A5A;
-      margin-bottom: 4mm;
+      margin-bottom: 2mm;
     }}
   }}
   @page :first {{
-    margin: 26mm 18mm 46mm 18mm;
     @bottom-center {{ content: ""; }}
   }}
-  /* Fixed letterhead chrome — repeats on every printed page in Chromium. */
-  .lh-header, .lh-footer {{
-    position: fixed;
-    pointer-events: none;
-    z-index: 10;
+  /* Running elements rendered into @page margin boxes by Chromium print. */
+  .lh-header {{
+    position: running(pageHeader);
+    width: 22mm;
   }}
+  .lh-header img {{ width: 100%; height: auto; display: block; }}
+  .lh-footer {{
+    position: running(pageFooter);
+    width: 174mm;
+  }}
+  .lh-footer img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark {{
     position: fixed;
     pointer-events: none;
@@ -347,12 +356,7 @@ def render_html() -> str:
     transform: translate(-50%, -50%);
     width: 110mm; opacity: 0.05;
   }}
-  /* Negative offsets push the chrome into the page-margin band, since
-     Chromium print treats position:fixed as relative to the content area. */
-  .lh-header {{ top: -22mm; left: -3mm; width: 22mm; }}
-  .lh-header img {{ width: 100%; height: auto; display: block; }}
-  .lh-footer {{ bottom: -42mm; left: -3mm; right: -3mm; }}
-  .lh-footer img {{ width: 100%; height: auto; display: block; }}
+  .lh-watermark img {{ width: 100%; height: auto; display: block; }}
   .lh-watermark img {{ width: 100%; height: auto; display: block; }}
 
   :root {{
