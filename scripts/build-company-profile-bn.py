@@ -534,31 +534,35 @@ def _footer_template(settings) -> str:
     pn = settings["footer"].get("pageNumber", {})
     page_num_html = ""
     if pn.get("enabled"):
-        fmt = pn["format"].replace("{page}",
-            "<span class='pageNumber'></span>").replace("{total}",
-            "<span class='totalPages'></span>")
-        align = pn.get("alignment", "right")
+        size = pn.get("fontSizePt", 8)
+        color = pn.get("color", "#FFFFFF")
+        span_style = (
+            f"font-size:{size}pt;color:{color};"
+            "font-family:Helvetica,Arial,sans-serif;"
+            "font-weight:600;letter-spacing:0.06em;line-height:1;"
+        )
+        page_span = f"<span class='pageNumber' style=\"{span_style}\"></span>"
+        total_span = f"<span class='totalPages' style=\"{span_style}\"></span>"
+        fmt = (pn["format"]
+               .replace("{page}", page_span)
+               .replace("{total}", total_span))
         right = pn.get("marginRightMm", 14)
         bottom = pn.get("marginBottomMm", 6)
-        size = pn.get("fontSizePt", 8)
-        color = pn.get("color", "#0E2A3A")
-        # Bengali-digit page numbers via CSS counter aren't possible inside
-        # Chromium's footer template (pageNumber is filled as latin numerals).
         page_num_html = f"""
         <div style="position:absolute;right:{right}mm;bottom:{bottom}mm;
-                    font-family:'Inter','Helvetica Neue',Arial,sans-serif;
-                    font-size:{size}pt;color:{color};text-align:{align};
-                    font-weight:600;letter-spacing:0.06em;
-                    background:rgba(14,42,58,0.55);
-                    padding:2.2pt 8pt;border-radius:99pt;
-                    backdrop-filter:blur(2px);
-                    -webkit-print-color-adjust:exact;">
+                    {span_style}
+                    background:rgba(14,42,58,0.85);
+                    padding:3pt 10pt;border-radius:99pt;
+                    -webkit-print-color-adjust:exact;
+                    print-color-adjust:exact;">
           {fmt}
         </div>
         """
     return f"""
-    <div style="margin:0;padding:0;width:100%;position:relative;-webkit-print-color-adjust:exact;">
-      <img src="{img}" style="display:block;width:100%;height:{fh}mm;object-fit:cover;object-position:bottom;" />
+    <div style="margin:0;padding:0;width:100%;height:{fh}mm;position:relative;
+                font-size:{pn.get('fontSizePt', 8)}pt;
+                -webkit-print-color-adjust:exact;print-color-adjust:exact;">
+      <img src="{img}" style="display:block;width:100%;height:{fh}mm;object-fit:cover;object-position:bottom;position:absolute;inset:0;" />
       {page_num_html}
     </div>
     """
