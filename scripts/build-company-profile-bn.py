@@ -510,6 +510,10 @@ def render_html() -> str:
 </head>
 <body>
 
+<div class="lh-watermark" aria-hidden="true"><img src="file://{LH_WATERMARK}" alt=""></div>
+<div class="lh-header"   aria-hidden="true"><img src="file://{LH_HEADER}" alt=""></div>
+<div class="lh-footer"   aria-hidden="true"><img src="file://{LH_FOOTER}" alt=""></div>
+
 
 <div class="cover">
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
