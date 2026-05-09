@@ -2,6 +2,8 @@
 // Persisted in localStorage; supports multiple named presets so users
 // can switch between company templates without retyping details.
 
+import { COMPANY_CONTACT } from "@/lib/companyContact";
+
 export interface BriefBranding {
   companyName: string;
   tagline: string;
@@ -23,14 +25,13 @@ export interface BrandingPreset {
 }
 
 export const DEFAULT_BRANDING: BriefBranding = {
-  companyName: "Yess Bangla Private Limited",
+  companyName: COMPANY_CONTACT.legalName,
   tagline: "Enterprise Solutions · Media · Technology",
-  address:
-    "Office: Block-A, Road-3, House-127 (Green View) (1st Floor), Mirpur-12, Dhaka-1216 · Corporate Office: Section-11, Block-A, Main Road-3, Plot-10, Mirpur, Pallabi, Dhaka-1216",
-  phone: "+880 1805-464343",
-  email: "yessbangla.bd@gmail.com",
-  web: "www.yessbd.com",
-  copyrightHolder: "Yess Bangla Private Limited",
+  address: COMPANY_CONTACT.combinedAddress,
+  phone: COMPANY_CONTACT.phone.display,
+  email: COMPANY_CONTACT.email,
+  web: COMPANY_CONTACT.web,
+  copyrightHolder: COMPANY_CONTACT.legalName,
   documentLabel: "ENTERPRISE BRIEF",
   confidentialityNote: "Confidential · For intended recipient",
 };
