@@ -619,7 +619,7 @@ def build_pdf():
     # Classification strip
     strip = Table(
         [[Paragraph(f'<font color="#FFFFFF"><b>CONFIDENTIAL</b> · '
-                    f'For intended recipient · {VERSION} · {GENERATED}</font>',
+                    f'For intended recipient · {EDITION} · {VERSION} · {GENERATED}</font>',
                     ParagraphStyle("strip", fontName=BODY_FONT,
                                    fontSize=8.5, leading=11,
                                    textColor=HexColor("#FFFFFF"),
