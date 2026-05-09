@@ -463,7 +463,7 @@ function Index() {
                         <Download className="h-5 w-5" aria-hidden="true" />
                       </div>
                       <span className="inline-flex items-center gap-1 rounded-full bg-background/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]">
-                        <Lock className="h-3 w-3" aria-hidden="true" /> PIN
+                        <LockIcon className="h-3 w-3" aria-hidden="true" /> PIN
                       </span>
                     </div>
                     <div className="mt-6">
