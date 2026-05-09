@@ -16,6 +16,9 @@ import tempfile
 
 PUBLIC = "/dev-server/public"
 LETTERHEAD = f"{PUBLIC}/yess-bangla-letterhead.jpeg"
+LH_HEADER = f"{PUBLIC}/letterhead-header.png"
+LH_FOOTER = f"{PUBLIC}/letterhead-footer.png"
+LH_WATERMARK = f"{PUBLIC}/letterhead-watermark.png"
 PDF_OUT = f"{PUBLIC}/yess-bangla-company-profile-bn.pdf"
 
 with open("/dev-server/src/data/company-contact.json", encoding="utf-8") as _f:
