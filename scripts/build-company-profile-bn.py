@@ -297,6 +297,16 @@ def render_html() -> str:
         </section>
         """)
 
+    full_bleed = (
+        f"<div class='full-bleed' aria-hidden='true'>"
+        f"<img src='file://{LETTERHEAD}' alt=''></div>"
+    )
+    sections_html = [
+        s.replace('<section class="profile-section">',
+                  f'<section class="profile-section">{full_bleed}')
+        for s in sections_html
+    ]
+
     toc_items = "".join(
         f"<li><span class='toc-num'>{s['n']}</span>"
         f"<span class='toc-title'>{s['title']}</span></li>"
