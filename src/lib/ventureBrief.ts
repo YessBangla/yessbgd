@@ -6,7 +6,7 @@ import {
   getVenturePackages,
   getVentureFaqs,
 } from "@/data/ventures";
-import logoUrl from "@/assets/yess-bangla-logo.jpeg";
+import logoUrl from "@/assets/yess-bangla-logo.png";
 import {
   type BriefBranding,
   DEFAULT_BRANDING,
