@@ -199,18 +199,6 @@ export function BriefDownloadControls({
     }
   };
 
-  const handleDownloadDocx = async () => {
-    setBusy("docx");
-    try {
-      await downloadVentureBriefDocx(venture, {
-        branding,
-        watermarkOpacity: opacity,
-        logoScale: logoSettings.docxScale,
-      });
-    } finally {
-      setBusy(null);
-    }
-  };
 
   const handleGenerateSamples = async () => {
     setBusy("samples");
