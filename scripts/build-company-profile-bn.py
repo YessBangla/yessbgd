@@ -335,36 +335,29 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Letterhead pad — repeats on every printed page via position:fixed.
-     `@page margin` reserves a clear band around content so headings and
-     body never collide with the logo (top) or contact strip (bottom),
-     even on continuation pages where content reflows from the top. */
-  @page {{
-    size: A4 portrait;
-    margin: 32mm 20mm 40mm 20mm;
-  }}
+  /* Each `.page` is a fixed A4-sized container that explicitly insets
+     content from the letterhead's logo (top) and contact strip (bottom).
+     `@page margin: 0` lets us paint full-bleed letterhead per sheet. */
+  @page {{ size: A4 portrait; margin: 0; }}
   html, body {{ margin: 0; padding: 0; background: #fff; }}
 
-  body::before {{
-    content: "";
-    position: fixed;
-    top: -32mm; left: -20mm;
-    width: 210mm; height: 297mm;
+  .page {{
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    padding: 38mm 22mm 44mm 22mm;
+    box-sizing: border-box;
+    overflow: hidden;
+    page-break-after: always;
     background-image: url("file://{LETTERHEAD}");
     background-size: 210mm 297mm;
     background-repeat: no-repeat;
     background-position: top left;
-    z-index: 0;
-    pointer-events: none;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }}
-
-  .cover, .toc, .profile-section {{
-    position: relative;
-    z-index: 1;
-    box-sizing: border-box;
-  }}
+  .page:last-child {{ page-break-after: auto; }}
+  .page > * {{ position: relative; z-index: 1; }}
 
   :root {{
     --navy: #0E2A3A;
