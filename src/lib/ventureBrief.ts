@@ -7,6 +7,7 @@ import {
   getVentureFaqs,
 } from "@/data/ventures";
 import logoUrl from "@/assets/yess-bangla-logo.png";
+import letterheadUrl from "@/assets/yess-bangla-letterhead.jpeg";
 import {
   type BriefBranding,
   DEFAULT_BRANDING,
@@ -98,10 +99,12 @@ function computeDims(format: PageFormat, orientation: PageOrientation): PageDims
   const [pw, ph] = FORMAT_DIMS[format].portrait;
   const w = orientation === "portrait" ? pw : ph;
   const h = orientation === "portrait" ? ph : pw;
-  // Scale margin/header/footer proportionally so letterhead aligns on every size
-  const margin = Math.round(w * 0.086 * 100) / 100; // ~18mm on A4 portrait
-  const headerH = Math.round(h * 0.094 * 100) / 100; // ~28mm on A4 portrait
-  const footerH = Math.round(h * 0.074 * 100) / 100; // ~22mm on A4 portrait
+  // Margins are tuned to clear the uploaded letterhead pad:
+  //   - top: clears the logo block at the top of the pad
+  //   - bottom: clears the navy footer band at the bottom of the pad
+  const margin = Math.round(w * 0.09 * 100) / 100;
+  const headerH = Math.round(h * 0.16 * 100) / 100; // ~47mm on A4 portrait
+  const footerH = Math.round(h * 0.14 * 100) / 100; // ~42mm on A4 portrait
   return {
     w,
     h,
@@ -109,7 +112,7 @@ function computeDims(format: PageFormat, orientation: PageOrientation): PageDims
     headerH,
     footerH,
     contentW: w - margin * 2,
-    topY: headerH + 8,
+    topY: headerH + 4,
     bottomY: h - footerH - 4,
   };
 }
