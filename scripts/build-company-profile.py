@@ -506,10 +506,7 @@ def section_heading(num: str, kicker: str, title: str, anchor: str):
 
     title_block = [
         Paragraph(kicker.upper(), styles["SecKicker"]),
-        AnchorPara(title, styles["SecTitle"], anchor=anchor,
-                   outline_level=0,
-                   outline_text=f"{num} · {title.replace('&amp;', '&')}",
-                   toc_entry=(0, f"{num}  ·  {title}", anchor)),
+        Paragraph(title, styles["SecTitle"]),
     ]
 
     head = Table([[chip, title_block]],
