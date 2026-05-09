@@ -154,7 +154,7 @@ function Index() {
               style={{
                 animationDelay: "40ms",
                 marginTop: "var(--hero-rhythm-xs)",
-                letterSpacing: "0.32em",
+                letterSpacing: isBn ? "0" : "0.32em",
                 wordSpacing: "normal",
               }}
             >
