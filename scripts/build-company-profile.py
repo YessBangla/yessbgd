@@ -603,8 +603,9 @@ def build_pdf():
 
     # ---- Cover ---------------------------------------------------------
     story.append(Spacer(1, 4 * mm))
-    story.append(Paragraph("YESS BANGLA PRIVATE LIMITED · DHAKA",
-                           styles["CoverEyebrow"]))
+    story.append(Paragraph(
+        f"YESS BANGLA PRIVATE LIMITED · DHAKA &nbsp;·&nbsp; {EDITION.upper()}",
+        styles["CoverEyebrow"]))
     story.append(AnchorPara("Company Profile",
                             styles["CoverTitle"], anchor="cover",
                             outline_level=0, outline_text="Cover"))
