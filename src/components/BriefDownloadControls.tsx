@@ -4,7 +4,7 @@ import {
   Settings2,
   FlaskConical,
   Loader2,
-  FileText,
+  
   Building2,
   AlertTriangle,
   X,
@@ -30,7 +30,7 @@ import {
   type PageOrientation,
   type IntegrityReport,
 } from "@/lib/ventureBrief";
-import { downloadVentureBriefDocx } from "@/lib/ventureBriefDocx";
+
 import {
   loadBranding,
   saveBranding,
@@ -82,7 +82,7 @@ export function BriefDownloadControls({
   const [format, setFormat] = useState<PageFormat>("a4");
   const [orientation, setOrientation] = useState<PageOrientation>("portrait");
   const [busy, setBusy] = useState<
-    null | "pdf" | "docx" | "samples" | "baseline" | "diff"
+    null | "pdf" | "samples" | "baseline" | "diff"
   >(null);
   const [presets, setPresets] = useState<BrandingPreset[]>(() => listPresets());
   const [activeId, setActiveId] = useState<string>(() => getActivePresetId());
@@ -199,18 +199,6 @@ export function BriefDownloadControls({
     }
   };
 
-  const handleDownloadDocx = async () => {
-    setBusy("docx");
-    try {
-      await downloadVentureBriefDocx(venture, {
-        branding,
-        watermarkOpacity: opacity,
-        logoScale: logoSettings.docxScale,
-      });
-    } finally {
-      setBusy(null);
-    }
-  };
 
   const handleGenerateSamples = async () => {
     setBusy("samples");
@@ -286,19 +274,6 @@ export function BriefDownloadControls({
           Download brief (PDF)
         </button>
 
-        <button
-          type="button"
-          onClick={handleDownloadDocx}
-          disabled={busy !== null}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-5 py-2.5 text-sm font-semibold backdrop-blur transition-transform hover:-translate-y-0.5 hover:bg-background disabled:opacity-60"
-        >
-          {busy === "docx" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <FileText className="h-4 w-4" />
-          )}
-          Download (DOCX)
-        </button>
 
         <Popover>
           <PopoverTrigger asChild>
@@ -541,14 +516,13 @@ export function BriefDownloadControls({
             </div>
             <p className="text-xs text-muted-foreground">
               Adjust the wordmark independently in each context. Header &amp; Footer
-              update live; PDF &amp; DOCX values apply to your next download.
+              update live; PDF values apply to your next download.
             </p>
 
             {([
               ["Header (live)", "headerScale", "headerOpacity"],
               ["Footer (live)", "footerScale", "footerOpacity"],
               ["PDF letterhead", "pdfScale", "pdfOpacity"],
-              ["DOCX letterhead", "docxScale", "docxOpacity"],
             ] as const).map(([label, scaleKey, opKey]) => (
               <fieldset key={label} className="space-y-2 rounded-lg border border-border p-3">
                 <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
