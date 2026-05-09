@@ -251,54 +251,74 @@ SECTIONS = [
 # ---------------------------------------------------------------------------
 # HTML / CSS template — A4 portrait, full letterhead background per page
 # ---------------------------------------------------------------------------
-def _render_blocks(blocks):
+def _render_block(kind, payload):
+    """Render a single content block (no pagebreak handling)."""
+    if kind == "p":
+        return f"<p>{payload}</p>"
+    if kind == "h3":
+        return f"<h3>{payload}</h3>"
+    if kind == "ul":
+        items = "".join(f"<li>{x}</li>" for x in payload)
+        return f"<ul>{items}</ul>"
+    if kind == "dl":
+        rows = "".join(
+            f"<div class='dl-row'><dt>{k}</dt><dd>{v}</dd></div>"
+            for k, v in payload)
+        return f"<dl>{rows}</dl>"
+    if kind == "kv":
+        rows = "".join(
+            f"<div class='kv-row'><div class='kv-k'>{k}</div><div class='kv-v'>{v}</div></div>"
+            for k, v in payload)
+        return f"<div class='kv'>{rows}</div>"
+    if kind == "table":
+        head = "".join(f"<th>{h}</th>" for h in payload["head"])
+        body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>"
+                       for r in payload["rows"])
+        return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
+    if kind == "sig":
+        return f"<p class='sig'>{payload}</p>"
+    return ""
+
+
+def _render_section(s):
+    """Render a section as one OR MORE .page divs, splitting at pagebreak.
+
+    Each printed sheet maps 1:1 to one `.page` so the fixed-position
+    letterhead always lines up cleanly with content padding."""
+    head = f"""
+      <header class="sec-head">
+        <div class="sec-chip">{s['n']}</div>
+        <div class="sec-titles">
+          <p class="sec-kicker">{s['kicker']}</p>
+          <h2 class="sec-title">{s['title']}</h2>
+        </div>
+      </header>
+      <div class="sec-rule"></div>
+    """
+    cont_head = f"""
+      <header class="sec-head sec-head-cont">
+        <p class="sec-kicker">{s['kicker']} · {s['title']} (চলমান)</p>
+      </header>
+      <div class="sec-rule sec-rule-cont"></div>
+    """
+    pages = [[]]  # list of block-html lists
+    for kind, payload in s['blocks']:
+        if kind == "pagebreak":
+            pages.append([])
+        else:
+            pages[-1].append(_render_block(kind, payload))
     out = []
-    for kind, payload in blocks:
-        if kind == "p":
-            out.append(f"<p>{payload}</p>")
-        elif kind == "h3":
-            out.append(f"<h3>{payload}</h3>")
-        elif kind == "ul":
-            items = "".join(f"<li>{x}</li>" for x in payload)
-            out.append(f"<ul>{items}</ul>")
-        elif kind == "dl":
-            rows = "".join(
-                f"<div class='dl-row'><dt>{k}</dt><dd>{v}</dd></div>"
-                for k, v in payload)
-            out.append(f"<dl>{rows}</dl>")
-        elif kind == "kv":
-            rows = "".join(
-                f"<div class='kv-row'><div class='kv-k'>{k}</div><div class='kv-v'>{v}</div></div>"
-                for k, v in payload)
-            out.append(f"<div class='kv'>{rows}</div>")
-        elif kind == "table":
-            head = "".join(f"<th>{h}</th>" for h in payload["head"])
-            body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>"
-                           for r in payload["rows"])
-            out.append(f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>")
-        elif kind == "sig":
-            out.append(f"<p class='sig'>{payload}</p>")
-        elif kind == "pagebreak":
-            out.append("<div class='page-break'></div>")
+    for i, blocks in enumerate(pages):
+        h = head if i == 0 else cont_head
+        out.append(
+            f"<section class='page profile-section'>"
+            f"{h}<div class='sec-body'>{''.join(blocks)}</div>"
+            f"</section>")
     return "\n".join(out)
 
 
 def render_html() -> str:
-    sections_html = []
-    for s in SECTIONS:
-        sections_html.append(f"""
-        <section class="profile-section">
-          <header class="sec-head">
-            <div class="sec-chip">{s['n']}</div>
-            <div class="sec-titles">
-              <p class="sec-kicker">{s['kicker']}</p>
-              <h2 class="sec-title">{s['title']}</h2>
-            </div>
-          </header>
-          <div class="sec-rule"></div>
-          <div class="sec-body">{_render_blocks(s['blocks'])}</div>
-        </section>
-        """)
+    sections_html = [_render_section(s) for s in SECTIONS]
 
     # (per-section full-bleed overlay disabled — caused logo overlap with
     # body content after page breaks in Chromium print rendering. The fixed
