@@ -91,7 +91,8 @@ type LocalizedItem = { title: string; desc: string };
 type Testimonial = { name: string; role: string; quote: string };
 
 function Index() {
-  const { t } = useTranslation();
+  const { t, i18n: i18nInst } = useTranslation();
+  const isBn = (i18nInst?.language || i18n.language || "en").startsWith("bn");
   const [hydrated, setHydrated] = useState(false);
   // Pause water-ripple shimmer when the headline scrolls offscreen
   const headlineRef = useOffscreenPause<HTMLHeadingElement>();
