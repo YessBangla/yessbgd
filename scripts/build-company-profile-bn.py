@@ -334,17 +334,22 @@ def render_html() -> str:
   * {{ box-sizing: border-box; }}
   html, body {{
     margin: 0; padding: 0; background: #fff;
-    font-family: 'Noto Sans Bengali', 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans Bengali', 'Noto Serif Bengali', 'Noto Sans', sans-serif;
     font-size: 10.5pt;
-    line-height: 1.6;
+    line-height: 1.7;
+    letter-spacing: 0.005em;
     color: var(--ink);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   }}
-  p {{ margin: 0 0 7pt 0; text-align: justify; }}
-  h2, h3 {{ font-weight: 700; color: var(--navy); margin: 0; }}
-  ul {{ padding-left: 16pt; margin: 0 0 7pt 0; }}
-  li {{ margin-bottom: 3pt; }}
+  p {{ margin: 0 0 8pt 0; text-align: justify; text-justify: inter-word; hyphens: none; }}
+  h2, h3, h4 {{ font-weight: 700; color: var(--navy); margin: 0; line-height: 1.25; letter-spacing: -0.005em; }}
+  ul, ol {{ padding-left: 18pt; margin: 0 0 8pt 0; }}
+  li {{ margin-bottom: 4pt; line-height: 1.65; }}
+  b, strong {{ font-weight: 700; color: var(--navy); }}
 
   /* Section-level page break — Playwright respects these */
   .cover, .toc, .profile-section {{ page-break-after: always; break-after: page; }}
@@ -358,36 +363,46 @@ def render_html() -> str:
   /* Cover */
   .cover .eyebrow {{
     color: var(--gold); font-weight: 700; font-size: 9pt;
-    letter-spacing: 0.06em; margin-bottom: 8pt;
+    letter-spacing: 0.14em; margin-bottom: 10pt;
   }}
   .cover h1 {{
-    font-size: 38pt; line-height: 1.1; color: var(--navy);
-    margin: 0 0 8pt 0; font-weight: 800;
+    font-size: 40pt; line-height: 1.08; color: var(--navy);
+    margin: 0 0 10pt 0; font-weight: 800; letter-spacing: -0.012em;
   }}
-  .cover .subtitle {{ font-size: 13pt; line-height: 1.55; margin: 0 0 16pt 0; }}
+  .cover .subtitle {{
+    font-size: 13pt; line-height: 1.55; margin: 0 0 18pt 0;
+    color: #2c3e50; max-width: 165mm;
+  }}
   .strip {{
     background: var(--navy); color: #fff; font-size: 9pt;
-    padding: 8pt 12pt; margin-bottom: 12mm;
+    padding: 9pt 14pt; margin-bottom: 14mm; letter-spacing: 0.02em;
   }}
   .glance {{
     border: 0.5pt solid var(--rule);
-    border-top: 2pt solid var(--gold);
-    background: #fff; padding: 14pt 16pt;
+    border-top: 2.5pt solid var(--gold);
+    background: #fff; padding: 16pt 18pt;
   }}
 
   /* TOC */
-  .toc h2 {{ font-size: 24pt; margin-bottom: 16pt; color: var(--navy); }}
+  .toc h2 {{
+    font-size: 26pt; margin-bottom: 14pt; color: var(--navy);
+    letter-spacing: -0.01em;
+  }}
   .toc ol {{ list-style: none; padding: 0; margin: 0; }}
   .toc li {{
-    display: flex; gap: 12pt; padding: 7pt 0;
+    display: flex; gap: 14pt; padding: 9pt 0;
     border-bottom: 0.25pt dotted var(--rule);
-    font-size: 11pt; color: var(--navy);
+    font-size: 11pt; line-height: 1.4; color: var(--navy);
   }}
-  .toc-num {{ font-weight: 700; min-width: 30pt; color: var(--gold); }}
+  .toc-num {{
+    font-weight: 700; min-width: 32pt; color: var(--gold);
+    letter-spacing: 0.04em;
+  }}
+  .toc-title {{ flex: 1; }}
 
   /* Sections */
   .sec-head {{
-    display: flex; align-items: stretch; gap: 12pt;
+    display: flex; align-items: stretch; gap: 14pt;
     margin: 0 0 4pt 0;
   }}
   .sec-chip {{
@@ -395,43 +410,50 @@ def render_html() -> str:
     background: var(--navy); color: #fff;
     font-size: 18pt; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    flex-shrink: 0; letter-spacing: 0.02em;
   }}
   .sec-titles {{ flex: 1; padding-top: 4pt; }}
   .sec-kicker {{
     color: var(--gold); font-weight: 700; font-size: 8.5pt;
-    letter-spacing: 0.05em; margin: 0 0 3pt 0;
+    letter-spacing: 0.16em; margin: 0 0 4pt 0;
   }}
-  .sec-title {{ font-size: 20pt; line-height: 1.2; margin: 0; }}
-  .sec-rule {{ height: 2pt; background: var(--gold); margin: 8pt 0 14pt 0; }}
-  .sec-body h3 {{ font-size: 11.5pt; color: var(--teal); margin: 12pt 0 5pt 0; }}
+  .sec-title {{
+    font-size: 21pt; line-height: 1.18; margin: 0;
+    letter-spacing: -0.008em; font-weight: 800;
+  }}
+  .sec-rule {{ height: 2pt; background: var(--gold); margin: 10pt 0 16pt 0; }}
+  .sec-body h3 {{
+    font-size: 12pt; color: var(--teal); margin: 14pt 0 6pt 0;
+    letter-spacing: -0.003em; font-weight: 700;
+  }}
 
   /* dl / kv / tables */
-  dl {{ margin: 0 0 8pt 0; }}
-  .dl-row {{ margin-bottom: 8pt; }}
-  dt {{ font-weight: 700; color: var(--navy); margin-bottom: 1pt; }}
-  dd {{ margin: 0; text-align: justify; }}
-  .kv {{ margin: 0 0 8pt 0; }}
+  dl {{ margin: 0 0 10pt 0; }}
+  .dl-row {{ margin-bottom: 10pt; }}
+  dt {{ font-weight: 700; color: var(--navy); margin-bottom: 2pt; line-height: 1.4; }}
+  dd {{ margin: 0; text-align: justify; line-height: 1.65; }}
+  .kv {{ margin: 0 0 10pt 0; }}
   .kv-row {{
-    display: flex; gap: 12pt; padding: 6pt 0;
+    display: flex; gap: 14pt; padding: 7pt 0;
     border-bottom: 0.25pt solid var(--rule);
   }}
   .kv-k {{ flex: 0 0 38%; font-weight: 700; color: var(--navy); }}
-  .kv-v {{ flex: 1; }}
+  .kv-v {{ flex: 1; line-height: 1.55; }}
   table {{
     width: 100%; border-collapse: collapse;
-    margin: 0 0 8pt 0; font-size: 10pt;
+    margin: 0 0 10pt 0; font-size: 10pt;
   }}
   th {{
     background: var(--navy); color: #fff;
-    text-align: left; padding: 7pt 8pt; font-weight: 700;
+    text-align: left; padding: 8pt 9pt; font-weight: 700;
+    letter-spacing: 0.01em; font-size: 9.5pt;
   }}
   td {{
-    padding: 7pt 8pt; border-bottom: 0.25pt solid var(--rule);
-    vertical-align: top;
+    padding: 8pt 9pt; border-bottom: 0.25pt solid var(--rule);
+    vertical-align: top; line-height: 1.55;
   }}
   tbody tr:nth-child(even) td {{ background: #F8F6F1; }}
-  .sig {{ font-weight: 700; color: var(--navy); margin-top: 10pt; }}
+  .sig {{ font-weight: 700; color: var(--navy); margin-top: 12pt; font-style: italic; }}
 </style>
 </head>
 <body>
