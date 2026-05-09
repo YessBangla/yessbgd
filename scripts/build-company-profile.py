@@ -443,6 +443,30 @@ class AnchorPara(Paragraph):
             self._tocEntry = toc_entry  # (level, text, anchor)
 
 
+from reportlab.platypus import Flowable
+
+
+class TocAnchor(Flowable):
+    """Zero-height top-level flowable that emits a bookmark + TOC entry.
+
+    Placed BEFORE composite section headings (which wrap content in a Table,
+    hiding inner Paragraph afterFlowable callbacks from the doc template).
+    """
+    def __init__(self, anchor: str, toc_text: str, outline_text: str,
+                 outline_level: int = 0):
+        super().__init__()
+        self._bookmarkName = anchor
+        self._outlineText = outline_text
+        self._outlineLevel = outline_level
+        self._tocEntry = (outline_level, toc_text, anchor)
+
+    def wrap(self, w, h):
+        return (0, 0)
+
+    def draw(self):
+        pass
+
+
 def kv_table(rows):
     data = [[Paragraph(f"{k}", styles["DLTerm"]),
              Paragraph(v, styles["BodyLeft"])] for k, v in rows]
