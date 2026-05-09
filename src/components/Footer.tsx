@@ -15,9 +15,9 @@ export function Footer() {
                 alt="YESS Bangla logo"
                 loading="lazy"
                 decoding="async"
-                width={48}
-                height={48}
-                className="h-12 w-12 rounded-xl bg-transparent object-contain"
+                width={279}
+                height={153}
+                className="h-14 w-auto bg-transparent object-contain"
               />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">

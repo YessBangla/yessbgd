@@ -66,7 +66,7 @@ async function bakeWatermark(
 ): Promise<Uint8Array | null> {
   if (typeof document === "undefined") return null;
   try {
-    const blob = new Blob([bytes as BlobPart], { type: "image/jpeg" });
+    const blob = new Blob([bytes as BlobPart], { type: "image/png" });
     const url = URL.createObjectURL(blob);
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const i = new Image();
@@ -117,9 +117,10 @@ function makeLetterhead(
           new Paragraph({
             children: [
               new ImageRun({
-                type: "jpg",
+                type: "png",
                 data: logo,
-                transformation: { width: 50, height: 50 },
+                // Wordmark aspect ≈ 1.82:1 — keep it readable in the header band.
+                transformation: { width: 96, height: 53 },
                 altText: {
                   title: brand.companyName,
                   description: `${brand.companyName} logo`,
