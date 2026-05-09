@@ -251,55 +251,74 @@ SECTIONS = [
 # ---------------------------------------------------------------------------
 # HTML / CSS template — A4 portrait, full letterhead background per page
 # ---------------------------------------------------------------------------
-def _render_blocks(blocks):
+def _render_block(kind, payload):
+    """Render a single content block (no pagebreak handling)."""
+    if kind == "p":
+        return f"<p>{payload}</p>"
+    if kind == "h3":
+        return f"<h3>{payload}</h3>"
+    if kind == "ul":
+        items = "".join(f"<li>{x}</li>" for x in payload)
+        return f"<ul>{items}</ul>"
+    if kind == "dl":
+        rows = "".join(
+            f"<div class='dl-row'><dt>{k}</dt><dd>{v}</dd></div>"
+            for k, v in payload)
+        return f"<dl>{rows}</dl>"
+    if kind == "kv":
+        rows = "".join(
+            f"<div class='kv-row'><div class='kv-k'>{k}</div><div class='kv-v'>{v}</div></div>"
+            for k, v in payload)
+        return f"<div class='kv'>{rows}</div>"
+    if kind == "table":
+        head = "".join(f"<th>{h}</th>" for h in payload["head"])
+        body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>"
+                       for r in payload["rows"])
+        return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
+    if kind == "sig":
+        return f"<p class='sig'>{payload}</p>"
+    return ""
+
+
+def _render_section(s):
+    """Render a section as one OR MORE .page divs, splitting at pagebreak.
+
+    Each printed sheet maps 1:1 to one `.page` so the fixed-position
+    letterhead always lines up cleanly with content padding."""
+    head = f"""
+      <header class="sec-head">
+        <div class="sec-chip">{s['n']}</div>
+        <div class="sec-titles">
+          <p class="sec-kicker">{s['kicker']}</p>
+          <h2 class="sec-title">{s['title']}</h2>
+        </div>
+      </header>
+      <div class="sec-rule"></div>
+    """
+    cont_head = f"""
+      <header class="sec-head sec-head-cont">
+        <p class="sec-kicker">{s['kicker']} · {s['title']} (চলমান)</p>
+      </header>
+      <div class="sec-rule sec-rule-cont"></div>
+    """
+    pages = [[]]  # list of block-html lists
+    for kind, payload in s['blocks']:
+        if kind == "pagebreak":
+            pages.append([])
+        else:
+            pages[-1].append(_render_block(kind, payload))
     out = []
-    for kind, payload in blocks:
-        if kind == "p":
-            out.append(f"<p>{payload}</p>")
-        elif kind == "h3":
-            out.append(f"<h3>{payload}</h3>")
-        elif kind == "ul":
-            items = "".join(f"<li>{x}</li>" for x in payload)
-            out.append(f"<ul>{items}</ul>")
-        elif kind == "dl":
-            rows = "".join(
-                f"<div class='dl-row'><dt>{k}</dt><dd>{v}</dd></div>"
-                for k, v in payload)
-            out.append(f"<dl>{rows}</dl>")
-        elif kind == "kv":
-            rows = "".join(
-                f"<div class='kv-row'><div class='kv-k'>{k}</div><div class='kv-v'>{v}</div></div>"
-                for k, v in payload)
-            out.append(f"<div class='kv'>{rows}</div>")
-        elif kind == "table":
-            head = "".join(f"<th>{h}</th>" for h in payload["head"])
-            body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>"
-                           for r in payload["rows"])
-            out.append(f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>")
-        elif kind == "sig":
-            out.append(f"<p class='sig'>{payload}</p>")
-        elif kind == "pagebreak":
-            out.append("<div class='page-break'></div>")
+    for i, blocks in enumerate(pages):
+        h = head if i == 0 else cont_head
+        out.append(
+            f"<section class='page profile-section'>"
+            f"{h}<div class='sec-body'>{''.join(blocks)}</div>"
+            f"</section>")
     return "\n".join(out)
 
 
 def render_html() -> str:
-    sections_html = []
-    for s in SECTIONS:
-        sections_html.append(f"""
-        <section class="profile-section">
-          <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
-          <header class="sec-head">
-            <div class="sec-chip">{s['n']}</div>
-            <div class="sec-titles">
-              <p class="sec-kicker">{s['kicker']}</p>
-              <h2 class="sec-title">{s['title']}</h2>
-            </div>
-          </header>
-          <div class="sec-rule"></div>
-          <div class="sec-body">{_render_blocks(s['blocks'])}</div>
-        </section>
-        """)
+    sections_html = [_render_section(s) for s in SECTIONS]
 
     # (per-section full-bleed overlay disabled — caused logo overlap with
     # body content after page breaks in Chromium print rendering. The fixed
@@ -316,35 +335,20 @@ def render_html() -> str:
 <meta charset="utf-8">
 <title>ইয়েস বাংলা — কোম্পানি প্রোফাইল ({VERSION})</title>
 <style>
-  /* Letterhead pad: position:fixed sheet repeats on every overflow page
-     in Chromium print. The cover page additionally embeds an absolutely
-     positioned letterhead because fixed elements can be skipped on the
-     very first page. */
+  /* Each `.page` is a fixed A4-sized container that explicitly insets
+     content from the letterhead's logo (top) and contact strip (bottom).
+     `@page margin: 0` lets us paint full-bleed letterhead per sheet. */
   @page {{ size: A4 portrait; margin: 0; }}
-  body {{ margin: 0; }}
-  .lh-header, .lh-footer, .lh-watermark {{ display: none; }}
-  .pad-bg {{
-    position: fixed; top: 0; left: 0;
-    width: 210mm; height: 297mm;
-    z-index: 0; pointer-events: none;
-  }}
-  .pad-bg img {{ width: 210mm; height: 297mm; display: block; }}
-  .cover-pad {{
-    position: absolute; top: 0; left: 0;
-    width: 210mm; height: 297mm;
-    z-index: 0; pointer-events: none;
-  }}
-  .cover-pad img {{ width: 210mm; height: 297mm; display: block; }}
-  .page-frame {{ box-sizing: border-box; position: relative; z-index: 1; }}
-  .cover, .toc, .profile-section {{
-    padding: 42mm 20mm 50mm 20mm;
-    box-sizing: border-box;
+  html, body {{ margin: 0; padding: 0; background: #fff; }}
+
+  .page {{
     position: relative;
-  }}
-  .cover > *:not(.cover-pad), .toc > *, .profile-section > * {{
-    position: relative; z-index: 2;
-  }}
-  html {{
+    width: 210mm;
+    height: 297mm;
+    padding: 38mm 22mm 44mm 22mm;
+    box-sizing: border-box;
+    overflow: hidden;
+    page-break-after: always;
     background-image: url("file://{LETTERHEAD}");
     background-size: 210mm 297mm;
     background-repeat: no-repeat;
@@ -352,9 +356,8 @@ def render_html() -> str:
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }}
-  body {{ margin: 0; background: transparent; }}
-  .lh-header, .lh-footer, .lh-watermark, .pad-bg {{ display: none; }}
-  .page-frame {{ box-sizing: border-box; }}
+  .page:last-child {{ page-break-after: auto; }}
+  .page > * {{ position: relative; z-index: 1; }}
 
   :root {{
     --navy: #0E2A3A;
@@ -516,20 +519,14 @@ def render_html() -> str:
 </head>
 <body>
 
-<div class="pad-bg" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
-
-<div class="page-frame">
-
-<div class="cover">
-  <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
+<div class="page cover">
   <p class="eyebrow">ইয়েস বাংলা প্রাইভেট লিমিটেড · ঢাকা · বাংলা সংস্করণ</p>
   <h1>কোম্পানি প্রোফাইল</h1>
-  <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড নিয়ে বাংলাদেশ ও তার বাইরে কাজ করছে।</p>
+  <p class="subtitle">একটি সমন্বিত এন্টারপ্রাইজ গ্রুপ — সফটওয়্যার, ব্রডকাস্ট মিডিয়া, ডিজিটাল স্ট্রিমিং, সাংবাদিকতা, অর্গানিক বাণিজ্য, পেশাদার সেবা ও লাইফস্টাইল ব্র্যান্ড।</p>
   <div class="strip"><b>গোপনীয়</b> · প্রাপকের জন্য · বাংলা সংস্করণ · {VERSION} · {GENERATED_BN}</div>
   <div class="glance">
     <div class="kv">
       <div class="kv-row"><div class="kv-k">আইনি নাম</div><div class="kv-v">ইয়েস বাংলা প্রাইভেট লিমিটেড</div></div>
-      <div class="kv-row"><div class="kv-k">নিবন্ধন</div><div class="kv-v">প্রাইভেট লিমিটেড কোম্পানি, বাংলাদেশ</div></div>
       <div class="kv-row"><div class="kv-k">নিবন্ধিত অফিস</div><div class="kv-v">{OFFICE}</div></div>
       <div class="kv-row"><div class="kv-k">করপোরেট অফিস</div><div class="kv-v">{CORP}</div></div>
       <div class="kv-row"><div class="kv-k">সেল</div><div class="kv-v">{PHONE}</div></div>
@@ -538,20 +535,18 @@ def render_html() -> str:
       <div class="kv-row"><div class="kv-k">খাত</div><div class="kv-v">প্রযুক্তি · মিডিয়া · ব্রডকাস্টিং · ই-কমার্স · লাইফস্টাইল সেবা</div></div>
       <div class="kv-row"><div class="kv-k">ভেঞ্চার সংখ্যা</div><div class="kv-v">এক মূল কোম্পানির অধীনে ১১টি বিশেষায়িত ব্র্যান্ড</div></div>
       <div class="kv-row"><div class="kv-k">ভাষা</div><div class="kv-v">বাংলা ও ইংরেজি (এই সংস্করণ: বাংলা)</div></div>
-      <div class="kv-row"><div class="kv-k">সংস্করণ</div><div class="kv-v">{VERSION} · প্রকাশিত {GENERATED_BN}</div></div>
+      <div class="kv-row"><div class="kv-k">সংস্করণ</div><div class="kv-v">{VERSION} · {GENERATED_BN}</div></div>
     </div>
   </div>
 </div>
 
-<section class="toc">
-  <div class="cover-pad" aria-hidden="true"><img src="file://{LETTERHEAD}" alt=""></div>
+<section class="page toc">
   <h2>সূচিপত্র</h2>
   <ol>{toc_items}</ol>
 </section>
 
 {''.join(sections_html)}
 
-</div>
 
 </body>
 </html>
