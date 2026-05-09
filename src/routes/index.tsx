@@ -463,17 +463,17 @@ function Index() {
                           <span aria-hidden="true" className="text-base leading-none">🇬🇧</span> EN
                         </span>
                       </div>
-                      <div className="mt-5 sm:mt-6">
+                      <div className="relative mt-5 sm:mt-6">
                         <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3b5ea8]/80">
                           {t("home.downloadCards.english.kicker")}
                         </div>
-                        <div className="mt-1 font-display text-[13px] font-semibold leading-snug sm:text-base">
+                        <div className="mt-1 font-display text-[13px] font-semibold leading-snug bg-gradient-to-r from-[#1e3a7a] to-[#3b5ea8] bg-clip-text text-transparent sm:text-base">
                           {t("home.downloadCards.english.title")}
                         </div>
                         <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
                           {t("home.downloadCards.english.meta")}
                         </div>
-                        <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-[#7a9ce0]/30 bg-background/60 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#3b5ea8] sm:mt-3 sm:text-[10px]">
+                        <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/40 bg-gradient-to-r from-white/70 to-white/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#3b5ea8] shadow-sm sm:mt-3 sm:text-[10px]">
                           <LockIcon className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.english.lock")}
                         </div>
                       </div>
