@@ -218,13 +218,10 @@ function Index() {
                 wordSpacing: "normal",
               }}
             >
-              <span className="font-medium text-background/95">YESS Bangla</span>{" "}
-              partners with ambitious organisations to deliver consulting,
-              technology, media and commerce solutions —
-              {/* nowrap only ≥md (768px+) — narrow tablets/large phones still
-                  wrap naturally; desktop keeps the editorial line break. */}
-              <span className="md:whitespace-nowrap"> engineered to international standards,</span>
-              <span className="md:whitespace-nowrap"> shipped from Dhaka.</span>
+              <span className="font-medium text-background/95">{t("home.hero.ledeBrand")}</span>{" "}
+              {t("home.hero.ledeBody")}
+              <span className="md:whitespace-nowrap"> {t("home.hero.ledeStandard")}</span>
+              <span className="md:whitespace-nowrap"> {t("home.hero.ledeOrigin")}</span>
             </p>
 
             {/* CTA row — stacks full-width on small phones for tap-target
