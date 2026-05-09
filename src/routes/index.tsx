@@ -449,28 +449,28 @@ function Index() {
                       onClick={open}
                       aria-label={t("home.downloadCards.english.ariaButton")}
                       lang="en"
-                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[#6f8fd6]/70 bg-[#7a9ce0] p-4 text-left text-white transition-all hover:-translate-y-1 hover:bg-[#6f93dd] hover:shadow-xl sm:p-5"
+                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[#7a9ce0]/40 bg-[#7a9ce0]/15 p-4 text-left text-foreground backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-[#7a9ce0]/60 hover:bg-[#7a9ce0]/20 hover:shadow-xl sm:p-5"
                     >
                       {/* Prominent flag + lang badge — sized larger on mobile */}
                       <div className="flex items-center justify-between gap-2">
-                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-background/15 text-background sm:h-10 sm:w-10">
+                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#7a9ce0]/25 text-[#3b5ea8] sm:h-10 sm:w-10">
                           <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-white text-[#3b5ea8] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm sm:px-2.5 sm:text-[12px]">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-[#7a9ce0]/40 bg-background/70 text-[#3b5ea8] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm backdrop-blur sm:px-2.5 sm:text-[12px]">
                           <span aria-hidden="true" className="text-base leading-none">🇬🇧</span> EN
                         </span>
                       </div>
                       <div className="mt-5 sm:mt-6">
-                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] opacity-70">
+                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3b5ea8]/80">
                           {t("home.downloadCards.english.kicker")}
                         </div>
                         <div className="mt-1 font-display text-[13px] font-semibold leading-snug sm:text-base">
                           {t("home.downloadCards.english.title")}
                         </div>
-                        <div className="mt-1 text-[10px] opacity-75 sm:text-xs">
+                        <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
                           {t("home.downloadCards.english.meta")}
                         </div>
-                        <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-background/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] sm:mt-3 sm:text-[10px]">
+                        <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-[#7a9ce0]/30 bg-background/60 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#3b5ea8] sm:mt-3 sm:text-[10px]">
                           <LockIcon className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.english.lock")}
                         </div>
                       </div>
