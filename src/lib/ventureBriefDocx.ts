@@ -38,6 +38,7 @@ import {
 } from "@/data/ventures";
 import { resolveBranding, type BriefBranding } from "./briefBranding";
 import logoUrl from "@/assets/yess-bangla-logo.png";
+import letterheadUrl from "@/assets/yess-bangla-letterhead.jpeg";
 
 export interface DocxBriefOptions {
   branding?: Partial<BriefBranding>;
@@ -57,6 +58,17 @@ async function fetchLogoBytes(): Promise<Uint8Array | null> {
   if (typeof fetch !== "function") return null;
   try {
     const res = await fetch(logoUrl);
+    const buf = await res.arrayBuffer();
+    return new Uint8Array(buf);
+  } catch {
+    return null;
+  }
+}
+
+async function fetchPadBytes(): Promise<Uint8Array | null> {
+  if (typeof fetch !== "function") return null;
+  try {
+    const res = await fetch(letterheadUrl);
     const buf = await res.arrayBuffer();
     return new Uint8Array(buf);
   } catch {
@@ -103,143 +115,64 @@ async function bakeWatermark(
   }
 }
 
+/**
+ * Build a Header that floats the official letterhead pad behind the body
+ * text on every page. The pad already carries the logo, watermark, and
+ * navy footer band, so the body just needs comfortable margins.
+ *
+ * Falls back to a minimal typographic header when the pad fetch fails so
+ * generated documents still carry the brand identity.
+ */
 function makeLetterhead(
   brand: BriefBranding,
-  logo: Uint8Array | null,
-  logoScale: number = 1,
-  theme: "light" | "dark" = "light",
+  pad: Uint8Array | null,
 ): Header {
-  const cells: TableCell[] = [];
-  const plateFill = theme === "dark" ? NAVY : "FFFFFF";
-  const plateTextColor = theme === "dark" ? "FFFFFF" : NAVY;
-
-  // Always render a logo cell — embed the PNG when available, else fall
-  // back to a typographic wordmark on a theme-aware plate so readability
-  // is guaranteed even when the transparent logo can't be fetched.
-  cells.push(
-    new TableCell({
-      width: { size: 1800, type: WidthType.DXA },
-      verticalAlign: VerticalAlign.CENTER,
-      shading: { fill: plateFill, type: ShadingType.CLEAR, color: "auto" },
-      margins: { top: 80, bottom: 80, left: 120, right: 80 },
-      borders: noBorder(),
-      children: [
-        logo
-          ? new Paragraph({
-              children: [
-                new ImageRun({
-                  type: "png",
-                  data: logo,
-                  transformation: {
-                    width: Math.round(96 * Math.max(0.6, Math.min(1.4, logoScale))),
-                    height: Math.round(53 * Math.max(0.6, Math.min(1.4, logoScale))),
-                  },
-                  altText: {
-                    title: brand.companyName,
-                    description: `${brand.companyName} — Enterprise Solutions, Media & Technology. Document letterhead logo.`,
-                    name: `${brand.companyName} logo`,
-                  },
-                }),
-              ],
-            })
-          : new Paragraph({
-              children: [
-                new TextRun({
-                  text: brand.companyName.toUpperCase(),
-                  bold: true,
-                  color: plateTextColor,
-                  size: 22,
-                }),
-              ],
-            }),
-      ],
-    }),
-  );
-  cells.push(
-    new TableCell({
-      width: { size: 6000, type: WidthType.DXA },
-      verticalAlign: VerticalAlign.CENTER,
-      shading: { fill: NAVY, type: ShadingType.CLEAR, color: "auto" },
-      margins: { top: 80, bottom: 80, left: 120, right: 120 },
-      borders: noBorder(),
+  if (pad) {
+    return new Header({
       children: [
         new Paragraph({
           children: [
-            new TextRun({
-              text: brand.companyName,
-              bold: true,
-              color: "FFFFFF",
-              size: 26,
-            }),
-          ],
-        }),
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: brand.tagline,
-              color: "DCE2F0",
-              size: 16,
+            new ImageRun({
+              type: "jpg",
+              data: pad,
+              // A4 portrait at 96 DPI: 794 x 1123 px ≈ 8.27 x 11.69 in.
+              transformation: { width: 794, height: 1123 },
+              floating: {
+                horizontalPosition: {
+                  relative: "page" as never,
+                  align: "center" as never,
+                } as never,
+                verticalPosition: {
+                  relative: "page" as never,
+                  align: "center" as never,
+                } as never,
+                behindDocument: true,
+                zIndex: 0,
+              },
+              altText: {
+                title: `${brand.companyName} letterhead`,
+                description: `Official ${brand.companyName} letterhead — logo, watermark, and contact band.`,
+                name: "letterhead",
+              },
             }),
           ],
         }),
       ],
-    }),
-  );
-
-  const rightWidth = 9360 - 1800 - 6000;
-  cells.push(
-    new TableCell({
-      width: { size: rightWidth, type: WidthType.DXA },
-      verticalAlign: VerticalAlign.CENTER,
-      shading: { fill: NAVY, type: ShadingType.CLEAR, color: "auto" },
-      margins: { top: 80, bottom: 80, left: 120, right: 120 },
-      borders: noBorder(),
-      children: [
-        new Paragraph({
-          alignment: AlignmentType.RIGHT,
-          children: [
-            new TextRun({
-              text: brand.documentLabel,
-              bold: true,
-              color: "FFFFFF",
-              size: 18,
-            }),
-          ],
-        }),
-        new Paragraph({
-          alignment: AlignmentType.RIGHT,
-          children: [
-            new TextRun({
-              text: brand.confidentialityNote,
-              color: "DCE2F0",
-              size: 14,
-            }),
-          ],
-        }),
-      ],
-    }),
-  );
-
-  const widths = [1800, 6000, rightWidth];
-
+    });
+  }
+  // Fallback: minimal typographic letterhead band so brand still shows.
   return new Header({
     children: [
-      new Table({
-        width: { size: 9360, type: WidthType.DXA },
-        columnWidths: widths,
-        borders: tableNoBorders(),
-        rows: [new TableRow({ children: cells })],
-      }),
-      // Gold accent line under letterhead band
       new Paragraph({
-        spacing: { before: 0, after: 0 },
+        spacing: { after: 80 },
+        children: [
+          new TextRun({ text: "Yess", bold: true, color: "BE1E2D", size: 32 }),
+          new TextRun({ text: " bangla", bold: true, color: "148C3C", size: 32 }),
+        ],
+      }),
+      new Paragraph({
         border: {
-          bottom: {
-            style: BorderStyle.SINGLE,
-            size: 12,
-            color: GOLD,
-            space: 1,
-          },
+          bottom: { style: BorderStyle.SINGLE, size: 8, color: GOLD, space: 1 },
         },
         children: [new TextRun({ text: "", size: 2 })],
       }),
@@ -263,59 +196,18 @@ function tableNoBorders() {
   };
 }
 
-function makeFooter(brand: BriefBranding, slug: string): Footer {
+function makeFooter(): Footer {
+  // Pad already shows the navy contact band — footer just carries the
+  // page number, anchored above the band so it stays visible.
   return new Footer({
     children: [
       new Paragraph({
-        spacing: { before: 60, after: 0 },
-        border: {
-          top: {
-            style: BorderStyle.SINGLE,
-            size: 8,
-            color: GOLD,
-            space: 4,
-          },
-        },
-        children: [new TextRun({ text: "", size: 2 })],
-      }),
-      new Paragraph({
+        alignment: AlignmentType.RIGHT,
         children: [
-          new TextRun({
-            text: brand.companyName,
-            bold: true,
-            color: NAVY,
-            size: 18,
-          }),
-          new PositionalTab({
-            alignment: PositionalTabAlignment.RIGHT,
-            relativeTo: PositionalTabRelativeTo.MARGIN,
-            leader: PositionalTabLeader.NONE,
-          }),
-          new TextRun({ text: "Page ", color: NAVY, size: 16 }),
-          new TextRun({ children: [PageNumber.CURRENT], color: NAVY, size: 16 }),
-          new TextRun({ text: " of ", color: NAVY, size: 16 }),
-          new TextRun({ children: [PageNumber.TOTAL_PAGES], color: NAVY, size: 16 }),
-        ],
-      }),
-      new Paragraph({
-        children: [new TextRun({ text: brand.address, color: "464646", size: 15 })],
-      }),
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `Email: ${brand.email}   ·   Phone: ${brand.phone}`,
-            color: "464646",
-            size: 15,
-          }),
-        ],
-      }),
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `Web: ${brand.web}/ventures/${slug}   ·   © ${new Date().getFullYear()} ${brand.copyrightHolder}`,
-            color: "8C8C8C",
-            size: 14,
-          }),
+          new TextRun({ text: "Page ", color: "808080", size: 14 }),
+          new TextRun({ children: [PageNumber.CURRENT], color: "808080", size: 14 }),
+          new TextRun({ text: " of ", color: "808080", size: 14 }),
+          new TextRun({ children: [PageNumber.TOTAL_PAGES], color: "808080", size: 14 }),
         ],
       }),
     ],
@@ -373,12 +265,9 @@ export async function buildVentureBriefDocx(
   opts: DocxBriefOptions = {},
 ): Promise<Blob> {
   const brand = resolveBranding(opts.branding);
-  const logo = await fetchLogoBytes();
-  const watermarkOpacity = Math.max(0.02, Math.min(0.4, opts.watermarkOpacity ?? 0.08));
-  const watermark =
-    logo && typeof document !== "undefined"
-      ? await bakeWatermark(logo, watermarkOpacity)
-      : null;
+  // Pad fetch is the new primary brand asset — logo bytes are no longer
+  // required for the header (the pad already contains the logo + footer).
+  const pad = await fetchPadBytes();
 
   const cs = getVentureCase(v);
   const milestones = getVentureMilestones(v);
@@ -387,40 +276,6 @@ export async function buildVentureBriefDocx(
 
   // Body paragraphs
   const body: Paragraph[] = [];
-
-  // Centered watermark — drawn behind text using floating image. Inserted
-  // at the top so it anchors to the first paragraph; Word repeats it on
-  // subsequent pages because the anchor is a section-level floating image.
-  if (watermark) {
-    body.push(
-      new Paragraph({
-        children: [
-          new ImageRun({
-            type: "jpg",
-            data: watermark,
-            transformation: { width: 380, height: 380 },
-            floating: {
-              horizontalPosition: {
-                relative: "page" as never,
-                align: "center" as never,
-              } as never,
-              verticalPosition: {
-                relative: "page" as never,
-                align: "center" as never,
-              } as never,
-              behindDocument: true,
-              zIndex: 0,
-            },
-            altText: {
-              title: `${brand.companyName} watermark`,
-              description: `${brand.companyName} watermark`,
-              name: "watermark",
-            },
-          }),
-        ],
-      }),
-    );
-  }
 
   body.push(h1(v.title));
   body.push(p(v.tagline, { bold: true, size: 24, color: "505050" }));
@@ -503,8 +358,8 @@ export async function buildVentureBriefDocx(
             },
           },
         },
-        headers: { default: makeLetterhead(brand, logo, opts.logoScale ?? 1, opts.letterheadTheme ?? "light") },
-        footers: { default: makeFooter(brand, v.slug) },
+        headers: { default: makeLetterhead(brand, pad) },
+        footers: { default: makeFooter() },
         children: body,
       },
     ],
