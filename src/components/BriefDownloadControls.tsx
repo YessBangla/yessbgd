@@ -82,7 +82,7 @@ export function BriefDownloadControls({
   const [format, setFormat] = useState<PageFormat>("a4");
   const [orientation, setOrientation] = useState<PageOrientation>("portrait");
   const [busy, setBusy] = useState<
-    null | "pdf" | "docx" | "samples" | "baseline" | "diff"
+    null | "pdf" | "samples" | "baseline" | "diff"
   >(null);
   const [presets, setPresets] = useState<BrandingPreset[]>(() => listPresets());
   const [activeId, setActiveId] = useState<string>(() => getActivePresetId());
