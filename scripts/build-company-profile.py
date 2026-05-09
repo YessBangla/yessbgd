@@ -339,63 +339,63 @@ M_BOTTOM = 32 * mm  # above the navy footer band
 
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle(
-    name="Body", parent=styles["BodyText"], fontName="Helvetica",
+    name="Body", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK, spaceAfter=6,
     alignment=TA_JUSTIFY))
 styles.add(ParagraphStyle(
-    name="BodyLeft", parent=styles["BodyText"], fontName="Helvetica",
+    name="BodyLeft", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK, spaceAfter=4,
     alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="H3", parent=styles["Heading3"], fontName="Helvetica-Bold",
+    name="H3", parent=styles["Heading3"], fontName=BODY_BOLD,
     fontSize=11.5, leading=15, textColor=TEAL,
     spaceBefore=10, spaceAfter=4))
 styles.add(ParagraphStyle(
-    name="Bullet2", parent=styles["BodyText"], fontName="Helvetica",
+    name="Bullet2", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK,
     leftIndent=14, bulletIndent=2, spaceAfter=2, alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="DLTerm", parent=styles["BodyText"], fontName="Helvetica-Bold",
+    name="DLTerm", parent=styles["BodyText"], fontName=BODY_BOLD,
     fontSize=10.5, leading=14, textColor=NAVY, spaceAfter=1))
 styles.add(ParagraphStyle(
-    name="DLDef", parent=styles["BodyText"], fontName="Helvetica",
+    name="DLDef", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=10.5, leading=15.5, textColor=INK, spaceAfter=8,
     alignment=TA_JUSTIFY))
 
 # Cover styles
 styles.add(ParagraphStyle(
-    name="CoverEyebrow", parent=styles["BodyText"], fontName="Helvetica-Bold",
+    name="CoverEyebrow", parent=styles["BodyText"], fontName=BODY_BOLD,
     fontSize=9, leading=12, textColor=GOLD, spaceAfter=10,
     alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="CoverTitle", parent=styles["Title"], fontName="Helvetica-Bold",
+    name="CoverTitle", parent=styles["Title"], fontName=BODY_BOLD,
     fontSize=44, leading=48, textColor=NAVY, alignment=TA_LEFT,
     spaceAfter=8))
 styles.add(ParagraphStyle(
-    name="CoverSubtitle", parent=styles["BodyText"], fontName="Helvetica",
+    name="CoverSubtitle", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=13.5, leading=20, textColor=INK, alignment=TA_LEFT,
     spaceAfter=12))
 styles.add(ParagraphStyle(
-    name="CoverMeta", parent=styles["BodyText"], fontName="Helvetica",
+    name="CoverMeta", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=9, leading=13, textColor=MUTED, alignment=TA_LEFT))
 
 # Section heading styles
 styles.add(ParagraphStyle(
-    name="SecKicker", parent=styles["BodyText"], fontName="Helvetica-Bold",
+    name="SecKicker", parent=styles["BodyText"], fontName=BODY_BOLD,
     fontSize=8.5, leading=11, textColor=GOLD, spaceAfter=4,
     alignment=TA_LEFT))
 styles.add(ParagraphStyle(
-    name="SecTitle", parent=styles["Title"], fontName="Helvetica-Bold",
+    name="SecTitle", parent=styles["Title"], fontName=BODY_BOLD,
     fontSize=22, leading=26, textColor=NAVY, alignment=TA_LEFT,
     spaceAfter=12))
 
 # TOC styles (used by TableOfContents flowable)
 styles.add(ParagraphStyle(
-    name="TOCHeading", parent=styles["Title"], fontName="Helvetica-Bold",
+    name="TOCHeading", parent=styles["Title"], fontName=BODY_BOLD,
     fontSize=22, leading=26, textColor=NAVY, alignment=TA_LEFT,
     spaceAfter=18))
 TOC_ENTRY = ParagraphStyle(
-    name="TOCEntry", parent=styles["BodyText"], fontName="Helvetica",
+    name="TOCEntry", parent=styles["BodyText"], fontName=BODY_FONT,
     fontSize=11, leading=22, textColor=NAVY, leftIndent=0, firstLineIndent=0)
 
 
@@ -429,7 +429,7 @@ class ProfileDocTemplate(BaseDocTemplate):
             pass
         # Meta strap above the navy footer band.
         meta_y = M_BOTTOM - 6 * mm
-        canvas.setFont("Helvetica", 7.5)
+        canvas.setFont(BODY_FONT, 7.5)
         canvas.setFillColor(MUTED)
         canvas.drawString(M_LEFT, meta_y, "Confidential · For intended recipient")
         canvas.drawCentredString(PAGE_W / 2, meta_y,
@@ -516,7 +516,7 @@ def data_table(spec):
     header = spec["header"]
     rows = spec["rows"]
     data = [[Paragraph(c, ParagraphStyle(
-                "h", parent=styles["BodyLeft"], fontName="Helvetica-Bold",
+                "h", parent=styles["BodyLeft"], fontName=BODY_BOLD,
                 textColor=HexColor("#FFFFFF"), fontSize=9.5, leading=12))
              for c in header]]
     for r in rows:
@@ -548,7 +548,7 @@ def section_heading(num: str, kicker: str, title: str, anchor: str):
     # Build a 2-col table: left = navy chip with the number; right = kicker + title
     chip = Table(
         [[Paragraph(f'<font color="#FFFFFF">{num}</font>',
-                    ParagraphStyle("chipNum", fontName="Helvetica-Bold",
+                    ParagraphStyle("chipNum", fontName=BODY_BOLD,
                                    fontSize=20, leading=22,
                                    alignment=TA_CENTER, textColor=HexColor("#FFFFFF")))]],
         colWidths=[20 * mm], rowHeights=[20 * mm])
@@ -619,7 +619,7 @@ def build_pdf():
     strip = Table(
         [[Paragraph(f'<font color="#FFFFFF"><b>CONFIDENTIAL</b> · '
                     f'For intended recipient · {VERSION} · {GENERATED}</font>',
-                    ParagraphStyle("strip", fontName="Helvetica",
+                    ParagraphStyle("strip", fontName=BODY_FONT,
                                    fontSize=8.5, leading=11,
                                    textColor=HexColor("#FFFFFF"),
                                    alignment=TA_LEFT))]],
