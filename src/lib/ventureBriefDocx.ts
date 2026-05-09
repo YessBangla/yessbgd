@@ -306,12 +306,9 @@ export async function buildVentureBriefDocx(
   opts: DocxBriefOptions = {},
 ): Promise<Blob> {
   const brand = resolveBranding(opts.branding);
-  const logo = await fetchLogoBytes();
-  const watermarkOpacity = Math.max(0.02, Math.min(0.4, opts.watermarkOpacity ?? 0.08));
-  const watermark =
-    logo && typeof document !== "undefined"
-      ? await bakeWatermark(logo, watermarkOpacity)
-      : null;
+  // Pad fetch is the new primary brand asset — logo bytes are no longer
+  // required for the header (the pad already contains the logo + footer).
+  const pad = await fetchPadBytes();
 
   const cs = getVentureCase(v);
   const milestones = getVentureMilestones(v);
@@ -320,40 +317,6 @@ export async function buildVentureBriefDocx(
 
   // Body paragraphs
   const body: Paragraph[] = [];
-
-  // Centered watermark — drawn behind text using floating image. Inserted
-  // at the top so it anchors to the first paragraph; Word repeats it on
-  // subsequent pages because the anchor is a section-level floating image.
-  if (watermark) {
-    body.push(
-      new Paragraph({
-        children: [
-          new ImageRun({
-            type: "jpg",
-            data: watermark,
-            transformation: { width: 380, height: 380 },
-            floating: {
-              horizontalPosition: {
-                relative: "page" as never,
-                align: "center" as never,
-              } as never,
-              verticalPosition: {
-                relative: "page" as never,
-                align: "center" as never,
-              } as never,
-              behindDocument: true,
-              zIndex: 0,
-            },
-            altText: {
-              title: `${brand.companyName} watermark`,
-              description: `${brand.companyName} watermark`,
-              name: "watermark",
-            },
-          }),
-        ],
-      }),
-    );
-  }
 
   body.push(h1(v.title));
   body.push(p(v.tagline, { bold: true, size: 24, color: "505050" }));
