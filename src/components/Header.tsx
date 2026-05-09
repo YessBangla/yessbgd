@@ -203,11 +203,11 @@ export function Header() {
           <img
             src={logo}
             alt="YESS Bangla logo"
-            width={48}
-            height={48}
+            width={279}
+            height={153}
             decoding="async"
             fetchPriority="high"
-            className="logo-mark h-12 w-12 rounded-2xl bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04]"
+            className="logo-mark h-11 w-auto bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04]"
           />
         </Link>
 

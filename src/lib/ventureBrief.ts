@@ -191,16 +191,20 @@ function drawLetterhead(
   doc.setFillColor(232, 184, 64);
   doc.rect(0, d.headerH, d.w, 1.2, "F");
 
-  const logoSize = Math.min(d.headerH - 10, 22);
+  // Logo aspect ratio: 279 / 153 ≈ 1.824 (wide wordmark).
+  const LOGO_ASPECT = 279 / 153;
+  const logoH = Math.min(d.headerH - 8, 18);
+  const logoW = logoH * LOGO_ASPECT;
+  const logoY = (d.headerH - logoH) / 2;
   if (logo) {
     try {
-      doc.addImage(logo, "JPEG", d.margin, 5, logoSize, logoSize);
+      doc.addImage(logo, "PNG", d.margin, logoY, logoW, logoH);
     } catch {
       /* ignore */
     }
   }
 
-  const textX = d.margin + logoSize + 4;
+  const textX = d.margin + logoW + 5;
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
@@ -257,10 +261,18 @@ function drawWatermark(doc: jsPDF, d: PageDims, assets: WatermarkAssets) {
   const { logo, faded, settings, imageAlias } = assets;
   if (!logo && !faded) return;
 
-  const size =
-    Math.min(d.contentW, d.h - d.headerH - d.footerH) * settings.sizeFraction;
-  const x = (d.w - size) / 2;
-  const y = (d.h - size) / 2;
+  const LOGO_ASPECT = 279 / 153;
+  const maxW = d.contentW * settings.sizeFraction;
+  const maxH = (d.h - d.headerH - d.footerH) * settings.sizeFraction;
+  // Fit the wide wordmark into the watermark box without distortion.
+  let wmW = maxW;
+  let wmH = wmW / LOGO_ASPECT;
+  if (wmH > maxH) {
+    wmH = maxH;
+    wmW = wmH * LOGO_ASPECT;
+  }
+  const x = (d.w - wmW) / 2;
+  const y = (d.h - wmH) / 2;
 
   // Path A — GState alpha (smaller PDF, sharper watermark).
   // Path B — pre-faded JPEG (works on every viewer, including mobile
@@ -285,7 +297,7 @@ function drawWatermark(doc: jsPDF, d: PageDims, assets: WatermarkAssets) {
       gs.setGState(wm);
       // Pass alias so jsPDF reuses the embedded XObject across pages — keeps
       // file size flat regardless of page count.
-      doc.addImage(logo!, "JPEG", x, y, size, size, imageAlias, "FAST");
+      doc.addImage(logo!, "PNG", x, y, wmW, wmH, imageAlias, "FAST");
       try {
         gs.setGState(new gs.GState({ opacity: 1 }));
       } catch {
@@ -293,7 +305,7 @@ function drawWatermark(doc: jsPDF, d: PageDims, assets: WatermarkAssets) {
       }
     } else if (faded) {
       // Fallback — single embedded raster with alpha already baked in.
-      doc.addImage(faded, "JPEG", x, y, size, size, imageAlias, "FAST");
+      doc.addImage(faded, "JPEG", x, y, wmW, wmH, imageAlias, "FAST");
     }
   } catch {
     /* swallow — letterhead + footer still provide branding */

@@ -66,7 +66,7 @@ async function bakeWatermark(
 ): Promise<Uint8Array | null> {
   if (typeof document === "undefined") return null;
   try {
-    const blob = new Blob([bytes as BlobPart], { type: "image/jpeg" });
+    const blob = new Blob([bytes as BlobPart], { type: "image/png" });
     const url = URL.createObjectURL(blob);
     const img = await new Promise<HTMLImageElement>((resolve, reject) => {
       const i = new Image();
@@ -108,7 +108,7 @@ function makeLetterhead(
   if (logo) {
     cells.push(
       new TableCell({
-        width: { size: 1500, type: WidthType.DXA },
+        width: { size: 1800, type: WidthType.DXA },
         verticalAlign: VerticalAlign.CENTER,
         shading: { fill: NAVY, type: ShadingType.CLEAR, color: "auto" },
         margins: { top: 80, bottom: 80, left: 120, right: 80 },
@@ -117,9 +117,10 @@ function makeLetterhead(
           new Paragraph({
             children: [
               new ImageRun({
-                type: "jpg",
+                type: "png",
                 data: logo,
-                transformation: { width: 50, height: 50 },
+                // Wordmark aspect ≈ 1.82:1 — keep it readable in the header band.
+                transformation: { width: 96, height: 53 },
                 altText: {
                   title: brand.companyName,
                   description: `${brand.companyName} logo`,
@@ -164,7 +165,7 @@ function makeLetterhead(
     }),
   );
 
-  const rightWidth = logo ? 9360 - 1500 - 6000 : 9360 - 6000;
+  const rightWidth = logo ? 9360 - 1800 - 6000 : 9360 - 6000;
   cells.push(
     new TableCell({
       width: { size: rightWidth, type: WidthType.DXA },
@@ -198,7 +199,7 @@ function makeLetterhead(
     }),
   );
 
-  const widths = logo ? [1500, 6000, rightWidth] : [6000, rightWidth];
+  const widths = logo ? [1800, 6000, rightWidth] : [6000, rightWidth];
 
   return new Header({
     children: [
