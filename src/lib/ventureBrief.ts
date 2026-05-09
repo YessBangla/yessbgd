@@ -44,6 +44,13 @@ export interface BriefOptions {
   logoScale?: number;
   /** Letterhead logo opacity (0–1). Default 1. Uses GState alpha when available. */
   logoOpacity?: number;
+  /**
+   * Letterhead theme — controls the backplate behind the wordmark so the
+   * logo stays readable on both light and dark letterhead modes.
+   * - "light" (default) → white pill with subtle navy ring
+   * - "dark"            → soft navy pill with thin gold ring
+   */
+  letterheadTheme?: "light" | "dark";
 }
 
 export const DEFAULT_WATERMARK: Required<WatermarkOptions> = {
