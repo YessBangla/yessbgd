@@ -551,8 +551,9 @@ def _footer_template(settings) -> str:
         page_num_html = f"""
         <div style="position:absolute;right:{right}mm;bottom:{bottom}mm;
                     {span_style}
-                    background:rgba(14,42,58,0.85);
-                    padding:3pt 10pt;border-radius:99pt;
+                    background:rgba(255,255,255,0.18);
+                    border:0.5pt solid rgba(255,255,255,0.55);
+                    padding:1.6pt 8pt;border-radius:99pt;
                     -webkit-print-color-adjust:exact;
                     print-color-adjust:exact;">
           {fmt}

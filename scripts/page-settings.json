@@ -23,8 +23,8 @@
       "alignment": "right",
       "fontSizePt": 8.5,
       "color": "#FFFFFF",
-      "marginBottomMm": 8,
-      "marginRightMm": 16
+      "marginBottomMm": 2.5,
+      "marginRightMm": 12
     }
   },
   "skipHeaderFooterOnFirstPage": false
