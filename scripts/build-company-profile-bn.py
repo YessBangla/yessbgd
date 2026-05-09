@@ -328,7 +328,7 @@ def render_html() -> str:
     width: 210mm; height: 297mm;
     z-index: -1;
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.22;
   }}
   .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
   :root {{
