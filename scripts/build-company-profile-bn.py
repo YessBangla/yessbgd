@@ -339,8 +339,6 @@ def render_html() -> str:
     font-size: 10.5pt;
     line-height: 1.55;
     color: var(--ink);
-    margin: 0;
-    padding: 0;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }}
