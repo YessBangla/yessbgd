@@ -516,14 +516,13 @@ export function BriefDownloadControls({
             </div>
             <p className="text-xs text-muted-foreground">
               Adjust the wordmark independently in each context. Header &amp; Footer
-              update live; PDF &amp; DOCX values apply to your next download.
+              update live; PDF values apply to your next download.
             </p>
 
             {([
               ["Header (live)", "headerScale", "headerOpacity"],
               ["Footer (live)", "footerScale", "footerOpacity"],
               ["PDF letterhead", "pdfScale", "pdfOpacity"],
-              ["DOCX letterhead", "docxScale", "docxOpacity"],
             ] as const).map(([label, scaleKey, opKey]) => (
               <fieldset key={label} className="space-y-2 rounded-lg border border-border p-3">
                 <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
