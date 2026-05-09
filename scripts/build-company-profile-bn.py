@@ -311,10 +311,16 @@ def render_html() -> str:
   @page {{
     size: A4 portrait;
     margin: 47mm 22mm 32mm 22mm;
-    background: url('file://{LETTERHEAD}') no-repeat;
-    background-size: 210mm 297mm;
-    background-position: -22mm -47mm;
   }}
+  /* Chromium repeats position:fixed elements on every printed page. */
+  .page-bg {{
+    position: fixed;
+    top: -47mm; left: -22mm;
+    width: 210mm; height: 297mm;
+    z-index: -1;
+    pointer-events: none;
+  }}
+  .page-bg img {{ width: 210mm; height: 297mm; display: block; }}
   :root {{
     --navy: #0E2A3A;
     --teal: #0F4C5C;
