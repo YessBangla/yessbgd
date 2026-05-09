@@ -481,8 +481,8 @@ function Index() {
                   href="/yess-bangla-company-profile-bn.pdf"
                   filename="yess-bangla-company-profile-bn.pdf"
                   editionLabel={t("home.downloadCards.bangla.kicker")}
-                  versionLabel="v1.2 · 09 May 2026"
-                  metaLabel="17 pages · A4 PDF · Noto Sans Bengali"
+                  versionLabel={t("home.downloadCards.bangla.version")}
+                  metaLabel={t("home.downloadCards.bangla.gateMeta")}
                   trigger={({ open }) => (
                     <button
                       type="button"
