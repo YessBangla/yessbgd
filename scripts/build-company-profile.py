@@ -646,7 +646,8 @@ def build_pdf():
         ("Web", WEB),
         ("Sector", "Technology · Media · Broadcasting · E-commerce · Lifestyle services"),
         ("Operating ventures", "11 specialised brands under one parent company"),
-        ("Document version", f"{VERSION} · Generated {GENERATED}"),
+        ("Languages", "Bangla &amp; English (this edition: English)"),
+        ("Document version", f"{VERSION} · Generated {GENERATED} · {EDITION}"),
     ])
     glance_card = Table([[glance_inner]], colWidths=[None])
     glance_card.setStyle(TableStyle([
