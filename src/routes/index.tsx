@@ -620,16 +620,16 @@ function Index() {
       <section className="py-12 sm:py-20 lg:py-24">
         <div className="container-tight">
           <SectionHeader
-            eyebrow="What we offer"
-            title="Effective, wide-area business solutions"
-            lede="From media platforms to enterprise software — a portfolio of services built for ambitious organisations."
+            eyebrow={t("home.servicesSection.eyebrow")}
+            title={t("home.servicesSection.title")}
+            lede={t("home.servicesSection.lede")}
           />
 
           <Reveal className="mt-8 sm:mt-12">
             <div className="relative mx-auto max-w-sm overflow-hidden rounded-2xl border border-border/60 shadow-xl sm:max-w-none sm:rounded-3xl">
               <img
                 src={servicesImg}
-                alt="Bangladeshi engineers building software in a modern Dhaka studio"
+                alt={t("home.servicesSection.imageAlt")}
                 width={1280}
                 height={960}
                 loading="lazy"
@@ -639,37 +639,40 @@ function Index() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
                 <p className="max-w-xl text-xs font-medium text-foreground sm:text-base">
-                  Engineering, design and consulting — delivered to international standards from Bangladesh.
+                  {t("home.servicesSection.imageCaption")}
                 </p>
               </div>
             </div>
           </Reveal>
 
           <Stagger className="mt-10 grid gap-5 sm:mt-14 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((s) => (
-              <StaggerItem key={s.title}>
-                <motion.article
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="group relative h-full overflow-hidden rounded-2xl glass-card p-5 sm:p-7"
-                >
-                  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/8 transition-transform group-hover:scale-125" />
-                  <div className="relative">
-                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-                      <s.icon className="h-6 w-6" />
+            {(t("home.servicesSection.items", { returnObjects: true }) as LocalizedItem[]).map((s, i) => {
+              const Icon = serviceIcons[i];
+              return (
+                <StaggerItem key={s.title}>
+                  <motion.article
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                    className="group relative h-full overflow-hidden rounded-2xl glass-card p-5 sm:p-7"
+                  >
+                    <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/8 transition-transform group-hover:scale-125" />
+                    <div className="relative">
+                      <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="mt-4 font-display text-lg font-semibold sm:mt-5 sm:text-xl">{s.title}</h3>
+                      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{s.desc}</p>
+                      <Link
+                        to="/services"
+                        className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-5"
+                      >
+                        {t("home.servicesSection.learnMore")} <ArrowRight className="h-4 w-4" />
+                      </Link>
                     </div>
-                    <h3 className="mt-4 font-display text-lg font-semibold sm:mt-5 sm:text-xl">{s.title}</h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{s.desc}</p>
-                    <Link
-                      to="/services"
-                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-5"
-                    >
-                      Learn more <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </motion.article>
-              </StaggerItem>
-            ))}
+                  </motion.article>
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
