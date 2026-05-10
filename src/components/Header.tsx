@@ -351,7 +351,8 @@ export function Header() {
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </motion.span>
           </AnimatePresence>
-        </button>
+          </button>
+        </div>
 
         <AnimatePresence initial={false}>
           {open && (
