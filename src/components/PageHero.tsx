@@ -12,9 +12,10 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden pt-20 pb-16 md:pt-28 md:pb-20">
-      <div className="orb h-[420px] w-[420px] -top-32 -left-24" style={{ background: "oklch(0.82 0.14 188 / 0.5)" }} />
-      <div className="orb h-[360px] w-[360px] -top-20 right-0" style={{ background: "oklch(0.85 0.16 28 / 0.4)", animationDelay: "-8s" }} />
+    <section className="relative overflow-hidden pt-10 pb-10 sm:pt-16 sm:pb-14 md:pt-28 md:pb-20">
+      <div className="orb hidden sm:block h-[420px] w-[420px] -top-32 -left-24" style={{ background: "oklch(0.82 0.14 188 / 0.5)" }} />
+      <div className="orb hidden sm:block h-[360px] w-[360px] -top-20 right-0" style={{ background: "oklch(0.85 0.16 28 / 0.4)", animationDelay: "-8s" }} />
+      <div className="orb sm:hidden h-[260px] w-[260px] -top-20 -left-16" style={{ background: "oklch(0.82 0.14 188 / 0.45)" }} />
       <div className="container-tight relative max-w-3xl text-center">
         {eyebrow && (
           <p className="hero-fade text-xs font-semibold uppercase tracking-[0.2em] text-primary">
