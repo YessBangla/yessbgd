@@ -310,9 +310,9 @@ export function Header() {
           <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.contact")}</Link>
         </nav>
 
-        {/* Right cluster — language + CTA on desktop, single compact toggle on mobile.
-            Wrappers (not the LanguageSwitch root) carry the responsive display
-            classes so the component's internal `inline-flex` doesn't override them. */}
+        {/* Right cluster — language + CTA on desktop, compact toggle + hamburger on mobile.
+            Keeping the hamburger inside this cluster prevents `justify-between`
+            from stranding the language switch in the middle of the bar. */}
         <div className="flex items-center gap-2">
           <div className="hidden sm:inline-flex">
             <LanguageSwitch variant="pill" />
@@ -328,18 +328,17 @@ export function Header() {
               {t("nav.letsTalk")}
             </Link>
           </div>
-        </div>
 
-        <button
-          ref={toggleBtnRef}
-          type="button"
-          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
-          aria-expanded={open}
-          aria-controls="mobile-nav-panel"
-          aria-haspopup="menu"
-          onClick={toggleMenu}
-          className="relative grid h-10 w-10 place-items-center rounded-md border border-border lg:hidden overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
+          <button
+            ref={toggleBtnRef}
+            type="button"
+            aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
+            aria-expanded={open}
+            aria-controls="mobile-nav-panel"
+            aria-haspopup="menu"
+            onClick={toggleMenu}
+            className="relative grid h-10 w-10 place-items-center rounded-xl border border-border/70 bg-background/60 backdrop-blur lg:hidden overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
           <AnimatePresence initial={false} mode="wait">
             <motion.span
               key={open ? "x" : "menu"}
