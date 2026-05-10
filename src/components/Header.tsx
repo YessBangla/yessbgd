@@ -310,10 +310,16 @@ export function Header() {
           <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.contact")}</Link>
         </nav>
 
-        {/* Right cluster — language + CTA on desktop, language only on mobile */}
+        {/* Right cluster — language + CTA on desktop, single compact toggle on mobile.
+            Wrappers (not the LanguageSwitch root) carry the responsive display
+            classes so the component's internal `inline-flex` doesn't override them. */}
         <div className="flex items-center gap-2">
-          <LanguageSwitch variant="pill" className="hidden sm:inline-flex" />
-          <LanguageSwitch variant="compact" className="sm:hidden" />
+          <div className="hidden sm:inline-flex">
+            <LanguageSwitch variant="pill" />
+          </div>
+          <div className="sm:hidden">
+            <LanguageSwitch variant="compact" />
+          </div>
           <div className="hidden lg:block">
             <Link
               to="/contact"
