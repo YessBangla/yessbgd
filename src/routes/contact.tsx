@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle, Loader2, Navigation, Building2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
 import { PageHero } from "@/components/PageHero";
