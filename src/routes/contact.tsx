@@ -254,34 +254,7 @@ function Contact() {
         </div>
 
         <div className="container-tight mt-14 md:mt-20">
-          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">Visit us</div>
-              <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">Find our office on the map</h2>
-              <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-                Green View, House 127, Road 3, Block A, Mirpur 12, Dhaka 1216 — well connected by Mirpur 12 bus stand and metro.
-              </p>
-            </div>
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent("Green View House 127 Road 3 Block A Mirpur 12 Dhaka 1216")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 self-start rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-md transition-transform hover:scale-[1.03]"
-            >
-              <Navigation className="h-4 w-4" /> Get directions
-            </a>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-glass-border shadow-elegant">
-            <iframe
-              title="YESS Bangla Private Limited — Mirpur 12, Dhaka"
-              src="https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d1335.1806239809775!2d90.36537864883196!3d23.824855996977362!3m2!1i1024!2i768!4f13.1!2m1!1syess%20bangla%20private%20limited!5e1!3m2!1sen!2sbd!4v1778393025429!5m2!1sen!2sbd"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-[360px] w-full md:h-[460px]"
-              style={{ border: 0 }}
-              allowFullScreen
-            />
-          </div>
+          <ContactMap />
         </div>
       </section>
     </>
@@ -334,5 +307,125 @@ function inputClass(hasError: boolean) {
     (hasError
       ? "border-destructive/60 focus:border-destructive focus:ring-destructive/20"
       : "border-glass-border focus:border-primary focus:ring-primary/20")
+  );
+}
+
+type OfficeKey = "head" | "corporate";
+
+const OFFICES: Record<
+  OfficeKey,
+  { label: string; address: string; coords: string; embedSrc: string; directions: string }
+> = {
+  head: {
+    label: "Head Office",
+    address: COMPANY_CONTACT.office,
+    coords: "23.8249° N, 90.3654° E",
+    embedSrc:
+      "https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d1335.1806239809775!2d90.36537864883196!3d23.824855996977362!3m2!1i1024!2i768!4f13.1!2m1!1syess%20bangla%20private%20limited!5e1!3m2!1sen!2sbd!4v1778393025429!5m2!1sen!2sbd",
+    directions: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+      "Yess Bangla Private Limited, Green View, House 127, Road 3, Block A, Mirpur 12, Dhaka 1216"
+    )}`,
+  },
+  corporate: {
+    label: "Corporate Office",
+    address: COMPANY_CONTACT.corporateOffice,
+    coords: "23.8268° N, 90.3640° E",
+    embedSrc: `https://www.google.com/maps?q=${encodeURIComponent(
+      "Section 11, Block A, Road 3, Plot 10, Pallabi, Mirpur, Dhaka 1216"
+    )}&z=17&output=embed`,
+    directions: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+      "Section 11, Block A, Road 3, Plot 10, Pallabi, Mirpur, Dhaka 1216"
+    )}`,
+  },
+};
+
+function ContactMap() {
+  const [active, setActive] = useState<OfficeKey>("head");
+  const office = OFFICES[active];
+
+  return (
+    <>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">Visit us</div>
+          <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">Find our offices on the map</h2>
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+            Toggle between our Head Office and Corporate Office in Mirpur, Dhaka — both verified on Google Maps.
+          </p>
+        </div>
+        <div
+          role="tablist"
+          aria-label="Select office to view on map"
+          className="inline-flex self-start rounded-full border border-glass-border bg-white/60 p-1 shadow-sm backdrop-blur dark:bg-white/5"
+        >
+          {(Object.keys(OFFICES) as OfficeKey[]).map((key) => {
+            const selected = key === active;
+            return (
+              <button
+                key={key}
+                role="tab"
+                aria-selected={selected}
+                onClick={() => setActive(key)}
+                className={
+                  "rounded-full px-4 py-1.5 text-xs font-semibold transition-colors " +
+                  (selected
+                    ? "bg-gradient-primary text-primary-foreground shadow"
+                    : "text-muted-foreground hover:text-primary")
+                }
+              >
+                {OFFICES[key].label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="relative overflow-hidden rounded-2xl border border-glass-border shadow-elegant">
+        <iframe
+          key={active}
+          title={`YESS Bangla — ${office.label}, Mirpur, Dhaka`}
+          src={office.embedSrc}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="h-[360px] w-full md:h-[460px]"
+          style={{ border: 0 }}
+          allowFullScreen
+        />
+
+        <div
+          role="status"
+          aria-live="polite"
+          className="pointer-events-none absolute left-3 top-3 max-w-[calc(100%-1.5rem)] sm:left-4 sm:top-4 sm:max-w-sm"
+        >
+          <div className="pointer-events-auto flex items-start gap-2.5 rounded-xl border border-glass-border bg-white/95 px-3 py-2.5 shadow-elegant backdrop-blur-md dark:bg-background/90">
+            <span className="relative mt-0.5 flex h-2.5 w-2.5 flex-shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+            </span>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
+                <Navigation className="h-3 w-3" /> Now viewing
+              </div>
+              <div className="mt-0.5 text-sm font-semibold leading-tight">{office.label}</div>
+              <div className="mt-0.5 truncate text-[11px] text-muted-foreground" title={office.address}>
+                {office.address}
+              </div>
+              <div className="mt-0.5 font-mono text-[10px] tabular-nums text-muted-foreground/80">
+                GPS · {office.coords}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          href={office.directions}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-lg transition-transform hover:scale-[1.03] sm:bottom-4 sm:right-4"
+        >
+          <Navigation className="h-3.5 w-3.5" /> Get directions
+        </a>
+      </div>
+    </>
   );
 }
