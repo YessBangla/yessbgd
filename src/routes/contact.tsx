@@ -273,8 +273,8 @@ function Contact() {
           </div>
           <div className="overflow-hidden rounded-2xl border border-glass-border shadow-elegant">
             <iframe
-              title="YESS Bangla — Head Office, Mirpur 12, Dhaka"
-              src={`https://www.google.com/maps?q=${encodeURIComponent("Green View House 127 Road 3 Block A Mirpur 12 Dhaka 1216 Bangladesh")}&z=16&output=embed`}
+              title="YESS Bangla Private Limited — Mirpur 12, Dhaka"
+              src="https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d1335.1806239809775!2d90.36537864883196!3d23.824855996977362!3m2!1i1024!2i768!4f13.1!2m1!1syess%20bangla%20private%20limited!5e1!3m2!1sen!2sbd!4v1778393025429!5m2!1sen!2sbd"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="h-[360px] w-full md:h-[460px]"
