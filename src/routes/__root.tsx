@@ -94,15 +94,18 @@ function RootComponent() {
     if (typeof document !== "undefined") document.documentElement.lang = lang;
   }, [i18n.resolvedLanguage, i18n.language]);
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col app-shell">
       <WaterBackground />
       <Header />
       <main className="flex-1">
-        <Outlet />
+        <RouteTransition>
+          <Outlet />
+        </RouteTransition>
       </main>
       <Footer />
       <ScrollUpDown />
       <LiquidGlassToggle />
+      <MobileTabBar />
     </div>
   );
 }
