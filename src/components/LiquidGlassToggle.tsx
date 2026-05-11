@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { Droplets, Check, Sun, Moon, Monitor } from "lucide-react";
 import {
   type GlassIntensity,
+  type GlassPalette,
+  PALETTES,
   loadIntensity,
   saveIntensity,
+  loadPalette,
+  savePalette,
 } from "@/lib/liquidGlass";
 
 /**
