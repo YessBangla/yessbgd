@@ -221,7 +221,7 @@ export function getPalette(theme: "light" | "dark"): PaletteStop[] {
   const id =
     (typeof document !== "undefined"
       ? (document.documentElement.getAttribute("data-palette") as GlassPalette | null)
-      : null) ?? "aurora";
+      : null) ?? "nordic";
   const def = PALETTES[id] ?? PALETTES.aurora;
   return theme === "dark" ? def.dark : def.light;
 }
