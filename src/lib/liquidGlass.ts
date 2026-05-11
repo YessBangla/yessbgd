@@ -57,7 +57,7 @@ export function onIntensityChange(cb: (v: GlassIntensity) => void): () => void {
 /* -------------------- Palettes -------------------- */
 
 export function loadPalette(): GlassPalette {
-  if (typeof window === "undefined") return "aurora";
+  if (typeof window === "undefined") return "nordic";
   try {
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
     if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono") return v;
