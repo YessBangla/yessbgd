@@ -62,6 +62,30 @@ export function WaterBackground() {
     const ripples: Ripple[] = [];
     const MAX_RIPPLES = lowEnd ? 10 : 18;
 
+    // Vertical light beams — fixed positions, gentle sway. Inspired by
+    // luminous tech/data-center ambience without any imagery.
+    const BEAMS = lowEnd
+      ? [{ x: 0.22, w: 0.10, phase: 0.0 }, { x: 0.78, w: 0.12, phase: 1.7 }]
+      : [
+          { x: 0.10, w: 0.09, phase: 0.0 },
+          { x: 0.30, w: 0.07, phase: 0.9 },
+          { x: 0.52, w: 0.14, phase: 2.1 },
+          { x: 0.74, w: 0.08, phase: 3.4 },
+          { x: 0.90, w: 0.10, phase: 4.6 },
+        ];
+
+    // Golden sparkle particles — drift upward, twinkle in/out.
+    type Spark = { x: number; y: number; r: number; vy: number; tw: number; ph: number };
+    const SPARK_COUNT = lowEnd ? 26 : 60;
+    const sparks: Spark[] = Array.from({ length: SPARK_COUNT }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: 0.6 + Math.random() * 1.6,
+      vy: 0.00002 + Math.random() * 0.00006,
+      tw: 0.6 + Math.random() * 1.4,
+      ph: Math.random() * Math.PI * 2,
+    }));
+
     const isDark = () => document.documentElement.classList.contains("dark");
 
     const addRipple = (x: number, y: number) => {
@@ -166,7 +190,41 @@ export function WaterBackground() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Ripples
+      // Vertical light beams — soft, godray-like columns of warm light.
+      // Uses additive blending so they layer like real light, not paint.
+      ctx.globalCompositeOperation = "lighter";
+      const beamAlpha = dark ? 0.10 : 0.14;
+      for (const beam of BEAMS) {
+        const sway = Math.sin(t * 0.6 + beam.phase) * 0.015;
+        const cx = (beam.x + sway) * w;
+        const halfW = beam.w * w * (0.9 + 0.1 * Math.sin(t * 0.4 + beam.phase));
+        const grad = ctx.createLinearGradient(cx - halfW, 0, cx + halfW, 0);
+        const hue = dark ? 60 : 70;
+        const lite = dark ? 0.78 : 0.94;
+        grad.addColorStop(0,    `oklch(${lite} 0.07 ${hue} / 0)`);
+        grad.addColorStop(0.5,  `oklch(${lite} 0.09 ${hue} / ${beamAlpha})`);
+        grad.addColorStop(1,    `oklch(${lite} 0.07 ${hue} / 0)`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(cx - halfW, 0, halfW * 2, h);
+      }
+
+      // Golden sparkle particles — slow upward drift, gentle twinkle.
+      const sparkBase = dark ? 0.55 : 0.70;
+      for (const s of sparks) {
+        s.y -= s.vy * delta;
+        if (s.y < -0.02) { s.y = 1.02; s.x = Math.random(); }
+        const tw = 0.5 + 0.5 * Math.sin(t * s.tw + s.ph);
+        const px = s.x * w;
+        const py = s.y * h;
+        const rad = s.r * 2.4;
+        const g = ctx.createRadialGradient(px, py, 0, px, py, rad);
+        g.addColorStop(0, `oklch(0.97 0.08 78 / ${sparkBase * tw})`);
+        g.addColorStop(1, `oklch(0.97 0.08 78 / 0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(px - rad, py - rad, rad * 2, rad * 2);
+      }
+      ctx.globalCompositeOperation = "source-over";
+
       if (ripples.length) {
         ctx.globalCompositeOperation = "lighter";
         for (let i = ripples.length - 1; i >= 0; i--) {
