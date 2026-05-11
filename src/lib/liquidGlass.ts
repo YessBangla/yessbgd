@@ -98,11 +98,11 @@ export function tuningFor(level: GlassIntensity, lowEnd: boolean): GlassTuning {
  * Dark:  midnight indigo + plum + deep teal + ember accent.
  */
 export const LIGHT_PALETTE = [
-  { hue: 250, sat: 0.06, l: 0.90 }, // periwinkle
-  { hue: 295, sat: 0.05, l: 0.92 }, // lavender mist
-  { hue: 25,  sat: 0.07, l: 0.92 }, // warm peach
-  { hue: 215, sat: 0.06, l: 0.93 }, // arctic blue
-  { hue: 170, sat: 0.05, l: 0.93 }, // sea glass
+  { hue: 250, sat: 0.10, l: 0.78 }, // periwinkle
+  { hue: 295, sat: 0.09, l: 0.80 }, // lavender mist
+  { hue: 25,  sat: 0.12, l: 0.82 }, // warm peach
+  { hue: 215, sat: 0.10, l: 0.80 }, // arctic blue
+  { hue: 170, sat: 0.09, l: 0.82 }, // sea glass
 ];
 
 export const DARK_PALETTE = [
