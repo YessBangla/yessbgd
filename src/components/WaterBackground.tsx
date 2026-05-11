@@ -218,6 +218,7 @@ export function WaterBackground() {
       window.removeEventListener("blur", onBlur);
       window.removeEventListener("focus", onFocus);
       offChange();
+      offPalette();
       if (raf) cancelAnimationFrame(raf);
     };
   }, [mounted]);
