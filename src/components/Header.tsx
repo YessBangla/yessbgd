@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { ventures } from "@/data/ventures";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 
 // Nav items reference i18n keys; labels are resolved at render time so they
 // re-render when the user toggles language without remounting the header.
@@ -321,9 +321,8 @@ export function Header() {
           <div className="sm:hidden">
             <LanguageSwitch variant="compact" />
           </div>
-          {/* Dark-mode toggle: compact on mobile (next to language switch), pill on desktop (next to nav/CTA) */}
-          <ThemeToggle variant="compact" className="sm:hidden" />
-          <ThemeToggle variant="pill" className="hidden sm:inline-flex" />
+          {/* Theme tri-switch (Light / Dark / System) — visible on both mobile top bar and desktop menubar */}
+          <ThemePreviewSwitch />
           <div className="hidden lg:block">
             <Link
               to="/contact"
