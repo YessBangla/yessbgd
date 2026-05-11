@@ -47,14 +47,14 @@ export function ThemePreviewSwitch() {
       onClick={() => set(value)}
       aria-pressed={mode === value}
       aria-label={`Preview ${label} theme — test logo readability`}
-      className={`inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-medium transition-colors ${
+      title={`${label} theme`}
+      className={`inline-grid h-7 w-7 place-items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
         mode === value
           ? "bg-foreground text-background shadow-sm"
           : "text-foreground/70 hover:bg-secondary"
       }`}
     >
       <Icon className="h-3.5 w-3.5" aria-hidden />
-      <span className="hidden sm:inline">{label}</span>
     </button>
   );
 
