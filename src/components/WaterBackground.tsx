@@ -91,13 +91,14 @@ export function WaterBackground() {
       const dark = isDark();
       ctx.clearRect(0, 0, w, h);
 
-      // Slowly drifting caustic blobs (water-like ambient).
+      // Slowly drifting caustic blobs (liquid-glass ambient).
       const t = now * 0.0004;
       const blobs = [
-        { x: 0.25 + Math.sin(t) * 0.08, y: 0.32 + Math.cos(t * 0.9) * 0.06, hue: 188, sat: 0.12 },
-        { x: 0.78 + Math.cos(t * 0.7) * 0.07, y: 0.7 + Math.sin(t * 1.1) * 0.06, hue: 28, sat: 0.16 },
-        { x: 0.55 + Math.sin(t * 1.2) * 0.1, y: 0.15 + Math.cos(t) * 0.05, hue: 220, sat: 0.1 },
-        { x: 0.15 + Math.cos(t * 0.6) * 0.06, y: 0.85 + Math.sin(t * 0.8) * 0.05, hue: 60, sat: 0.1 },
+        { x: 0.22 + Math.sin(t) * 0.10, y: 0.28 + Math.cos(t * 0.9) * 0.08, hue: 188, sat: 0.18 },
+        { x: 0.80 + Math.cos(t * 0.7) * 0.09, y: 0.72 + Math.sin(t * 1.1) * 0.08, hue: 28, sat: 0.20 },
+        { x: 0.55 + Math.sin(t * 1.2) * 0.12, y: 0.12 + Math.cos(t) * 0.07, hue: 220, sat: 0.16 },
+        { x: 0.12 + Math.cos(t * 0.6) * 0.08, y: 0.88 + Math.sin(t * 0.8) * 0.07, hue: 305, sat: 0.16 },
+        { x: 0.65 + Math.sin(t * 0.5) * 0.10, y: 0.45 + Math.cos(t * 1.3) * 0.10, hue: 150, sat: 0.14 },
       ];
       const baseAlpha = dark ? 0.32 : 0.42;
       for (const b of blobs) {
