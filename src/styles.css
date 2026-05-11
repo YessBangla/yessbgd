@@ -284,16 +284,16 @@
     pointer-events: none;
     z-index: -9;
     background:
-      radial-gradient(120% 80% at 15% 0%, oklch(1 0 0 / 0.18), transparent 55%),
-      radial-gradient(100% 70% at 85% 100%, oklch(0.85 0.14 28 / 0.10), transparent 60%),
-      linear-gradient(180deg, oklch(1 0 0 / 0.06) 0%, transparent 35%, oklch(0.5 0.05 240 / 0.06) 100%);
+      radial-gradient(120% 80% at 15% 0%, oklch(1 0 0 / 0.16), transparent 55%),
+      radial-gradient(100% 70% at 85% 100%, oklch(0.95 0.01 230 / 0.10), transparent 60%),
+      linear-gradient(180deg, oklch(1 0 0 / 0.05) 0%, transparent 40%, oklch(0.92 0.01 230 / 0.05) 100%);
     mix-blend-mode: screen;
   }
   :root.dark body::before {
     background:
-      radial-gradient(120% 80% at 15% 0%, oklch(0.85 0.14 220 / 0.14), transparent 55%),
-      radial-gradient(100% 70% at 85% 100%, oklch(0.8 0.16 28 / 0.10), transparent 60%),
-      linear-gradient(180deg, oklch(0.95 0.05 220 / 0.04) 0%, transparent 40%, oklch(0.2 0.04 240 / 0.18) 100%);
+      radial-gradient(120% 80% at 15% 0%, oklch(0.85 0.03 230 / 0.10), transparent 55%),
+      radial-gradient(100% 70% at 85% 100%, oklch(0.85 0.02 250 / 0.08), transparent 60%),
+      linear-gradient(180deg, oklch(0.95 0.02 230 / 0.03) 0%, transparent 40%, oklch(0.18 0.02 240 / 0.20) 100%);
     mix-blend-mode: screen;
   }
   body::after {
