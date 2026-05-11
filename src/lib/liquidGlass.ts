@@ -90,21 +90,20 @@ export function tuningFor(level: GlassIntensity, lowEnd: boolean): GlassTuning {
 }
 
 /**
- * Refined editorial Liquid Glass palettes — ivory, sage, slate, linen.
- * Cool-neutral and painterly. No warm red/terracotta tones.
+ * Soft international pastel palette — pale cyan, peach, lavender, blush.
  */
 export const LIGHT_PALETTE = [
-  { hue: 110, sat: 0.025, l: 0.88 }, // ivory
-  { hue: 175, sat: 0.035, l: 0.84 }, // pale sage
-  { hue: 230, sat: 0.040, l: 0.80 }, // dusty linen blue
-  { hue: 250, sat: 0.025, l: 0.82 }, // soft slate
-  { hue: 200, sat: 0.030, l: 0.86 }, // misty cyan
+  { hue: 200, sat: 0.045, l: 0.93 }, // pale cyan
+  { hue: 25,  sat: 0.055, l: 0.92 }, // peach
+  { hue: 270, sat: 0.040, l: 0.93 }, // lavender
+  { hue: 35,  sat: 0.055, l: 0.91 }, // blush
+  { hue: 220, sat: 0.030, l: 0.95 }, // mist
 ];
 
 export const DARK_PALETTE = [
-  { hue: 110, sat: 0.025, l: 0.40 }, // muted moss
-  { hue: 175, sat: 0.045, l: 0.42 }, // deep sage
-  { hue: 230, sat: 0.050, l: 0.36 }, // midnight slate
-  { hue: 250, sat: 0.040, l: 0.30 }, // ink
-  { hue: 200, sat: 0.035, l: 0.34 }, // teal shadow
+  { hue: 200, sat: 0.060, l: 0.45 }, // deep cyan
+  { hue: 25,  sat: 0.070, l: 0.45 }, // dusk peach
+  { hue: 270, sat: 0.060, l: 0.42 }, // night lavender
+  { hue: 35,  sat: 0.070, l: 0.45 }, // ember blush
+  { hue: 220, sat: 0.040, l: 0.30 }, // ink mist
 ];

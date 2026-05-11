@@ -294,25 +294,27 @@
     inset: 0;
     pointer-events: none;
     z-index: -9;
-    opacity: var(--glass-sheen);
-    /* Refined editorial palette — ivory, sage, slate, linen.
-       Cool-neutral, painterly, no warm red/terracotta tones. */
-    background:
-      radial-gradient(110% 75% at 8% 0%, oklch(0.88 0.025 110 / 0.38), transparent 58%),
-      radial-gradient(95% 70% at 95% 8%, oklch(0.84 0.035 175 / 0.28), transparent 62%),
-      radial-gradient(120% 90% at 50% 105%, oklch(0.80 0.040 230 / 0.26), transparent 65%),
-      radial-gradient(80% 65% at 78% 60%, oklch(0.82 0.025 250 / 0.18), transparent 70%);
-    mix-blend-mode: multiply;
-    transition: opacity 400ms ease;
-  }
-  :root.dark body::before {
-    background:
-      radial-gradient(110% 75% at 8% 0%, oklch(0.40 0.025 110 / 0.34), transparent 58%),
-      radial-gradient(95% 70% at 95% 8%, oklch(0.42 0.045 175 / 0.30), transparent 62%),
-      radial-gradient(120% 90% at 50% 105%, oklch(0.36 0.050 230 / 0.34), transparent 65%),
-      linear-gradient(180deg, oklch(0.30 0.015 200 / 0.10) 0%, transparent 45%, oklch(0.10 0.015 230 / 0.42) 100%);
-    mix-blend-mode: screen;
-  }
+     opacity: var(--glass-sheen);
+     /* Soft international pastel — pale cyan, peach, lavender, blush.
+        Mirrors reference: cyan top-left, peach top-right, lavender bottom-left, blush bottom-right. */
+     background:
+       radial-gradient(80% 70% at 0% 0%,    oklch(0.93 0.045 200 / 0.70), transparent 60%),
+       radial-gradient(75% 70% at 100% 0%,  oklch(0.92 0.050 25  / 0.55), transparent 62%),
+       radial-gradient(85% 75% at 0% 100%,  oklch(0.93 0.040 270 / 0.55), transparent 62%),
+       radial-gradient(80% 70% at 100% 100%, oklch(0.91 0.055 35 / 0.55), transparent 62%),
+       linear-gradient(135deg, oklch(0.97 0.012 220) 0%, oklch(0.96 0.014 320) 100%);
+     mix-blend-mode: normal;
+     transition: opacity 400ms ease;
+   }
+   :root.dark body::before {
+     background:
+       radial-gradient(80% 70% at 0% 0%,    oklch(0.45 0.060 200 / 0.45), transparent 60%),
+       radial-gradient(75% 70% at 100% 0%,  oklch(0.45 0.070 25  / 0.35), transparent 62%),
+       radial-gradient(85% 75% at 0% 100%,  oklch(0.42 0.060 270 / 0.40), transparent 62%),
+       radial-gradient(80% 70% at 100% 100%, oklch(0.45 0.070 35 / 0.32), transparent 62%),
+       linear-gradient(180deg, oklch(0.18 0.020 240) 0%, oklch(0.12 0.020 260) 100%);
+     mix-blend-mode: normal;
+   }
   body::after {
     content: "";
     position: fixed;
