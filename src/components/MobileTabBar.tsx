@@ -10,13 +10,21 @@ import { motion, useReducedMotion } from "framer-motion";
  * - Glass surface, blurred, with active pill indicator
  * - Tap feedback via active:scale + soft haptic-like spring
  */
-const tabs = [
+type Tab = {
+  to: "/" | "/services" | "/ventures" | "/about" | "/contact";
+  key: string;
+  icon: typeof Home;
+  exact?: boolean;
+  match?: string[];
+};
+
+const tabs: Tab[] = [
   { to: "/", key: "home", icon: Home, exact: true },
   { to: "/services", key: "services", icon: Briefcase },
   { to: "/ventures", key: "ventures", icon: Layers, match: ["/ventures", "/projects"] },
   { to: "/about", key: "about", icon: Building2 },
   { to: "/contact", key: "contact", icon: Mail },
-] as const;
+];
 
 export function MobileTabBar() {
   const { t } = useTranslation();
