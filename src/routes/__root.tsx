@@ -6,7 +6,9 @@ import { Footer } from "@/components/Footer";
 // Debug overlay removed for cleaner preview
 import { WaterBackground } from "@/components/WaterBackground";
 import { ScrollUpDown } from "@/components/ScrollUpDown";
+import { LiquidGlassToggle } from "@/components/LiquidGlassToggle";
 import { applyHeaderFooterCssVars, loadLogoSettings } from "@/lib/logoSettings";
+import { applyIntensity, loadIntensity } from "@/lib/liquidGlass";
 import { useTranslation } from "react-i18next";
 
 function NotFoundComponent() {
@@ -81,6 +83,7 @@ function RootComponent() {
   // Apply persisted per-surface logo tuning (scale + opacity) before paint.
   useEffect(() => {
     applyHeaderFooterCssVars(loadLogoSettings());
+    applyIntensity(loadIntensity());
   }, []);
   // Mirror the active language onto <html lang> for assistive tech and SEO.
   useEffect(() => {
@@ -96,6 +99,7 @@ function RootComponent() {
       </main>
       <Footer />
       <ScrollUpDown />
+      <LiquidGlassToggle />
     </div>
   );
 }
