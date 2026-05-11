@@ -44,14 +44,21 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
     setMounted(true);
   }, []);
 
-  // Hide tooltip on Escape for keyboard users
+  // Hide tooltip on Escape, on scroll, on touch swipe, and on outside pointer activity.
   useEffect(() => {
     if (!tipOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setTipOpen(false);
-    };
+    const close = () => setTipOpen(false);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("scroll", close, { passive: true, capture: true });
+    window.addEventListener("touchmove", close, { passive: true });
+    window.addEventListener("wheel", close, { passive: true });
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("touchmove", close);
+      window.removeEventListener("wheel", close);
+    };
   }, [tipOpen]);
 
   const isDark = mode === "dark";
@@ -138,7 +145,7 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
         id={tipId}
         role="tooltip"
         aria-hidden={!tipOpen}
-        className={`pointer-events-none absolute right-0 top-full z-50 mt-2 whitespace-nowrap rounded-md border border-border/70 bg-foreground px-2.5 py-1.5 text-[11px] font-medium text-background shadow-elegant transition-opacity duration-150 ${tipOpen ? "opacity-100" : "opacity-0"}`}
+        className={`pointer-events-none absolute right-0 top-full z-[60] mt-3 max-w-[min(80vw,18rem)] truncate whitespace-nowrap rounded-md border border-border/70 bg-foreground px-2.5 py-1.5 text-[11px] font-medium text-background shadow-elegant transition-opacity duration-150 sm:mt-2 ${tipOpen ? "opacity-100" : "opacity-0"}`}
       >
         {tipText}
       </span>
