@@ -114,10 +114,10 @@
     transparent 70%,
     color-mix(in oklab, var(--hero-ink) 38%, transparent) 100%);
   --hero-overlay-glow: radial-gradient(60% 55% at 25% 60%,
-    color-mix(in oklab, var(--accent) 14%, transparent) 0%,
+    color-mix(in oklab, var(--accent) 18%, transparent) 0%,
     transparent 75%);
-  --hero-halo-primary: oklch(from var(--primary) l c h / 0.12);
-  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.16);
+  --hero-halo-primary: oklch(from var(--primary) l c h / 0.10);
+  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.20);
   --hero-halo-blur: 32px;
   --hero-glow-opacity: 0.4;
   --hero-grid-opacity: 0.03;
@@ -157,8 +157,8 @@
   --shadow-sm: 0 1px 2px 0 oklch(0.18 0.03 240 / 0.04);
   --shadow-md: 0 4px 16px -4px oklch(0.18 0.03 240 / 0.08);
   --shadow-lg: 0 20px 40px -12px oklch(0.18 0.03 240 / 0.1);
-  --shadow-glow: 0 10px 40px -8px oklch(0.55 0.13 188 / 0.28);
-  --shadow-accent: 0 10px 30px -8px oklch(0.68 0.2 28 / 0.3);
+  --shadow-glow: 0 10px 40px -8px oklch(0.42 0.075 188 / 0.22);
+  --shadow-accent: 0 10px 30px -8px oklch(0.72 0.105 78 / 0.28);
 
   --transition-base: 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 
