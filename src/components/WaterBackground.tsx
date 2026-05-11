@@ -62,28 +62,33 @@ export function WaterBackground() {
     const ripples: Ripple[] = [];
     const MAX_RIPPLES = lowEnd ? 10 : 18;
 
-    // Vertical light beams — fixed positions, gentle sway. Inspired by
-    // luminous tech/data-center ambience without any imagery.
+    // iOS 26 "Liquid Glass" — soft vertical light columns in cool tones.
+    // Replaces the previous warm/godray beams with translucent glass refractions.
     const BEAMS = lowEnd
-      ? [{ x: 0.22, w: 0.10, phase: 0.0 }, { x: 0.78, w: 0.12, phase: 1.7 }]
+      ? [
+          { x: 0.22, w: 0.12, phase: 0.0, hue: 230 },
+          { x: 0.78, w: 0.14, phase: 1.7, hue: 300 },
+        ]
       : [
-          { x: 0.10, w: 0.09, phase: 0.0 },
-          { x: 0.30, w: 0.07, phase: 0.9 },
-          { x: 0.52, w: 0.14, phase: 2.1 },
-          { x: 0.74, w: 0.08, phase: 3.4 },
-          { x: 0.90, w: 0.10, phase: 4.6 },
+          { x: 0.10, w: 0.10, phase: 0.0, hue: 220 }, // sky
+          { x: 0.30, w: 0.08, phase: 0.9, hue: 260 }, // indigo
+          { x: 0.52, w: 0.16, phase: 2.1, hue: 295 }, // violet
+          { x: 0.74, w: 0.09, phase: 3.4, hue: 330 }, // rose-pink
+          { x: 0.90, w: 0.11, phase: 4.6, hue: 195 }, // cyan
         ];
 
-    // Golden sparkle particles — drift upward, twinkle in/out.
-    type Spark = { x: number; y: number; r: number; vy: number; tw: number; ph: number };
-    const SPARK_COUNT = lowEnd ? 26 : 60;
-    const sparks: Spark[] = Array.from({ length: SPARK_COUNT }, () => ({
+    // iOS 26 glass shimmer — drifting frosted highlights instead of golden sparkles.
+    type Spark = { x: number; y: number; r: number; vy: number; tw: number; ph: number; hue: number };
+    const SPARK_COUNT = lowEnd ? 18 : 42;
+    const SPARK_HUES = [220, 260, 295, 195, 330];
+    const sparks: Spark[] = Array.from({ length: SPARK_COUNT }, (_, i) => ({
       x: Math.random(),
       y: Math.random(),
-      r: 0.6 + Math.random() * 1.6,
-      vy: 0.00002 + Math.random() * 0.00006,
-      tw: 0.6 + Math.random() * 1.4,
+      r: 0.8 + Math.random() * 2.0,
+      vy: 0.00001 + Math.random() * 0.00004,
+      tw: 0.4 + Math.random() * 1.2,
       ph: Math.random() * Math.PI * 2,
+      hue: SPARK_HUES[i % SPARK_HUES.length],
     }));
 
     const isDark = () => document.documentElement.classList.contains("dark");
@@ -190,36 +195,34 @@ export function WaterBackground() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Vertical light beams — soft, godray-like columns of warm light.
-      // Uses additive blending so they layer like real light, not paint.
+      // iOS 26 liquid-glass refraction columns — cool, translucent, additive.
       ctx.globalCompositeOperation = "lighter";
-      const beamAlpha = dark ? 0.10 : 0.14;
+      const beamAlpha = dark ? 0.09 : 0.12;
       for (const beam of BEAMS) {
-        const sway = Math.sin(t * 0.6 + beam.phase) * 0.015;
+        const sway = Math.sin(t * 0.6 + beam.phase) * 0.018;
         const cx = (beam.x + sway) * w;
         const halfW = beam.w * w * (0.9 + 0.1 * Math.sin(t * 0.4 + beam.phase));
         const grad = ctx.createLinearGradient(cx - halfW, 0, cx + halfW, 0);
-        const hue = dark ? 60 : 70;
-        const lite = dark ? 0.78 : 0.94;
-        grad.addColorStop(0,    `oklch(${lite} 0.07 ${hue} / 0)`);
-        grad.addColorStop(0.5,  `oklch(${lite} 0.09 ${hue} / ${beamAlpha})`);
-        grad.addColorStop(1,    `oklch(${lite} 0.07 ${hue} / 0)`);
+        const lite = dark ? 0.72 : 0.92;
+        grad.addColorStop(0,    `oklch(${lite} 0.08 ${beam.hue} / 0)`);
+        grad.addColorStop(0.5,  `oklch(${lite} 0.12 ${beam.hue} / ${beamAlpha})`);
+        grad.addColorStop(1,    `oklch(${lite} 0.08 ${beam.hue} / 0)`);
         ctx.fillStyle = grad;
         ctx.fillRect(cx - halfW, 0, halfW * 2, h);
       }
 
-      // Golden sparkle particles — slow upward drift, gentle twinkle.
-      const sparkBase = dark ? 0.55 : 0.70;
+      // Frosted-glass shimmer particles — cool tinted highlights.
+      const sparkBase = dark ? 0.45 : 0.55;
       for (const s of sparks) {
         s.y -= s.vy * delta;
         if (s.y < -0.02) { s.y = 1.02; s.x = Math.random(); }
         const tw = 0.5 + 0.5 * Math.sin(t * s.tw + s.ph);
         const px = s.x * w;
         const py = s.y * h;
-        const rad = s.r * 2.4;
+        const rad = s.r * 2.6;
         const g = ctx.createRadialGradient(px, py, 0, px, py, rad);
-        g.addColorStop(0, `oklch(0.97 0.08 78 / ${sparkBase * tw})`);
-        g.addColorStop(1, `oklch(0.97 0.08 78 / 0)`);
+        g.addColorStop(0, `oklch(0.96 0.06 ${s.hue} / ${sparkBase * tw})`);
+        g.addColorStop(1, `oklch(0.96 0.06 ${s.hue} / 0)`);
         ctx.fillStyle = g;
         ctx.fillRect(px - rad, py - rad, rad * 2, rad * 2);
       }
