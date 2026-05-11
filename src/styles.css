@@ -38,46 +38,48 @@
 :root {
   --radius: 1rem;
 
-  /* Premium ivory editorial palette */
-  --background: oklch(0.985 0.014 78);
-  --foreground: oklch(0.18 0.018 245);
-  --surface: oklch(0.965 0.018 76);
+  /* Editorial off-white palette — Stripe/Linear-class neutral.
+     Cool near-white background lets brand colors and venture imagery pop
+     without the localized "golden" cast that the previous ivory used. */
+  --background: oklch(0.985 0.003 250);
+  --foreground: oklch(0.18 0.018 250);
+  --surface: oklch(0.97 0.004 250);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 240);
-  --popover: oklch(0.99 0.003 230);
-  --popover-foreground: oklch(0.18 0.02 240);
+  --card-foreground: oklch(0.18 0.02 250);
+  --popover: oklch(0.99 0.003 250);
+  --popover-foreground: oklch(0.18 0.02 250);
 
   /* Brand: deep institutional teal with restrained glow */
   --primary: oklch(0.42 0.075 188);
-  --primary-foreground: oklch(0.985 0.014 78);
+  --primary-foreground: oklch(0.985 0.003 250);
   --primary-glow: oklch(0.68 0.070 182);
 
-  --secondary: oklch(0.965 0.006 230);
-  --secondary-foreground: oklch(0.22 0.03 240);
+  --secondary: oklch(0.965 0.004 250);
+  --secondary-foreground: oklch(0.22 0.03 250);
 
-  /* Accent: refined champagne gold — no coral/red cast */
+  /* Accent: refined champagne gold — kept as accent only, not background */
   --accent: oklch(0.72 0.105 78);
-  --accent-foreground: oklch(0.20 0.020 245);
+  --accent-foreground: oklch(0.20 0.020 250);
 
-  --muted: oklch(0.96 0.006 230);
-  --muted-foreground: oklch(0.5 0.015 240);
+  --muted: oklch(0.96 0.004 250);
+  --muted-foreground: oklch(0.5 0.012 250);
 
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.9 0.008 230);
-  --input: oklch(0.92 0.008 230);
+  --border: oklch(0.9 0.005 250);
+  --input: oklch(0.92 0.005 250);
   --ring: oklch(0.55 0.13 188);
 
-  /* Glass + ambient backgrounds */
+  /* Glass + ambient backgrounds — cool editorial wash, no golden cast */
   --gradient-hero: linear-gradient(135deg,
-    oklch(0.99 0.016 82) 0%,
-    oklch(0.96 0.030 70) 46%,
-    oklch(0.93 0.040 62) 100%);
-  --gradient-mesh: radial-gradient(at 18% 12%, oklch(0.94 0.040 85 / 0.42) 0px, transparent 48%),
-    radial-gradient(at 82% 2%, oklch(0.88 0.065 72 / 0.30) 0px, transparent 50%),
-    radial-gradient(at 0% 82%, oklch(0.90 0.035 160 / 0.22) 0px, transparent 48%),
-    radial-gradient(at 92% 92%, oklch(0.92 0.050 58 / 0.32) 0px, transparent 50%);
+    oklch(0.99 0.003 250) 0%,
+    oklch(0.97 0.006 240) 46%,
+    oklch(0.95 0.010 230) 100%);
+  --gradient-mesh: radial-gradient(at 18% 12%, oklch(0.95 0.020 220 / 0.36) 0px, transparent 48%),
+    radial-gradient(at 82% 2%, oklch(0.92 0.030 200 / 0.24) 0px, transparent 50%),
+    radial-gradient(at 0% 82%, oklch(0.94 0.020 180 / 0.20) 0px, transparent 48%),
+    radial-gradient(at 92% 92%, oklch(0.93 0.025 250 / 0.26) 0px, transparent 50%);
   --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%);
   --gradient-accent: linear-gradient(135deg, oklch(0.72 0.105 78) 0%, oklch(0.82 0.080 92) 100%);
   --gradient-surface: linear-gradient(180deg, var(--background) 0%, var(--surface) 100%);
@@ -218,31 +220,31 @@
 }
 
 .dark {
-  --background: oklch(0.16 0.02 240);
-  --foreground: oklch(0.97 0.005 230);
-  --surface: oklch(0.2 0.025 240);
-  --card: oklch(0.22 0.025 240);
-  --card-foreground: oklch(0.97 0.005 230);
-  --popover: oklch(0.22 0.025 240);
-  --popover-foreground: oklch(0.97 0.005 230);
+  --background: oklch(0.14 0.012 250);
+  --foreground: oklch(0.97 0.004 250);
+  --surface: oklch(0.18 0.014 250);
+  --card: oklch(0.19 0.015 250);
+  --card-foreground: oklch(0.97 0.004 250);
+  --popover: oklch(0.19 0.015 250);
+  --popover-foreground: oklch(0.97 0.004 250);
   --primary: oklch(0.72 0.080 188);
-  --primary-foreground: oklch(0.16 0.02 240);
+  --primary-foreground: oklch(0.14 0.012 250);
   --primary-glow: oklch(0.82 0.070 182);
-  --secondary: oklch(0.24 0.03 240);
-  --secondary-foreground: oklch(0.97 0.005 230);
+  --secondary: oklch(0.22 0.018 250);
+  --secondary-foreground: oklch(0.97 0.004 250);
   /* Dark-theme accent must clear WCAG AA against the light hero surface
      (`bg-foreground` → near-white in dark mode). 0.75L was 2.33:1; the
      0.55L value below clears 3:1 for large text + iconography. */
   --accent: oklch(0.68 0.100 78);
-  --accent-foreground: oklch(0.16 0.02 240);
-  --muted: oklch(0.24 0.03 240);
-  --muted-foreground: oklch(0.72 0.02 240);
-  --border: oklch(1 0 0 / 0.1);
-  --input: oklch(1 0 0 / 0.12);
+  --accent-foreground: oklch(0.14 0.012 250);
+  --muted: oklch(0.22 0.018 250);
+  --muted-foreground: oklch(0.72 0.015 250);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.10);
   --ring: oklch(0.78 0.13 188);
-  --glass-bg: oklch(0.22 0.025 240 / 0.55);
-  --glass-bg-strong: oklch(0.22 0.025 240 / 0.75);
-  --glass-border: oklch(1 0 0 / 0.12);
+  --glass-bg: oklch(0.19 0.015 250 / 0.55);
+  --glass-bg-strong: oklch(0.19 0.015 250 / 0.78);
+  --glass-border: oklch(1 0 0 / 0.10);
 }
 
 @layer base {
