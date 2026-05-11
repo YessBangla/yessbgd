@@ -38,26 +38,26 @@
 :root {
   --radius: 1rem;
 
-  /* Apple-style soft, airy light palette */
-  --background: oklch(0.985 0.003 230);
-  --foreground: oklch(0.18 0.02 240);
-  --surface: oklch(0.97 0.006 230);
+  /* Premium ivory editorial palette */
+  --background: oklch(0.985 0.014 78);
+  --foreground: oklch(0.18 0.018 245);
+  --surface: oklch(0.965 0.018 76);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.02 240);
   --popover: oklch(0.99 0.003 230);
   --popover-foreground: oklch(0.18 0.02 240);
 
-  /* Brand: soft teal/mint inspired by the YESS Bangla logo */
-  --primary: oklch(0.55 0.13 188);
-  --primary-foreground: oklch(0.99 0.005 230);
-  --primary-glow: oklch(0.78 0.12 188);
+  /* Brand: deep institutional teal with restrained glow */
+  --primary: oklch(0.42 0.075 188);
+  --primary-foreground: oklch(0.985 0.014 78);
+  --primary-glow: oklch(0.68 0.070 182);
 
   --secondary: oklch(0.965 0.006 230);
   --secondary-foreground: oklch(0.22 0.03 240);
 
-  /* Accent: warm coral matching the logo's red */
-  --accent: oklch(0.68 0.2 28);
-  --accent-foreground: oklch(0.99 0.005 230);
+  /* Accent: refined champagne gold — no coral/red cast */
+  --accent: oklch(0.72 0.105 78);
+  --accent-foreground: oklch(0.20 0.020 245);
 
   --muted: oklch(0.96 0.006 230);
   --muted-foreground: oklch(0.5 0.015 240);
@@ -71,15 +71,15 @@
 
   /* Glass + ambient backgrounds */
   --gradient-hero: linear-gradient(135deg,
-    oklch(0.97 0.04 195) 0%,
-    oklch(0.95 0.05 220) 40%,
-    oklch(0.96 0.06 50) 100%);
-  --gradient-mesh: radial-gradient(at 20% 20%, oklch(0.85 0.12 188 / 0.45) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, oklch(0.85 0.12 28 / 0.35) 0px, transparent 50%),
-    radial-gradient(at 0% 80%, oklch(0.85 0.12 250 / 0.4) 0px, transparent 50%),
-    radial-gradient(at 90% 90%, oklch(0.88 0.1 60 / 0.35) 0px, transparent 50%);
+    oklch(0.99 0.016 82) 0%,
+    oklch(0.96 0.030 70) 46%,
+    oklch(0.93 0.040 62) 100%);
+  --gradient-mesh: radial-gradient(at 18% 12%, oklch(0.94 0.040 85 / 0.42) 0px, transparent 48%),
+    radial-gradient(at 82% 2%, oklch(0.88 0.065 72 / 0.30) 0px, transparent 50%),
+    radial-gradient(at 0% 82%, oklch(0.90 0.035 160 / 0.22) 0px, transparent 48%),
+    radial-gradient(at 92% 92%, oklch(0.92 0.050 58 / 0.32) 0px, transparent 50%);
   --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%);
-  --gradient-accent: linear-gradient(135deg, oklch(0.68 0.2 28) 0%, oklch(0.78 0.16 50) 100%);
+  --gradient-accent: linear-gradient(135deg, oklch(0.72 0.105 78) 0%, oklch(0.82 0.080 92) 100%);
   --gradient-surface: linear-gradient(180deg, var(--background) 0%, var(--surface) 100%);
 
   /* ───────────────────────────────────────────────────────────────
@@ -102,8 +102,8 @@
   /* Mid-grey wash — image is desaturated to light grey at the <img>
      level, then this overlay tints the left side a touch darker so the
      white headline keeps WCAG AA contrast without the photo feeling dark. */
-  --hero-ink: oklch(0.42 0.008 250);              /* mid grey ink */
-  --hero-veil: oklch(0.55 0.006 250);             /* lighter grey veil */
+  --hero-ink: oklch(0.34 0.012 250);              /* refined graphite ink */
+  --hero-veil: oklch(0.50 0.010 78);              /* warm champagne veil */
   --hero-overlay-h: linear-gradient(180deg,
     color-mix(in oklab, var(--hero-ink) 55%, transparent) 0%,
     color-mix(in oklab, var(--hero-veil) 38%, transparent) 55%,
