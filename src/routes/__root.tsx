@@ -83,6 +83,7 @@ function RootComponent() {
   // Apply persisted per-surface logo tuning (scale + opacity) before paint.
   useEffect(() => {
     applyHeaderFooterCssVars(loadLogoSettings());
+    applyIntensity(loadIntensity());
   }, []);
   // Mirror the active language onto <html lang> for assistive tech and SEO.
   useEffect(() => {
