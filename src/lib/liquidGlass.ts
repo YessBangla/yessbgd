@@ -1,7 +1,7 @@
 /**
  * Liquid Glass background settings.
  * - Intensity: off | subtle | standard | vivid (motion / opacity strength)
- * - Palette : aurora | nordic | sunset | mono   (color story)
+ * - Palette : aurora | nordic | sunset | mono | ivory (color story)
  *
  * Both are persisted in localStorage and reflected as `data-glass` and
  * `data-palette` attributes on <html>, which `src/styles.css` reads to
@@ -15,6 +15,7 @@ const STORE_KEY = "yess-liquid-glass-v1";
 const PALETTE_KEY = "yess-liquid-glass-palette-v1";
 const EVENT = "liquidglass:change";
 const PALETTE_EVENT = "liquidglass:palette";
+const DEFAULT_PALETTE: GlassPalette = "ivory";
 
 export function detectLowEnd(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -57,12 +58,12 @@ export function onIntensityChange(cb: (v: GlassIntensity) => void): () => void {
 /* -------------------- Palettes -------------------- */
 
 export function loadPalette(): GlassPalette {
-  if (typeof window === "undefined") return "ivory";
+  if (typeof window === "undefined") return DEFAULT_PALETTE;
   try {
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
     if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono" || v === "ivory") return v;
   } catch { /* quota */ }
-  return "ivory";
+  return DEFAULT_PALETTE;
 }
 
 export function applyPalette(value: GlassPalette) {
