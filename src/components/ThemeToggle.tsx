@@ -44,14 +44,21 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
     setMounted(true);
   }, []);
 
-  // Hide tooltip on Escape for keyboard users
+  // Hide tooltip on Escape, on scroll, on touch swipe, and on outside pointer activity.
   useEffect(() => {
     if (!tipOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setTipOpen(false);
-    };
+    const close = () => setTipOpen(false);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("scroll", close, { passive: true, capture: true });
+    window.addEventListener("touchmove", close, { passive: true });
+    window.addEventListener("wheel", close, { passive: true });
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("touchmove", close);
+      window.removeEventListener("wheel", close);
+    };
   }, [tipOpen]);
 
   const isDark = mode === "dark";
