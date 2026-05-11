@@ -90,22 +90,22 @@ export function tuningFor(level: GlassIntensity, lowEnd: boolean): GlassTuning {
 }
 
 /**
- * Light & dark Liquid Glass palettes — Linear/Vercel-grade aurora:
- * deep navy + electric violet + warm ember accent. Cool-dominant with
- * one warm punch for premium SaaS energy.
+ * Editorial Liquid Glass palettes — Aesop / Loro Piana inspired.
+ * Warm sand, sage, terracotta, ink-blue. Muted, painterly, low-chroma —
+ * deliberately not the saturated "AI gradient" look.
  */
 export const LIGHT_PALETTE = [
-  { hue: 260, sat: 0.13, l: 0.72 }, // electric violet
-  { hue: 240, sat: 0.14, l: 0.70 }, // navy haze
-  { hue: 20,  sat: 0.15, l: 0.78 }, // ember
-  { hue: 280, sat: 0.11, l: 0.76 }, // soft purple
-  { hue: 220, sat: 0.12, l: 0.74 }, // cobalt mist
+  { hue: 85,  sat: 0.045, l: 0.86 }, // warm sand
+  { hue: 35,  sat: 0.060, l: 0.80 }, // soft terracotta
+  { hue: 165, sat: 0.055, l: 0.78 }, // pale sage
+  { hue: 230, sat: 0.040, l: 0.82 }, // dusty linen blue
+  { hue: 50,  sat: 0.050, l: 0.84 }, // champagne
 ];
 
 export const DARK_PALETTE = [
-  { hue: 260, sat: 0.18, l: 0.42 }, // electric violet
-  { hue: 240, sat: 0.20, l: 0.30 }, // deep navy
-  { hue: 18,  sat: 0.18, l: 0.45 }, // ember glow
-  { hue: 280, sat: 0.15, l: 0.36 }, // royal purple
-  { hue: 220, sat: 0.16, l: 0.28 }, // ink cobalt
+  { hue: 85,  sat: 0.045, l: 0.42 }, // bronze ink
+  { hue: 35,  sat: 0.080, l: 0.45 }, // burnt sienna
+  { hue: 165, sat: 0.055, l: 0.38 }, // deep sage
+  { hue: 230, sat: 0.060, l: 0.30 }, // midnight slate
+  { hue: 50,  sat: 0.050, l: 0.36 }, // antique gold
 ];
