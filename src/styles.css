@@ -296,21 +296,20 @@
     z-index: -9;
     opacity: var(--glass-sheen);
     background:
-      radial-gradient(120% 80% at 12% 0%, oklch(0.78 0.10 250 / 0.32), transparent 55%),
-      radial-gradient(110% 75% at 88% 8%, oklch(0.82 0.12 25 / 0.22), transparent 60%),
-      radial-gradient(100% 80% at 50% 100%, oklch(0.80 0.09 295 / 0.20), transparent 65%),
-      radial-gradient(90% 70% at 70% 50%, oklch(0.85 0.08 170 / 0.14), transparent 70%);
-    /* On light surfaces, screen blend washes tints out — use multiply so the
-       aurora actually pigments the page. Dark mode keeps screen for glow. */
+      radial-gradient(120% 80% at 12% 0%, oklch(0.62 0.16 260 / 0.34), transparent 55%),
+      radial-gradient(110% 75% at 90% 5%, oklch(0.70 0.16 20 / 0.26), transparent 60%),
+      radial-gradient(100% 85% at 50% 100%, oklch(0.55 0.18 240 / 0.24), transparent 65%),
+      radial-gradient(90% 70% at 80% 55%, oklch(0.65 0.14 280 / 0.18), transparent 70%);
+    /* Light surfaces: multiply so deep navy/violet actually pigment the page. */
     mix-blend-mode: multiply;
     transition: opacity 400ms ease;
   }
   :root.dark body::before {
     background:
-      radial-gradient(120% 80% at 12% 0%, oklch(0.55 0.12 255 / 0.30), transparent 55%),
-      radial-gradient(110% 75% at 88% 8%, oklch(0.60 0.14 20 / 0.20), transparent 60%),
-      radial-gradient(100% 80% at 50% 100%, oklch(0.50 0.12 305 / 0.22), transparent 65%),
-      linear-gradient(180deg, oklch(0.5 0.08 240 / 0.06) 0%, transparent 45%, oklch(0.12 0.02 240 / 0.32) 100%);
+      radial-gradient(120% 80% at 12% 0%, oklch(0.50 0.18 260 / 0.34), transparent 55%),
+      radial-gradient(110% 75% at 90% 5%, oklch(0.55 0.18 20 / 0.24), transparent 60%),
+      radial-gradient(100% 85% at 50% 100%, oklch(0.40 0.20 240 / 0.30), transparent 65%),
+      linear-gradient(180deg, oklch(0.45 0.10 260 / 0.08) 0%, transparent 45%, oklch(0.10 0.04 240 / 0.36) 100%);
     mix-blend-mode: screen;
   }
   body::after {
