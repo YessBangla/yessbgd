@@ -57,12 +57,12 @@ export function onIntensityChange(cb: (v: GlassIntensity) => void): () => void {
 /* -------------------- Palettes -------------------- */
 
 export function loadPalette(): GlassPalette {
-  if (typeof window === "undefined") return "aurora";
+  if (typeof window === "undefined") return "nordic";
   try {
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
     if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono") return v;
   } catch { /* quota */ }
-  return "aurora";
+  return "nordic";
 }
 
 export function applyPalette(value: GlassPalette) {
@@ -221,7 +221,7 @@ export function getPalette(theme: "light" | "dark"): PaletteStop[] {
   const id =
     (typeof document !== "undefined"
       ? (document.documentElement.getAttribute("data-palette") as GlassPalette | null)
-      : null) ?? "aurora";
+      : null) ?? "nordic";
   const def = PALETTES[id] ?? PALETTES.aurora;
   return theme === "dark" ? def.dark : def.light;
 }
