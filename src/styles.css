@@ -350,6 +350,7 @@
 
   /* Ivory + Gold — warm consulting / luxury editorial.
      Champagne wash with soft gold halos in the corners. */
+  :root,
   :root[data-palette="ivory"] {
     --glass-grad-light:
       radial-gradient(80% 70% at 0% 0%,    oklch(0.97 0.030 75  / 0.70), transparent 60%),
