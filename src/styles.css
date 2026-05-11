@@ -900,3 +900,18 @@
 [lang="bn"] .whitespace-nowrap.lang-flex {
   white-space: normal;
 }
+
+/* ---------------------------------------------------------------------------
+   App-shell mobile chrome — bottom tab bar safe spacing
+   --------------------------------------------------------------------------- */
+:root {
+  --mobile-tabbar-h: 4.25rem; /* tab bar height + inner padding */
+}
+@media (max-width: 1023.98px) {
+  /* Reserve room at the bottom of the page so content + footer clear the bar */
+  .app-shell { padding-bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom)); }
+  /* Lift the floating scroll controls above the tab bar */
+  body :where([aria-label="Page scroll controls"]) {
+    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom) + 0.5rem) !important;
+  }
+}

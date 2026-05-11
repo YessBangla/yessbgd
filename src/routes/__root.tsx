@@ -7,6 +7,8 @@ import { Footer } from "@/components/Footer";
 import { WaterBackground } from "@/components/WaterBackground";
 import { ScrollUpDown } from "@/components/ScrollUpDown";
 import { LiquidGlassToggle } from "@/components/LiquidGlassToggle";
+import { MobileTabBar } from "@/components/MobileTabBar";
+import { RouteTransition } from "@/components/RouteTransition";
 import { applyHeaderFooterCssVars, loadLogoSettings } from "@/lib/logoSettings";
 import { applyIntensity, loadIntensity, applyPalette, loadPalette } from "@/lib/liquidGlass";
 import { useTranslation } from "react-i18next";
@@ -92,15 +94,18 @@ function RootComponent() {
     if (typeof document !== "undefined") document.documentElement.lang = lang;
   }, [i18n.resolvedLanguage, i18n.language]);
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col app-shell">
       <WaterBackground />
       <Header />
       <main className="flex-1">
-        <Outlet />
+        <RouteTransition>
+          <Outlet />
+        </RouteTransition>
       </main>
       <Footer />
       <ScrollUpDown />
       <LiquidGlassToggle />
+      <MobileTabBar />
     </div>
   );
 }
