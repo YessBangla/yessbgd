@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 type Mode = "light" | "dark";
@@ -36,6 +36,9 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
   const [tipOpen, setTipOpen] = useState(false);
   const tipId = useId();
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tipRef = useRef<HTMLSpanElement | null>(null);
+  const btnRef = useRef<HTMLButtonElement | null>(null);
+  const [tipShift, setTipShift] = useState<{ left?: number; right?: number; top?: number }>({});
 
   useEffect(() => {
     const initial = readInitial();
@@ -44,22 +47,92 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
     setMounted(true);
   }, []);
 
-  // Hide tooltip on Escape, on scroll, on touch swipe, and on outside pointer activity.
+  // Hide tooltip on Escape, scroll/wheel, and touch swipe (touchstart→touchend gesture).
   useEffect(() => {
     if (!tipOpen) return;
     const close = () => setTipOpen(false);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
+
+    // Swipe detection — close if finger moves > SWIPE_PX in any direction
+    const SWIPE_PX = 8;
+    let startX = 0, startY = 0, startT = 0, tracking = false;
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      tracking = true;
+      startX = t.clientX; startY = t.clientY; startT = performance.now();
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!tracking) return;
+      const t = e.touches[0];
+      if (!t) return;
+      const dx = Math.abs(t.clientX - startX);
+      const dy = Math.abs(t.clientY - startY);
+      if (dx > SWIPE_PX || dy > SWIPE_PX) { tracking = false; close(); }
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!tracking) return;
+      tracking = false;
+      const t = e.changedTouches[0];
+      if (!t) return;
+      const dx = Math.abs(t.clientX - startX);
+      const dy = Math.abs(t.clientY - startY);
+      const dt = performance.now() - startT;
+      // Either a recognized swipe distance, or a quick flick — both dismiss
+      if (dx > SWIPE_PX || dy > SWIPE_PX || dt < 250) close();
+    };
+
     window.addEventListener("keydown", onKey);
     window.addEventListener("scroll", close, { passive: true, capture: true });
-    window.addEventListener("touchmove", close, { passive: true });
     window.addEventListener("wheel", close, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", close, { passive: true });
     return () => {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("scroll", close, true);
-      window.removeEventListener("touchmove", close);
       window.removeEventListener("wheel", close);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", close);
     };
   }, [tipOpen]);
+
+  // Auto-reposition: when tooltip opens, measure and clamp into viewport.
+  // Flips horizontally (right→left) or shifts inward; flips vertically below header if clipped.
+  useLayoutEffect(() => {
+    if (!tipOpen || !tipRef.current) { setTipShift({}); return; }
+    const measure = () => {
+      const tip = tipRef.current;
+      if (!tip) return;
+      // Reset to natural position to measure honestly
+      tip.style.left = ""; tip.style.right = ""; tip.style.top = "";
+      const rect = tip.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const margin = 8;
+      const next: { left?: number; right?: number; top?: number } = {};
+      if (rect.right > vw - margin) {
+        // Overflow right — anchor to right edge with margin
+        next.right = margin;
+        next.left = undefined;
+      } else if (rect.left < margin) {
+        // Overflow left — flip to left edge
+        next.left = margin;
+        next.right = undefined;
+      }
+      if (rect.bottom > vh - margin) {
+        // Not enough room below — pin near bottom of viewport
+        next.top = Math.max(margin, vh - rect.height - margin);
+      }
+      setTipShift(next);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [tipOpen, tipText]);
 
   const isDark = mode === "dark";
   const currentLabel = isDark ? "Dark mode" : "Light mode";
