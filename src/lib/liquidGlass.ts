@@ -90,24 +90,25 @@ export function tuningFor(level: GlassIntensity, lowEnd: boolean): GlassTuning {
 }
 
 /**
- * Light & dark Liquid Glass palettes — separate hue stacks per theme so
- * each mode reads as a distinct, intentional environment.
+ * Light & dark Liquid Glass palettes — refined "aurora" mix inspired by
+ * Apple / Stripe / Linear hero canvases. Cool-leaning with a single warm
+ * accent so the composition reads premium, never muddy.
  *
- * Light: pearl + champagne + soft sky — luminous, museum-quiet.
- * Dark:  deep sapphire + indigo + warm amber accent — cinematic.
+ * Light: soft periwinkle + lavender mist + warm peach + arctic blue.
+ * Dark:  midnight indigo + plum + deep teal + ember accent.
  */
 export const LIGHT_PALETTE = [
-  { hue: 230, sat: 0.04, l: 0.93 }, // pearl
-  { hue: 70,  sat: 0.05, l: 0.94 }, // champagne
-  { hue: 250, sat: 0.03, l: 0.95 }, // sky pearl
-  { hue: 210, sat: 0.04, l: 0.92 }, // morning mist
-  { hue: 30,  sat: 0.05, l: 0.93 }, // warm sand
+  { hue: 250, sat: 0.06, l: 0.90 }, // periwinkle
+  { hue: 295, sat: 0.05, l: 0.92 }, // lavender mist
+  { hue: 25,  sat: 0.07, l: 0.92 }, // warm peach
+  { hue: 215, sat: 0.06, l: 0.93 }, // arctic blue
+  { hue: 170, sat: 0.05, l: 0.93 }, // sea glass
 ];
 
 export const DARK_PALETTE = [
-  { hue: 240, sat: 0.10, l: 0.42 }, // sapphire
-  { hue: 270, sat: 0.09, l: 0.38 }, // indigo
-  { hue: 200, sat: 0.08, l: 0.40 }, // teal night
-  { hue: 30,  sat: 0.10, l: 0.45 }, // amber accent
-  { hue: 220, sat: 0.07, l: 0.36 }, // ink blue
+  { hue: 255, sat: 0.11, l: 0.38 }, // midnight indigo
+  { hue: 305, sat: 0.10, l: 0.36 }, // plum
+  { hue: 195, sat: 0.10, l: 0.38 }, // deep teal
+  { hue: 20,  sat: 0.12, l: 0.42 }, // ember
+  { hue: 235, sat: 0.09, l: 0.34 }, // ink
 ];
