@@ -99,7 +99,7 @@ export function WaterBackground() {
         { x: 0.55 + Math.sin(t * 1.2) * 0.1, y: 0.15 + Math.cos(t) * 0.05, hue: 220, sat: 0.1 },
         { x: 0.15 + Math.cos(t * 0.6) * 0.06, y: 0.85 + Math.sin(t * 0.8) * 0.05, hue: 60, sat: 0.1 },
       ];
-      const baseAlpha = dark ? 0.18 : 0.28;
+      const baseAlpha = dark ? 0.32 : 0.42;
       for (const b of blobs) {
         const cx = b.x * w;
         const cy = b.y * h;
