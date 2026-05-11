@@ -240,21 +240,21 @@ export const PALETTES: Record<GlassPalette, PaletteDef> = {
     label: "Ivory + Gold",
     hint: "Warm ivory · champagne · soft gold",
     light: [
-      { hue: 75,  sat: 0.030, l: 0.97 },
-      { hue: 55,  sat: 0.055, l: 0.93 },
-      { hue: 40,  sat: 0.065, l: 0.90 },
-      { hue: 30,  sat: 0.045, l: 0.94 },
-      { hue: 70,  sat: 0.022, l: 0.96 },
+      { hue: 82,  sat: 0.026, l: 0.98 },
+      { hue: 72,  sat: 0.045, l: 0.94 },
+      { hue: 58,  sat: 0.052, l: 0.91 },
+      { hue: 92,  sat: 0.032, l: 0.96 },
+      { hue: 160, sat: 0.020, l: 0.94 },
     ],
     dark: [
-      { hue: 45,  sat: 0.055, l: 0.40 },
-      { hue: 35,  sat: 0.070, l: 0.36 },
-      { hue: 55,  sat: 0.045, l: 0.32 },
-      { hue: 30,  sat: 0.060, l: 0.30 },
-      { hue: 50,  sat: 0.030, l: 0.24 },
+      { hue: 72,  sat: 0.050, l: 0.38 },
+      { hue: 58,  sat: 0.060, l: 0.34 },
+      { hue: 88,  sat: 0.040, l: 0.30 },
+      { hue: 160, sat: 0.030, l: 0.28 },
+      { hue: 50,  sat: 0.028, l: 0.22 },
     ],
     swatch:
-      "linear-gradient(135deg, oklch(0.97 0.03 75), oklch(0.93 0.06 50) 55%, oklch(0.90 0.07 35))",
+      "linear-gradient(135deg, oklch(0.98 0.026 82), oklch(0.94 0.045 72) 55%, oklch(0.91 0.052 58))",
   },
 };
 
