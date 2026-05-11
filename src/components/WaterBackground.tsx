@@ -190,7 +190,41 @@ export function WaterBackground() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Ripples
+      // Vertical light beams — soft, godray-like columns of warm light.
+      // Uses additive blending so they layer like real light, not paint.
+      ctx.globalCompositeOperation = "lighter";
+      const beamAlpha = dark ? 0.10 : 0.14;
+      for (const beam of BEAMS) {
+        const sway = Math.sin(t * 0.6 + beam.phase) * 0.015;
+        const cx = (beam.x + sway) * w;
+        const halfW = beam.w * w * (0.9 + 0.1 * Math.sin(t * 0.4 + beam.phase));
+        const grad = ctx.createLinearGradient(cx - halfW, 0, cx + halfW, 0);
+        const hue = dark ? 60 : 70;
+        const lite = dark ? 0.78 : 0.94;
+        grad.addColorStop(0,    `oklch(${lite} 0.07 ${hue} / 0)`);
+        grad.addColorStop(0.5,  `oklch(${lite} 0.09 ${hue} / ${beamAlpha})`);
+        grad.addColorStop(1,    `oklch(${lite} 0.07 ${hue} / 0)`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(cx - halfW, 0, halfW * 2, h);
+      }
+
+      // Golden sparkle particles — slow upward drift, gentle twinkle.
+      const sparkBase = dark ? 0.55 : 0.70;
+      for (const s of sparks) {
+        s.y -= s.vy * delta;
+        if (s.y < -0.02) { s.y = 1.02; s.x = Math.random(); }
+        const tw = 0.5 + 0.5 * Math.sin(t * s.tw + s.ph);
+        const px = s.x * w;
+        const py = s.y * h;
+        const rad = s.r * 2.4;
+        const g = ctx.createRadialGradient(px, py, 0, px, py, rad);
+        g.addColorStop(0, `oklch(0.97 0.08 78 / ${sparkBase * tw})`);
+        g.addColorStop(1, `oklch(0.97 0.08 78 / 0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(px - rad, py - rad, rad * 2, rad * 2);
+      }
+      ctx.globalCompositeOperation = "source-over";
+
       if (ripples.length) {
         ctx.globalCompositeOperation = "lighter";
         for (let i = ripples.length - 1; i >= 0; i--) {
