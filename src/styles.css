@@ -220,31 +220,31 @@
 }
 
 .dark {
-  --background: oklch(0.16 0.02 240);
-  --foreground: oklch(0.97 0.005 230);
-  --surface: oklch(0.2 0.025 240);
-  --card: oklch(0.22 0.025 240);
-  --card-foreground: oklch(0.97 0.005 230);
-  --popover: oklch(0.22 0.025 240);
-  --popover-foreground: oklch(0.97 0.005 230);
+  --background: oklch(0.14 0.012 250);
+  --foreground: oklch(0.97 0.004 250);
+  --surface: oklch(0.18 0.014 250);
+  --card: oklch(0.19 0.015 250);
+  --card-foreground: oklch(0.97 0.004 250);
+  --popover: oklch(0.19 0.015 250);
+  --popover-foreground: oklch(0.97 0.004 250);
   --primary: oklch(0.72 0.080 188);
-  --primary-foreground: oklch(0.16 0.02 240);
+  --primary-foreground: oklch(0.14 0.012 250);
   --primary-glow: oklch(0.82 0.070 182);
-  --secondary: oklch(0.24 0.03 240);
-  --secondary-foreground: oklch(0.97 0.005 230);
+  --secondary: oklch(0.22 0.018 250);
+  --secondary-foreground: oklch(0.97 0.004 250);
   /* Dark-theme accent must clear WCAG AA against the light hero surface
      (`bg-foreground` → near-white in dark mode). 0.75L was 2.33:1; the
      0.55L value below clears 3:1 for large text + iconography. */
   --accent: oklch(0.68 0.100 78);
-  --accent-foreground: oklch(0.16 0.02 240);
-  --muted: oklch(0.24 0.03 240);
-  --muted-foreground: oklch(0.72 0.02 240);
-  --border: oklch(1 0 0 / 0.1);
-  --input: oklch(1 0 0 / 0.12);
+  --accent-foreground: oklch(0.14 0.012 250);
+  --muted: oklch(0.22 0.018 250);
+  --muted-foreground: oklch(0.72 0.015 250);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.10);
   --ring: oklch(0.78 0.13 188);
-  --glass-bg: oklch(0.22 0.025 240 / 0.55);
-  --glass-bg-strong: oklch(0.22 0.025 240 / 0.75);
-  --glass-border: oklch(1 0 0 / 0.12);
+  --glass-bg: oklch(0.19 0.015 250 / 0.55);
+  --glass-bg-strong: oklch(0.19 0.015 250 / 0.78);
+  --glass-border: oklch(1 0 0 / 0.10);
 }
 
 @layer base {
