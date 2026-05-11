@@ -13,6 +13,7 @@ export type GlassPalette = "aurora" | "nordic" | "sunset" | "mono" | "ivory";
 
 const STORE_KEY = "yess-liquid-glass-v1";
 const PALETTE_KEY = "yess-liquid-glass-palette-v1";
+const PALETTE_VERSION_KEY = "yess-liquid-glass-palette-version-v1";
 const EVENT = "liquidglass:change";
 const PALETTE_EVENT = "liquidglass:palette";
 const DEFAULT_PALETTE: GlassPalette = "ivory";
@@ -60,6 +61,11 @@ export function onIntensityChange(cb: (v: GlassIntensity) => void): () => void {
 export function loadPalette(): GlassPalette {
   if (typeof window === "undefined") return DEFAULT_PALETTE;
   try {
+    if (localStorage.getItem(PALETTE_VERSION_KEY) !== "ivory-gold") {
+      localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE);
+      localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+      return DEFAULT_PALETTE;
+    }
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
     if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono" || v === "ivory") return v;
   } catch { /* quota */ }
@@ -73,7 +79,10 @@ export function applyPalette(value: GlassPalette) {
 
 export function resetPalette() {
   applyPalette(DEFAULT_PALETTE);
-  try { localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE); } catch { /* quota */ }
+  try {
+    localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE);
+    localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+  } catch { /* quota */ }
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: DEFAULT_PALETTE }));
   }
@@ -81,7 +90,10 @@ export function resetPalette() {
 
 export function savePalette(value: GlassPalette) {
   applyPalette(value);
-  try { localStorage.setItem(PALETTE_KEY, value); } catch { /* quota */ }
+  try {
+    localStorage.setItem(PALETTE_KEY, value);
+    localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+  } catch { /* quota */ }
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: value }));
   }
