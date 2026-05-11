@@ -143,7 +143,7 @@ export function WaterBackground() {
       }
 
       const dark = isDark();
-      const palette = dark ? DARK_PALETTE : LIGHT_PALETTE;
+      const palette = getPalette(dark ? "dark" : "light");
       ctx.clearRect(0, 0, w, h);
 
       const t = now * tuning.speed;
