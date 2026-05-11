@@ -84,6 +84,7 @@ function RootComponent() {
   useEffect(() => {
     applyHeaderFooterCssVars(loadLogoSettings());
     applyIntensity(loadIntensity());
+    applyPalette(loadPalette());
   }, []);
   // Mirror the active language onto <html lang> for assistive tech and SEO.
   useEffect(() => {
