@@ -62,7 +62,7 @@ export function loadPalette(): GlassPalette {
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
     if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono") return v;
   } catch { /* quota */ }
-  return "aurora";
+  return "nordic";
 }
 
 export function applyPalette(value: GlassPalette) {
