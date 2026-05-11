@@ -295,22 +295,22 @@
     pointer-events: none;
     z-index: -9;
     opacity: var(--glass-sheen);
-    /* Editorial palette — warm sand, sage, terracotta, ink.
-       Inspired by Aesop / Loro Piana: muted, painterly, never neon. */
+    /* Refined editorial palette — ivory, sage, slate, linen.
+       Cool-neutral, painterly, no warm red/terracotta tones. */
     background:
-      radial-gradient(110% 75% at 8% 0%, oklch(0.86 0.045 85 / 0.42), transparent 58%),
-      radial-gradient(95% 70% at 95% 8%, oklch(0.80 0.060 35 / 0.28), transparent 62%),
-      radial-gradient(120% 90% at 50% 105%, oklch(0.78 0.055 165 / 0.26), transparent 65%),
-      radial-gradient(80% 65% at 78% 60%, oklch(0.82 0.040 230 / 0.18), transparent 70%);
+      radial-gradient(110% 75% at 8% 0%, oklch(0.88 0.025 110 / 0.38), transparent 58%),
+      radial-gradient(95% 70% at 95% 8%, oklch(0.84 0.035 175 / 0.28), transparent 62%),
+      radial-gradient(120% 90% at 50% 105%, oklch(0.80 0.040 230 / 0.26), transparent 65%),
+      radial-gradient(80% 65% at 78% 60%, oklch(0.82 0.025 250 / 0.18), transparent 70%);
     mix-blend-mode: multiply;
     transition: opacity 400ms ease;
   }
   :root.dark body::before {
     background:
-      radial-gradient(110% 75% at 8% 0%, oklch(0.42 0.045 85 / 0.38), transparent 58%),
-      radial-gradient(95% 70% at 95% 8%, oklch(0.45 0.080 35 / 0.30), transparent 62%),
-      radial-gradient(120% 90% at 50% 105%, oklch(0.38 0.055 165 / 0.32), transparent 65%),
-      linear-gradient(180deg, oklch(0.30 0.020 85 / 0.10) 0%, transparent 45%, oklch(0.10 0.015 230 / 0.42) 100%);
+      radial-gradient(110% 75% at 8% 0%, oklch(0.40 0.025 110 / 0.34), transparent 58%),
+      radial-gradient(95% 70% at 95% 8%, oklch(0.42 0.045 175 / 0.30), transparent 62%),
+      radial-gradient(120% 90% at 50% 105%, oklch(0.36 0.050 230 / 0.34), transparent 65%),
+      linear-gradient(180deg, oklch(0.30 0.015 200 / 0.10) 0%, transparent 45%, oklch(0.10 0.015 230 / 0.42) 100%);
     mix-blend-mode: screen;
   }
   body::after {
