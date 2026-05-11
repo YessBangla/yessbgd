@@ -214,6 +214,27 @@ export const PALETTES: Record<GlassPalette, PaletteDef> = {
     swatch:
       "linear-gradient(135deg, oklch(0.96 0.012 60), oklch(0.95 0.012 230) 50%, oklch(0.94 0.018 40))",
   },
+  ivory: {
+    id: "ivory",
+    label: "Ivory + Gold",
+    hint: "Warm ivory · champagne · soft gold",
+    light: [
+      { hue: 75,  sat: 0.030, l: 0.97 },
+      { hue: 55,  sat: 0.055, l: 0.93 },
+      { hue: 40,  sat: 0.065, l: 0.90 },
+      { hue: 30,  sat: 0.045, l: 0.94 },
+      { hue: 70,  sat: 0.022, l: 0.96 },
+    ],
+    dark: [
+      { hue: 45,  sat: 0.055, l: 0.40 },
+      { hue: 35,  sat: 0.070, l: 0.36 },
+      { hue: 55,  sat: 0.045, l: 0.32 },
+      { hue: 30,  sat: 0.060, l: 0.30 },
+      { hue: 50,  sat: 0.030, l: 0.24 },
+    ],
+    swatch:
+      "linear-gradient(135deg, oklch(0.97 0.03 75), oklch(0.93 0.06 50) 55%, oklch(0.90 0.07 35))",
+  },
 };
 
 /** Live-resolved palette (reads current data-palette attribute). */
