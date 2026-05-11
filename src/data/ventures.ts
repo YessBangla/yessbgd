@@ -1,4 +1,4 @@
-import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, Plane, type LucideIcon } from "lucide-react";
+import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, ChefHat, LayoutGrid, Plane, type LucideIcon } from "lucide-react";
 
 import yessSoftImg from "@/assets/ventures/yess-soft.jpg";
 import akashTvImg from "@/assets/ventures/akash-tv.jpg";
@@ -577,7 +577,7 @@ export const ventures: Venture[] = [
     longDesc:
       "Yess Food is a multi-format F&B operator — cloud kitchens, signature dine-in concepts, catering and packaged food brands — all built on hygiene-first kitchens and a chef-led recipe lab.",
     image: yessFoodImg,
-    icon: UtensilsCrossed,
+    icon: ChefHat,
     color: "from-primary-glow to-accent",
     highlights: [
       "Cloud kitchens and dine-in concepts",
