@@ -62,6 +62,30 @@ export function WaterBackground() {
     const ripples: Ripple[] = [];
     const MAX_RIPPLES = lowEnd ? 10 : 18;
 
+    // Vertical light beams — fixed positions, gentle sway. Inspired by
+    // luminous tech/data-center ambience without any imagery.
+    const BEAMS = lowEnd
+      ? [{ x: 0.22, w: 0.10, phase: 0.0 }, { x: 0.78, w: 0.12, phase: 1.7 }]
+      : [
+          { x: 0.10, w: 0.09, phase: 0.0 },
+          { x: 0.30, w: 0.07, phase: 0.9 },
+          { x: 0.52, w: 0.14, phase: 2.1 },
+          { x: 0.74, w: 0.08, phase: 3.4 },
+          { x: 0.90, w: 0.10, phase: 4.6 },
+        ];
+
+    // Golden sparkle particles — drift upward, twinkle in/out.
+    type Spark = { x: number; y: number; r: number; vy: number; tw: number; ph: number };
+    const SPARK_COUNT = lowEnd ? 26 : 60;
+    const sparks: Spark[] = Array.from({ length: SPARK_COUNT }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: 0.6 + Math.random() * 1.6,
+      vy: 0.00002 + Math.random() * 0.00006,
+      tw: 0.6 + Math.random() * 1.4,
+      ph: Math.random() * Math.PI * 2,
+    }));
+
     const isDark = () => document.documentElement.classList.contains("dark");
 
     const addRipple = (x: number, y: number) => {
