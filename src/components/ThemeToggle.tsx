@@ -132,7 +132,7 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [tipOpen, tipText]);
+  }, [tipOpen, mode, mounted]);
 
   const isDark = mode === "dark";
   const currentLabel = isDark ? "Dark mode" : "Light mode";
