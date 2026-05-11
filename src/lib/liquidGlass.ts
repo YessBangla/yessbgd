@@ -1,7 +1,7 @@
 /**
  * Liquid Glass background settings.
  * - Intensity: off | subtle | standard | vivid (motion / opacity strength)
- * - Palette : aurora | nordic | sunset | mono   (color story)
+ * - Palette : aurora | nordic | sunset | mono | ivory (color story)
  *
  * Both are persisted in localStorage and reflected as `data-glass` and
  * `data-palette` attributes on <html>, which `src/styles.css` reads to
@@ -13,8 +13,10 @@ export type GlassPalette = "aurora" | "nordic" | "sunset" | "mono" | "ivory";
 
 const STORE_KEY = "yess-liquid-glass-v1";
 const PALETTE_KEY = "yess-liquid-glass-palette-v1";
+const PALETTE_VERSION_KEY = "yess-liquid-glass-palette-version-v1";
 const EVENT = "liquidglass:change";
 const PALETTE_EVENT = "liquidglass:palette";
+const DEFAULT_PALETTE: GlassPalette = "ivory";
 
 export function detectLowEnd(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -57,12 +59,17 @@ export function onIntensityChange(cb: (v: GlassIntensity) => void): () => void {
 /* -------------------- Palettes -------------------- */
 
 export function loadPalette(): GlassPalette {
-  if (typeof window === "undefined") return "ivory";
+  if (typeof window === "undefined") return DEFAULT_PALETTE;
   try {
+    if (localStorage.getItem(PALETTE_VERSION_KEY) !== "ivory-gold") {
+      localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE);
+      localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+      return DEFAULT_PALETTE;
+    }
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
     if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono" || v === "ivory") return v;
   } catch { /* quota */ }
-  return "ivory";
+  return DEFAULT_PALETTE;
 }
 
 export function applyPalette(value: GlassPalette) {
@@ -70,9 +77,23 @@ export function applyPalette(value: GlassPalette) {
   document.documentElement.setAttribute("data-palette", value);
 }
 
+export function resetPalette() {
+  applyPalette(DEFAULT_PALETTE);
+  try {
+    localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE);
+    localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+  } catch { /* quota */ }
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: DEFAULT_PALETTE }));
+  }
+}
+
 export function savePalette(value: GlassPalette) {
   applyPalette(value);
-  try { localStorage.setItem(PALETTE_KEY, value); } catch { /* quota */ }
+  try {
+    localStorage.setItem(PALETTE_KEY, value);
+    localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+  } catch { /* quota */ }
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: value }));
   }
@@ -219,21 +240,21 @@ export const PALETTES: Record<GlassPalette, PaletteDef> = {
     label: "Ivory + Gold",
     hint: "Warm ivory · champagne · soft gold",
     light: [
-      { hue: 75,  sat: 0.030, l: 0.97 },
-      { hue: 55,  sat: 0.055, l: 0.93 },
-      { hue: 40,  sat: 0.065, l: 0.90 },
-      { hue: 30,  sat: 0.045, l: 0.94 },
-      { hue: 70,  sat: 0.022, l: 0.96 },
+      { hue: 82,  sat: 0.026, l: 0.98 },
+      { hue: 72,  sat: 0.045, l: 0.94 },
+      { hue: 58,  sat: 0.052, l: 0.91 },
+      { hue: 92,  sat: 0.032, l: 0.96 },
+      { hue: 160, sat: 0.020, l: 0.94 },
     ],
     dark: [
-      { hue: 45,  sat: 0.055, l: 0.40 },
-      { hue: 35,  sat: 0.070, l: 0.36 },
-      { hue: 55,  sat: 0.045, l: 0.32 },
-      { hue: 30,  sat: 0.060, l: 0.30 },
-      { hue: 50,  sat: 0.030, l: 0.24 },
+      { hue: 72,  sat: 0.050, l: 0.38 },
+      { hue: 58,  sat: 0.060, l: 0.34 },
+      { hue: 88,  sat: 0.040, l: 0.30 },
+      { hue: 160, sat: 0.030, l: 0.28 },
+      { hue: 50,  sat: 0.028, l: 0.22 },
     ],
     swatch:
-      "linear-gradient(135deg, oklch(0.97 0.03 75), oklch(0.93 0.06 50) 55%, oklch(0.90 0.07 35))",
+      "linear-gradient(135deg, oklch(0.98 0.026 82), oklch(0.94 0.045 72) 55%, oklch(0.91 0.052 58))",
   },
 };
 
@@ -242,12 +263,12 @@ export function getPalette(theme: "light" | "dark"): PaletteStop[] {
   const id =
     (typeof document !== "undefined"
       ? (document.documentElement.getAttribute("data-palette") as GlassPalette | null)
-      : null) ?? "ivory";
-  const def = PALETTES[id] ?? PALETTES.aurora;
+      : null) ?? DEFAULT_PALETTE;
+  const def = PALETTES[id] ?? PALETTES.ivory;
   return theme === "dark" ? def.dark : def.light;
 }
 
 /* Back-compat exports — kept so existing imports don't break.
    Prefer getPalette() so palette switching is reflected immediately. */
-export const LIGHT_PALETTE = PALETTES.aurora.light;
-export const DARK_PALETTE = PALETTES.aurora.dark;
+export const LIGHT_PALETTE = PALETTES.ivory.light;
+export const DARK_PALETTE = PALETTES.ivory.dark;

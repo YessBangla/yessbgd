@@ -38,26 +38,26 @@
 :root {
   --radius: 1rem;
 
-  /* Apple-style soft, airy light palette */
-  --background: oklch(0.985 0.003 230);
-  --foreground: oklch(0.18 0.02 240);
-  --surface: oklch(0.97 0.006 230);
+  /* Premium ivory editorial palette */
+  --background: oklch(0.985 0.014 78);
+  --foreground: oklch(0.18 0.018 245);
+  --surface: oklch(0.965 0.018 76);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.02 240);
   --popover: oklch(0.99 0.003 230);
   --popover-foreground: oklch(0.18 0.02 240);
 
-  /* Brand: soft teal/mint inspired by the YESS Bangla logo */
-  --primary: oklch(0.55 0.13 188);
-  --primary-foreground: oklch(0.99 0.005 230);
-  --primary-glow: oklch(0.78 0.12 188);
+  /* Brand: deep institutional teal with restrained glow */
+  --primary: oklch(0.42 0.075 188);
+  --primary-foreground: oklch(0.985 0.014 78);
+  --primary-glow: oklch(0.68 0.070 182);
 
   --secondary: oklch(0.965 0.006 230);
   --secondary-foreground: oklch(0.22 0.03 240);
 
-  /* Accent: warm coral matching the logo's red */
-  --accent: oklch(0.68 0.2 28);
-  --accent-foreground: oklch(0.99 0.005 230);
+  /* Accent: refined champagne gold — no coral/red cast */
+  --accent: oklch(0.72 0.105 78);
+  --accent-foreground: oklch(0.20 0.020 245);
 
   --muted: oklch(0.96 0.006 230);
   --muted-foreground: oklch(0.5 0.015 240);
@@ -71,15 +71,15 @@
 
   /* Glass + ambient backgrounds */
   --gradient-hero: linear-gradient(135deg,
-    oklch(0.97 0.04 195) 0%,
-    oklch(0.95 0.05 220) 40%,
-    oklch(0.96 0.06 50) 100%);
-  --gradient-mesh: radial-gradient(at 20% 20%, oklch(0.85 0.12 188 / 0.45) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, oklch(0.85 0.12 28 / 0.35) 0px, transparent 50%),
-    radial-gradient(at 0% 80%, oklch(0.85 0.12 250 / 0.4) 0px, transparent 50%),
-    radial-gradient(at 90% 90%, oklch(0.88 0.1 60 / 0.35) 0px, transparent 50%);
+    oklch(0.99 0.016 82) 0%,
+    oklch(0.96 0.030 70) 46%,
+    oklch(0.93 0.040 62) 100%);
+  --gradient-mesh: radial-gradient(at 18% 12%, oklch(0.94 0.040 85 / 0.42) 0px, transparent 48%),
+    radial-gradient(at 82% 2%, oklch(0.88 0.065 72 / 0.30) 0px, transparent 50%),
+    radial-gradient(at 0% 82%, oklch(0.90 0.035 160 / 0.22) 0px, transparent 48%),
+    radial-gradient(at 92% 92%, oklch(0.92 0.050 58 / 0.32) 0px, transparent 50%);
   --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%);
-  --gradient-accent: linear-gradient(135deg, oklch(0.68 0.2 28) 0%, oklch(0.78 0.16 50) 100%);
+  --gradient-accent: linear-gradient(135deg, oklch(0.72 0.105 78) 0%, oklch(0.82 0.080 92) 100%);
   --gradient-surface: linear-gradient(180deg, var(--background) 0%, var(--surface) 100%);
 
   /* ───────────────────────────────────────────────────────────────
@@ -102,8 +102,8 @@
   /* Mid-grey wash — image is desaturated to light grey at the <img>
      level, then this overlay tints the left side a touch darker so the
      white headline keeps WCAG AA contrast without the photo feeling dark. */
-  --hero-ink: oklch(0.42 0.008 250);              /* mid grey ink */
-  --hero-veil: oklch(0.55 0.006 250);             /* lighter grey veil */
+  --hero-ink: oklch(0.34 0.012 250);              /* refined graphite ink */
+  --hero-veil: oklch(0.50 0.010 78);              /* warm champagne veil */
   --hero-overlay-h: linear-gradient(180deg,
     color-mix(in oklab, var(--hero-ink) 55%, transparent) 0%,
     color-mix(in oklab, var(--hero-veil) 38%, transparent) 55%,
@@ -114,10 +114,10 @@
     transparent 70%,
     color-mix(in oklab, var(--hero-ink) 38%, transparent) 100%);
   --hero-overlay-glow: radial-gradient(60% 55% at 25% 60%,
-    color-mix(in oklab, var(--accent) 14%, transparent) 0%,
+    color-mix(in oklab, var(--accent) 18%, transparent) 0%,
     transparent 75%);
-  --hero-halo-primary: oklch(from var(--primary) l c h / 0.12);
-  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.16);
+  --hero-halo-primary: oklch(from var(--primary) l c h / 0.10);
+  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.20);
   --hero-halo-blur: 32px;
   --hero-glow-opacity: 0.4;
   --hero-grid-opacity: 0.03;
@@ -157,8 +157,8 @@
   --shadow-sm: 0 1px 2px 0 oklch(0.18 0.03 240 / 0.04);
   --shadow-md: 0 4px 16px -4px oklch(0.18 0.03 240 / 0.08);
   --shadow-lg: 0 20px 40px -12px oklch(0.18 0.03 240 / 0.1);
-  --shadow-glow: 0 10px 40px -8px oklch(0.55 0.13 188 / 0.28);
-  --shadow-accent: 0 10px 30px -8px oklch(0.68 0.2 28 / 0.3);
+  --shadow-glow: 0 10px 40px -8px oklch(0.42 0.075 188 / 0.22);
+  --shadow-accent: 0 10px 30px -8px oklch(0.72 0.105 78 / 0.28);
 
   --transition-base: 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -225,16 +225,16 @@
   --card-foreground: oklch(0.97 0.005 230);
   --popover: oklch(0.22 0.025 240);
   --popover-foreground: oklch(0.97 0.005 230);
-  --primary: oklch(0.78 0.13 188);
+  --primary: oklch(0.72 0.080 188);
   --primary-foreground: oklch(0.16 0.02 240);
-  --primary-glow: oklch(0.85 0.12 188);
+  --primary-glow: oklch(0.82 0.070 182);
   --secondary: oklch(0.24 0.03 240);
   --secondary-foreground: oklch(0.97 0.005 230);
   /* Dark-theme accent must clear WCAG AA against the light hero surface
      (`bg-foreground` → near-white in dark mode). 0.75L was 2.33:1; the
      0.55L value below clears 3:1 for large text + iconography. */
-  --accent: oklch(0.55 0.2 28);
-  --accent-foreground: oklch(0.99 0.005 230);
+  --accent: oklch(0.68 0.100 78);
+  --accent-foreground: oklch(0.16 0.02 240);
   --muted: oklch(0.24 0.03 240);
   --muted-foreground: oklch(0.72 0.02 240);
   --border: oklch(1 0 0 / 0.1);
@@ -291,7 +291,6 @@
   /* Palette tokens — switched by `data-palette` on <html>. Each preset
      defines four corner radial-gradients + a base wash, so body::before
      stays generic and palette swapping is one attribute change. */
-  :root,
   :root[data-palette="aurora"] {
     --glass-grad-light:
       radial-gradient(80% 70% at 0% 0%,    oklch(0.93 0.045 200 / 0.70), transparent 60%),
@@ -354,17 +353,17 @@
   :root,
   :root[data-palette="ivory"] {
     --glass-grad-light:
-      radial-gradient(80% 70% at 0% 0%,    oklch(0.97 0.030 75  / 0.70), transparent 60%),
-      radial-gradient(75% 70% at 100% 0%,  oklch(0.93 0.065 45  / 0.55), transparent 62%),
-      radial-gradient(85% 75% at 0% 100%,  oklch(0.95 0.040 60  / 0.50), transparent 62%),
-      radial-gradient(80% 70% at 100% 100%,oklch(0.90 0.070 35  / 0.55), transparent 62%),
-      linear-gradient(135deg, oklch(0.985 0.018 80) 0%, oklch(0.955 0.045 45) 100%);
+      radial-gradient(80% 70% at 0% 0%,    oklch(0.98 0.026 82  / 0.72), transparent 60%),
+      radial-gradient(75% 70% at 100% 0%,  oklch(0.94 0.045 72  / 0.48), transparent 62%),
+      radial-gradient(85% 75% at 0% 100%,  oklch(0.94 0.020 160 / 0.30), transparent 62%),
+      radial-gradient(80% 70% at 100% 100%,oklch(0.91 0.052 58  / 0.42), transparent 62%),
+      linear-gradient(135deg, oklch(0.99 0.014 82) 0%, oklch(0.96 0.032 70) 100%);
     --glass-grad-dark:
-      radial-gradient(80% 70% at 0% 0%,    oklch(0.32 0.045 55  / 0.45), transparent 60%),
-      radial-gradient(75% 70% at 100% 0%,  oklch(0.36 0.065 35  / 0.40), transparent 62%),
-      radial-gradient(85% 75% at 0% 100%,  oklch(0.28 0.040 60  / 0.40), transparent 62%),
-      radial-gradient(80% 70% at 100% 100%,oklch(0.30 0.060 30  / 0.42), transparent 62%),
-      linear-gradient(180deg, oklch(0.18 0.025 50) 0%, oklch(0.12 0.020 45) 100%);
+      radial-gradient(80% 70% at 0% 0%,    oklch(0.38 0.050 72  / 0.42), transparent 60%),
+      radial-gradient(75% 70% at 100% 0%,  oklch(0.34 0.060 58  / 0.34), transparent 62%),
+      radial-gradient(85% 75% at 0% 100%,  oklch(0.28 0.030 160 / 0.30), transparent 62%),
+      radial-gradient(80% 70% at 100% 100%,oklch(0.30 0.040 88  / 0.36), transparent 62%),
+      linear-gradient(180deg, oklch(0.17 0.022 56) 0%, oklch(0.11 0.018 48) 100%);
   }
 
   body::before {
