@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 type Mode = "light" | "dark";
@@ -28,9 +28,14 @@ interface ThemeToggleProps {
   className?: string;
 }
 
+const LONG_PRESS_MS = 450;
+
 export function ThemeToggle({ variant = "pill", className = "" }: ThemeToggleProps) {
   const [mode, setMode] = useState<Mode>("light");
   const [mounted, setMounted] = useState(false);
+  const [tipOpen, setTipOpen] = useState(false);
+  const tipId = useId();
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const initial = readInitial();
@@ -39,42 +44,104 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
     setMounted(true);
   }, []);
 
+  // Hide tooltip on Escape for keyboard users
+  useEffect(() => {
+    if (!tipOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setTipOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [tipOpen]);
+
+  const isDark = mode === "dark";
+  const currentLabel = isDark ? "Dark mode" : "Light mode";
+  const switchLabel = isDark ? "Switch to light mode" : "Switch to dark mode";
+  const tipText = mounted
+    ? `${currentLabel} · ${switchLabel}`
+    : "Theme";
+
   const toggle = () => {
-    const next: Mode = mode === "dark" ? "light" : "dark";
+    const next: Mode = isDark ? "light" : "dark";
     setMode(next);
     try { localStorage.setItem(STORE_KEY, next); } catch { /* quota */ }
     apply(next);
   };
 
-  const isDark = mode === "dark";
-  const label = isDark ? "Switch to light mode" : "Switch to dark mode";
+  const clearLongPress = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
 
-  if (variant === "compact") {
-    return (
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={label}
-        aria-pressed={isDark}
-        suppressHydrationWarning
-        className={`grid h-9 w-9 place-items-center rounded-full border border-border/60 bg-background/60 text-foreground/80 backdrop-blur transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${className}`}
-      >
-        {mounted && isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-      </button>
-    );
-  }
+  // Pointer handlers — desktop hover + mobile long-press both reveal the tooltip
+  const handlePointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse") setTipOpen(true);
+  };
+  const handlePointerLeave = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse") setTipOpen(false);
+    clearLongPress();
+  };
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") {
+      clearLongPress();
+      longPressTimer.current = setTimeout(() => setTipOpen(true), LONG_PRESS_MS);
+    }
+  };
+  const handlePointerUp = () => clearLongPress();
+  const handlePointerCancel = () => { clearLongPress(); setTipOpen(false); };
+
+  const baseBtn =
+    "relative inline-flex items-center justify-center rounded-full border border-border/60 bg-background/60 text-foreground/85 backdrop-blur transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
+  const sizeCls = variant === "compact"
+    ? "h-9 w-9"
+    : "h-9 gap-1.5 px-3 text-xs font-semibold";
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={label}
-      aria-pressed={isDark}
-      suppressHydrationWarning
-      className={`inline-flex h-9 items-center gap-1.5 rounded-full border border-border/60 bg-background/60 px-3 text-xs font-semibold text-foreground/80 backdrop-blur transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${className}`}
-    >
-      {mounted && isDark ? <Sun className="h-3.5 w-3.5" aria-hidden /> : <Moon className="h-3.5 w-3.5" aria-hidden />}
-      <span className="hidden md:inline">{mounted && isDark ? "Light" : "Dark"}</span>
-    </button>
+    <span className={`relative inline-flex ${className}`}>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={isDark}
+        aria-pressed={isDark}
+        aria-label={switchLabel}
+        aria-describedby={tipId}
+        title={tipText}
+        suppressHydrationWarning
+        onClick={toggle}
+        onFocus={() => setTipOpen(true)}
+        onBlur={() => setTipOpen(false)}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        className={`${baseBtn} ${sizeCls}`}
+      >
+        {mounted && isDark ? (
+          <Sun className={variant === "compact" ? "h-4 w-4" : "h-3.5 w-3.5"} aria-hidden />
+        ) : (
+          <Moon className={variant === "compact" ? "h-4 w-4" : "h-3.5 w-3.5"} aria-hidden />
+        )}
+        {variant === "pill" && (
+          <span className="hidden md:inline">{mounted && isDark ? "Light" : "Dark"}</span>
+        )}
+        <span className="sr-only">
+          {mounted ? `Current theme: ${currentLabel}. Activate to ${switchLabel.toLowerCase()}.` : "Theme toggle"}
+        </span>
+      </button>
+
+      {/* Tooltip — shown on hover, focus, or long-press. role=tooltip, linked via aria-describedby */}
+      <span
+        id={tipId}
+        role="tooltip"
+        aria-hidden={!tipOpen}
+        className={`pointer-events-none absolute right-0 top-full z-50 mt-2 whitespace-nowrap rounded-md border border-border/70 bg-foreground px-2.5 py-1.5 text-[11px] font-medium text-background shadow-elegant transition-opacity duration-150 ${tipOpen ? "opacity-100" : "opacity-0"}`}
+      >
+        {tipText}
+      </span>
+    </span>
   );
 }
