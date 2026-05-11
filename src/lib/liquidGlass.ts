@@ -9,7 +9,7 @@
  * events so it can retune without remounting.
  */
 export type GlassIntensity = "off" | "subtle" | "standard" | "vivid";
-export type GlassPalette = "aurora" | "nordic" | "sunset" | "mono";
+export type GlassPalette = "aurora" | "nordic" | "sunset" | "mono" | "ivory";
 
 const STORE_KEY = "yess-liquid-glass-v1";
 const PALETTE_KEY = "yess-liquid-glass-palette-v1";
@@ -60,7 +60,7 @@ export function loadPalette(): GlassPalette {
   if (typeof window === "undefined") return "nordic";
   try {
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
-    if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono") return v;
+    if (v === "aurora" || v === "nordic" || v === "sunset" || v === "mono" || v === "ivory") return v;
   } catch { /* quota */ }
   return "nordic";
 }
