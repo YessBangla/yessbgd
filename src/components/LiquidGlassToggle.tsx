@@ -131,6 +131,43 @@ export function LiquidGlassToggle() {
               })}
             </div>
 
+            {/* Palette presets */}
+            <div className="mt-3 border-t border-border pt-3">
+              <p className="mb-1.5 px-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Palette
+              </p>
+              <div role="radiogroup" aria-label="Palette" className="grid grid-cols-2 gap-1.5">
+                {Object.values(PALETTES).map((p) => {
+                  const active = palette === p.id;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => pickPalette(p.id)}
+                      title={p.hint}
+                      className={`flex items-center gap-2 rounded-xl border px-2 py-1.5 text-left text-xs transition-colors ${
+                        active
+                          ? "border-foreground/40 bg-secondary text-foreground"
+                          : "border-border/60 bg-secondary/40 text-foreground/80 hover:bg-secondary/70"
+                      }`}
+                    >
+                      <span
+                        aria-hidden
+                        className="h-6 w-6 shrink-0 rounded-md border border-border/60"
+                        style={{ backgroundImage: p.swatch }}
+                      />
+                      <span className="flex-1 leading-tight">
+                        <span className="block font-medium">{p.label}</span>
+                      </span>
+                      {active && <Check className="h-3.5 w-3.5 text-primary" aria-hidden />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Theme preview */}
             <div className="mt-3 border-t border-border pt-3">
               <p className="mb-1.5 px-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
