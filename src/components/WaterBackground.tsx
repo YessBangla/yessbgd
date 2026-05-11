@@ -91,23 +91,22 @@ export function WaterBackground() {
       const dark = isDark();
       ctx.clearRect(0, 0, w, h);
 
-      // Slowly drifting caustic blobs (liquid-glass ambient).
+      // Sophisticated, low-saturation liquid-glass palette — pearl, slate, champagne.
       const t = now * 0.0004;
       const blobs = [
-        { x: 0.22 + Math.sin(t) * 0.10, y: 0.28 + Math.cos(t * 0.9) * 0.08, hue: 188, sat: 0.18 },
-        { x: 0.80 + Math.cos(t * 0.7) * 0.09, y: 0.72 + Math.sin(t * 1.1) * 0.08, hue: 28, sat: 0.20 },
-        { x: 0.55 + Math.sin(t * 1.2) * 0.12, y: 0.12 + Math.cos(t) * 0.07, hue: 220, sat: 0.16 },
-        { x: 0.12 + Math.cos(t * 0.6) * 0.08, y: 0.88 + Math.sin(t * 0.8) * 0.07, hue: 305, sat: 0.16 },
-        { x: 0.65 + Math.sin(t * 0.5) * 0.10, y: 0.45 + Math.cos(t * 1.3) * 0.10, hue: 150, sat: 0.14 },
+        { x: 0.20 + Math.sin(t) * 0.08, y: 0.25 + Math.cos(t * 0.9) * 0.06, hue: 230, sat: 0.04, l: 0.92 },
+        { x: 0.82 + Math.cos(t * 0.7) * 0.07, y: 0.70 + Math.sin(t * 1.1) * 0.06, hue: 70,  sat: 0.05, l: 0.93 },
+        { x: 0.55 + Math.sin(t * 1.2) * 0.10, y: 0.10 + Math.cos(t) * 0.05,    hue: 250, sat: 0.03, l: 0.94 },
+        { x: 0.12 + Math.cos(t * 0.6) * 0.06, y: 0.90 + Math.sin(t * 0.8) * 0.05, hue: 210, sat: 0.04, l: 0.91 },
       ];
-      const baseAlpha = dark ? 0.32 : 0.42;
+      const baseAlpha = dark ? 0.22 : 0.30;
       for (const b of blobs) {
         const cx = b.x * w;
         const cy = b.y * h;
-        const r = Math.max(w, h) * 0.55;
+        const r = Math.max(w, h) * 0.6;
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        g.addColorStop(0, `oklch(0.82 ${b.sat} ${b.hue} / ${baseAlpha})`);
-        g.addColorStop(1, `oklch(0.82 ${b.sat} ${b.hue} / 0)`);
+        g.addColorStop(0, `oklch(${b.l} ${b.sat} ${b.hue} / ${baseAlpha})`);
+        g.addColorStop(1, `oklch(${b.l} ${b.sat} ${b.hue} / 0)`);
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, w, h);
       }
