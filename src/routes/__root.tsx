@@ -8,7 +8,7 @@ import { WaterBackground } from "@/components/WaterBackground";
 import { ScrollUpDown } from "@/components/ScrollUpDown";
 import { LiquidGlassToggle } from "@/components/LiquidGlassToggle";
 import { applyHeaderFooterCssVars, loadLogoSettings } from "@/lib/logoSettings";
-import { applyIntensity, loadIntensity } from "@/lib/liquidGlass";
+import { applyIntensity, loadIntensity, applyPalette, loadPalette } from "@/lib/liquidGlass";
 import { useTranslation } from "react-i18next";
 
 function NotFoundComponent() {
@@ -84,6 +84,7 @@ function RootComponent() {
   useEffect(() => {
     applyHeaderFooterCssVars(loadLogoSettings());
     applyIntensity(loadIntensity());
+    applyPalette(loadPalette());
   }, []);
   // Mirror the active language onto <html lang> for assistive tech and SEO.
   useEffect(() => {

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import {
   type GlassTuning,
-  LIGHT_PALETTE,
-  DARK_PALETTE,
+  getPalette,
   detectLowEnd,
   loadIntensity,
   onIntensityChange,
+  onPaletteChange,
   tuningFor,
 } from "@/lib/liquidGlass";
 
@@ -102,7 +102,7 @@ export function WaterBackground() {
       ctx.clearRect(0, 0, w, h);
       if (!tuning.enabled) return;
       const dark = isDark();
-      const palette = dark ? DARK_PALETTE : LIGHT_PALETTE;
+      const palette = getPalette(dark ? "dark" : "light");
       const a = dark ? tuning.alphaDark : tuning.alphaLight;
       for (let i = 0; i < Math.min(2, tuning.blobCount); i++) {
         const b = palette[i];
@@ -143,7 +143,7 @@ export function WaterBackground() {
       }
 
       const dark = isDark();
-      const palette = dark ? DARK_PALETTE : LIGHT_PALETTE;
+      const palette = getPalette(dark ? "dark" : "light");
       ctx.clearRect(0, 0, w, h);
 
       const t = now * tuning.speed;
@@ -208,6 +208,7 @@ export function WaterBackground() {
       ripples.length = 0;
       start();
     });
+    const offPalette = onPaletteChange(() => { ripples.length = 0; start(); });
 
     return () => {
       window.removeEventListener("resize", resize);
@@ -217,6 +218,7 @@ export function WaterBackground() {
       window.removeEventListener("blur", onBlur);
       window.removeEventListener("focus", onFocus);
       offChange();
+      offPalette();
       if (raf) cancelAnimationFrame(raf);
     };
   }, [mounted]);
