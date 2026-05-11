@@ -140,12 +140,15 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
         </span>
       </button>
 
-      {/* Tooltip — shown on hover, focus, or long-press. role=tooltip, linked via aria-describedby */}
+      {/* Tooltip — shown on hover, focus, or long-press. role=tooltip, linked via aria-describedby.
+          On <sm screens, the toggle lives inside the 4rem sticky header, so anchor the tip with
+          `fixed` just below the header bottom (calc(4rem + 0.5rem)) to guarantee no overlap.
+          On sm+ it stays absolute relative to the button. */}
       <span
         id={tipId}
         role="tooltip"
         aria-hidden={!tipOpen}
-        className={`pointer-events-none absolute right-0 top-full z-[60] mt-3 max-w-[min(80vw,18rem)] truncate whitespace-nowrap rounded-md border border-border/70 bg-foreground px-2.5 py-1.5 text-[11px] font-medium text-background shadow-elegant transition-opacity duration-150 sm:mt-2 ${tipOpen ? "opacity-100" : "opacity-0"}`}
+        className={`pointer-events-none fixed right-3 top-[calc(4rem+0.5rem)] z-[60] max-w-[min(80vw,18rem)] truncate whitespace-nowrap rounded-md border border-border/70 bg-foreground px-2.5 py-1.5 text-[11px] font-medium text-background shadow-elegant transition-opacity duration-150 sm:absolute sm:right-0 sm:top-full sm:mt-2 ${tipOpen ? "opacity-100" : "opacity-0"}`}
       >
         {tipText}
       </span>
