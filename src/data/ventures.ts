@@ -1,4 +1,4 @@
-import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, type LucideIcon } from "lucide-react";
+import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, Plane, type LucideIcon } from "lucide-react";
 
 import yessSoftImg from "@/assets/ventures/yess-soft.jpg";
 import akashTvImg from "@/assets/ventures/akash-tv.jpg";
@@ -10,6 +10,7 @@ import yessHostImg from "@/assets/ventures/yess-host.jpg";
 import yessEventImg from "@/assets/ventures/yess-event.jpg";
 import yessModelImg from "@/assets/ventures/yess-model.jpg";
 import yessFoodImg from "@/assets/ventures/yess-food.jpg";
+import yessTourismImg from "@/assets/ventures/yess-tourism.jpg";
 import yessAioImg from "@/assets/ventures/yess-all-in-one-solution.jpg";
 
 export type VentureCase = {
