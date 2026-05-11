@@ -251,12 +251,12 @@ export function getPalette(theme: "light" | "dark"): PaletteStop[] {
   const id =
     (typeof document !== "undefined"
       ? (document.documentElement.getAttribute("data-palette") as GlassPalette | null)
-      : null) ?? "ivory";
-  const def = PALETTES[id] ?? PALETTES.aurora;
+      : null) ?? DEFAULT_PALETTE;
+  const def = PALETTES[id] ?? PALETTES.ivory;
   return theme === "dark" ? def.dark : def.light;
 }
 
 /* Back-compat exports — kept so existing imports don't break.
    Prefer getPalette() so palette switching is reflected immediately. */
-export const LIGHT_PALETTE = PALETTES.aurora.light;
-export const DARK_PALETTE = PALETTES.aurora.dark;
+export const LIGHT_PALETTE = PALETTES.ivory.light;
+export const DARK_PALETTE = PALETTES.ivory.dark;
