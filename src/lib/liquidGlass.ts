@@ -90,25 +90,22 @@ export function tuningFor(level: GlassIntensity, lowEnd: boolean): GlassTuning {
 }
 
 /**
- * Light & dark Liquid Glass palettes — refined "aurora" mix inspired by
- * Apple / Stripe / Linear hero canvases. Cool-leaning with a single warm
- * accent so the composition reads premium, never muddy.
- *
- * Light: soft periwinkle + lavender mist + warm peach + arctic blue.
- * Dark:  midnight indigo + plum + deep teal + ember accent.
+ * Light & dark Liquid Glass palettes — Linear/Vercel-grade aurora:
+ * deep navy + electric violet + warm ember accent. Cool-dominant with
+ * one warm punch for premium SaaS energy.
  */
 export const LIGHT_PALETTE = [
-  { hue: 250, sat: 0.10, l: 0.78 }, // periwinkle
-  { hue: 295, sat: 0.09, l: 0.80 }, // lavender mist
-  { hue: 25,  sat: 0.12, l: 0.82 }, // warm peach
-  { hue: 215, sat: 0.10, l: 0.80 }, // arctic blue
-  { hue: 170, sat: 0.09, l: 0.82 }, // sea glass
+  { hue: 260, sat: 0.13, l: 0.72 }, // electric violet
+  { hue: 240, sat: 0.14, l: 0.70 }, // navy haze
+  { hue: 20,  sat: 0.15, l: 0.78 }, // ember
+  { hue: 280, sat: 0.11, l: 0.76 }, // soft purple
+  { hue: 220, sat: 0.12, l: 0.74 }, // cobalt mist
 ];
 
 export const DARK_PALETTE = [
-  { hue: 255, sat: 0.11, l: 0.38 }, // midnight indigo
-  { hue: 305, sat: 0.10, l: 0.36 }, // plum
-  { hue: 195, sat: 0.10, l: 0.38 }, // deep teal
-  { hue: 20,  sat: 0.12, l: 0.42 }, // ember
-  { hue: 235, sat: 0.09, l: 0.34 }, // ink
+  { hue: 260, sat: 0.18, l: 0.42 }, // electric violet
+  { hue: 240, sat: 0.20, l: 0.30 }, // deep navy
+  { hue: 18,  sat: 0.18, l: 0.45 }, // ember glow
+  { hue: 280, sat: 0.15, l: 0.36 }, // royal purple
+  { hue: 220, sat: 0.16, l: 0.28 }, // ink cobalt
 ];
