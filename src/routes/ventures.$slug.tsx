@@ -489,69 +489,73 @@ function VenturePage() {
         </div>
       </section>
 
-      {/* Packages / Engagement tiers */}
-      <section className="py-12">
-        <div className="container-tight">
-          <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
-              <Package className="h-5 w-5" />
+      {/* Packages / Engagement tiers — Yess Tourism gets a richer 4-tier layout + comparison + free-quote form */}
+      {v.slug === "yess-tourism" ? (
+        <TourismExtras packages={packages} />
+      ) : (
+        <section className="py-12">
+          <div className="container-tight">
+            <div className="flex items-center gap-3">
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                <Package className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  Ways to engage
+                </p>
+                <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+                  Choose how you want to work with {v.title}.
+                </h2>
+              </div>
             </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                Ways to engage
-              </p>
-              <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-                Choose how you want to work with {v.title}.
-              </h2>
-            </div>
-          </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {packages.map((p, i) => (
-              <Reveal key={p.name} delay={i * 0.05}>
-                <article
-                  className={`relative flex h-full flex-col rounded-3xl border p-7 transition-all ${
-                    p.highlight
-                      ? "border-primary/50 bg-gradient-to-br from-primary/10 via-background to-background shadow-elegant"
-                      : "border-border bg-secondary/20 hover:border-primary/30"
-                  }`}
-                >
-                  {p.highlight && (
-                    <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-glow">
-                      <Star className="h-3 w-3" /> Most chosen
-                    </span>
-                  )}
-                  <h3 className="font-display text-xl font-semibold">{p.name}</h3>
-                  <div className="mt-3 flex items-baseline gap-2">
-                    <span className="font-display text-3xl font-bold">{p.price}</span>
-                    {p.cadence && (
-                      <span className="text-xs font-medium text-muted-foreground">{p.cadence}</span>
-                    )}
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
-                  <ul className="mt-5 space-y-2.5">
-                    {p.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <span className="text-foreground/85">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to="/contact"
-                    className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+            <div className="mt-10 grid gap-6 md:grid-cols-3">
+              {packages.map((p, i) => (
+                <Reveal key={p.name} delay={i * 0.05}>
+                  <article
+                    className={`relative flex h-full flex-col rounded-3xl border p-7 transition-all ${
                       p.highlight
-                        ? "bg-gradient-primary text-primary-foreground shadow-glow"
-                        : "border border-border bg-background/60 hover:bg-background"
+                        ? "border-primary/50 bg-gradient-to-br from-primary/10 via-background to-background shadow-elegant"
+                        : "border-border bg-secondary/20 hover:border-primary/30"
                     }`}
                   >
-                    Talk to us <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </article>
-              </Reveal>
-            ))}
+                    {p.highlight && (
+                      <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-gradient-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-foreground shadow-glow">
+                        <Star className="h-3 w-3" /> Most chosen
+                      </span>
+                    )}
+                    <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <span className="font-display text-3xl font-bold">{p.price}</span>
+                      {p.cadence && (
+                        <span className="text-xs font-medium text-muted-foreground">{p.cadence}</span>
+                      )}
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.summary}</p>
+                    <ul className="mt-5 space-y-2.5">
+                      {p.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2 text-sm">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                          <span className="text-foreground/85">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      to="/contact"
+                      className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-transform hover:-translate-y-0.5 ${
+                        p.highlight
+                          ? "bg-gradient-primary text-primary-foreground shadow-glow"
+                          : "border border-border bg-background/60 hover:bg-background"
+                      }`}
+                    >
+                      Talk to us <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FAQs */}
       <section className="py-12">
