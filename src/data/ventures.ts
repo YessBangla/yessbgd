@@ -1,4 +1,4 @@
-import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, type LucideIcon } from "lucide-react";
+import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, UtensilsCrossed, LayoutGrid, Plane, type LucideIcon } from "lucide-react";
 
 import yessSoftImg from "@/assets/ventures/yess-soft.jpg";
 import akashTvImg from "@/assets/ventures/akash-tv.jpg";
@@ -10,6 +10,7 @@ import yessHostImg from "@/assets/ventures/yess-host.jpg";
 import yessEventImg from "@/assets/ventures/yess-event.jpg";
 import yessModelImg from "@/assets/ventures/yess-model.jpg";
 import yessFoodImg from "@/assets/ventures/yess-food.jpg";
+import yessTourismImg from "@/assets/ventures/yess-tourism.jpg";
 import yessAioImg from "@/assets/ventures/yess-all-in-one-solution.jpg";
 
 export type VentureCase = {
@@ -621,6 +622,117 @@ export const ventures: Venture[] = [
       timeframe: "Jan 2024 – Ongoing",
       source: "Verified corporate catering account",
     },
+  },
+  {
+    slug: "yess-tourism",
+    title: "Yess Tourism",
+    category: "Travel & Tourism",
+    tagline: "Curated journeys, beautifully delivered.",
+    desc: "Bespoke holiday packages, business travel, hajj & umrah, visa support and inbound experiences — designed for comfort, value and unforgettable moments.",
+    longDesc:
+      "Yess Tourism is the group's full-service travel house — domestic getaways, international holidays, corporate travel, hajj & umrah, student travel and inbound Bangladesh experiences. IATA-aligned booking, in-house visa specialists and 24/7 on-trip concierge mean every itinerary is planned, priced and protected end-to-end.",
+    image: yessTourismImg,
+    icon: Plane,
+    color: "from-accent to-primary-glow",
+    highlights: [
+      "Tailored international & domestic holiday packages",
+      "Hajj, umrah and faith-based pilgrimages",
+      "Corporate travel desk with negotiated fares",
+      "Visa, insurance and 24/7 on-trip concierge",
+    ],
+    services: [
+      "Holiday Packages",
+      "Air Ticketing",
+      "Hajj & Umrah",
+      "Visa & Documentation",
+      "Corporate Travel",
+      "Inbound Bangladesh Tours",
+    ],
+    audience:
+      "Families, honeymooners, corporate teams, pilgrims and inbound travellers seeking trusted end-to-end trip planning.",
+    founded: "2022",
+    reach: "60+ destinations across Asia, Middle East & Europe",
+    features: [
+      { title: "Itinerary architects", desc: "Senior travel designers craft each trip — flights, stays, transfers, experiences — to your budget and pace." },
+      { title: "Best-fare guarantee", desc: "Real-time GDS pricing with airline contracts and group fares; we'll match any verified lower quote." },
+      { title: "24/7 on-trip support", desc: "A dedicated concierge on WhatsApp during travel — re-bookings, upgrades and emergencies handled in minutes." },
+      { title: "Trusted partners only", desc: "Hand-picked hotels, vetted ground operators and licensed Hajj agents — every supplier is audited annually." },
+    ],
+    caseStudy: {
+      challenge:
+        "Bangladeshi travellers were stitching together cheap-fare sites, anonymous WhatsApp agents and last-minute hotel apps — saving a few takas but losing money to hidden fees, visa rejections and broken itineraries.",
+      solution:
+        "Yess Tourism built a single managed-travel desk: GDS-powered fare engine, in-house visa unit, contracted hotels and a 24/7 concierge — every trip insured, traceable and price-transparent.",
+      phases: [
+        { title: "Discover", desc: "Trip brief, traveller profile, budget mapping and a written itinerary with two alternatives." },
+        { title: "Design", desc: "Day-by-day plan, hotel options with photos, transfer schedule, experience add-ons and full price card." },
+        { title: "Book", desc: "Locked GDS fares, visa filing, travel insurance, e-vouchers and a printed travel wallet." },
+        { title: "Travel & beyond", desc: "Pre-trip briefing, 24/7 concierge during travel, post-trip review and loyalty credits for the next journey." },
+      ],
+      techStack: ["Amadeus GDS", "Sabre", "TBO Holidays", "VFS Visa Workflow", "Stripe", "bKash", "WhatsApp Business API"],
+      results: [
+        { label: "Visa success rate", value: "97%" },
+        { label: "On-time departures", value: "99.6%" },
+        { label: "Avg. fare savings", value: "−18%" },
+        { label: "Repeat travellers", value: "64%" },
+      ],
+    },
+    testimonial: {
+      quote:
+        "Yess Tourism planned our 22-person leadership offsite to Türkiye end-to-end — visas, business-class fares, a private Bosphorus dinner and a flawless on-ground concierge. Zero surprises on the invoice.",
+      author: "Tahsin Reza",
+      role: "Chief People Officer",
+      company: "Grameenphone Ltd.",
+      logoText: "GP",
+      timeframe: "Oct 2024 leadership offsite",
+      source: "Verified corporate engagement · Reference available on request",
+    },
+    milestones: [
+      { year: "2022", title: "Founded", desc: "Launched as the group's in-house travel desk with a focus on corporate accounts and pilgrimages." },
+      { year: "2023", title: "IATA-aligned booking", desc: "Connected to global GDS networks and onboarded 30+ airline partners with negotiated fares." },
+      { year: "2024", title: "Visa & insurance unit", desc: "Opened a dedicated visa workflow with VFS partnerships and a travel-insurance arm covering 60+ countries." },
+      { year: "2025", title: "Inbound Bangladesh", desc: "Curated Sundarbans, Sajek, Cox's Bazar and tea-garden experiences for diaspora and global travellers." },
+      { year: "Today", title: "Where we are now", desc: "60+ destinations served, a 24/7 concierge and a 64% repeat-traveller rate — and still adding partner cities each quarter." },
+    ],
+    packages: [
+      {
+        name: "Explorer",
+        price: "From ৳ 18,000 / pp",
+        cadence: "Per trip",
+        summary: "Short domestic and regional getaways — Cox's Bazar, Sajek, Bandarban, Kolkata, Bangkok.",
+        features: ["Return flights or AC coach", "3–4 nights in vetted 4★ hotels", "Airport transfers & city tour", "WhatsApp support during travel"],
+      },
+      {
+        name: "Signature",
+        price: "From ৳ 95,000 / pp",
+        cadence: "Per trip",
+        summary: "Curated international holidays — Türkiye, Maldives, Dubai, Malaysia, Singapore, Sri Lanka.",
+        features: ["Premium-economy or business fares", "Hand-picked 5★ stays with breakfast", "Private guides & signature experiences", "Visa filing & travel insurance included", "24/7 on-trip concierge"],
+        highlight: true,
+      },
+      {
+        name: "Hajj & Umrah",
+        price: "On request",
+        cadence: "Per traveller",
+        summary: "Licensed pilgrimage packages with experienced muallims and Makkah/Madinah accommodation.",
+        features: ["Government-licensed Hajj quotas", "Walking-distance Haram hotels", "Group muallim & Bangla guidance", "Ziyarat tours & ihram kit", "Pre-departure orientation"],
+      },
+      {
+        name: "Corporate",
+        price: "Tailored",
+        cadence: "Annual partnership",
+        summary: "Managed business-travel desk for organisations — negotiated fares, policy compliance and reporting.",
+        features: ["Dedicated corporate desk", "Negotiated airline & hotel rates", "Policy-compliant booking workflow", "Monthly spend & savings reports", "Crisis & duty-of-care support"],
+      },
+    ],
+    faqs: [
+      { q: "How quickly can you confirm a booking?", a: "Most international holiday quotes are returned within 4 working hours and bookings confirmed the same day once you approve. Hajj & umrah packages follow government-published windows." },
+      { q: "Do you handle visa applications?", a: "Yes — our in-house visa team manages documentation, appointments and submission for 60+ countries through VFS, embassy and e-visa channels. We share a clear checklist and expected timeline upfront." },
+      { q: "Are flights and hotels included in package prices?", a: "Every Yess Tourism package is fully bundled — return flights, accommodation, transfers, listed experiences and applicable taxes. Optional add-ons (upgrades, extra nights, private guides) are quoted separately." },
+      { q: "What if something goes wrong during travel?", a: "Our 24/7 concierge is one WhatsApp message away. Re-bookings, hotel issues, medical emergencies and lost-document support are handled in minutes — every traveller also carries our travel-insurance card." },
+      { q: "Are your Hajj & umrah packages government-licensed?", a: "Yes. We operate within the official Bangladesh Hajj quota and partner only with licensed Saudi muassasa and ground operators. Documentation, training and refunds follow government guidelines." },
+      { q: "Can we customise an itinerary?", a: "Absolutely — most signature trips are bespoke. Share your dates, budget and must-haves; a senior travel designer will return a written day-by-day plan with two alternatives within one working day." },
+    ],
   },
   {
     slug: "yess-all-in-one-solution",
