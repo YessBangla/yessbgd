@@ -182,6 +182,7 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
   return (
     <span className={`relative inline-flex ${className}`}>
       <button
+        ref={btnRef}
         type="button"
         role="switch"
         aria-checked={isDark}
@@ -218,9 +219,15 @@ export function ThemeToggle({ variant = "pill", className = "" }: ThemeTogglePro
           `fixed` just below the header bottom (calc(4rem + 0.5rem)) to guarantee no overlap.
           On sm+ it stays absolute relative to the button. */}
       <span
+        ref={tipRef}
         id={tipId}
         role="tooltip"
         aria-hidden={!tipOpen}
+        style={{
+          left: tipShift.left !== undefined ? `${tipShift.left}px` : undefined,
+          right: tipShift.right !== undefined ? `${tipShift.right}px` : undefined,
+          top: tipShift.top !== undefined ? `${tipShift.top}px` : undefined,
+        }}
         className={`pointer-events-none fixed right-3 top-[calc(4rem+0.5rem)] z-[60] max-w-[min(80vw,18rem)] truncate whitespace-nowrap rounded-md border border-border/70 bg-foreground px-2.5 py-1.5 text-[11px] font-medium text-background shadow-elegant transition-opacity duration-150 sm:absolute sm:right-0 sm:top-full sm:mt-2 ${tipOpen ? "opacity-100" : "opacity-0"}`}
       >
         {tipText}
