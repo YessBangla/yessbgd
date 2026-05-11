@@ -102,7 +102,7 @@ export function WaterBackground() {
       ctx.clearRect(0, 0, w, h);
       if (!tuning.enabled) return;
       const dark = isDark();
-      const palette = dark ? DARK_PALETTE : LIGHT_PALETTE;
+      const palette = getPalette(dark ? "dark" : "light");
       const a = dark ? tuning.alphaDark : tuning.alphaLight;
       for (let i = 0; i < Math.min(2, tuning.blobCount); i++) {
         const b = palette[i];
