@@ -71,6 +71,14 @@ export function applyPalette(value: GlassPalette) {
   document.documentElement.setAttribute("data-palette", value);
 }
 
+export function resetPalette() {
+  applyPalette(DEFAULT_PALETTE);
+  try { localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE); } catch { /* quota */ }
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: DEFAULT_PALETTE }));
+  }
+}
+
 export function savePalette(value: GlassPalette) {
   applyPalette(value);
   try { localStorage.setItem(PALETTE_KEY, value); } catch { /* quota */ }
