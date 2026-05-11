@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import {
   type GlassTuning,
-  LIGHT_PALETTE,
-  DARK_PALETTE,
+  getPalette,
   detectLowEnd,
   loadIntensity,
   onIntensityChange,
+  onPaletteChange,
   tuningFor,
 } from "@/lib/liquidGlass";
 
