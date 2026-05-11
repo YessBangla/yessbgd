@@ -99,6 +99,7 @@ function RootComponent() {
       </main>
       <Footer />
       <ScrollUpDown />
+      <LiquidGlassToggle />
     </div>
   );
 }
