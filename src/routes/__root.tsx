@@ -7,6 +7,8 @@ import { Footer } from "@/components/Footer";
 import { WaterBackground } from "@/components/WaterBackground";
 import { ScrollUpDown } from "@/components/ScrollUpDown";
 import { LiquidGlassToggle } from "@/components/LiquidGlassToggle";
+import { MobileTabBar } from "@/components/MobileTabBar";
+import { RouteTransition } from "@/components/RouteTransition";
 import { applyHeaderFooterCssVars, loadLogoSettings } from "@/lib/logoSettings";
 import { applyIntensity, loadIntensity, applyPalette, loadPalette } from "@/lib/liquidGlass";
 import { useTranslation } from "react-i18next";
