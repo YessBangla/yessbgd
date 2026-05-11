@@ -49,11 +49,13 @@ export function LiquidGlassToggle() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [intensity, setIntensity] = useState<GlassIntensity>("standard");
+  const [palette, setPaletteState] = useState<GlassPalette>("aurora");
   const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
     setMounted(true);
     setIntensity(loadIntensity());
+    setPaletteState(loadPalette());
     const t = loadTheme();
     setTheme(t);
     applyTheme(t);
@@ -64,6 +66,10 @@ export function LiquidGlassToggle() {
   const pickIntensity = (v: GlassIntensity) => {
     setIntensity(v);
     saveIntensity(v);
+  };
+  const pickPalette = (v: GlassPalette) => {
+    setPaletteState(v);
+    savePalette(v);
   };
   const pickTheme = (m: Theme) => {
     setTheme(m);
