@@ -12,7 +12,7 @@ import trustImg from "@/assets/trust-handshake-bd.jpg";
 import contactImg from "@/assets/contact-welcome-bd.jpg";
 import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 import { HeroOverlays } from "@/components/HeroOverlays";
-import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
+
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
@@ -381,11 +381,38 @@ function Index() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {t("home.ctaStrip.subtitle")}
               </p>
-              <div className="mt-4 flex flex-col gap-2">
+              <div className="mt-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
-                  {t("home.ctaStrip.themePreview")}
+                  {t("home.ctaStrip.venturesKicker")}
                 </p>
-                <ThemePreviewSwitch />
+                {/* Compact ventures showcase — small thumbnails sized to area, with one-line summary.
+                    Replaces the previous theme-preview switch in this CTA block. */}
+                <ul className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  {ventures.slice(0, 6).map((v) => (
+                    <li key={v.slug}>
+                      <Link
+                        to="/ventures/$slug"
+                        params={{ slug: v.slug }}
+                        preload="intent"
+                        className="group flex flex-col gap-2 rounded-xl border border-border/60 bg-background/70 p-2 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+                      >
+                        <span className="block aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
+                          <img
+                            src={v.image}
+                            alt={v.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                          />
+                        </span>
+                        <span className="min-w-0 px-0.5 pb-1">
+                          <span className="block truncate text-[12px] font-semibold text-foreground">{v.title}</span>
+                          <span className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-muted-foreground">{v.tagline}</span>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Reveal>
 
