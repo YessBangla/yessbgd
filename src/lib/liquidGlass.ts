@@ -90,22 +90,21 @@ export function tuningFor(level: GlassIntensity, lowEnd: boolean): GlassTuning {
 }
 
 /**
- * Editorial Liquid Glass palettes — Aesop / Loro Piana inspired.
- * Warm sand, sage, terracotta, ink-blue. Muted, painterly, low-chroma —
- * deliberately not the saturated "AI gradient" look.
+ * Refined editorial Liquid Glass palettes — ivory, sage, slate, linen.
+ * Cool-neutral and painterly. No warm red/terracotta tones.
  */
 export const LIGHT_PALETTE = [
-  { hue: 85,  sat: 0.045, l: 0.86 }, // warm sand
-  { hue: 35,  sat: 0.060, l: 0.80 }, // soft terracotta
-  { hue: 165, sat: 0.055, l: 0.78 }, // pale sage
-  { hue: 230, sat: 0.040, l: 0.82 }, // dusty linen blue
-  { hue: 50,  sat: 0.050, l: 0.84 }, // champagne
+  { hue: 110, sat: 0.025, l: 0.88 }, // ivory
+  { hue: 175, sat: 0.035, l: 0.84 }, // pale sage
+  { hue: 230, sat: 0.040, l: 0.80 }, // dusty linen blue
+  { hue: 250, sat: 0.025, l: 0.82 }, // soft slate
+  { hue: 200, sat: 0.030, l: 0.86 }, // misty cyan
 ];
 
 export const DARK_PALETTE = [
-  { hue: 85,  sat: 0.045, l: 0.42 }, // bronze ink
-  { hue: 35,  sat: 0.080, l: 0.45 }, // burnt sienna
-  { hue: 165, sat: 0.055, l: 0.38 }, // deep sage
-  { hue: 230, sat: 0.060, l: 0.30 }, // midnight slate
-  { hue: 50,  sat: 0.050, l: 0.36 }, // antique gold
+  { hue: 110, sat: 0.025, l: 0.40 }, // muted moss
+  { hue: 175, sat: 0.045, l: 0.42 }, // deep sage
+  { hue: 230, sat: 0.050, l: 0.36 }, // midnight slate
+  { hue: 250, sat: 0.040, l: 0.30 }, // ink
+  { hue: 200, sat: 0.035, l: 0.34 }, // teal shadow
 ];
