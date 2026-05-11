@@ -208,6 +208,7 @@ export function WaterBackground() {
       ripples.length = 0;
       start();
     });
+    const offPalette = onPaletteChange(() => { ripples.length = 0; start(); });
 
     return () => {
       window.removeEventListener("resize", resize);
