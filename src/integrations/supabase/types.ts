@@ -47,6 +47,195 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_industries: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_published: boolean | null
+          outcomes: Json | null
+          slug: string
+          sort_order: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_published?: boolean | null
+          outcomes?: Json | null
+          slug: string
+          sort_order?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_published?: boolean | null
+          outcomes?: Json | null
+          slug?: string
+          sort_order?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_insights: {
+        Row: {
+          author: string | null
+          body_md: string | null
+          category: string | null
+          cover_image: string | null
+          created_at: string | null
+          data: Json | null
+          excerpt: string | null
+          id: string
+          is_published: boolean | null
+          published_at: string | null
+          slug: string
+          tags: Json | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author?: string | null
+          body_md?: string | null
+          category?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          data?: Json | null
+          excerpt?: string | null
+          id?: string
+          is_published?: boolean | null
+          published_at?: string | null
+          slug: string
+          tags?: Json | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author?: string | null
+          body_md?: string | null
+          category?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          data?: Json | null
+          excerpt?: string | null
+          id?: string
+          is_published?: boolean | null
+          published_at?: string | null
+          slug?: string
+          tags?: Json | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_services: {
+        Row: {
+          bullets: Json | null
+          created_at: string | null
+          data: Json | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_published: boolean | null
+          pricing: Json | null
+          slug: string
+          sort_order: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          bullets?: Json | null
+          created_at?: string | null
+          data?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_published?: boolean | null
+          pricing?: Json | null
+          slug: string
+          sort_order?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          bullets?: Json | null
+          created_at?: string | null
+          data?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_published?: boolean | null
+          pricing?: Json | null
+          slug?: string
+          sort_order?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      cms_ventures: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          data: Json | null
+          description: string | null
+          icon: string | null
+          id: string
+          image_path: string | null
+          is_published: boolean | null
+          slug: string
+          sort_order: number | null
+          status: string | null
+          tagline: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          data?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          image_path?: string | null
+          is_published?: boolean | null
+          slug: string
+          sort_order?: number | null
+          status?: string | null
+          tagline?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          data?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          image_path?: string | null
+          is_published?: boolean | null
+          slug?: string
+          sort_order?: number | null
+          status?: string | null
+          tagline?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
