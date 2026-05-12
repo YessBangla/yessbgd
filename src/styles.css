@@ -119,7 +119,9 @@
     color-mix(in oklab, var(--primary) 14%, transparent) 0%,
     transparent 75%);
   --hero-halo-primary: oklch(from var(--primary) l c h / 0.10);
-  --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.20);
+  /* Hero halos stay in the cool primary family — never inherit the warm
+     brand --accent here, otherwise the hero picks up a golden cast. */
+  --hero-halo-accent:  oklch(from var(--primary-glow) l c h / 0.16);
   --hero-halo-blur: 32px;
   --hero-glow-opacity: 0.4;
   --hero-grid-opacity: 0.03;
