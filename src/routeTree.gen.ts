@@ -29,6 +29,7 @@ import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminCmsRouteImport } from './routes/admin.cms'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
 import { Route as AboutStandardsRouteImport } from './routes/about.standards'
@@ -36,6 +37,8 @@ import { Route as AboutMethodologyRouteImport } from './routes/about.methodology
 import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
 import { Route as AboutAwardsRouteImport } from './routes/about.awards'
 import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
+import { Route as AdminCmsTypeRouteImport } from './routes/admin.cms.$type'
+import { Route as AdminCmsTypeIdRouteImport } from './routes/admin.cms.$type.$id'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -137,6 +140,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCmsRoute = AdminCmsRouteImport.update({
+  id: '/admin/cms',
+  path: '/admin/cms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAuditRoute = AdminAuditRouteImport.update({
   id: '/admin/audit',
   path: '/admin/audit',
@@ -172,6 +180,16 @@ const AboutPillarRoute = AboutPillarRouteImport.update({
   path: '/$pillar',
   getParentRoute: () => AboutRoute,
 } as any)
+const AdminCmsTypeRoute = AdminCmsTypeRouteImport.update({
+  id: '/$type',
+  path: '/$type',
+  getParentRoute: () => AdminCmsRoute,
+} as any)
+const AdminCmsTypeIdRoute = AdminCmsTypeIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminCmsTypeRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -193,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
+  '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -201,6 +220,8 @@ export interface FileRoutesByFullPath {
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures/': typeof VenturesIndexRoute
+  '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -222,6 +243,7 @@ export interface FileRoutesByTo {
   '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
+  '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -230,6 +252,8 @@ export interface FileRoutesByTo {
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures': typeof VenturesIndexRoute
+  '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -252,6 +276,7 @@ export interface FileRoutesById {
   '/about/standards': typeof AboutStandardsRoute
   '/admin/applications': typeof AdminApplicationsRoute
   '/admin/audit': typeof AdminAuditRoute
+  '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -260,6 +285,8 @@ export interface FileRoutesById {
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures/': typeof VenturesIndexRoute
+  '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -283,6 +310,7 @@ export interface FileRouteTypes {
     | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
+    | '/admin/cms'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
@@ -291,6 +319,8 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/ventures/$slug'
     | '/ventures/'
+    | '/admin/cms/$type'
+    | '/admin/cms/$type/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -312,6 +342,7 @@ export interface FileRouteTypes {
     | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
+    | '/admin/cms'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
@@ -320,6 +351,8 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/ventures/$slug'
     | '/ventures'
+    | '/admin/cms/$type'
+    | '/admin/cms/$type/$id'
   id:
     | '__root__'
     | '/'
@@ -341,6 +374,7 @@ export interface FileRouteTypes {
     | '/about/standards'
     | '/admin/applications'
     | '/admin/audit'
+    | '/admin/cms'
     | '/admin/login'
     | '/admin/messages'
     | '/careers/$slug'
@@ -349,6 +383,8 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/ventures/$slug'
     | '/ventures/'
+    | '/admin/cms/$type'
+    | '/admin/cms/$type/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -366,6 +402,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   AdminApplicationsRoute: typeof AdminApplicationsRoute
   AdminAuditRoute: typeof AdminAuditRoute
+  AdminCmsRoute: typeof AdminCmsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   VenturesSlugRoute: typeof VenturesSlugRoute
@@ -514,6 +551,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/cms': {
+      id: '/admin/cms'
+      path: '/admin/cms'
+      fullPath: '/admin/cms'
+      preLoaderRoute: typeof AdminCmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/audit': {
       id: '/admin/audit'
       path: '/admin/audit'
@@ -562,6 +606,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/about/$pillar'
       preLoaderRoute: typeof AboutPillarRouteImport
       parentRoute: typeof AboutRoute
+    }
+    '/admin/cms/$type': {
+      id: '/admin/cms/$type'
+      path: '/$type'
+      fullPath: '/admin/cms/$type'
+      preLoaderRoute: typeof AdminCmsTypeRouteImport
+      parentRoute: typeof AdminCmsRoute
+    }
+    '/admin/cms/$type/$id': {
+      id: '/admin/cms/$type/$id'
+      path: '/$id'
+      fullPath: '/admin/cms/$type/$id'
+      preLoaderRoute: typeof AdminCmsTypeIdRouteImport
+      parentRoute: typeof AdminCmsTypeRoute
     }
   }
 }
@@ -631,6 +689,30 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
   ServicesRouteChildren,
 )
 
+interface AdminCmsTypeRouteChildren {
+  AdminCmsTypeIdRoute: typeof AdminCmsTypeIdRoute
+}
+
+const AdminCmsTypeRouteChildren: AdminCmsTypeRouteChildren = {
+  AdminCmsTypeIdRoute: AdminCmsTypeIdRoute,
+}
+
+const AdminCmsTypeRouteWithChildren = AdminCmsTypeRoute._addFileChildren(
+  AdminCmsTypeRouteChildren,
+)
+
+interface AdminCmsRouteChildren {
+  AdminCmsTypeRoute: typeof AdminCmsTypeRouteWithChildren
+}
+
+const AdminCmsRouteChildren: AdminCmsRouteChildren = {
+  AdminCmsTypeRoute: AdminCmsTypeRouteWithChildren,
+}
+
+const AdminCmsRouteWithChildren = AdminCmsRoute._addFileChildren(
+  AdminCmsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRouteWithChildren,
@@ -646,6 +728,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   AdminApplicationsRoute: AdminApplicationsRoute,
   AdminAuditRoute: AdminAuditRoute,
+  AdminCmsRoute: AdminCmsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   VenturesSlugRoute: VenturesSlugRoute,
