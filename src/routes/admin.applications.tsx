@@ -282,6 +282,9 @@ function AdminApplications() {
             <Link to="/admin/audit" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
               Audit log
             </Link>
+            <Link to="/admin/cms" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
+              Content (CMS)
+            </Link>
           </div>
 
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
