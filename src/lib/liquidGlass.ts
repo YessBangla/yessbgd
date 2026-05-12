@@ -93,7 +93,7 @@ export function savePalette(value: GlassPalette) {
   applyPalette(value);
   try {
     localStorage.setItem(PALETTE_KEY, value);
-    localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+    localStorage.setItem(PALETTE_VERSION_KEY, PALETTE_VERSION);
   } catch { /* quota */ }
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: value }));
