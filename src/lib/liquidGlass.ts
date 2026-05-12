@@ -16,7 +16,8 @@ const PALETTE_KEY = "yess-liquid-glass-palette-v1";
 const PALETTE_VERSION_KEY = "yess-liquid-glass-palette-version-v1";
 const EVENT = "liquidglass:change";
 const PALETTE_EVENT = "liquidglass:palette";
-const DEFAULT_PALETTE: GlassPalette = "ivory";
+const DEFAULT_PALETTE: GlassPalette = "nordic";
+const PALETTE_VERSION = "editorial-nordic";
 
 export function detectLowEnd(): boolean {
   if (typeof navigator === "undefined") return false;
