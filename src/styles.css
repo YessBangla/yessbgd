@@ -105,7 +105,7 @@
      level, then this overlay tints the left side a touch darker so the
      white headline keeps WCAG AA contrast without the photo feeling dark. */
   --hero-ink: oklch(0.34 0.012 250);              /* refined graphite ink */
-  --hero-veil: oklch(0.50 0.010 78);              /* warm champagne veil */
+  --hero-veil: oklch(0.50 0.012 230);             /* cool slate veil — neutral, no golden cast */
   --hero-overlay-h: linear-gradient(180deg,
     color-mix(in oklab, var(--hero-ink) 55%, transparent) 0%,
     color-mix(in oklab, var(--hero-veil) 38%, transparent) 55%,
@@ -116,7 +116,7 @@
     transparent 70%,
     color-mix(in oklab, var(--hero-ink) 38%, transparent) 100%);
   --hero-overlay-glow: radial-gradient(60% 55% at 25% 60%,
-    color-mix(in oklab, var(--accent) 18%, transparent) 0%,
+    color-mix(in oklab, var(--primary) 14%, transparent) 0%,
     transparent 75%);
   --hero-halo-primary: oklch(from var(--primary) l c h / 0.10);
   --hero-halo-accent:  oklch(from var(--accent)  l c h / 0.20);
