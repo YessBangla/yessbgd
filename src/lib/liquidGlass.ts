@@ -62,9 +62,9 @@ export function onIntensityChange(cb: (v: GlassIntensity) => void): () => void {
 export function loadPalette(): GlassPalette {
   if (typeof window === "undefined") return DEFAULT_PALETTE;
   try {
-    if (localStorage.getItem(PALETTE_VERSION_KEY) !== "ivory-gold") {
+    if (localStorage.getItem(PALETTE_VERSION_KEY) !== PALETTE_VERSION) {
       localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE);
-      localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+      localStorage.setItem(PALETTE_VERSION_KEY, PALETTE_VERSION);
       return DEFAULT_PALETTE;
     }
     const v = localStorage.getItem(PALETTE_KEY) as GlassPalette | null;
@@ -82,7 +82,7 @@ export function resetPalette() {
   applyPalette(DEFAULT_PALETTE);
   try {
     localStorage.setItem(PALETTE_KEY, DEFAULT_PALETTE);
-    localStorage.setItem(PALETTE_VERSION_KEY, "ivory-gold");
+    localStorage.setItem(PALETTE_VERSION_KEY, PALETTE_VERSION);
   } catch { /* quota */ }
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent<GlassPalette>(PALETTE_EVENT, { detail: DEFAULT_PALETTE }));
