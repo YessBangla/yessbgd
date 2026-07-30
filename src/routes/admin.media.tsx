@@ -3,7 +3,8 @@ import { useRef, useState } from "react";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { useMediaLibrary, uploadMedia, deleteMedia, signedMediaUrl, type MediaRow } from "@/lib/siteContent";
 import { supabase } from "@/integrations/supabase/client";
-import { Upload, Trash2, Copy, Loader2, RefreshCw } from "lucide-react";
+import { Upload, Trash2, Copy, Loader2, RefreshCw, Link2, FolderSync } from "lucide-react";
+import { listSiteAssets, resolveMediaUrl } from "@/lib/mediaAssets";
 
 export const Route = createFileRoute("/admin/media")({
   head: () => ({
@@ -22,6 +23,62 @@ function AdminMedia() {
   const [err, setErr] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const [folder, setFolder] = useState("general");
+  const [filter, setFilter] = useState("");
+
+  /** Register every image bundled with the site into the gallery (idempotent). */
+  const syncSiteAssets = async () => {
+    setBusy(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      const existing = new Set((data ?? []).map((r) => r.url));
+      const missing = listSiteAssets().filter((a) => !existing.has(a.ref));
+      if (missing.length) {
+        const { error } = await supabase.from("cms_media").insert(
+          missing.map((a) => ({
+            file_name: a.name,
+            url: a.ref,
+            path: null,
+            folder: a.folder,
+            mime_type: a.name.endsWith(".png")
+              ? "image/png"
+              : a.name.endsWith(".webp")
+                ? "image/webp"
+                : a.name.endsWith(".svg")
+                  ? "image/svg+xml"
+                  : "image/jpeg",
+            alt_text: a.name.replace(/[-_]/g, " ").replace(/\.[a-z]+$/i, ""),
+          })) as never,
+        );
+        if (error) throw new Error(error.message);
+      }
+      setMsg(missing.length ? `${missing.length} site image(s) added to the gallery.` : "Gallery already up to date.");
+      await refetch();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Sync failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /** Save an external image link straight into the gallery. */
+  const addByUrl = async () => {
+    const url = window.prompt("Paste an image URL (https://…)");
+    if (!url?.trim()) return;
+    const clean = url.trim();
+    const { error } = await supabase.from("cms_media").insert({
+      file_name: clean.split("/").pop() || "external-image",
+      url: clean,
+      path: null,
+      folder: "links",
+      mime_type: "image/*",
+    } as never);
+    if (error) setErr(error.message);
+    else {
+      setMsg("Image link added.");
+      await refetch();
+    }
+  };
 
   const onPick = async (files: FileList | null) => {
     if (!files?.length) return;
@@ -59,8 +116,14 @@ function AdminMedia() {
     await refetch();
   };
 
+  const shown = (data ?? []).filter((r) =>
+    filter
+      ? `${r.file_name} ${r.folder ?? ""} ${r.alt_text ?? ""}`.toLowerCase().includes(filter.toLowerCase())
+      : true,
+  );
+
   const copy = async (url: string) => {
-    await navigator.clipboard.writeText(url).catch(() => {});
+    await navigator.clipboard.writeText(resolveMediaUrl(url) || url).catch(() => {});
     setMsg("Link copied.");
   };
 
@@ -69,9 +132,22 @@ function AdminMedia() {
       <AdminPageHeader
         title="Media library"
         titleBn="মিডিয়া লাইব্রেরি"
-        description="Upload images once and reuse their links anywhere on the site."
+        description="Every image in the portal in one place — upload new files, add links, or reuse bundled site artwork."
         actions={
           <>
+            <button
+              onClick={syncSiteAssets}
+              disabled={busy}
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-semibold hover:bg-secondary disabled:opacity-60"
+            >
+              <FolderSync className="h-4 w-4" /> Sync site images
+            </button>
+            <button
+              onClick={addByUrl}
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-semibold hover:bg-secondary"
+            >
+              <Link2 className="h-4 w-4" /> Add by URL
+            </button>
             <input
               value={folder}
               onChange={(e) => setFolder(e.target.value.replace(/[^a-z0-9-]/gi, "-").toLowerCase())}
@@ -101,12 +177,31 @@ function AdminMedia() {
       {msg && <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
       {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <input
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Search images…"
+          className="w-56 rounded-lg border border-border bg-background px-3 py-2 text-sm"
+        />
+        {["all", "site", "ventures", "public", "links"].map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f === "all" ? "" : f)}
+            className="rounded-lg border border-border px-3 py-1.5 text-xs capitalize hover:bg-secondary"
+          >
+            {f}
+          </button>
+        ))}
+        <span className="ml-auto text-xs text-muted-foreground">{shown.length} image(s)</span>
+      </div>
+
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {(data ?? []).map((row) => (
+        {shown.map((row) => (
           <figure key={row.id} className="overflow-hidden rounded-xl border border-border bg-card">
             <div className="aspect-[4/3] bg-secondary/50">
               {row.url && (
-                <img src={row.url} alt={row.alt_text || row.file_name} className="h-full w-full object-cover" loading="lazy" />
+                <img src={resolveMediaUrl(row.url)} alt={row.alt_text || row.file_name} className="h-full w-full object-cover" loading="lazy" />
               )}
             </div>
             <figcaption className="p-3">
@@ -132,9 +227,9 @@ function AdminMedia() {
         ))}
       </div>
 
-      {!isLoading && (data ?? []).length === 0 && (
+      {!isLoading && shown.length === 0 && (
         <p className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
-          No media yet — upload your first image.
+          No media here — upload a file, add a link, or press "Sync site images".
         </p>
       )}
     </div>
