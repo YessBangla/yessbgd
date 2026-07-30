@@ -54,8 +54,15 @@ const MAX_DEPTH = 2; // 0 = menu, 1 = submenu, 2 = sub-submenu
 
 type DropMode = "before" | "after" | "inside";
 
+const VISIBILITY: { key: string; label: string; labelBn: string }[] = [
+  { key: "all", label: "Everyone", labelBn: "সবাই" },
+  { key: "guest", label: "Signed-out visitors", labelBn: "লগইন ছাড়া" },
+  { key: "authenticated", label: "Signed-in users", labelBn: "লগইন করা ব্যবহারকারী" },
+  { key: "admin", label: "Admins only", labelBn: "শুধু অ্যাডমিন" },
+];
+
 function AdminMenus() {
-  const [rows, setRows] = useState<MenuItem[]>([]);
+  const [rows, setRowsState] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -64,10 +71,35 @@ function AdminMenus() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(true);
   const [previewBn, setPreviewBn] = useState(false);
+  const [previewMobile, setPreviewMobile] = useState(false);
+  const [autoSave, setAutoSave] = useState(true);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; mode: DropMode } | null>(null);
+  const [announcement, setAnnouncement] = useState("");
   const linkOptions = useInternalLinkOptions();
   const dragIdRef = useRef<string | null>(null);
+
+  // ---- undo / redo history -------------------------------------------------
+  const past = useRef<MenuItem[][]>([]);
+  const future = useRef<MenuItem[][]>([]);
+  const [histTick, setHistTick] = useState(0);
+  const dirty = useRef(false);
+  const skipAutoSave = useRef(true);
+
+  /** Update rows and push the previous snapshot onto the undo stack. */
+  const setRows = (updater: MenuItem[] | ((prev: MenuItem[]) => MenuItem[]), track = true) => {
+    setRowsState((prev) => {
+      const next = typeof updater === "function" ? (updater as (p: MenuItem[]) => MenuItem[])(prev) : updater;
+      if (track) {
+        past.current = [...past.current.slice(-49), prev];
+        future.current = [];
+        dirty.current = true;
+        setHistTick((t) => t + 1);
+      }
+      return next;
+    });
+  };
 
   const load = async () => {
     const { data, error } = await supabase
@@ -76,7 +108,8 @@ function AdminMenus() {
       .order("location")
       .order("sort_order");
     if (error) setErr(error.message);
-    setRows((data ?? []) as unknown as MenuItem[]);
+    skipAutoSave.current = true;
+    setRowsState((data ?? []) as unknown as MenuItem[]);
     setLoading(false);
   };
 
@@ -87,11 +120,11 @@ function AdminMenus() {
   const patch = (id: string, key: keyof MenuItem, value: unknown) =>
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [key]: value } : r)));
 
-  const saveAll = async () => {
+  const persistRows = async (list: MenuItem[], silent = false) => {
     setSaving(true);
     setErr(null);
-    setMsg(null);
-    for (const row of rows) {
+    if (!silent) setMsg(null);
+    for (const row of list) {
       const { id, created_at, updated_at, ...rest } = row as MenuItem & {
         created_at?: string;
         updated_at?: string;
@@ -100,12 +133,76 @@ function AdminMenus() {
       if (error) {
         setErr(error.message);
         setSaving(false);
-        return;
+        return false;
       }
     }
-    setMsg("Menu structure saved.");
+    dirty.current = false;
+    setSavedAt(new Date().toLocaleTimeString());
+    if (!silent) setMsg("Menu structure saved.");
     setSaving(false);
+    return true;
   };
+
+  const saveAll = () => persistRows(rows);
+
+  // Debounced autosave — every edit is written ~1s after you stop typing.
+  useEffect(() => {
+    if (skipAutoSave.current) {
+      skipAutoSave.current = false;
+      return;
+    }
+    if (!autoSave || loading || !rows.length) return;
+    const t = setTimeout(() => {
+      void persistRows(rows, true);
+    }, 1000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, autoSave, loading]);
+
+  const undo = async () => {
+    const prev = past.current.pop();
+    if (!prev) return;
+    future.current = [rows, ...future.current].slice(0, 50);
+    skipAutoSave.current = !autoSave;
+    setRowsState(prev);
+    setHistTick((t) => t + 1);
+    setAnnouncement("Change undone");
+    if (autoSave) await persistRows(prev, true);
+  };
+
+  const redo = async () => {
+    const [next, ...rest] = future.current;
+    if (!next) return;
+    future.current = rest;
+    past.current = [...past.current, rows];
+    skipAutoSave.current = !autoSave;
+    setRowsState(next);
+    setHistTick((t) => t + 1);
+    setAnnouncement("Change redone");
+    if (autoSave) await persistRows(next, true);
+  };
+
+  // Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z (or Ctrl+Y)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod) return;
+      const k = e.key.toLowerCase();
+      if (k === "z" && !e.shiftKey) {
+        e.preventDefault();
+        void undo();
+      } else if ((k === "z" && e.shiftKey) || k === "y") {
+        e.preventDefault();
+        void redo();
+      } else if (k === "s") {
+        e.preventDefault();
+        void saveAll();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
 
   const addItem = async (location: "header" | "footer", parent?: MenuItem) => {
     const depth = parent ? (parent.depth ?? 0) + 1 : 0;
