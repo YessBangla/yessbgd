@@ -240,8 +240,21 @@ export const FOOTER_SPACING_CLASS: Record<FooterStyle["spacing"], string> = {
 };
 
 export const FOOTER_COLUMNS_CLASS: Record<FooterStyle["columns"], string> = {
-  1: "grid-cols-1",
+  1: "md:grid-cols-1",
   2: "md:grid-cols-2",
   3: "md:grid-cols-2 lg:grid-cols-3",
   4: "md:grid-cols-2 lg:grid-cols-4",
 };
+
+export const FOOTER_MOBILE_COLUMNS_CLASS: Record<FooterStyle["mobile_columns"], string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+};
+
+/** Alignment classes: mobile first, then the desktop override. */
+export function footerAlignClass(style: FooterStyle): string {
+  const mobile = style.mobile_align === "center" ? "text-center" : "text-left";
+  const desktop = style.align_center ? "md:text-center" : "md:text-left";
+  return `${mobile} ${desktop}`;
+}
+
