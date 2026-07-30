@@ -18,7 +18,7 @@ export const Route = createFileRoute("/admin/cms/$type/")({
 type Row = Record<string, unknown> & { id: string; is_published?: boolean };
 
 function AdminCmsList() {
-  const { type } = useParams({ from: "/admin/cms/$type" });
+  const { type } = useParams({ from: "/admin/cms/$type/" });
   const navigate = useNavigate();
   const cfg = useMemo(() => getCmsConfig(type), [type]);
   const [rows, setRows] = useState<Row[] | null>(null);
