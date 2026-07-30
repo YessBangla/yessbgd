@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { BrandingLogoCard } from "@/components/admin/BrandingLogoCard";
+import { FooterSettingsCard } from "@/components/admin/FooterSettingsCard";
 import { Save, Plus, Trash2, Loader2, Code2, MapPin } from "lucide-react";
 import { toMapEmbedSrc } from "@/lib/mapEmbed";
 
