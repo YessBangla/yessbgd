@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useReducedMotion, type Transition } from "fram
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
+import { useMenu } from "@/lib/siteContent";
+
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 
