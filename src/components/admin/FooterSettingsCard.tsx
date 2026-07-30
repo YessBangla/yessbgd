@@ -325,6 +325,26 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
             <option value="normal">Normal case</option>
           </select>
         </Field>
+        <Field label="Mobile columns" labelBn="মোবাইল কলাম">
+          <select
+            value={cfg.style.mobile_columns}
+            onChange={(e) => setStyle("mobile_columns", Number(e.target.value) as FooterConfig["style"]["mobile_columns"])}
+            className={input}
+          >
+            <option value={1}>1 column · এক কলাম</option>
+            <option value={2}>2 columns · দুই কলাম</option>
+          </select>
+        </Field>
+        <Field label="Mobile alignment" labelBn="মোবাইল অ্যালাইনমেন্ট">
+          <select
+            value={cfg.style.mobile_align}
+            onChange={(e) => setStyle("mobile_align", e.target.value as FooterConfig["style"]["mobile_align"])}
+            className={input}
+          >
+            <option value="left">Left · বামে</option>
+            <option value="center">Center · মাঝে</option>
+          </select>
+        </Field>
         <div className="flex flex-wrap items-center gap-4 sm:col-span-2 lg:col-span-4">
           <Toggle checked={cfg.style.border_top} onChange={(v) => setStyle("border_top", v)} label="Top border · উপরের বর্ডার" />
           <Toggle
@@ -332,22 +352,56 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
             onChange={(v) => setStyle("show_bottom_bar", v)}
             label="Bottom bar · নিচের বার"
           />
-          <Toggle checked={cfg.style.align_center} onChange={(v) => setStyle("align_center", v)} label="Centre align · মাঝে" />
+          <Toggle
+            checked={cfg.style.align_center}
+            onChange={(v) => setStyle("align_center", v)}
+            label="Centre align (desktop) · ডেস্কটপে মাঝে"
+          />
         </div>
       </div>
 
       {/* -------------------------------------------------------- columns -- */}
-      <div className="mt-4 grid gap-3 lg:grid-cols-2">
+      <p className="mt-4 text-[11px] text-muted-foreground">
+        রো-গুলো ড্র্যাগ করে ক্রম বদলান · drag the rows to reorder
+      </p>
+      <div className="mt-2 grid gap-3 lg:grid-cols-2">
         {cfg.columns.map((col, i) => (
           <div
             key={i}
-            className={`rounded-lg border border-border bg-background/60 p-3 ${
-              i >= cfg.style.columns ? "opacity-50" : ""
-            }`}
+            onDragOver={(e) => {
+              if (dragIndex === null) return;
+              e.preventDefault();
+              setDragOver(i);
+            }}
+            onDragLeave={() => setDragOver((v) => (v === i ? null : v))}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (dragIndex !== null && canEdit) moveColumnTo(dragIndex, i);
+              setDragIndex(null);
+              setDragOver(null);
+            }}
+            className={`rounded-lg border bg-background/60 p-3 transition-colors ${
+              dragOver === i && dragIndex !== null ? "border-primary ring-2 ring-primary/30" : "border-border"
+            } ${dragIndex === i ? "opacity-60" : ""} ${i >= cfg.style.columns ? "opacity-50" : ""}`}
           >
             <div className="mb-3 flex flex-wrap items-center gap-2">
+              <span
+                draggable={canEdit}
+                onDragStart={() => setDragIndex(i)}
+                onDragEnd={() => {
+                  setDragIndex(null);
+                  setDragOver(null);
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Drag row ${i + 1} to reorder`}
+                className="grid h-7 w-7 cursor-grab place-items-center rounded border border-border text-muted-foreground active:cursor-grabbing"
+              >
+                <GripVertical className="h-3.5 w-3.5" />
+              </span>
               <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold">Row {i + 1}</span>
               {i >= cfg.style.columns && (
+
                 <span className="text-[11px] text-muted-foreground">দেখানো হচ্ছে না (কলাম সংখ্যা বাড়ান)</span>
               )}
               <div className="ml-auto flex items-center gap-1">
