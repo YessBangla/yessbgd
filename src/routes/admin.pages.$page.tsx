@@ -79,11 +79,12 @@ function Field({
 
 function AdminPageEditor() {
   const { page } = useParams({ from: "/admin/pages/$page" });
+  const { tab: tabFromUrl } = Route.useSearch();
   const qc = useQueryClient();
   const { data } = useSitePage(page);
   const [row, setRow] = useState<SitePage | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
-  const [tab, setTab] = useState<"content" | "sections" | "navigation" | "seo">("content");
+  const [tab, setTab] = useState<EditorTab>(tabFromUrl ?? "content");
   const [saving, setSaving] = useState(false);
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
