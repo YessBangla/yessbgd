@@ -19,29 +19,141 @@ const highlights = [
   { title: "Secure by design", titleBn: "নিরাপদ অ্যাক্সেস", desc: "Role-based access with audit logging." },
 ];
 
+/* --------------------------- brute-force throttle --------------------------- */
+const LOCK_KEY = "yb_admin_login_guard";
+const MAX_ATTEMPTS = 5;
+const LOCK_MS = 5 * 60 * 1000; // 5 minutes after 5 failed attempts
+const WINDOW_MS = 15 * 60 * 1000; // failures older than this are forgotten
+
+type Guard = { fails: number; first: number; lockedUntil: number };
+
+function readGuard(): Guard {
+  if (typeof window === "undefined") return { fails: 0, first: 0, lockedUntil: 0 };
+  try {
+    const raw = window.localStorage.getItem(LOCK_KEY);
+    const g = raw ? (JSON.parse(raw) as Guard) : null;
+    if (!g) return { fails: 0, first: 0, lockedUntil: 0 };
+    if (g.lockedUntil < Date.now() && Date.now() - g.first > WINDOW_MS)
+      return { fails: 0, first: 0, lockedUntil: 0 };
+    return g;
+  } catch {
+    return { fails: 0, first: 0, lockedUntil: 0 };
+  }
+}
+
+function writeGuard(g: Guard) {
+  try {
+    window.localStorage.setItem(LOCK_KEY, JSON.stringify(g));
+  } catch {
+    /* storage blocked — throttle simply won't persist */
+  }
+}
+
+type Mode = "signin" | "forgot" | "reset";
+
 function AdminLogin() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [guard, setGuard] = useState<Guard>({ fails: 0, first: 0, lockedUntil: 0 });
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    setGuard(readGuard());
+    // A password-recovery link lands here with a recovery session.
+    const hash = window.location.hash || "";
+    if (hash.includes("type=recovery")) setMode("reset");
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") setMode("reset");
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const locked = guard.lockedUntil > now;
+  useEffect(() => {
+    if (!locked) return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [locked]);
+
+  const remaining = Math.max(0, Math.ceil((guard.lockedUntil - now) / 1000));
+  const attemptsLeft = Math.max(0, MAX_ATTEMPTS - guard.fails);
+
+  const registerFailure = () => {
+    const base = readGuard();
+    const fails = (base.first && Date.now() - base.first < WINDOW_MS ? base.fails : 0) + 1;
+    const next: Guard = {
+      fails,
+      first: base.first && Date.now() - base.first < WINDOW_MS ? base.first : Date.now(),
+      lockedUntil: fails >= MAX_ATTEMPTS ? Date.now() + LOCK_MS : 0,
+    };
+    writeGuard(next);
+    setGuard(next);
+    setNow(Date.now());
+  };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+    setStatus(null);
+
+    if (mode === "forgot") {
+      setLoading(true);
+      const { error: resetErr } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin/login`,
+      });
+      setLoading(false);
+      if (resetErr) setError(resetErr.message);
+      else setStatus("If that email belongs to an admin account, a reset link is on its way. Check your inbox.");
+      return;
+    }
+
+    if (mode === "reset") {
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters.");
+        return;
+      }
+      setLoading(true);
+      const { error: updErr } = await supabase.auth.updateUser({ password });
+      setLoading(false);
+      if (updErr) {
+        setError(updErr.message);
+        return;
+      }
+      setStatus("Password updated. Redirecting to the dashboard…");
+      setTimeout(() => navigate({ to: "/admin" }), 900);
+      return;
+    }
+
+    if (locked) {
+      setError(`Too many failed attempts. Try again in ${remaining}s.`);
+      return;
+    }
+
     setLoading(true);
+    setStatus("Verifying credentials…");
     const { error: signErr } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (signErr) {
+      registerFailure();
+      setStatus(null);
       setError(signErr.message);
       return;
     }
+    writeGuard({ fails: 0, first: 0, lockedUntil: 0 });
+    setGuard({ fails: 0, first: 0, lockedUntil: 0 });
+    setStatus("Signed in — opening dashboard…");
     navigate({ to: "/admin" });
   };
 
   const field =
     "w-full rounded-xl border border-white/15 bg-white/10 px-11 py-3 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/40 focus:bg-white/15 focus:ring-2 focus:ring-white/20";
+
 
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden bg-[oklch(0.21_0.03_255)] px-4 py-10">
