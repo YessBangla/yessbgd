@@ -45,6 +45,27 @@ function merge<T extends { slug: string }>(
 
 /* ---------------------------------- ventures --------------------------------- */
 
+// Bundled venture artwork, keyed by file name. Lets the CMS store a friendly
+// path like "/src/assets/ventures/yess-food.jpg" (or just "yess-food.jpg")
+// while the site still serves the hashed, build-safe asset URL.
+const BUNDLED_IMAGES = import.meta.glob("@/assets/ventures/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+const BUNDLED_BY_NAME: Record<string, string> = Object.fromEntries(
+  Object.entries(BUNDLED_IMAGES).map(([p, url]) => [p.split("/").pop() ?? p, url]),
+);
+
+/** Resolve a CMS image reference to a URL that works in dev and production. */
+export function resolveImage(value: unknown, fallback: string): string {
+  if (typeof value !== "string" || !value.trim()) return fallback;
+  const v = value.trim();
+  if (/^(https?:)?\/\//.test(v) || v.startsWith("data:")) return v;
+  const name = v.split("/").pop() ?? v;
+  return BUNDLED_BY_NAME[name] ?? (v.startsWith("/src/") ? fallback : v);
+}
+
 function toVenture(row: Record<string, unknown>, base: Venture | undefined): Venture {
   const fallback = base ?? staticVentures[0];
   const extra = obj(row.data);
@@ -56,7 +77,11 @@ function toVenture(row: Record<string, unknown>, base: Venture | undefined): Ven
     category: (row.category as string) ?? fallback.category,
     tagline: (row.tagline as string) ?? fallback.tagline,
     desc: (row.description as string) ?? fallback.desc,
-    image: (row.image_path as string) || fallback.image,
+    image: resolveImage(row.image_path, fallback.image),
+    icon: icon(row.icon, fallback.icon),
+  } as Venture;
+}
+
     icon: icon(row.icon, fallback.icon),
   } as Venture;
 }
