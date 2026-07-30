@@ -559,8 +559,13 @@ function AdminPagesList() {
                   </td>
                 </tr>
               )}
-              {rows.map((p) => (
-                <tr key={p.id} className="border-b border-border/50 last:border-0 hover:bg-secondary/30">
+              {rows.map((p) => {
+                const attached = menuNodesFor(p.path);
+                const kids = attached.reduce((n, a) => n + a.node.children.length, 0);
+                const isOpen = expanded.includes(p.id);
+                return (
+                <Fragment key={p.id}>
+                <tr className="border-b border-border/50 hover:bg-secondary/30">
                   <td className="px-4 py-3">
                     <input
                       type="checkbox"
@@ -572,15 +577,37 @@ function AdminPagesList() {
                     />
                   </td>
                   <td className="px-3 py-3">
-                    <Link
-                      to="/admin/pages/$page"
-                      params={{ page: p.page }}
-                      className="font-medium text-primary hover:underline"
-                    >
-                      {p.name}
-                    </Link>
-                    <span className="block text-xs text-muted-foreground">{p.name_bn || "—"}</span>
+                    <div className="flex items-start gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setExpanded((e) => (isOpen ? e.filter((x) => x !== p.id) : [...e, p.id]))}
+                        aria-expanded={isOpen}
+                        aria-label={`Submenus of ${p.name}`}
+                        title="Submenus · সাবমেনু"
+                        className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded border border-border text-muted-foreground hover:bg-secondary"
+                      >
+                        <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? "" : "-rotate-90"}`} />
+                      </button>
+                      <div className="min-w-0">
+                        <Link
+                          to="/admin/pages/$page"
+                          params={{ page: p.page }}
+                          className="font-medium text-primary hover:underline"
+                        >
+                          {p.name}
+                        </Link>
+                        <span className="block text-xs text-muted-foreground">
+                          {p.name_bn || "—"}
+                          {kids > 0 && (
+                            <span className="ml-2 rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
+                              {kids} submenu
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    </div>
                   </td>
+
                   <td className="px-3 py-3 font-mono text-xs text-muted-foreground">{p.path}</td>
                   <td className="px-3 py-3 text-muted-foreground">{p.is_custom ? "Custom" : "Built-in"}</td>
                   <td className="px-3 py-3">
