@@ -205,7 +205,7 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
                     to={group.to}
                     title={collapsed ? group.title : undefined}
                     data-active={active ? "true" : undefined}
-                    aria-current={active ? "page" : undefined}
+                    aria-current={active ? "page" : false}
                     className={`relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition ${
                       active
                         ? "bg-admin-accent font-semibold text-admin-accent-foreground shadow-sm before:absolute before:inset-y-1.5 before:-left-0.5 before:w-1 before:rounded-full before:bg-admin-accent-foreground"
@@ -263,7 +263,7 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
                             to={item.to}
                             params={item.params}
                             data-active={itemActive ? "true" : undefined}
-                            aria-current={itemActive ? "page" : undefined}
+                            aria-current={itemActive ? "page" : false}
                             className={`relative flex items-center gap-2.5 rounded-md py-2 pl-9 pr-3 text-[13px] transition ${
                               itemActive
                                 ? "bg-admin-accent font-semibold text-admin-accent-foreground shadow-sm before:absolute before:inset-y-1 before:left-3 before:w-1 before:rounded-full before:bg-admin-accent-foreground"

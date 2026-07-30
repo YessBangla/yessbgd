@@ -40,7 +40,7 @@ test.describe("Admin CMS navigation", () => {
 
       // Child route mounted: the list toolbar is present.
       await expect(page.getByPlaceholder("Filter…")).toBeVisible();
-      await expect(page.getByRole("link", { name: /^All content$/ })).toBeVisible();
+      await expect(page.getByRole("main").getByRole("link", { name: /^All content$/ })).toBeVisible();
 
       // Sidebar highlights the active CMS section.
       const activeLeaf = page.locator(`aside a[href="/admin/cms/${type}"][data-active="true"]`);
@@ -60,7 +60,7 @@ test.describe("Admin CMS navigation", () => {
       await expect(page).toHaveURL(new RegExp(`/admin/cms/${type}/[^/]+$`));
 
       // Editor mounted: form controls + back link exist.
-      await expect(page.getByRole("link", { name: /Back to list/i })).toBeVisible();
+      await expect(page.getByRole("main").getByRole("link", { name: /Back to list/i })).toBeVisible();
       await expect(page.locator("form")).toBeVisible();
 
       // Sidebar still marks the same CMS section active.
