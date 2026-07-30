@@ -102,6 +102,10 @@ export type MenuItem = {
   icon?: string | null;
   description?: string | null;
   description_bn?: string | null;
+  accent?: string | null;
+  item_style?: string | null;
+  badge?: string | null;
+  badge_bn?: string | null;
 };
 
 export type MenuNode = MenuItem & { children: MenuNode[] };
