@@ -13,7 +13,7 @@
  */
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, Check, Download, FileText, KeyRound, Languages, Loader2, Lock, ShieldCheck, X } from "lucide-react";
+import { AlertTriangle, ArrowRight, Check, Download, FileText, KeyRound, Languages, Loader2, Lock, ShieldCheck, X } from "lucide-react";
 
 const ACCESS_PIN = "7007";
 const DEFAULT_HREF = "/yess-bangla-company-profile.pdf";
