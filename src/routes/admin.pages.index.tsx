@@ -59,6 +59,41 @@ function AdminPagesList() {
   const [selected, setSelected] = useState<string[]>([]);
   const [bulkOpen, setBulkOpen] = useState(false);
 
+  // ---- menu placement for the create form (menu / submenu / sub-submenu) ----
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [menuLoc, setMenuLoc] = useState<"none" | "header" | "footer">("none");
+  const [menuParent, setMenuParent] = useState("");
+  const [notice, setNotice] = useState<string | null>(null);
+
+  const loadMenu = async () => {
+    const { data: rows } = await supabase.from("cms_menu_items").select("*").order("sort_order");
+    setMenuItems((rows ?? []) as unknown as MenuItem[]);
+  };
+
+  useEffect(() => {
+    void loadMenu();
+  }, []);
+
+  const parentOptions = useMemo(() => {
+    if (menuLoc === "none") return [] as { node: MenuNode; depth: number }[];
+    const out: { node: MenuNode; depth: number }[] = [];
+    const walk = (nodes: MenuNode[], depth: number) => {
+      for (const n of nodes) {
+        if (depth < 2) out.push({ node: n, depth });
+        walk(n.children, depth + 1);
+      }
+    };
+    walk(buildMenuTree(menuItems.filter((m) => m.location === menuLoc)), 0);
+    return out;
+  }, [menuItems, menuLoc]);
+
+  useEffect(() => {
+    if (menuParent && !parentOptions.some((o) => o.node.id === menuParent)) setMenuParent("");
+  }, [parentOptions, menuParent]);
+
+  const menuCountFor = (path: string) =>
+    menuItems.filter((m) => (m.href ?? "").trim() === path.trim()).length;
+
   const invalidate = async () => {
     await qc.invalidateQueries({ queryKey: ["cms", "site-pages"] });
     await refetch();
@@ -72,9 +107,11 @@ function AdminPagesList() {
     }
     setBusy(true);
     setErr(null);
+    setNotice(null);
+    const path = `/p/${slug}`;
     const { error } = await supabase.from("cms_site_pages").insert({
       page: slug,
-      path: `/p/${slug}`,
+      path,
       name: form.name.trim(),
       name_bn: form.nameBn.trim() || null,
       hero_title: form.name.trim(),
@@ -83,14 +120,53 @@ function AdminPagesList() {
       is_published: true,
       sort_order: (data?.length ?? 0) + 1,
     } as never);
-    setBusy(false);
     if (error) {
+      setBusy(false);
       setErr(error.message);
       return;
     }
+
+    if (menuLoc !== "none") {
+      const parent = menuParent ? menuItems.find((m) => m.id === menuParent) : undefined;
+      const siblings = menuItems.filter(
+        (m) => m.location === menuLoc && (m.parent_id ?? null) === (parent?.id ?? null),
+      );
+      const { error: menuError } = await supabase.from("cms_menu_items").insert({
+        location: menuLoc,
+        label: form.name.trim(),
+        label_bn: form.nameBn.trim() || null,
+        href: path,
+        parent_id: parent?.id ?? null,
+        depth: parent ? (parent.depth ?? 0) + 1 : 0,
+        sort_order: siblings.length + 1,
+        is_published: true,
+        visible_to: "all",
+      } as never);
+      if (menuError) {
+        setBusy(false);
+        setErr(`Page created, but adding it to the menu failed: ${menuError.message}`);
+        await invalidate();
+        await loadMenu();
+        return;
+      }
+      setNotice(
+        parent
+          ? `Page created and added as a submenu of “${parent.label}” · সাবমেনু হিসেবে যোগ হয়েছে`
+          : "Page created and added to the menu · মেনুতে যোগ হয়েছে",
+      );
+      await qc.invalidateQueries({ queryKey: ["cms", "menu", "header"] });
+      await qc.invalidateQueries({ queryKey: ["cms", "menu", "footer"] });
+    } else {
+      setNotice("Page created · পেইজ তৈরি হয়েছে");
+    }
+
+    setBusy(false);
     setForm({ name: "", nameBn: "", slug: "" });
+    setMenuLoc("none");
+    setMenuParent("");
     setCreating(false);
     await invalidate();
+    await loadMenu();
   };
 
   const togglePublish = async (id: string, next: boolean) => {
