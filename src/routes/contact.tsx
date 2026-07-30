@@ -97,6 +97,7 @@ function Contact() {
   return (
     <>
       <PageHero
+        page="contact"
         eyebrow={t("pages.contact.eyebrow")}
         title={t("pages.contact.title")}
         subtitle={t("pages.contact.subtitle")}

@@ -50,6 +50,7 @@ function FAQ() {
   return (
     <>
       <PageHero
+        page="faq"
         eyebrow={t("pages.faq.eyebrow")}
         title={t("pages.faq.title")}
         subtitle={

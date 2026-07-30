@@ -419,6 +419,7 @@ function Careers() {
   return (
     <>
       <PageHero
+        page="careers"
         eyebrow={t("pages.careers.eyebrow")}
         title={t("pages.careers.title")}
         subtitle={t("pages.careers.subtitle")}

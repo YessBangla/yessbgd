@@ -114,6 +114,7 @@ function Privacy() {
   return (
     <>
       <PageHero
+        page="privacy"
         eyebrow={t("pages.privacy.eyebrow")}
         title={t("pages.privacy.title")}
         subtitle={t("pages.privacy.subtitle")}

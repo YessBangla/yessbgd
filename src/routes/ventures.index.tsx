@@ -78,6 +78,7 @@ function VenturesPage() {
   return (
     <>
       <PageHero
+        page="ventures"
         eyebrow={t("pages.ventures.eyebrow")}
         title={t("pages.ventures.title")}
         subtitle={t("pages.ventures.subtitle")}

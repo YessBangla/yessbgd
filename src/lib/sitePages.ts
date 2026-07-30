@@ -71,6 +71,7 @@ export function useSitePage(page: string) {
   return useQuery({
     queryKey: ["cms", "site-page", page],
     staleTime: STALE,
+    enabled: !!page,
     queryFn: async () => {
       const { data } = await supabase
         .from("cms_site_pages")

@@ -25,6 +25,7 @@ function About() {
   return (
     <>
       <PageHero
+        page="about"
         eyebrow={t("pages.about.eyebrow")}
         title={t("pages.about.title")}
         subtitle={t("pages.about.subtitle")}

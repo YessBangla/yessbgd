@@ -111,6 +111,7 @@ function Services() {
   return (
     <>
       <PageHero
+        page="services"
         eyebrow={t("pages.services.eyebrow")}
         title={t("pages.services.title")}
         subtitle={t("pages.services.subtitle")}
