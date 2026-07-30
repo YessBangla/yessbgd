@@ -6,6 +6,8 @@ import { z } from "zod";
 import { PageHero } from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
+import { useSettingText } from "@/lib/siteContent";
+import { toMapEmbedSrc } from "@/routes/admin.settings";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -343,6 +345,9 @@ const OFFICES: Record<
 function ContactMap() {
   const [active, setActive] = useState<OfficeKey>("head");
   const office = OFFICES[active];
+  // Head-office map is editable from the dashboard (Site settings → Google Map).
+  const cmsMap = toMapEmbedSrc(useSettingText("contact_map", ""));
+  const embedSrc = active === "head" && cmsMap ? cmsMap : office.embedSrc;
 
   return (
     <>
@@ -383,9 +388,9 @@ function ContactMap() {
 
       <div className="relative overflow-hidden rounded-2xl border border-glass-border shadow-elegant">
         <iframe
-          key={active}
+          key={embedSrc}
           title={`YESS Bangla — ${office.label}, Mirpur, Dhaka`}
-          src={office.embedSrc}
+          src={embedSrc}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className="h-[360px] w-full md:h-[460px]"
