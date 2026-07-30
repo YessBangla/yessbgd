@@ -58,20 +58,32 @@ export function Footer() {
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.company")}</h4>
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/about" className="hover:text-primary">{t("footer.links.about")}</Link></li>
-              <li><Link to="/about/$pillar" params={{ pillar: "mission" }} className="hover:text-primary">{t("footer.links.mission")}</Link></li>
-              <li><Link to="/about/$pillar" params={{ pillar: "vision" }} className="hover:text-primary">{t("footer.links.vision")}</Link></li>
-              <li><Link to="/about/$pillar" params={{ pillar: "values" }} className="hover:text-primary">{t("footer.links.values")}</Link></li>
-              <li><Link to="/about/leadership" className="hover:text-primary">{t("footer.links.leadership")}</Link></li>
-              <li><Link to="/about/methodology" className="hover:text-primary">{t("footer.links.methodology")}</Link></li>
-              <li><Link to="/about/awards" className="hover:text-primary">{t("footer.links.awards")}</Link></li>
-              <li><Link to="/about/standards" className="hover:text-primary">{t("footer.links.standards")}</Link></li>
-              <li><Link to="/industries" className="hover:text-primary">{t("footer.links.industries")}</Link></li>
-              <li><Link to="/projects" className="hover:text-primary">{t("footer.links.projects")}</Link></li>
-              <li><Link to="/careers" className="hover:text-primary">{t("footer.links.careers")}</Link></li>
-              <li><Link to="/contact" className="hover:text-primary">{t("footer.links.contact")}</Link></li>
+              {footerLinks.length > 0 ? (
+                footerLinks.map((l) => (
+                  <li key={l.id}>
+                    {l.is_external ? (
+                      <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                        {(bn && l.label_bn) || l.label}
+                      </a>
+                    ) : (
+                      <Link to={l.href} className="hover:text-primary">
+                        {(bn && l.label_bn) || l.label}
+                      </Link>
+                    )}
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li><Link to="/about" className="hover:text-primary">{t("footer.links.about")}</Link></li>
+                  <li><Link to="/industries" className="hover:text-primary">{t("footer.links.industries")}</Link></li>
+                  <li><Link to="/projects" className="hover:text-primary">{t("footer.links.projects")}</Link></li>
+                  <li><Link to="/careers" className="hover:text-primary">{t("footer.links.careers")}</Link></li>
+                  <li><Link to="/contact" className="hover:text-primary">{t("footer.links.contact")}</Link></li>
+                </>
+              )}
             </ul>
           </div>
+
 
           <div>
             <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.ourVentures")}</h4>
