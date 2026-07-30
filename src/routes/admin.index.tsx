@@ -532,7 +532,7 @@ function AdminDashboard() {
                   {m.count}
                 </span>
                 <div
-                  className="w-full rounded-lg bg-gradient-primary transition-all"
+                  className="w-full shrink-0 rounded-lg bg-gradient-primary transition-all"
                   style={{ height: `${Math.max(6, (m.count / bars.max) * 118)}px` }}
                 />
                 <span className="text-[10px] text-muted-foreground">{m.label}</span>
