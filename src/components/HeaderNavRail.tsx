@@ -90,7 +90,7 @@ export function HeaderNavRail({ tree, bn }: { tree: MenuNode[]; bn: boolean }) {
           const isVenturesMega = item.href === "/ventures" && item.children.length === 0;
           return (
             <div className="absolute inset-x-0 top-full z-50 px-3 pt-1">
-              <div className="max-h-[60dvh] overflow-y-auto rounded-2xl border border-glass-border bg-background/95 p-2 shadow-elegant backdrop-blur-xl">
+              <div className="max-h-[60dvh] overflow-y-auto rounded-2xl border border-glass-border bg-card p-2 shadow-elegant">
                 {isVenturesMega ? (
                   <>
                     <div className="grid gap-1 sm:grid-cols-2">
