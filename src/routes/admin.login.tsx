@@ -156,7 +156,7 @@ function AdminLogin() {
 
 
   return (
-    <main className="relative grid min-h-screen place-items-center overflow-hidden bg-[oklch(0.21_0.03_255)] px-4 py-10">
+    <main className="admin-scope relative grid min-h-screen place-items-center overflow-hidden bg-[oklch(0.21_0.03_255)] px-4 py-10">
       {/* ambient corporate mesh */}
       <div
         aria-hidden
