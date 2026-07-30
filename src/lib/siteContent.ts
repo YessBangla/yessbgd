@@ -96,7 +96,33 @@ export type MenuItem = {
   group_label: string | null;
   sort_order: number | null;
   is_external: boolean | null;
+  is_published?: boolean | null;
+  parent_id?: string | null;
+  depth?: number | null;
+  icon?: string | null;
+  description?: string | null;
+  description_bn?: string | null;
 };
+
+export type MenuNode = MenuItem & { children: MenuNode[] };
+
+/** Build a nested tree (unlimited depth) from a flat menu list. */
+export function buildMenuTree(items: MenuItem[]): MenuNode[] {
+  const map = new Map<string, MenuNode>();
+  items.forEach((i) => map.set(i.id, { ...i, children: [] }));
+  const roots: MenuNode[] = [];
+  map.forEach((node) => {
+    const parent = node.parent_id ? map.get(node.parent_id) : undefined;
+    if (parent) parent.children.push(node);
+    else roots.push(node);
+  });
+  const sort = (list: MenuNode[]) => {
+    list.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+    list.forEach((n) => sort(n.children));
+  };
+  sort(roots);
+  return roots;
+}
 
 export function useMenu(location: "header" | "footer") {
   const { data } = useQuery({
@@ -114,6 +140,13 @@ export function useMenu(location: "header" | "footer") {
   });
   return data ?? [];
 }
+
+/** Same as useMenu but nested by parent_id. */
+export function useMenuTree(location: "header" | "footer") {
+  const flat = useMenu(location);
+  return buildMenuTree(flat);
+}
+
 
 /* ----------------------------------- media ---------------------------------- */
 

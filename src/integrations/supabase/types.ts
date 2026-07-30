@@ -182,44 +182,67 @@ export type Database = {
       cms_menu_items: {
         Row: {
           created_at: string | null
+          depth: number
+          description: string | null
+          description_bn: string | null
           group_label: string | null
           href: string
+          icon: string | null
           id: string
           is_external: boolean | null
           is_published: boolean | null
           label: string
           label_bn: string | null
           location: string
+          parent_id: string | null
           sort_order: number | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
+          depth?: number
+          description?: string | null
+          description_bn?: string | null
           group_label?: string | null
           href: string
+          icon?: string | null
           id?: string
           is_external?: boolean | null
           is_published?: boolean | null
           label: string
           label_bn?: string | null
           location?: string
+          parent_id?: string | null
           sort_order?: number | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
+          depth?: number
+          description?: string | null
+          description_bn?: string | null
           group_label?: string | null
           href?: string
+          icon?: string | null
           id?: string
           is_external?: boolean | null
           is_published?: boolean | null
           label?: string
           label_bn?: string | null
           location?: string
+          parent_id?: string | null
           sort_order?: number | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "cms_menu_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "cms_menu_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cms_pages: {
         Row: {
