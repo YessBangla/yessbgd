@@ -137,15 +137,88 @@ export function normaliseFooterConfig(value: unknown): FooterConfig {
   const columns = Array.isArray(raw.columns) && raw.columns.length ? raw.columns : FOOTER_DEFAULTS.columns;
   return {
     style: { ...FOOTER_DEFAULTS.style, ...(raw.style ?? {}) },
-    columns: columns.slice(0, 4).map((c, i) => ({ ...FOOTER_DEFAULTS.columns[i], ...c })),
+    columns: columns
+      .slice(0, 4)
+      .map((c) => ({ ...(FOOTER_DEFAULTS.columns.find((d) => d.type === c.type) ?? {}), ...c })),
     social: Array.isArray(raw.social) ? raw.social : FOOTER_DEFAULTS.social,
     bottom_links: Array.isArray(raw.bottom_links) ? raw.bottom_links : FOOTER_DEFAULTS.bottom_links,
     copyright: typeof raw.copyright === "string" ? raw.copyright : "",
     copyright_bn: typeof raw.copyright_bn === "string" ? raw.copyright_bn : "",
+    saved_presets: Array.isArray(raw.saved_presets) ? raw.saved_presets : [],
   };
 }
 
+/* ------------------------------ template presets ------------------------- */
+
+/** Built-in footer templates the dashboard can apply with one click. */
+export const FOOTER_TEMPLATES: {
+  id: string;
+  label: string;
+  label_bn: string;
+  apply: (c: FooterConfig) => FooterConfig;
+}[] = [
+  {
+    id: "corporate",
+    label: "Corporate",
+    label_bn: "কর্পোরেট",
+    apply: (c) => ({
+      ...c,
+      style: { ...FOOTER_DEFAULTS.style },
+      columns: FOOTER_DEFAULTS.columns.map((x) => ({ ...x })),
+    }),
+  },
+  {
+    id: "simple",
+    label: "Simple",
+    label_bn: "সাধারণ",
+    apply: (c) => ({
+      ...c,
+      style: {
+        ...c.style,
+        background: "transparent",
+        spacing: "compact",
+        columns: 2,
+        mobile_columns: 1,
+        mobile_align: "center",
+        heading: "normal",
+        border_top: true,
+        show_bottom_bar: true,
+        align_center: true,
+      },
+      columns: [
+        { ...FOOTER_DEFAULTS.columns[0] },
+        { ...FOOTER_DEFAULTS.columns[1] },
+      ],
+    }),
+  },
+  {
+    id: "contact-first",
+    label: "Contact first",
+    label_bn: "যোগাযোগ প্রধান",
+    apply: (c) => ({
+      ...c,
+      style: { ...c.style, background: "solid", spacing: "normal", columns: 3, mobile_columns: 1, mobile_align: "left", align_center: false },
+      columns: [
+        { ...FOOTER_DEFAULTS.columns[3] },
+        { ...FOOTER_DEFAULTS.columns[0] },
+        { ...FOOTER_DEFAULTS.columns[1] },
+      ],
+    }),
+  },
+  {
+    id: "ink",
+    label: "Deep ink",
+    label_bn: "গাঢ়",
+    apply: (c) => ({
+      ...c,
+      style: { ...c.style, background: "ink", spacing: "spacious", columns: 4, mobile_columns: 2, mobile_align: "left" },
+      columns: FOOTER_DEFAULTS.columns.map((x) => ({ ...x })),
+    }),
+  },
+];
+
 /** Live footer configuration for the public site. */
+
 export function useFooterConfig(): FooterConfig {
   const { map } = useSettings();
   return normaliseFooterConfig(map["footer_config"]);
