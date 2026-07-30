@@ -267,6 +267,12 @@ function AdminPageEditor() {
         </div>
       )}
 
+      {tab === "navigation" && (
+        <PageMenuPanel path={row.path} nameEn={row.name} nameBn={row.name_bn} />
+      )}
+
+
+
       {tab === "seo" && (
         <div className="rounded-2xl border border-border bg-card p-5">
           <div className="grid gap-3 md:grid-cols-2">
