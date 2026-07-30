@@ -67,7 +67,7 @@ export function LanguageSwitch({ variant = "pill", className = "" }: Props) {
             className={[
               "min-w-[2.4rem] rounded-full px-2.5 py-1 transition-colors",
               active
-                ? "bg-foreground text-background shadow-sm"
+                ? "bg-primary text-primary-foreground shadow-sm"
                 : "text-foreground/70 hover:text-foreground",
             ].join(" ")}
           >

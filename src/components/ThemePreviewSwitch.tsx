@@ -50,7 +50,7 @@ export function ThemePreviewSwitch() {
       title={`${label} theme`}
       className={`inline-grid h-7 w-7 place-items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
         mode === value
-          ? "bg-foreground text-background shadow-sm"
+          ? "bg-primary text-primary-foreground shadow-sm"
           : "text-foreground/70 hover:bg-secondary"
       }`}
     >

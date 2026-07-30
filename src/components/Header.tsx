@@ -274,7 +274,7 @@ const MobilePanel = memo(function MobilePanel({
           to="/contact"
           preload="intent"
           onClick={onClose}
-          className="mt-3 inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-5 py-3 text-center text-sm font-semibold text-background shadow-sm transition-transform active:scale-[0.98]"
+          className="mt-3 inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-5 py-3 text-center text-sm font-semibold text-primary-foreground shadow-sm transition-transform active:scale-[0.98]"
         >
           {t("nav.letsTalk")} →
         </Link>
@@ -545,7 +545,7 @@ export function Header() {
           <div className="hidden lg:block">
             <Link
               to="/contact"
-              className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
+              className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
             >
               {t("nav.letsTalk")}
             </Link>
