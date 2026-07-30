@@ -472,17 +472,22 @@ export function ProfileDownloadGate({
                   <a
                     href={downloadHref}
                     download={filename}
+                    aria-disabled={downloadState === "loading"}
                     onClick={(e) => {
                       // Some in-app / mobile browsers ignore the `download`
                       // attribute and silently do nothing. Fetch the file and
-                      // save it via a blob URL instead, falling back to a plain
-                      // navigation if that is blocked too.
+                      // save it via a blob URL instead, surfacing a friendly
+                      // message if the network or the browser blocks it.
                       e.preventDefault();
+                      if (downloadState === "loading") return;
+                      setDownloadState("loading");
+                      setDownloadError(null);
                       void (async () => {
                         try {
                           const res = await fetch(downloadHref);
                           if (!res.ok) throw new Error(String(res.status));
                           const blob = await res.blob();
+                          if (blob.size === 0) throw new Error("empty");
                           const url = URL.createObjectURL(blob);
                           const a = document.createElement("a");
                           a.href = url;
@@ -491,16 +496,52 @@ export function ProfileDownloadGate({
                           a.click();
                           a.remove();
                           setTimeout(() => URL.revokeObjectURL(url), 4000);
+                          setDownloadState("done");
+                          setTimeout(closeAndReset, 900);
                         } catch {
-                          window.open(downloadHref, "_blank", "noopener");
+                          // Last resort: let the browser navigate to the file.
+                          const win = window.open(downloadHref, "_blank", "noopener");
+                          if (win) {
+                            setDownloadState("done");
+                            setTimeout(closeAndReset, 900);
+                          } else {
+                            setDownloadState("error");
+                            setDownloadError(
+                              "ডাউনলোড করা যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন, অথবা নিচের “Open in browser” লিংকটি ব্যবহার করুন। · Download failed — check your connection, retry, or use the browser link below.",
+                            );
+                          }
                         }
-                        setTimeout(closeAndReset, 600);
                       })();
                     }}
-                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg aria-disabled:cursor-wait aria-disabled:opacity-70 aria-disabled:hover:translate-y-0"
                   >
-                    {t("gate.downloadPdf")} <ArrowRight className="h-4 w-4" aria-hidden />
+                    {downloadState === "loading" ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> ডাউনলোড হচ্ছে… · Downloading
+                      </>
+                    ) : downloadState === "done" ? (
+                      <>
+                        <Check className="h-4 w-4" aria-hidden /> সম্পন্ন · Saved
+                      </>
+                    ) : downloadState === "error" ? (
+                      <>
+                        {t("gate.downloadPdf")} · আবার চেষ্টা করুন <ArrowRight className="h-4 w-4" aria-hidden />
+                      </>
+                    ) : (
+                      <>
+                        {t("gate.downloadPdf")} <ArrowRight className="h-4 w-4" aria-hidden />
+                      </>
+                    )}
                   </a>
+
+                  <div className="min-h-[1.25rem]" aria-live="polite">
+                    {downloadError && (
+                      <p className="mt-3 flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/5 p-3 text-xs text-destructive">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                        <span>{downloadError}</span>
+                      </p>
+                    )}
+                  </div>
 
                   <a
                     href={downloadHref}
@@ -517,6 +558,7 @@ export function ProfileDownloadGate({
                   </p>
                 </div>
               )}
+
             </div>
           </div>
 
