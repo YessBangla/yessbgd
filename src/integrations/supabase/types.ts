@@ -181,6 +181,9 @@ export type Database = {
       }
       cms_menu_items: {
         Row: {
+          accent: string | null
+          badge: string | null
+          badge_bn: string | null
           created_at: string | null
           depth: number
           description: string | null
@@ -191,6 +194,7 @@ export type Database = {
           id: string
           is_external: boolean | null
           is_published: boolean | null
+          item_style: string | null
           label: string
           label_bn: string | null
           location: string
@@ -199,6 +203,9 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          accent?: string | null
+          badge?: string | null
+          badge_bn?: string | null
           created_at?: string | null
           depth?: number
           description?: string | null
@@ -209,6 +216,7 @@ export type Database = {
           id?: string
           is_external?: boolean | null
           is_published?: boolean | null
+          item_style?: string | null
           label: string
           label_bn?: string | null
           location?: string
@@ -217,6 +225,9 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          accent?: string | null
+          badge?: string | null
+          badge_bn?: string | null
           created_at?: string | null
           depth?: number
           description?: string | null
@@ -227,6 +238,7 @@ export type Database = {
           id?: string
           is_external?: boolean | null
           is_published?: boolean | null
+          item_style?: string | null
           label?: string
           label_bn?: string | null
           location?: string
