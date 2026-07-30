@@ -703,6 +703,27 @@ function AdminMenus() {
               </div>
             </div>
 
+            <div>
+              <label className={labelCls} htmlFor={`vis-${node.id}`}>
+                <Users className="mr-1 inline h-3 w-3" /> Visible to (role rule)
+              </label>
+              <select
+                id={`vis-${node.id}`}
+                className={inputCls}
+                value={(node.visible_to as string) ?? "all"}
+                onChange={(e) => patch(node.id, "visible_to", e.target.value)}
+              >
+                {VISIBILITY.map((v) => (
+                  <option key={v.key} value={v.key}>
+                    {v.label} — {v.labelBn}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Admin-only items are hidden from everyone except users with the admin role.
+              </p>
+            </div>
+
             <div className="flex items-end gap-4">
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -725,7 +746,7 @@ function AdminMenus() {
         )}
 
         {hasKids && !isCollapsed && (
-          <ul>{node.children.map((c) => renderNode(c, node.children, location, node))}</ul>
+          <ul role="group">{node.children.map((c) => renderNode(c, node.children, location, node))}</ul>
         )}
       </li>
     );
@@ -748,7 +769,12 @@ function AdminMenus() {
         </div>
         <div className="overflow-hidden rounded-xl border border-border bg-card">
           {tree.length ? (
-            <ul>{tree.map((n) => renderNode(n, tree, location))}</ul>
+            <ul
+              role="tree"
+              aria-label={`${title} structure. Use arrow keys to expand, Alt plus arrows to move or nest items.`}
+            >
+              {tree.map((n) => renderNode(n, tree, location))}
+            </ul>
           ) : (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">No links yet.</p>
           )}
@@ -756,6 +782,7 @@ function AdminMenus() {
       </section>
     );
   };
+
 
   return (
     <div>
