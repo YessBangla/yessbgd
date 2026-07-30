@@ -31,7 +31,7 @@ function AdminLogin() {
       setError(signErr.message);
       return;
     }
-    navigate({ to: "/admin/applications" });
+    navigate({ to: "/admin" });
   };
 
   return (
