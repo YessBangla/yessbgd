@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Calendar, Clock, User, Twitter, Facebook, Linked
 import { useState } from "react";
 import { PageHero } from "@/components/PageHero";
 import { getInsight, insights } from "@/data/insights";
+import { useInsight, useInsights } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/insights/$slug")({
   head: ({ params }) => {
@@ -82,8 +83,10 @@ function ErrorView({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 function InsightDetail() {
-  const { post } = Route.useLoaderData() as { post: NonNullable<ReturnType<typeof getInsight>> };
-  const related = insights.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const { post: staticPost } = Route.useLoaderData() as { post: NonNullable<ReturnType<typeof getInsight>> };
+  const allInsights = useInsights();
+  const post = useInsight(staticPost.slug) ?? staticPost;
+  const related = allInsights.filter((p) => p.slug !== post.slug).slice(0, 3);
   const [copied, setCopied] = useState(false);
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";

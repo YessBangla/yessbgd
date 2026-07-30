@@ -1,5 +1,6 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -82,6 +83,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { i18n } = useTranslation();
+  const [queryClient] = useState(
+    () => new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } } }),
+  );
   // Apply persisted per-surface logo tuning (scale + opacity) before paint.
   useEffect(() => {
     applyHeaderFooterCssVars(loadLogoSettings());
@@ -94,18 +98,21 @@ function RootComponent() {
     if (typeof document !== "undefined") document.documentElement.lang = lang;
   }, [i18n.resolvedLanguage, i18n.language]);
   return (
-    <div className="relative flex min-h-screen flex-col app-shell">
-      <WaterBackground />
-      <Header />
-      <main className="flex-1">
-        <RouteTransition>
-          <Outlet />
-        </RouteTransition>
-      </main>
-      <Footer />
-      <ScrollUpDown />
-      <LiquidGlassToggle />
-      <MobileTabBar />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="relative flex min-h-screen flex-col app-shell">
+        <WaterBackground />
+        <Header />
+        <main className="flex-1">
+          <RouteTransition>
+            <Outlet />
+          </RouteTransition>
+        </main>
+        <Footer />
+        <ScrollUpDown />
+        <LiquidGlassToggle />
+        <MobileTabBar />
+      </div>
+    </QueryClientProvider>
   );
+
 }

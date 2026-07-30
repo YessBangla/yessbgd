@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageHero } from "@/components/PageHero";
-import { ventures } from "@/data/ventures";
+import { useVentures } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/ventures/")({
   head: () => ({
@@ -20,6 +20,7 @@ export const Route = createFileRoute("/ventures/")({
 type SortKey = "default" | "az" | "za" | "newest" | "oldest";
 
 function VenturesPage() {
+  const ventures = useVentures();
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");

@@ -6,7 +6,7 @@ import {
   ShieldCheck, Award, Users, Globe2, Zap, Heart,
 } from "lucide-react";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
-import { industries } from "@/data/industries";
+import { useIndustries } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/industries")({
   head: () => ({
@@ -28,6 +28,7 @@ const stats = [
 ];
 
 function Industries() {
+  const industries = useIndustries();
   const { t } = useTranslation();
   return (
     <>

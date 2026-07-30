@@ -4,7 +4,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
-import { ventures } from "@/data/ventures";
+import { useVentures } from "@/lib/dynamicContent";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 
@@ -42,6 +42,7 @@ const MobilePanel = memo(function MobilePanel({
   venturesActive,
 }: MobilePanelProps) {
   const { t } = useTranslation();
+  const ventures = useVentures();
   return (
     <motion.div
       key="mobile-menu"
@@ -170,6 +171,7 @@ const MobilePanel = memo(function MobilePanel({
 });
 
 export function Header() {
+  const ventures = useVentures();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [venturesOpen, setVenturesOpen] = useState(false);
