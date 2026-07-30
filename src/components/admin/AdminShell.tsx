@@ -64,9 +64,9 @@ function buildNav(): NavGroup[] {
     {
       title: "Appearance",
       items: [
-        { label: "Pages & sections", labelBn: "পেজ ও সেকশন", to: "/admin/pages", icon: FileText },
+        { label: "Pages", labelBn: "সব পেইজ ও নতুন পেইজ", to: "/admin/pages", icon: FileText },
         { label: "Menus", labelBn: "মেনু ও ফুটার", to: "/admin/menus", icon: ListTree },
-        { label: "Media library", labelBn: "মিডিয়া", to: "/admin/media", icon: ImageIcon },
+        { label: "Image gallery", labelBn: "ইমেজ গ্যালারি", to: "/admin/media", icon: ImageIcon },
       ],
     },
     {

@@ -162,7 +162,7 @@ function Index() {
               }}
             >
               <span aria-hidden className="h-px w-6 sm:w-8 bg-background/45" />
-              <span>{t("home.hero.eyebrow")}</span>
+              <span>{cmsHome.eyebrow ?? t("home.hero.eyebrow")}</span>
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
 
