@@ -94,7 +94,12 @@ export function Footer({ configOverride }: { configOverride?: FooterConfig } = {
             {pick(col.text, col.text_bn) || t("footer.tagline")}
           </p>
           {col.show_social !== false && cfg.social.length > 0 && (
-            <div className={`mt-5 flex gap-2 ${cfg.style.align_center ? "justify-center" : ""}`}>
+            <div
+              className={`mt-5 flex gap-2 ${
+                cfg.style.mobile_align === "center" ? "justify-center" : "justify-start"
+              } ${cfg.style.align_center ? "md:justify-center" : "md:justify-start"}`}
+            >
+
               {cfg.social.map((s, i) => {
                 const Icon = SOCIAL_ICON[s.network] ?? Facebook;
                 return (
