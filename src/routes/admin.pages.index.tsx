@@ -58,6 +58,7 @@ function AdminPagesList() {
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<string[]>([]);
   const [bulkOpen, setBulkOpen] = useState(false);
+  const [expanded, setExpanded] = useState<string[]>([]);
 
   // ---- menu placement for the create form (menu / submenu / sub-submenu) ----
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
