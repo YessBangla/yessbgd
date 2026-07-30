@@ -702,11 +702,15 @@ function AdminPagesList() {
                         pagePath={p.path}
                         attached={attached}
                         pages={(data ?? []).map((x) => ({ name: x.name, path: x.path }))}
+                        canEdit={canMenus}
+                        roleLabel={ROLE_LABEL[role].bn}
                         onAdd={addSubmenu}
                         onRename={renameMenuItem}
                         onDelete={deleteMenuItem}
                         onTogglePublished={toggleMenuPublished}
+                        onReorder={reorderMenuItems}
                       />
+
                     </td>
                   </tr>
                 )}
