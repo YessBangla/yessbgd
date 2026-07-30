@@ -1065,13 +1065,13 @@
 
 /* ── Admin console: blue "liquid glass" canvas (dashboard reference) ───── */
 .admin-scope {
-  --admin-canvas: oklch(0.62 0.062 266);
-  --admin-glass: oklch(1 0 0 / 0.16);
-  --admin-glass-strong: oklch(1 0 0 / 0.26);
-  --admin-glass-border: oklch(1 0 0 / 0.30);
+  --admin-canvas: oklch(0.80 0.050 266);
+  --admin-glass: oklch(1 0 0 / 0.48);
+  --admin-glass-strong: oklch(1 0 0 / 0.66);
+  --admin-glass-border: oklch(1 0 0 / 0.55);
   background-image:
-    radial-gradient(90rem 60rem at 12% -10%, oklch(0.74 0.070 266 / 0.55), transparent 60%),
-    radial-gradient(70rem 50rem at 100% 110%, oklch(0.52 0.075 268 / 0.55), transparent 60%);
+    radial-gradient(90rem 60rem at 12% -10%, oklch(0.88 0.045 266 / 0.75), transparent 60%),
+    radial-gradient(70rem 50rem at 100% 110%, oklch(0.70 0.070 268 / 0.65), transparent 60%);
   background-attachment: fixed;
 }
 .dark .admin-scope {
