@@ -4,6 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { MediaPicker } from "@/components/admin/MediaPicker";
+import { PageMenuPanel } from "@/components/admin/PageMenuPanel";
+
 import { SITE_PAGE_FIELDS, useSitePage, type SitePage } from "@/lib/sitePages";
 import { ArrowLeft, Save, Loader2, Plus, Trash2, ExternalLink } from "lucide-react";
 
@@ -74,7 +76,7 @@ function AdminPageEditor() {
   const { data } = useSitePage(page);
   const [row, setRow] = useState<SitePage | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
-  const [tab, setTab] = useState<"content" | "sections" | "seo">("content");
+  const [tab, setTab] = useState<"content" | "sections" | "navigation" | "seo">("content");
   const [saving, setSaving] = useState(false);
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -153,8 +155,10 @@ function AdminPageEditor() {
   const tabs: { key: typeof tab; label: string; labelBn: string }[] = [
     { key: "content", label: "Content & images", labelBn: "কনটেন্ট ও ছবি" },
     { key: "sections", label: `Sections (${sections.length})`, labelBn: "সেকশন" },
+    { key: "navigation", label: "Navigation & submenu", labelBn: "মেনু ও সাবমেনু" },
     { key: "seo", label: "SEO & sharing", labelBn: "এসইও" },
   ];
+
 
   return (
     <div>
@@ -262,6 +266,12 @@ function AdminPageEditor() {
           </div>
         </div>
       )}
+
+      {tab === "navigation" && (
+        <PageMenuPanel path={row.path} nameEn={row.name} nameBn={row.name_bn} />
+      )}
+
+
 
       {tab === "seo" && (
         <div className="rounded-2xl border border-border bg-card p-5">
