@@ -221,7 +221,14 @@ function AdminSettings() {
     setValues((s) => ({ ...s, [key]: { ...(s[key] ?? {}), [prop]: v } }));
 
   const friendlyRows = rows.filter((r) => FRIENDLY[r.key]);
-  const rawRows = rows.filter((r) => !FRIENDLY[r.key] && r.key !== "logo_url" && r.key !== "logo_url_dark" && r.key !== "footer_logo_url");
+  const rawRows = rows.filter(
+    (r) =>
+      !FRIENDLY[r.key] &&
+      r.key !== "logo_url" &&
+      r.key !== "logo_url_dark" &&
+      r.key !== "footer_logo_url" &&
+      r.key !== "footer_config",
+  );
   const groups = Array.from(new Set(friendlyRows.map((r) => r.group ?? "general")));
   const mapPreview = toMapEmbedSrc(values.contact_map?.text ?? "");
 
