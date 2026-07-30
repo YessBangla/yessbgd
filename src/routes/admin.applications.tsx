@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PageHero } from "@/components/PageHero";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { Download, LogOut, Mail, Phone, Linkedin, FileText, Trash2, RefreshCw } from "lucide-react";
 
 type Status =
@@ -238,7 +238,7 @@ function AdminApplications() {
   if (!authChecked) {
     return (
       <section className="py-24">
-        <div className="container-tight">Loading…</div>
+        <div>Loading…</div>
       </section>
     );
   }
@@ -265,30 +265,9 @@ function AdminApplications() {
 
   return (
     <>
-      <PageHero
-        eyebrow="Admin"
-        title="Job applications"
-        subtitle="All career form submissions with downloadable CVs."
-      />
-      <section className="pb-24">
-        <div className="container-tight">
-          <div className="mb-4 flex flex-wrap gap-2 text-sm">
-            <Link to="/admin" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Dashboard
-            </Link>
-            <Link to="/admin/applications" className="rounded-full border border-primary bg-primary/10 px-3 py-1.5 font-semibold text-primary">
-              Applications
-            </Link>
-            <Link to="/admin/messages" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Messages
-            </Link>
-            <Link to="/admin/audit" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Audit log
-            </Link>
-            <Link to="/admin/cms" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Content (CMS)
-            </Link>
-          </div>
+      <AdminPageHeader title="Job applications" description="All career form submissions with downloadable CVs." />
+      <section>
+        <div>
 
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-muted-foreground">

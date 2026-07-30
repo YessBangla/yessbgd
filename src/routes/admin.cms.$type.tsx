@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PageHero } from "@/components/PageHero";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { getCmsConfig } from "@/lib/cmsSchema";
 import { Plus, Eye, EyeOff, Trash2, Pencil, ArrowLeft } from "lucide-react";
 
@@ -51,8 +51,8 @@ function AdminCmsList() {
 
   if (!cfg) {
     return (
-      <section className="pb-24 pt-12">
-        <div className="container-tight">
+      <section>
+        <div>
           <p className="text-sm text-destructive">Unknown CMS type: {type}</p>
           <Link to="/admin/cms" className="mt-4 inline-block text-sm text-primary">
             ← Back to CMS
@@ -93,26 +93,9 @@ function AdminCmsList() {
 
   return (
     <>
-      <PageHero eyebrow="Admin · CMS" title={cfg.label} subtitle={cfg.description} />
-      <section className="pb-24">
-        <div className="container-tight">
-          <div className="mb-4 flex flex-wrap gap-2 text-sm">
-            <Link to="/admin" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Dashboard
-            </Link>
-            <Link to="/admin/applications" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Applications
-            </Link>
-            <Link to="/admin/messages" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Messages
-            </Link>
-            <Link to="/admin/audit" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Audit log
-            </Link>
-            <Link to="/admin/cms" className="rounded-full border border-primary bg-primary/10 px-3 py-1.5 font-semibold text-primary">
-              Content (CMS)
-            </Link>
-          </div>
+      <AdminPageHeader title={cfg.label} description={cfg.description} />
+      <section>
+        <div>
 
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <Link
