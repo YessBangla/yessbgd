@@ -235,7 +235,7 @@
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
   --admin-sidebar-muted: oklch(0.90 0.030 262);
   --admin-sidebar-hover: oklch(0.58 0.110 262);
-  --admin-topbar: oklch(0.24 0.024 254);
+  --admin-topbar: oklch(0.46 0.100 262);
   --admin-canvas: oklch(0.975 0.004 254);
   --admin-accent: oklch(0.55 0.185 258);
   --admin-accent-foreground: oklch(0.99 0 0);
@@ -275,7 +275,7 @@
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
   --admin-sidebar-muted: oklch(0.88 0.030 262);
   --admin-sidebar-hover: oklch(0.53 0.105 262);
-  --admin-topbar: oklch(0.17 0.016 254);
+  --admin-topbar: oklch(0.40 0.092 262);
   --admin-canvas: oklch(0.15 0.012 254);
   --admin-accent: oklch(0.62 0.170 258);
   --admin-accent-foreground: oklch(0.99 0 0);
@@ -998,7 +998,7 @@
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
   --admin-sidebar-muted: oklch(0.90 0.030 262);
   --admin-sidebar-hover: oklch(0.58 0.110 262);
-  --admin-topbar: oklch(0.24 0.024 254);
+  --admin-topbar: oklch(0.46 0.100 262);
   --admin-canvas: oklch(0.975 0.004 254);
   --admin-accent: oklch(0.55 0.185 258);
   --admin-accent-foreground: oklch(0.99 0 0);
@@ -1044,7 +1044,7 @@
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
   --admin-sidebar-muted: oklch(0.88 0.030 262);
   --admin-sidebar-hover: oklch(0.53 0.105 262);
-  --admin-topbar: oklch(0.17 0.016 254);
+  --admin-topbar: oklch(0.40 0.092 262);
   --admin-canvas: oklch(0.15 0.012 254);
   --admin-accent: oklch(0.62 0.170 258);
   --admin-accent-foreground: oklch(0.99 0 0);
