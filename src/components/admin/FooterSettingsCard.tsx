@@ -84,6 +84,10 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [presetName, setPresetName] = useState("");
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOver, setDragOver] = useState<number | null>(null);
+
 
   useEffect(() => {
     void (async () => {
