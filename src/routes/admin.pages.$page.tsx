@@ -74,7 +74,7 @@ function AdminPageEditor() {
   const { data } = useSitePage(page);
   const [row, setRow] = useState<SitePage | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
-  const [tab, setTab] = useState<"content" | "sections" | "seo">("content");
+  const [tab, setTab] = useState<"content" | "sections" | "navigation" | "seo">("content");
   const [saving, setSaving] = useState(false);
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
