@@ -273,6 +273,9 @@ function AdminApplications() {
       <section className="pb-24">
         <div className="container-tight">
           <div className="mb-4 flex flex-wrap gap-2 text-sm">
+            <Link to="/admin" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
+              Dashboard
+            </Link>
             <Link to="/admin/applications" className="rounded-full border border-primary bg-primary/10 px-3 py-1.5 font-semibold text-primary">
               Applications
             </Link>

@@ -22,6 +22,7 @@ import { Route as ApplicationStatusRouteImport } from './routes/application-stat
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenturesIndexRouteImport } from './routes/ventures.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
@@ -103,6 +104,11 @@ const IndexRoute = IndexRouteImport.update({
 const VenturesIndexRoute = VenturesIndexRouteImport.update({
   id: '/ventures/',
   path: '/ventures/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VenturesSlugRoute = VenturesSlugRouteImport.update({
@@ -219,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
@@ -251,6 +258,7 @@ export interface FileRoutesByTo {
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/ventures': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
     | '/insights/$slug'
     | '/services/$slug'
     | '/ventures/$slug'
+    | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
     | '/admin/cms/$type/$id'
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/insights/$slug'
     | '/services/$slug'
     | '/ventures/$slug'
+    | '/admin'
     | '/ventures'
     | '/admin/cms/$type'
     | '/admin/cms/$type/$id'
@@ -382,6 +393,7 @@ export interface FileRouteTypes {
     | '/insights/$slug'
     | '/services/$slug'
     | '/ventures/$slug'
+    | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
     | '/admin/cms/$type/$id'
@@ -406,6 +418,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   VenturesSlugRoute: typeof VenturesSlugRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   VenturesIndexRoute: typeof VenturesIndexRoute
 }
 
@@ -500,6 +513,13 @@ declare module '@tanstack/react-router' {
       path: '/ventures'
       fullPath: '/ventures/'
       preLoaderRoute: typeof VenturesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ventures/$slug': {
@@ -732,17 +752,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   VenturesSlugRoute: VenturesSlugRoute,
+  AdminIndexRoute: AdminIndexRoute,
   VenturesIndexRoute: VenturesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
