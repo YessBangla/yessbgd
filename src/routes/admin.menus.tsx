@@ -930,6 +930,57 @@ function AdminMenus() {
 
 /* ------------------------------ live preview ------------------------------ */
 
+/** App-style mobile drawer preview (mirrors the public mobile nav panel). */
+function MobileMenuPreview({ tree, bn, title }: { tree: MenuNode[]; bn: boolean; title: string }) {
+  const visible = tree.filter((n) => n.is_published !== false);
+  const text = (n: MenuNode) => (bn && n.label_bn) || n.label;
+  return (
+    <div className="rounded-2xl border border-border bg-background p-3">
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">{title}</p>
+      {visible.length === 0 ? (
+        <p className="py-4 text-center text-xs text-muted-foreground">No live items.</p>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {visible.map((n) => {
+            const kids = n.children.filter((c) => c.is_published !== false);
+            return (
+              <div key={n.id}>
+                <div className="flex min-h-10 items-center justify-between rounded-xl px-3 py-2 text-[14px] font-medium hover:bg-secondary">
+                  <span className="flex items-center gap-2">
+                    <MenuIcon name={n.icon} className="h-4 w-4" />
+                    {text(n)}
+                  </span>
+                  {kids.length > 0 && <ChevronDown className="h-4 w-4 opacity-60" />}
+                </div>
+                {kids.length > 0 && (
+                  <div className="ml-3 flex flex-col gap-0.5 border-l border-border pl-3">
+                    {kids.map((c) => (
+                      <div key={c.id}>
+                        <div className="flex min-h-9 items-center gap-2 rounded-xl px-2 py-1.5 text-[13px] text-muted-foreground">
+                          <MenuIcon name={c.icon} className="h-3.5 w-3.5" />
+                          {text(c)}
+                        </div>
+                        {c.children
+                          .filter((g) => g.is_published !== false)
+                          .map((g) => (
+                            <div key={g.id} className="ml-4 py-0.5 text-[11px] text-muted-foreground/80">
+                              {text(g)}
+                            </div>
+                          ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 function MenuPreview({
   tree,
   bn,
