@@ -3,9 +3,10 @@ import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import logo from "@/assets/yess-bangla-logo.png";
+import fallbackLogo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
-import { type MenuNode } from "@/lib/siteContent";
+import { type MenuNode, useSettingText } from "@/lib/siteContent";
+import { resolveMediaUrl } from "@/lib/mediaAssets";
 import { useHeaderMenu } from "@/lib/headerMenu";
 import { clearMenuPreview } from "@/lib/menuPreview";
 import { HeaderNavRail } from "@/components/HeaderNavRail";
@@ -288,6 +289,7 @@ export function Header() {
   const { t, i18n } = useTranslation();
   const { tree, previewing } = useHeaderMenu();
   const bn = !!i18n.language?.startsWith("bn");
+  const logo = resolveMediaUrl(useSettingText("logo_url", ""), fallbackLogo);
 
   const navNodes: MenuNode[] = tree.length
     ? tree
