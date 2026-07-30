@@ -96,6 +96,7 @@ export type MenuItem = {
   group_label: string | null;
   sort_order: number | null;
   is_external: boolean | null;
+  is_published?: boolean | null;
   parent_id?: string | null;
   depth?: number | null;
   icon?: string | null;
