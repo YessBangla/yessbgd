@@ -165,6 +165,15 @@ function AdminPagesList() {
     await refreshMenus();
   };
 
+  /** Persist a new sibling order (array of menu item ids, top → bottom). */
+  const reorderMenuItems = async (ids: string[]) => {
+    const { error } = await supabase
+      .from("cms_menu_items")
+      .upsert(ids.map((id, i) => ({ id, sort_order: i + 1 })) as never, { onConflict: "id" });
+    if (error) setErr(error.message);
+    await refreshMenus();
+  };
+
 
   const invalidate = async () => {
     await qc.invalidateQueries({ queryKey: ["cms", "site-pages"] });
