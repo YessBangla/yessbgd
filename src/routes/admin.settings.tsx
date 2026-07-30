@@ -123,6 +123,10 @@ function AdminSettings() {
       {msg && <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
       {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
+      <BrandingLogoCard onSaved={() => void load()} />
+
+
+
       <div className="space-y-8">
         {groups.map((g) => (
           <section key={g}>
