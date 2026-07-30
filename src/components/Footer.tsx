@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import logo from "@/assets/yess-bangla-logo.png";
+import fallbackLogo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 import { useMenu, useSettingText } from "@/lib/siteContent";
+import { resolveMediaUrl } from "@/lib/mediaAssets";
 
 
 export function Footer() {
@@ -14,6 +15,8 @@ export function Footer() {
   const bn = i18n.language?.startsWith("bn");
   const email = useSettingText("contact_email", COMPANY_CONTACT.email);
   const address = useSettingText("contact_address", COMPANY_CONTACT.office);
+  const headerLogo = useSettingText("logo_url", "");
+  const logo = resolveMediaUrl(useSettingText("footer_logo_url", "") || headerLogo, fallbackLogo);
 
   return (
     <footer
