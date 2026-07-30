@@ -533,7 +533,7 @@ function AdminDashboard() {
                 </span>
                 <div
                   className="w-full rounded-lg bg-gradient-primary transition-all"
-                  style={{ height: `${Math.max(4, (m.count / bars.max) * 100)}%` }}
+                  style={{ height: `${Math.max(6, (m.count / bars.max) * 118)}px` }}
                 />
                 <span className="text-[10px] text-muted-foreground">{m.label}</span>
               </div>
