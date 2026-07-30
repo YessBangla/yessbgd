@@ -358,9 +358,62 @@ function AdminMenus() {
     const idx = siblings.findIndex((s) => s.id === node.id);
     const dt = dropTarget?.id === node.id ? dropTarget.mode : null;
 
+    const posLabel = `${node.label}, level ${depth + 1}, item ${idx + 1} of ${siblings.length}`;
+
+    const onRowKeyDown = (e: React.KeyboardEvent) => {
+      if ((e.target as HTMLElement).closest("input,select,textarea,button")) return;
+      const alt = e.altKey;
+      switch (e.key) {
+        case "ArrowUp":
+          if (alt) {
+            e.preventDefault();
+            void move(node, siblings, -1);
+            setAnnouncement(`${node.label} moved up`);
+          }
+          break;
+        case "ArrowDown":
+          if (alt) {
+            e.preventDefault();
+            void move(node, siblings, 1);
+            setAnnouncement(`${node.label} moved down`);
+          }
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          if (alt) {
+            void reparent(node, siblings, "in", parent);
+            setAnnouncement(`${node.label} nested as submenu`);
+          } else if (hasKids) setCollapsed((c) => ({ ...c, [node.id]: false }));
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          if (alt) {
+            void reparent(node, siblings, "out", parent);
+            setAnnouncement(`${node.label} moved one level up`);
+          } else if (hasKids) setCollapsed((c) => ({ ...c, [node.id]: true }));
+          break;
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          setEditingId(isEditing ? null : node.id);
+          break;
+        default:
+          break;
+      }
+    };
+
     return (
-      <li key={node.id}>
+      <li key={node.id} role="none">
         <div
+          role="treeitem"
+          tabIndex={0}
+          aria-level={depth + 1}
+          aria-posinset={idx + 1}
+          aria-setsize={siblings.length}
+          aria-expanded={hasKids ? !isCollapsed : undefined}
+          aria-selected={isEditing}
+          aria-label={posLabel}
+          onKeyDown={onRowKeyDown}
           draggable
           onDragStart={(e) => {
             dragIdRef.current = node.id;
@@ -384,14 +437,18 @@ function AdminMenus() {
             dragIdRef.current = null;
             if (id) void applyDrop(id, node.id, mode);
           }}
-          className={`flex flex-wrap items-center gap-2 border-b border-border/50 px-3 py-2 transition hover:bg-secondary/40 ${
+          className={`flex flex-wrap items-center gap-2 border-b border-border/50 px-3 py-2 transition hover:bg-secondary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset ${
             dragId === node.id ? "opacity-40" : ""
           } ${dt === "before" ? "border-t-2 border-t-primary" : ""} ${
             dt === "after" ? "border-b-2 border-b-primary" : ""
           } ${dt === "inside" ? "bg-primary/10 ring-1 ring-inset ring-primary/40" : ""}`}
           style={{ paddingLeft: 12 + depth * 26 }}
         >
-          <GripVertical className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground/60 active:cursor-grabbing" />
+          <GripVertical
+            aria-hidden
+            className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground/60 active:cursor-grabbing"
+          />
+
           <button
             type="button"
             onClick={() => setCollapsed((c) => ({ ...c, [node.id]: !c[node.id] }))}
