@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
 import { useMenu } from "@/lib/siteContent";
+import { MenuIcon, menuItemAppearance } from "@/lib/menuStyles";
 
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
@@ -177,8 +178,26 @@ export function Header() {
   const { t, i18n } = useTranslation();
   const menu = useMenu("header");
   const bn = i18n.language?.startsWith("bn");
-  const navLinks: { id: string; label: string; href: string }[] = menu.length
-    ? menu.filter((m) => !m.parent_id).map((m) => ({ id: m.id, label: (bn && m.label_bn) || m.label, href: m.href }))
+  const navLinks: {
+    id: string;
+    label: string;
+    href: string;
+    icon?: string | null;
+    accent?: string | null;
+    itemStyle?: string | null;
+    badge?: string | null;
+  }[] = menu.length
+    ? menu
+        .filter((m) => !m.parent_id)
+        .map((m) => ({
+          id: m.id,
+          label: (bn && m.label_bn) || m.label,
+          href: m.href,
+          icon: m.icon,
+          accent: m.accent,
+          itemStyle: m.item_style,
+          badge: (bn && m.badge_bn) || m.badge,
+        }))
     : nav.map((n) => ({ id: n.to, label: t(`nav.${n.key}`), href: n.to }));
 
   const [open, setOpen] = useState(false);
@@ -298,11 +317,18 @@ export function Header() {
               <Link
                 key={item.id}
                 to={item.href}
-                className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+                className={`${menuItemAppearance(item.itemStyle, item.accent).className} hover:bg-secondary hover:text-foreground ${item.accent && item.accent !== "default" ? "" : "text-foreground/80"}`}
+                style={menuItemAppearance(item.itemStyle, item.accent).style}
                 activeProps={{ className: "text-primary bg-secondary" }}
                 activeOptions={item.href === "/" ? { exact: true } : undefined}
               >
+                <MenuIcon name={item.icon} className="h-4 w-4" />
                 {item.label}
+                {item.badge ? (
+                  <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                    {item.badge}
+                  </span>
+                ) : null}
               </Link>
             ),
           )}

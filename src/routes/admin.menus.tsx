@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { buildMenuTree, type MenuItem, type MenuNode } from "@/lib/siteContent";
+import { useInternalLinkOptions } from "@/lib/internalLinks";
+import {
+  MENU_ACCENTS,
+  MENU_ICON_NAMES,
+  MENU_STYLES,
+  MenuIcon,
+  accentColor,
+  menuItemAppearance,
+} from "@/lib/menuStyles";
 import {
   Plus,
   Save,
@@ -15,6 +24,10 @@ import {
   CornerDownRight,
   Pencil,
   X,
+  GripVertical,
+  Eye,
+  EyeOff,
+  Monitor,
 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/menus")({
@@ -33,6 +46,8 @@ const labelCls = "mb-1 block text-[11px] font-medium uppercase tracking-wider te
 
 const MAX_DEPTH = 2; // 0 = menu, 1 = submenu, 2 = sub-submenu
 
+type DropMode = "before" | "after" | "inside";
+
 function AdminMenus() {
   const [rows, setRows] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +56,12 @@ function AdminMenus() {
   const [msg, setMsg] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(true);
+  const [previewBn, setPreviewBn] = useState(false);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [dropTarget, setDropTarget] = useState<{ id: string; mode: DropMode } | null>(null);
+  const linkOptions = useInternalLinkOptions();
+  const dragIdRef = useRef<string | null>(null);
 
   const load = async () => {
     const { data, error } = await supabase
@@ -105,15 +126,40 @@ function AdminMenus() {
     const n = countDescendants(node);
     if (
       !window.confirm(
-        n > 0
-          ? `Delete "${node.label}" and its ${n} sub-item(s)?`
-          : `Delete "${node.label}"?`,
+        n > 0 ? `Delete "${node.label}" and its ${n} sub-item(s)?` : `Delete "${node.label}"?`,
       )
     )
       return;
     const { error } = await supabase.from("cms_menu_items").delete().eq("id", node.id);
     if (error) setErr(error.message);
     else await load();
+  };
+
+  /** Persist parent/depth/sort_order for the rows that actually changed. */
+  const persistStructure = async (next: MenuItem[], prev: MenuItem[]) => {
+    const before = new Map(prev.map((r) => [r.id, r]));
+    for (const r of next) {
+      const p = before.get(r.id);
+      if (
+        p &&
+        (p.parent_id ?? null) === (r.parent_id ?? null) &&
+        (p.depth ?? 0) === (r.depth ?? 0) &&
+        (p.sort_order ?? 0) === (r.sort_order ?? 0)
+      )
+        continue;
+      const { error } = await supabase
+        .from("cms_menu_items")
+        .update({
+          parent_id: r.parent_id ?? null,
+          depth: r.depth ?? 0,
+          sort_order: r.sort_order ?? 0,
+        } as never)
+        .eq("id", r.id);
+      if (error) {
+        setErr(error.message);
+        return;
+      }
+    }
   };
 
   /** Reorder within siblings (persisted immediately). */
@@ -123,55 +169,59 @@ function AdminMenus() {
     if (!target) return;
     const a = node.sort_order ?? idx + 1;
     const b = target.sort_order ?? idx + 1 + dir;
-    setRows((rs) =>
-      rs.map((r) =>
-        r.id === node.id ? { ...r, sort_order: b } : r.id === target.id ? { ...r, sort_order: a } : r,
-      ),
+    const next = rows.map((r) =>
+      r.id === node.id ? { ...r, sort_order: b } : r.id === target.id ? { ...r, sort_order: a } : r,
     );
+    setRows(next);
     await supabase.from("cms_menu_items").update({ sort_order: b } as never).eq("id", node.id);
     await supabase.from("cms_menu_items").update({ sort_order: a } as never).eq("id", target.id);
   };
 
   /** Indent: become a child of the previous sibling. Outdent: move up a level. */
   const reparent = async (node: MenuNode, siblings: MenuNode[], dir: "in" | "out", parent?: MenuNode) => {
-    let newParentId: string | null;
-    let newDepth: number;
+    const idx = siblings.findIndex((s) => s.id === node.id);
     if (dir === "in") {
-      const idx = siblings.findIndex((s) => s.id === node.id);
       const prev = siblings[idx - 1];
       if (!prev) return;
-      if ((prev.depth ?? 0) + 1 > MAX_DEPTH) return;
-      newParentId = prev.id;
-      newDepth = (prev.depth ?? 0) + 1;
       setCollapsed((c) => ({ ...c, [prev.id]: false }));
+      await applyDrop(node.id, prev.id, "inside");
     } else {
       if (!parent) return;
-      newParentId = parent.parent_id ?? null;
-      newDepth = Math.max(0, (parent.depth ?? 0));
+      await applyDrop(node.id, parent.id, "after");
     }
-    const shift = newDepth - (node.depth ?? 0);
-    const ids = collectIds(node);
-    setRows((rs) =>
-      rs.map((r) =>
-        r.id === node.id
-          ? { ...r, parent_id: newParentId, depth: newDepth }
-          : ids.includes(r.id)
-            ? { ...r, depth: Math.max(0, (r.depth ?? 0) + shift) }
-            : r,
-      ),
-    );
-    const { error } = await supabase
-      .from("cms_menu_items")
-      .update({ parent_id: newParentId, depth: newDepth } as never)
-      .eq("id", node.id);
-    if (error) setErr(error.message);
-    for (const id of ids.filter((i) => i !== node.id)) {
-      const r = rows.find((x) => x.id === id);
-      await supabase
-        .from("cms_menu_items")
-        .update({ depth: Math.max(0, (r?.depth ?? 0) + shift) } as never)
-        .eq("id", id);
-    }
+  };
+
+  /** Drag & drop / indent engine: move `dragId` relative to `targetId`. */
+  const applyDrop = async (dragedId: string, targetId: string, mode: DropMode) => {
+    if (dragedId === targetId) return;
+    const drag = rows.find((r) => r.id === dragedId);
+    const target = rows.find((r) => r.id === targetId);
+    if (!drag || !target || drag.location !== target.location) return;
+
+    const location = drag.location;
+    const scoped = rows.filter((r) => r.location === location);
+    const tree = buildMenuTree(scoped);
+
+    // Prevent dropping a node inside its own subtree.
+    const dragNode = findNode(tree, dragedId);
+    if (!dragNode || findNode(dragNode.children, targetId)) return;
+
+    const detached = removeNode(tree, dragedId);
+    const moved: MenuNode = { ...dragNode };
+    const targetDepth = target.depth ?? 0;
+    if (mode === "inside" && targetDepth + 1 > MAX_DEPTH) return;
+    if (mode !== "inside" && targetDepth > MAX_DEPTH) return;
+
+    const ok = insertNode(detached, targetId, mode, moved);
+    if (!ok) return;
+
+    const flatUpdated = flattenTree(detached, null, 0);
+    const byId = new Map(flatUpdated.map((r) => [r.id, r]));
+    const prev = rows;
+    const next = rows.map((r) => (byId.has(r.id) ? { ...r, ...byId.get(r.id)! } : r));
+    setRows(next);
+    if (mode === "inside") setCollapsed((c) => ({ ...c, [targetId]: false }));
+    await persistStructure(next, prev);
   };
 
   const trees = useMemo(
@@ -181,6 +231,16 @@ function AdminMenus() {
     }),
     [rows],
   );
+
+  const onRowDragOver = (e: React.DragEvent, node: MenuNode) => {
+    if (!dragIdRef.current || dragIdRef.current === node.id) return;
+    e.preventDefault();
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const ratio = (e.clientY - rect.top) / rect.height;
+    const canNest = (node.depth ?? 0) < MAX_DEPTH;
+    const mode: DropMode = ratio < 0.3 ? "before" : ratio > 0.7 || !canNest ? "after" : "inside";
+    setDropTarget({ id: node.id, mode });
+  };
 
   const renderNode = (
     node: MenuNode,
@@ -193,13 +253,42 @@ function AdminMenus() {
     const isCollapsed = collapsed[node.id];
     const isEditing = editingId === node.id;
     const idx = siblings.findIndex((s) => s.id === node.id);
+    const dt = dropTarget?.id === node.id ? dropTarget.mode : null;
 
     return (
       <li key={node.id}>
         <div
-          className="flex flex-wrap items-center gap-2 border-b border-border/50 px-3 py-2 hover:bg-secondary/40"
+          draggable
+          onDragStart={(e) => {
+            dragIdRef.current = node.id;
+            setDragId(node.id);
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", node.id);
+          }}
+          onDragEnd={() => {
+            dragIdRef.current = null;
+            setDragId(null);
+            setDropTarget(null);
+          }}
+          onDragOver={(e) => onRowDragOver(e, node)}
+          onDragLeave={() => setDropTarget((d) => (d?.id === node.id ? null : d))}
+          onDrop={(e) => {
+            e.preventDefault();
+            const id = dragIdRef.current ?? e.dataTransfer.getData("text/plain");
+            const mode = dropTarget?.mode ?? "after";
+            setDropTarget(null);
+            setDragId(null);
+            dragIdRef.current = null;
+            if (id) void applyDrop(id, node.id, mode);
+          }}
+          className={`flex flex-wrap items-center gap-2 border-b border-border/50 px-3 py-2 transition hover:bg-secondary/40 ${
+            dragId === node.id ? "opacity-40" : ""
+          } ${dt === "before" ? "border-t-2 border-t-primary" : ""} ${
+            dt === "after" ? "border-b-2 border-b-primary" : ""
+          } ${dt === "inside" ? "bg-primary/10 ring-1 ring-inset ring-primary/40" : ""}`}
           style={{ paddingLeft: 12 + depth * 26 }}
         >
+          <GripVertical className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground/60 active:cursor-grabbing" />
           <button
             type="button"
             onClick={() => setCollapsed((c) => ({ ...c, [node.id]: !c[node.id] }))}
@@ -221,10 +310,22 @@ function AdminMenus() {
             {depth === 0 ? "Menu" : depth === 1 ? "Sub" : "Sub·2"}
           </span>
 
-          <span className="min-w-0 flex-1 truncate text-sm font-medium">
-            {node.label}
-            {node.label_bn ? <span className="ml-2 text-muted-foreground">/ {node.label_bn}</span> : null}
-            <span className="ml-2 truncate text-xs text-muted-foreground">{node.href}</span>
+          <span className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden text-sm font-medium">
+            {node.icon ? (
+              <span style={{ color: accentColor(node.accent) }}>
+                <MenuIcon name={node.icon} className="h-4 w-4" />
+              </span>
+            ) : null}
+            <span className="shrink-0" style={{ color: accentColor(node.accent) }}>{node.label}</span>
+            {node.label_bn ? (
+              <span className="max-w-[9rem] shrink-0 truncate text-muted-foreground">/ {node.label_bn}</span>
+            ) : null}
+            {node.badge ? (
+              <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                {node.badge}
+              </span>
+            ) : null}
+            <span className="ml-1 truncate text-xs text-muted-foreground">{node.href}</span>
           </span>
 
           {!node.is_published && (
@@ -276,7 +377,7 @@ function AdminMenus() {
 
         {isEditing && (
           <div
-            className="grid gap-3 border-b border-border/50 bg-secondary/30 px-3 py-3 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-3 border-b border-border/50 bg-secondary/30 px-3 py-3 sm:grid-cols-2"
             style={{ paddingLeft: 12 + depth * 26 }}
           >
             <div>
@@ -291,10 +392,37 @@ function AdminMenus() {
                 onChange={(e) => patch(node.id, "label_bn", e.target.value)}
               />
             </div>
-            <div>
+
+            <div className="sm:col-span-2">
               <label className={labelCls}>Link</label>
-              <input className={inputCls} value={node.href} onChange={(e) => patch(node.id, "href", e.target.value)} />
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <select
+                  className={`${inputCls} sm:w-1/2`}
+                  value={linkOptions.some((o) => o.value === node.href) ? node.href : ""}
+                  onChange={(e) => e.target.value && patch(node.id, "href", e.target.value)}
+                >
+                  <option value="">— Choose an internal page —</option>
+                  {Array.from(new Set(linkOptions.map((o) => o.group))).map((g) => (
+                    <optgroup key={g} label={g}>
+                      {linkOptions
+                        .filter((o) => o.group === g)
+                        .map((o) => (
+                          <option key={o.value} value={o.value}>
+                            {o.label} ({o.value})
+                          </option>
+                        ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <input
+                  className={`${inputCls} sm:w-1/2`}
+                  value={node.href}
+                  placeholder="/custom-path or https://…"
+                  onChange={(e) => patch(node.id, "href", e.target.value)}
+                />
+              </div>
             </div>
+
             <div>
               <label className={labelCls}>Description (EN)</label>
               <input
@@ -312,19 +440,29 @@ function AdminMenus() {
               />
             </div>
             <div>
+              <label className={labelCls}>Badge (EN)</label>
+              <input
+                className={inputCls}
+                value={node.badge ?? ""}
+                placeholder="New / Hot"
+                onChange={(e) => patch(node.id, "badge", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Badge (BN)</label>
+              <input
+                className={inputCls}
+                value={node.badge_bn ?? ""}
+                placeholder="নতুন"
+                onChange={(e) => patch(node.id, "badge_bn", e.target.value)}
+              />
+            </div>
+            <div>
               <label className={labelCls}>Group label (mega-menu column)</label>
               <input
                 className={inputCls}
                 value={node.group_label ?? ""}
                 onChange={(e) => patch(node.id, "group_label", e.target.value)}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Icon (lucide name)</label>
-              <input
-                className={inputCls}
-                value={node.icon ?? ""}
-                onChange={(e) => patch(node.id, "icon", e.target.value)}
               />
             </div>
             <div>
@@ -336,6 +474,75 @@ function AdminMenus() {
                 onChange={(e) => patch(node.id, "sort_order", Number(e.target.value) || 0)}
               />
             </div>
+
+            <div className="sm:col-span-2">
+              <label className={labelCls}>Icon</label>
+              <div className="flex max-h-28 flex-wrap gap-1 overflow-y-auto rounded-lg border border-border bg-background p-2">
+                <button
+                  type="button"
+                  onClick={() => patch(node.id, "icon", "")}
+                  className={`rounded-md px-2 py-1 text-[11px] ${!node.icon ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}
+                >
+                  None
+                </button>
+                {MENU_ICON_NAMES.map((name) => (
+                  <button
+                    key={name}
+                    type="button"
+                    title={name}
+                    onClick={() => patch(node.id, "icon", name)}
+                    className={`grid h-8 w-8 place-items-center rounded-md border ${
+                      node.icon === name ? "border-primary bg-primary/10 text-primary" : "border-transparent hover:bg-secondary"
+                    }`}
+                  >
+                    <MenuIcon name={name} className="h-4 w-4" />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className={labelCls}>Accent colour</label>
+              <div className="flex flex-wrap gap-1.5">
+                {MENU_ACCENTS.map((a) => (
+                  <button
+                    key={a.key}
+                    type="button"
+                    title={a.label}
+                    onClick={() => patch(node.id, "accent", a.key)}
+                    className={`h-7 w-7 rounded-full border-2 ${
+                      (node.accent ?? "default") === a.key ? "border-foreground" : "border-border"
+                    }`}
+                    style={{
+                      background:
+                        a.color ||
+                        "repeating-linear-gradient(45deg, var(--muted) 0 4px, var(--background) 4px 8px)",
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Style</label>
+              <select
+                className={inputCls}
+                value={node.item_style ?? "plain"}
+                onChange={(e) => patch(node.id, "item_style", e.target.value)}
+              >
+                {MENU_STYLES.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.label} — {s.labelBn}
+                  </option>
+                ))}
+              </select>
+              <div className="mt-2">
+                <span {...menuItemAppearance(node.item_style, node.accent)}>
+                  <MenuIcon name={node.icon} className="h-4 w-4" />
+                  {node.label}
+                </span>
+              </div>
+            </div>
+
             <div className="flex items-end gap-4">
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -395,22 +602,138 @@ function AdminMenus() {
       <AdminPageHeader
         title="Menus"
         titleBn="মেনু, সাব-মেনু ও ফুটার"
-        description="Drag-free tree editor — reorder with arrows, indent to make a submenu (up to 3 levels), and edit labels in EN/BN."
+        description="Drag rows to reorder or nest (drop on the middle of a row to make it a submenu). Edit labels, links, icons and colours in EN/BN — the live preview on the right shows exactly how the website menu will look."
         actions={
-          <button
-            onClick={saveAll}
-            disabled={saving}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
-          >
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save all
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowPreview((v) => !v)}
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-secondary"
+            >
+              {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPreview ? "Hide preview" : "Live preview"}
+            </button>
+            <button
+              onClick={saveAll}
+              disabled={saving}
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save all
+            </button>
+          </div>
         }
       />
       {err && <p className="mb-4 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
       {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
-      {section("header", "Header navigation", "হেডার মেনু")}
-      {section("footer", "Footer links", "ফুটার লিংক")}
+
+      <div className={showPreview ? "grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]" : ""}>
+        <div className="min-w-0">
+          {section("header", "Header navigation", "হেডার মেনু")}
+          {section("footer", "Footer links", "ফুটার লিংক")}
+        </div>
+
+        {showPreview && (
+          <aside className="xl:sticky xl:top-4 xl:self-start">
+            <div className="rounded-xl border border-border bg-card p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="inline-flex items-center gap-2 text-sm font-semibold">
+                  <Monitor className="h-4 w-4" /> Live menu preview
+                </h3>
+                <button
+                  onClick={() => setPreviewBn((v) => !v)}
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold hover:bg-secondary"
+                >
+                  {previewBn ? "বাংলা" : "EN"}
+                </button>
+              </div>
+              <MenuPreview tree={trees.header} bn={previewBn} title="Header" />
+              <div className="mt-4">
+                <MenuPreview tree={trees.footer} bn={previewBn} title="Footer" footer />
+              </div>
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------ live preview ------------------------------ */
+
+function MenuPreview({
+  tree,
+  bn,
+  title,
+  footer,
+}: {
+  tree: MenuNode[];
+  bn: boolean;
+  title: string;
+  footer?: boolean;
+}) {
+  const visible = tree.filter((n) => n.is_published !== false);
+  const text = (n: MenuNode) => (bn && n.label_bn) || n.label;
+  const badge = (n: MenuNode) => (bn && n.badge_bn) || n.badge;
+
+  return (
+    <div className="rounded-lg border border-border bg-background p-3">
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">{title}</p>
+      {visible.length === 0 ? (
+        <p className="py-4 text-center text-xs text-muted-foreground">No live items.</p>
+      ) : (
+        <div className={footer ? "grid grid-cols-2 gap-3" : "flex flex-wrap items-center gap-1"}>
+          {visible.map((n) => {
+            const app = menuItemAppearance(n.item_style, n.accent);
+            const kids = n.children.filter((c) => c.is_published !== false);
+            return (
+              <div key={n.id} className={footer ? "" : "group relative"}>
+                <span className={app.className} style={app.style}>
+                  <MenuIcon name={n.icon} className="h-4 w-4" />
+                  {text(n)}
+                  {badge(n) ? (
+                    <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                      {badge(n)}
+                    </span>
+                  ) : null}
+                  {kids.length > 0 && !footer ? <ChevronDown className="h-3 w-3 opacity-60" /> : null}
+                </span>
+                {kids.length > 0 && (
+                  <div
+                    className={
+                      footer
+                        ? "mt-1 space-y-1 border-l border-border pl-3"
+                        : "mt-1 hidden space-y-1 rounded-lg border border-border bg-card p-2 shadow-sm group-hover:block"
+                    }
+                  >
+                    {kids.map((c) => {
+                      const sub = menuItemAppearance(c.item_style, c.accent);
+                      return (
+                        <div key={c.id}>
+                          <span className={`${sub.className} !px-2 !py-1 text-xs`} style={sub.style}>
+                            <MenuIcon name={c.icon} className="h-3.5 w-3.5" />
+                            {text(c)}
+                          </span>
+                          {c.children.filter((g) => g.is_published !== false).length > 0 && (
+                            <div className="ml-3 border-l border-border pl-2">
+                              {c.children
+                                .filter((g) => g.is_published !== false)
+                                .map((g) => (
+                                  <div key={g.id} className="py-0.5 text-[11px] text-muted-foreground">
+                                    {text(g)}
+                                  </div>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -444,9 +767,52 @@ function IconBtn({
   );
 }
 
-function collectIds(node: MenuNode): string[] {
-  return [node.id, ...node.children.flatMap(collectIds)];
+/* ------------------------------- tree helpers ------------------------------ */
+
+function findNode(list: MenuNode[], id: string): MenuNode | undefined {
+  for (const n of list) {
+    if (n.id === id) return n;
+    const hit = findNode(n.children, id);
+    if (hit) return hit;
+  }
+  return undefined;
 }
+
+/** Returns a new tree without `id`. */
+function removeNode(list: MenuNode[], id: string): MenuNode[] {
+  return list
+    .filter((n) => n.id !== id)
+    .map((n) => ({ ...n, children: removeNode(n.children, id) }));
+}
+
+/** Inserts `node` relative to `targetId`. Mutates `list` in place. */
+function insertNode(list: MenuNode[], targetId: string, mode: DropMode, node: MenuNode): boolean {
+  for (let i = 0; i < list.length; i++) {
+    const cur = list[i];
+    if (cur.id === targetId) {
+      if (mode === "inside") cur.children = [...cur.children, node];
+      else list.splice(mode === "before" ? i : i + 1, 0, node);
+      return true;
+    }
+    if (insertNode(cur.children, targetId, mode, node)) return true;
+  }
+  return false;
+}
+
+/** Walks the tree assigning parent_id / depth / sort_order. */
+function flattenTree(
+  list: MenuNode[],
+  parentId: string | null,
+  depth: number,
+): { id: string; parent_id: string | null; depth: number; sort_order: number }[] {
+  const out: { id: string; parent_id: string | null; depth: number; sort_order: number }[] = [];
+  list.forEach((n, i) => {
+    out.push({ id: n.id, parent_id: parentId, depth, sort_order: i + 1 });
+    out.push(...flattenTree(n.children, n.id, depth + 1));
+  });
+  return out;
+}
+
 function countDescendants(node: MenuNode): number {
   return node.children.reduce((n, c) => n + 1 + countDescendants(c), 0);
 }
