@@ -185,27 +185,34 @@ function Index() {
             >
               {/* Editorial three-line cadence — YESS acronym expanded:
                   Y outh E ntrepreneurship · S mart S uccess · with our
-                  Excellence & Solutions. */}
-              <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
-              <span
-                className="block text-background/95"
-                style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
-              >
-                {t("home.hero.h1Line2Pre")}{" "}
-                <span
-                  className="font-light text-background/90"
-                  style={{ letterSpacing: "-0.008em" }}
-                >
-                  {t("home.hero.h1Line2Smart")}
-                </span>
-              </span>
-              <span
-                className="water-text-accent block"
-                style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
-              >
-                {t("home.hero.h1Line3Pre")}{" "}
-                <span className="sm:whitespace-nowrap">{t("home.hero.h1Line3Tail")}</span>
-              </span>
+                  Excellence & Solutions. Overridden wholesale when an editor
+                  sets a hero title in the dashboard. */}
+              {cmsHome.title ? (
+                <span className="water-text block">{cmsHome.title}</span>
+              ) : (
+                <>
+                  <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
+                  <span
+                    className="block text-background/95"
+                    style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
+                  >
+                    {t("home.hero.h1Line2Pre")}{" "}
+                    <span
+                      className="font-light text-background/90"
+                      style={{ letterSpacing: "-0.008em" }}
+                    >
+                      {t("home.hero.h1Line2Smart")}
+                    </span>
+                  </span>
+                  <span
+                    className="water-text-accent block"
+                    style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
+                  >
+                    {t("home.hero.h1Line3Pre")}{" "}
+                    <span className="sm:whitespace-nowrap">{t("home.hero.h1Line3Tail")}</span>
+                  </span>
+                </>
+              )}
             </h1>
 
             {/* Lede paragraph */}
@@ -221,11 +228,16 @@ function Index() {
                 wordSpacing: "normal",
               }}
             >
-              <span className="font-medium text-background/95">{t("home.hero.ledeBrand")}</span>{" "}
-              {t("home.hero.ledeBody")}
-              <span className="md:whitespace-nowrap"> {t("home.hero.ledeStandard")}</span>
-              <span className="md:whitespace-nowrap"> {t("home.hero.ledeOrigin")}</span>
+              {cmsHome.subtitle ?? (
+                <>
+                  <span className="font-medium text-background/95">{t("home.hero.ledeBrand")}</span>{" "}
+                  {t("home.hero.ledeBody")}
+                  <span className="md:whitespace-nowrap"> {t("home.hero.ledeStandard")}</span>
+                  <span className="md:whitespace-nowrap"> {t("home.hero.ledeOrigin")}</span>
+                </>
+              )}
             </p>
+
 
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}
