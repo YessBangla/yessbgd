@@ -43,6 +43,7 @@ import { Route as AboutMethodologyRouteImport } from './routes/about.methodology
 import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
 import { Route as AboutAwardsRouteImport } from './routes/about.awards'
 import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
+import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
 import { Route as AdminCmsTypeRouteImport } from './routes/admin.cms.$type'
 import { Route as AdminCmsTypeIdRouteImport } from './routes/admin.cms.$type.$id'
 
@@ -216,6 +217,11 @@ const AboutPillarRoute = AboutPillarRouteImport.update({
   path: '/$pillar',
   getParentRoute: () => AboutRoute,
 } as any)
+const AdminPagesIndexRoute = AdminPagesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminPagesRoute,
+} as any)
 const AdminCmsTypeRoute = AdminCmsTypeRouteImport.update({
   id: '/$type',
   path: '/$type',
@@ -253,7 +259,7 @@ export interface FileRoutesByFullPath {
   '/admin/media': typeof AdminMediaRoute
   '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/pages': typeof AdminPagesRoute
+  '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -263,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesByTo {
@@ -290,7 +297,6 @@ export interface FileRoutesByTo {
   '/admin/media': typeof AdminMediaRoute
   '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -300,6 +306,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/ventures': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesById {
@@ -329,7 +336,7 @@ export interface FileRoutesById {
   '/admin/media': typeof AdminMediaRoute
   '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/pages': typeof AdminPagesRoute
+  '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -339,6 +346,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRouteTypes {
@@ -379,6 +387,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/admin/pages/'
     | '/admin/cms/$type/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -406,7 +415,6 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/menus'
     | '/admin/messages'
-    | '/admin/pages'
     | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
@@ -416,6 +424,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/ventures'
     | '/admin/cms/$type'
+    | '/admin/pages'
     | '/admin/cms/$type/$id'
   id:
     | '__root__'
@@ -454,6 +463,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/admin/pages/'
     | '/admin/cms/$type/$id'
   fileRoutesById: FileRoutesById
 }
@@ -715,6 +725,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutPillarRouteImport
       parentRoute: typeof AboutRoute
     }
+    '/admin/pages/': {
+      id: '/admin/pages/'
+      path: '/'
+      fullPath: '/admin/pages/'
+      preLoaderRoute: typeof AdminPagesIndexRouteImport
+      parentRoute: typeof AdminPagesRoute
+    }
     '/admin/cms/$type': {
       id: '/admin/cms/$type'
       path: '/$type'
@@ -774,6 +791,18 @@ const AdminCmsRouteWithChildren = AdminCmsRoute._addFileChildren(
   AdminCmsRouteChildren,
 )
 
+interface AdminPagesRouteChildren {
+  AdminPagesIndexRoute: typeof AdminPagesIndexRoute
+}
+
+const AdminPagesRouteChildren: AdminPagesRouteChildren = {
+  AdminPagesIndexRoute: AdminPagesIndexRoute,
+}
+
+const AdminPagesRouteWithChildren = AdminPagesRoute._addFileChildren(
+  AdminPagesRouteChildren,
+)
+
 interface AdminRouteChildren {
   AdminApplicationsRoute: typeof AdminApplicationsRoute
   AdminAuditRoute: typeof AdminAuditRoute
@@ -782,7 +811,7 @@ interface AdminRouteChildren {
   AdminMediaRoute: typeof AdminMediaRoute
   AdminMenusRoute: typeof AdminMenusRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
-  AdminPagesRoute: typeof AdminPagesRoute
+  AdminPagesRoute: typeof AdminPagesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -795,7 +824,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminMediaRoute: AdminMediaRoute,
   AdminMenusRoute: AdminMenusRoute,
   AdminMessagesRoute: AdminMessagesRoute,
-  AdminPagesRoute: AdminPagesRoute,
+  AdminPagesRoute: AdminPagesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
