@@ -87,6 +87,8 @@ export function usePageSections(page: string) {
 
 /* ----------------------------------- menus ---------------------------------- */
 
+export type MenuVisibility = "all" | "guest" | "authenticated" | "admin";
+
 export type MenuItem = {
   id: string;
   location: string;
@@ -106,6 +108,7 @@ export type MenuItem = {
   item_style?: string | null;
   badge?: string | null;
   badge_bn?: string | null;
+  visible_to?: MenuVisibility | string | null;
 };
 
 export type MenuNode = MenuItem & { children: MenuNode[] };
@@ -128,7 +131,40 @@ export function buildMenuTree(items: MenuItem[]): MenuNode[] {
   return roots;
 }
 
+/* ------------------------------- viewer role ------------------------------- */
+
+export type ViewerRole = "guest" | "authenticated" | "admin";
+
+/** Who is looking at the site right now (used for menu visibility rules). */
+export function useViewerRole(): ViewerRole {
+  const { data } = useQuery({
+    queryKey: ["viewer", "role"],
+    staleTime: STALE,
+    queryFn: async (): Promise<ViewerRole> => {
+      const { data: auth } = await supabase.auth.getUser();
+      const user = auth.user;
+      if (!user) return "guest";
+      const { data: isAdmin } = await supabase.rpc("has_role", {
+        _user_id: user.id,
+        _role: "admin",
+      } as never);
+      return isAdmin ? "admin" : "authenticated";
+    },
+  });
+  return data ?? "guest";
+}
+
+/** Does a menu item's visibility rule allow this viewer? */
+export function canSeeMenuItem(item: MenuItem, role: ViewerRole): boolean {
+  const rule = (item.visible_to ?? "all") as MenuVisibility;
+  if (rule === "all") return true;
+  if (rule === "guest") return role === "guest";
+  if (rule === "authenticated") return role !== "guest";
+  return role === "admin";
+}
+
 export function useMenu(location: "header" | "footer") {
+  const role = useViewerRole();
   const { data } = useQuery({
     queryKey: ["cms", "menu", location],
     staleTime: STALE,
@@ -142,7 +178,7 @@ export function useMenu(location: "header" | "footer") {
       return (data ?? []) as unknown as MenuItem[];
     },
   });
-  return data ?? [];
+  return (data ?? []).filter((i) => canSeeMenuItem(i, role));
 }
 
 /** Same as useMenu but nested by parent_id. */
@@ -150,6 +186,7 @@ export function useMenuTree(location: "header" | "footer") {
   const flat = useMenu(location);
   return buildMenuTree(flat);
 }
+
 
 
 /* ----------------------------------- media ---------------------------------- */

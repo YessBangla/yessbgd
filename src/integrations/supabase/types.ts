@@ -201,6 +201,7 @@ export type Database = {
           parent_id: string | null
           sort_order: number | null
           updated_at: string | null
+          visible_to: string
         }
         Insert: {
           accent?: string | null
@@ -223,6 +224,7 @@ export type Database = {
           parent_id?: string | null
           sort_order?: number | null
           updated_at?: string | null
+          visible_to?: string
         }
         Update: {
           accent?: string | null
@@ -245,6 +247,7 @@ export type Database = {
           parent_id?: string | null
           sort_order?: number | null
           updated_at?: string | null
+          visible_to?: string
         }
         Relationships: [
           {

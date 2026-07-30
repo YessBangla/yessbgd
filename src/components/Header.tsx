@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion, type Transition } from "fram
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
-import { useMenu } from "@/lib/siteContent";
+import { useMenuTree, type MenuNode } from "@/lib/siteContent";
 import { MenuIcon, menuItemAppearance } from "@/lib/menuStyles";
 
 import { LanguageSwitch } from "@/components/LanguageSwitch";
@@ -23,6 +23,9 @@ const nav = [
   { to: "/contact", key: "contact" },
 ] as const;
 
+const label = (n: MenuNode, bn: boolean) => (bn && n.label_bn) || n.label;
+const badgeOf = (n: MenuNode, bn: boolean) => (bn && n.badge_bn) || n.badge;
+
 // ---- Memoized mobile panel ----------------------------------------------
 interface MobilePanelProps {
   onClose: () => void;
@@ -30,6 +33,8 @@ interface MobilePanelProps {
   toggleMobileVentures: () => void;
   reduceMotion: boolean;
   venturesActive: boolean;
+  tree: MenuNode[];
+  bn: boolean;
 }
 
 const panelTransition = (reduce: boolean): Transition =>
@@ -43,9 +48,162 @@ const MobilePanel = memo(function MobilePanel({
   toggleMobileVentures,
   reduceMotion,
   venturesActive,
+  tree,
+  bn,
 }: MobilePanelProps) {
   const { t } = useTranslation();
   const ventures = useVentures();
+  const [openIds, setOpenIds] = useState<Record<string, boolean>>({});
+  const toggle = (id: string) => setOpenIds((o) => ({ ...o, [id]: !o[id] }));
+
+  const venturesBlock = (
+    <div key="ventures-block">
+      <button
+        type="button"
+        onClick={toggleMobileVentures}
+        aria-expanded={mobileVenturesOpen}
+        className={`flex w-full min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
+      >
+        <span>{t("nav.ventures")}</span>
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+      <div
+        className="grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 ease-out"
+        style={{
+          gridTemplateRows: mobileVenturesOpen ? "1fr" : "0fr",
+          opacity: mobileVenturesOpen ? 1 : 0,
+        }}
+        aria-hidden={!mobileVenturesOpen}
+      >
+        <div className="min-h-0">
+          <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3 py-1">
+            {ventures.map((v) => {
+              const Icon = v.icon;
+              return (
+                <Link
+                  key={v.slug}
+                  to="/ventures/$slug"
+                  params={{ slug: v.slug }}
+                  preload="intent"
+                  onClick={onClose}
+                  tabIndex={mobileVenturesOpen ? 0 : -1}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-2 py-2 text-[14px] text-foreground/85 transition-colors hover:bg-secondary"
+                >
+                  <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
+                    <Icon className="h-4 w-4" strokeWidth={1.6} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-medium">{v.title}</span>
+                    <span className="block text-[11px] text-muted-foreground truncate">{v.category}</span>
+                  </span>
+                </Link>
+              );
+            })}
+            <Link
+              to="/projects"
+              preload="intent"
+              onClick={onClose}
+              tabIndex={mobileVenturesOpen ? 0 : -1}
+              className="mt-1 rounded-xl px-2 py-2 text-[13px] font-semibold text-primary transition-colors hover:bg-secondary"
+            >
+              {t("nav.viewAllVentures")}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderCmsNode = (node: MenuNode, depth = 0): React.ReactNode => {
+    if (node.href === "/ventures" && node.children.length === 0) return venturesBlock;
+    if (node.children.length === 0) {
+      return (
+        <Link
+          key={node.id}
+          to={node.href}
+          preload="intent"
+          onClick={onClose}
+          className="flex min-h-11 items-center gap-2 rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary active:bg-secondary"
+          activeProps={{ className: "text-primary bg-secondary" }}
+          activeOptions={node.href === "/" ? { exact: true } : undefined}
+        >
+          <MenuIcon name={node.icon} className="h-4 w-4" />
+          {label(node, bn)}
+          {badgeOf(node, bn) ? (
+            <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+              {badgeOf(node, bn)}
+            </span>
+          ) : null}
+        </Link>
+      );
+    }
+    const isOpen = !!openIds[node.id];
+    return (
+      <div key={node.id}>
+        <button
+          type="button"
+          onClick={() => toggle(node.id)}
+          aria-expanded={isOpen}
+          aria-controls={`m-sub-${node.id}`}
+          className="flex w-full min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary"
+        >
+          <span className="flex items-center gap-2">
+            <MenuIcon name={node.icon} className="h-4 w-4" />
+            {label(node, bn)}
+          </span>
+          <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+        </button>
+        <div
+          id={`m-sub-${node.id}`}
+          className="grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 ease-out"
+          style={{ gridTemplateRows: isOpen ? "1fr" : "0fr", opacity: isOpen ? 1 : 0 }}
+          aria-hidden={!isOpen}
+        >
+          <div className="min-h-0">
+            <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3 py-1">
+              {node.children.map((c) =>
+                c.children.length ? (
+                  <div key={c.id} className="py-1">
+                    <p className="px-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      {label(c, bn)}
+                    </p>
+                    {c.children.map((g) => (
+                      <Link
+                        key={g.id}
+                        to={g.href}
+                        preload="intent"
+                        onClick={onClose}
+                        tabIndex={isOpen ? 0 : -1}
+                        className="flex min-h-10 items-center gap-2 rounded-xl px-2 py-2 text-[14px] text-foreground/85 transition-colors hover:bg-secondary"
+                      >
+                        <MenuIcon name={g.icon} className="h-3.5 w-3.5" />
+                        {label(g, bn)}
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <Link
+                    key={c.id}
+                    to={c.href}
+                    preload="intent"
+                    onClick={onClose}
+                    tabIndex={isOpen ? 0 : -1}
+                    className="flex min-h-11 items-center gap-2 rounded-xl px-2 py-2 text-[14px] text-foreground/85 transition-colors hover:bg-secondary"
+                  >
+                    <MenuIcon name={c.icon} className="h-4 w-4" />
+                    {label(c, bn)}
+                  </Link>
+                ),
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <motion.div
       key="mobile-menu"
@@ -64,93 +222,42 @@ const MobilePanel = memo(function MobilePanel({
         <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           {t("nav.explore")}
         </p>
-        {nav.slice(0, 3).map((n) => (
-          <Link
-            key={n.to}
-            to={n.to}
-            preload="intent"
-            onClick={onClose}
-            className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary active:bg-secondary"
-            activeProps={{ className: "text-primary bg-secondary" }}
-            activeOptions={{ exact: n.to === "/" }}
-          >
-            {t(`nav.${n.key}`)}
-          </Link>
-        ))}
 
-        <button
-          type="button"
-          onClick={toggleMobileVentures}
-          aria-expanded={mobileVenturesOpen}
-          className={`flex min-h-11 items-center justify-between rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary ${venturesActive ? "text-primary bg-secondary" : ""}`}
-        >
-          <span>{t("nav.ventures")}</span>
-          <ChevronDown
-            className={`h-4 w-4 transition-transform duration-200 ${mobileVenturesOpen ? "rotate-180" : ""}`}
-          />
-        </button>
-
-        {/* Pre-rendered list — no height:auto measure; uses CSS grid 0fr→1fr trick + transform for GPU-friendly anim */}
-        <div
-          className="grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 ease-out"
-          style={{
-            gridTemplateRows: mobileVenturesOpen ? "1fr" : "0fr",
-            opacity: mobileVenturesOpen ? 1 : 0,
-          }}
-          aria-hidden={!mobileVenturesOpen}
-        >
-          <div className="min-h-0">
-            <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3 py-1">
-              {ventures.map((v) => {
-                const Icon = v.icon;
-                return (
-                  <Link
-                    key={v.slug}
-                    to="/ventures/$slug"
-                    params={{ slug: v.slug }}
-                    preload="intent"
-                    onClick={onClose}
-                    tabIndex={mobileVenturesOpen ? 0 : -1}
-                    className="flex min-h-11 items-center gap-3 rounded-xl px-2 py-2 text-[14px] text-foreground/85 transition-colors hover:bg-secondary"
-                  >
-                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
-                      <Icon className="h-4 w-4" strokeWidth={1.6} />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block font-medium">{v.title}</span>
-                      <span className="block text-[11px] text-muted-foreground truncate">{v.category}</span>
-                    </span>
-                  </Link>
-                );
-              })}
+        {tree.length ? (
+          tree.map((n) => renderCmsNode(n))
+        ) : (
+          <>
+            {nav.slice(0, 3).map((n) => (
               <Link
-                to="/projects"
+                key={n.to}
+                to={n.to}
                 preload="intent"
                 onClick={onClose}
-                tabIndex={mobileVenturesOpen ? 0 : -1}
-                className="mt-1 rounded-xl px-2 py-2 text-[13px] font-semibold text-primary transition-colors hover:bg-secondary"
+                className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary active:bg-secondary"
+                activeProps={{ className: "text-primary bg-secondary" }}
+                activeOptions={{ exact: n.to === "/" }}
               >
-                {t("nav.viewAllVentures")}
+                {t(`nav.${n.key}`)}
               </Link>
-            </div>
-          </div>
-        </div>
-
-        <p className="px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          {t("nav.company")}
-        </p>
-        {nav.slice(3).map((n) => (
-          <Link
-            key={n.to}
-            to={n.to}
-            preload="intent"
-            onClick={onClose}
-            className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            {t(`nav.${n.key}`)}
-          </Link>
-        ))}
+            ))}
+            {venturesBlock}
+            <p className="px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {t("nav.company")}
+            </p>
+            {nav.slice(3).map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                preload="intent"
+                onClick={onClose}
+                className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-[15px] font-medium transition-colors hover:bg-secondary"
+                activeProps={{ className: "text-primary bg-secondary" }}
+              >
+                {t(`nav.${n.key}`)}
+              </Link>
+            ))}
+          </>
+        )}
 
         {/* Mobile language switch — kept inside the panel for reachability */}
         <div className="mt-3 flex items-center justify-between rounded-xl border border-border/60 bg-background/60 px-3 py-2.5">
@@ -176,32 +283,25 @@ const MobilePanel = memo(function MobilePanel({
 export function Header() {
   const ventures = useVentures();
   const { t, i18n } = useTranslation();
-  const menu = useMenu("header");
-  const bn = i18n.language?.startsWith("bn");
-  const navLinks: {
-    id: string;
-    label: string;
-    href: string;
-    icon?: string | null;
-    accent?: string | null;
-    itemStyle?: string | null;
-    badge?: string | null;
-  }[] = menu.length
-    ? menu
-        .filter((m) => !m.parent_id)
-        .map((m) => ({
-          id: m.id,
-          label: (bn && m.label_bn) || m.label,
-          href: m.href,
-          icon: m.icon,
-          accent: m.accent,
-          itemStyle: m.item_style,
-          badge: (bn && m.badge_bn) || m.badge,
-        }))
-    : nav.map((n) => ({ id: n.to, label: t(`nav.${n.key}`), href: n.to }));
+  const tree = useMenuTree("header");
+  const bn = !!i18n.language?.startsWith("bn");
+
+  const navNodes: MenuNode[] = tree.length
+    ? tree
+    : (nav.map((n) => ({
+        id: n.to,
+        location: "header",
+        label: t(`nav.${n.key}`),
+        label_bn: null,
+        href: n.to,
+        group_label: null,
+        sort_order: 0,
+        is_external: false,
+        children: [],
+      })) as unknown as MenuNode[]);
 
   const [open, setOpen] = useState(false);
-  const [venturesOpen, setVenturesOpen] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
   const reduceMotion = useReducedMotion() ?? false;
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -261,83 +361,160 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex">
-          {navLinks.map((item) =>
-            item.href === "/ventures" ? (
-              <div
-                key={item.id}
-                className="relative"
-                onMouseEnter={() => setVenturesOpen(true)}
-                onMouseLeave={() => setVenturesOpen(false)}
-              >
-                <Link
-                  to="/ventures"
-                  className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+          {navNodes.map((item) => {
+            const kids = item.children ?? [];
+            const isVenturesMega = item.href === "/ventures" && kids.length === 0;
+            const app = menuItemAppearance(item.item_style, item.accent);
+
+            if (isVenturesMega) {
+              return (
+                <div
+                  key={item.id}
+                  className="relative"
+                  onMouseEnter={() => setOpenId(item.id)}
+                  onMouseLeave={() => setOpenId((v) => (v === item.id ? null : v))}
                 >
-                  {item.label} <ChevronDown className="h-3.5 w-3.5" />
-                </Link>
-                {venturesOpen && (
-                  <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
-                    <div className="glass-strong w-[640px] rounded-2xl border border-glass-border p-3 shadow-elegant">
-                      <div className="grid grid-cols-2 gap-1">
-                        {ventures.map((v) => {
-                          const Icon = v.icon;
-                          return (
+                  <Link
+                    to="/ventures"
+                    aria-haspopup="true"
+                    aria-expanded={openId === item.id}
+                    onFocus={() => setOpenId(item.id)}
+                    className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
+                  >
+                    {label(item, bn)} <ChevronDown className="h-3.5 w-3.5" />
+                  </Link>
+                  {openId === item.id && (
+                    <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
+                      <div className="glass-strong w-[640px] rounded-2xl border border-glass-border p-3 shadow-elegant">
+                        <div className="grid grid-cols-2 gap-1">
+                          {ventures.map((v) => {
+                            const Icon = v.icon;
+                            return (
+                              <Link
+                                key={v.slug}
+                                to="/ventures/$slug"
+                                params={{ slug: v.slug }}
+                                preload="intent"
+                                onClick={() => setOpenId(null)}
+                                className="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
+                              >
+                                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
+                                  <Icon className="h-4.5 w-4.5" strokeWidth={1.6} />
+                                </span>
+                                <span className="min-w-0">
+                                  <span className="block text-sm font-semibold">{v.title}</span>
+                                  <span className="block text-xs text-muted-foreground truncate">{v.category}</span>
+                                </span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                        <Link
+                          to="/projects"
+                          onClick={() => setOpenId(null)}
+                          className="mt-2 block rounded-xl bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-primary"
+                        >
+                          {t("nav.viewAllVentures")}
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            if (kids.length) {
+              const opened = openId === item.id;
+              return (
+                <div
+                  key={item.id}
+                  className="relative"
+                  onMouseEnter={() => setOpenId(item.id)}
+                  onMouseLeave={() => setOpenId((v) => (v === item.id ? null : v))}
+                >
+                  <Link
+                    to={item.href}
+                    aria-haspopup="true"
+                    aria-expanded={opened}
+                    onFocus={() => setOpenId(item.id)}
+                    className={`${app.className} hover:bg-secondary hover:text-foreground ${item.accent && item.accent !== "default" ? "" : "text-foreground/80"}`}
+                    style={app.style}
+                    activeProps={{ className: "text-primary bg-secondary" }}
+                  >
+                    <MenuIcon name={item.icon} className="h-4 w-4" />
+                    {label(item, bn)}
+                    <ChevronDown className="h-3.5 w-3.5 opacity-70" />
+                  </Link>
+                  {opened && (
+                    <div className="absolute left-0 top-full z-50 pt-2">
+                      <ul className="glass-strong min-w-[260px] rounded-2xl border border-glass-border p-2 shadow-elegant">
+                        {kids.map((c) => (
+                          <li key={c.id} className="relative">
                             <Link
-                              key={v.slug}
-                              to="/ventures/$slug"
-                              params={{ slug: v.slug }}
+                              to={c.href}
                               preload="intent"
-                              onClick={() => setVenturesOpen(false)}
-                              className="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
+                              onClick={() => setOpenId(null)}
+                              className="flex items-start gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors hover:bg-secondary"
                             >
-                              <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
-                                <Icon className="h-4.5 w-4.5" strokeWidth={1.6} />
-                              </span>
+                              <MenuIcon name={c.icon} className="mt-0.5 h-4 w-4" />
                               <span className="min-w-0">
-                                <span className="block text-sm font-semibold">{v.title}</span>
-                                <span className="block text-xs text-muted-foreground truncate">{v.category}</span>
+                                <span className="block font-medium">{label(c, bn)}</span>
+                                {(bn && c.description_bn) || c.description ? (
+                                  <span className="block text-xs text-muted-foreground">
+                                    {(bn && c.description_bn) || c.description}
+                                  </span>
+                                ) : null}
                               </span>
                             </Link>
-                          );
-                        })}
-                      </div>
-                      <Link
-                        to="/projects"
-                        onClick={() => setVenturesOpen(false)}
-                        className="mt-2 block rounded-xl bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-primary"
-                      >
-                        {t("nav.viewAllVentures")}
-                      </Link>
+                            {c.children.length > 0 && (
+                              <ul className="ml-6 border-l border-border pl-2">
+                                {c.children.map((g) => (
+                                  <li key={g.id}>
+                                    <Link
+                                      to={g.href}
+                                      preload="intent"
+                                      onClick={() => setOpenId(null)}
+                                      className="block rounded-lg px-2 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                    >
+                                      {label(g, bn)}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
-                )}
-              </div>
-            ) : (
+                  )}
+                </div>
+              );
+            }
+
+            return (
               <Link
                 key={item.id}
                 to={item.href}
-                className={`${menuItemAppearance(item.itemStyle, item.accent).className} hover:bg-secondary hover:text-foreground ${item.accent && item.accent !== "default" ? "" : "text-foreground/80"}`}
-                style={menuItemAppearance(item.itemStyle, item.accent).style}
+                className={`${app.className} hover:bg-secondary hover:text-foreground ${item.accent && item.accent !== "default" ? "" : "text-foreground/80"}`}
+                style={app.style}
                 activeProps={{ className: "text-primary bg-secondary" }}
                 activeOptions={item.href === "/" ? { exact: true } : undefined}
               >
                 <MenuIcon name={item.icon} className="h-4 w-4" />
-                {item.label}
-                {item.badge ? (
+                {label(item, bn)}
+                {badgeOf(item, bn) ? (
                   <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
-                    {item.badge}
+                    {badgeOf(item, bn)}
                   </span>
                 ) : null}
               </Link>
-            ),
-          )}
+            );
+          })}
         </nav>
 
 
-        {/* Right cluster — language + CTA on desktop, compact toggle + hamburger on mobile.
-            Keeping the hamburger inside this cluster prevents `justify-between`
-            from stranding the language switch in the middle of the bar. */}
+        {/* Right cluster — language + CTA on desktop, compact toggle + hamburger on mobile. */}
         <div className="flex items-center gap-2">
           <div className="hidden sm:inline-flex">
             <LanguageSwitch variant="pill" />
@@ -389,6 +566,8 @@ export function Header() {
               toggleMobileVentures={toggleMobileVentures}
               reduceMotion={reduceMotion}
               venturesActive={venturesActive}
+              tree={tree}
+              bn={bn}
             />
           )}
         </AnimatePresence>

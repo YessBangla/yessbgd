@@ -28,7 +28,13 @@ import {
   Eye,
   EyeOff,
   Monitor,
+  Smartphone,
+  Undo2,
+  Redo2,
+  Check,
+  Users,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/admin/menus")({
   head: () => ({
@@ -48,8 +54,15 @@ const MAX_DEPTH = 2; // 0 = menu, 1 = submenu, 2 = sub-submenu
 
 type DropMode = "before" | "after" | "inside";
 
+const VISIBILITY: { key: string; label: string; labelBn: string }[] = [
+  { key: "all", label: "Everyone", labelBn: "সবাই" },
+  { key: "guest", label: "Signed-out visitors", labelBn: "লগইন ছাড়া" },
+  { key: "authenticated", label: "Signed-in users", labelBn: "লগইন করা ব্যবহারকারী" },
+  { key: "admin", label: "Admins only", labelBn: "শুধু অ্যাডমিন" },
+];
+
 function AdminMenus() {
-  const [rows, setRows] = useState<MenuItem[]>([]);
+  const [rows, setRowsState] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -58,10 +71,35 @@ function AdminMenus() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(true);
   const [previewBn, setPreviewBn] = useState(false);
+  const [previewMobile, setPreviewMobile] = useState(false);
+  const [autoSave, setAutoSave] = useState(true);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; mode: DropMode } | null>(null);
+  const [announcement, setAnnouncement] = useState("");
   const linkOptions = useInternalLinkOptions();
   const dragIdRef = useRef<string | null>(null);
+
+  // ---- undo / redo history -------------------------------------------------
+  const past = useRef<MenuItem[][]>([]);
+  const future = useRef<MenuItem[][]>([]);
+  const [histTick, setHistTick] = useState(0);
+  const dirty = useRef(false);
+  const skipAutoSave = useRef(true);
+
+  /** Update rows and push the previous snapshot onto the undo stack. */
+  const setRows = (updater: MenuItem[] | ((prev: MenuItem[]) => MenuItem[]), track = true) => {
+    setRowsState((prev) => {
+      const next = typeof updater === "function" ? (updater as (p: MenuItem[]) => MenuItem[])(prev) : updater;
+      if (track) {
+        past.current = [...past.current.slice(-49), prev];
+        future.current = [];
+        dirty.current = true;
+        setHistTick((t) => t + 1);
+      }
+      return next;
+    });
+  };
 
   const load = async () => {
     const { data, error } = await supabase
@@ -70,7 +108,8 @@ function AdminMenus() {
       .order("location")
       .order("sort_order");
     if (error) setErr(error.message);
-    setRows((data ?? []) as unknown as MenuItem[]);
+    skipAutoSave.current = true;
+    setRowsState((data ?? []) as unknown as MenuItem[]);
     setLoading(false);
   };
 
@@ -81,11 +120,11 @@ function AdminMenus() {
   const patch = (id: string, key: keyof MenuItem, value: unknown) =>
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [key]: value } : r)));
 
-  const saveAll = async () => {
+  const persistRows = async (list: MenuItem[], silent = false) => {
     setSaving(true);
     setErr(null);
-    setMsg(null);
-    for (const row of rows) {
+    if (!silent) setMsg(null);
+    for (const row of list) {
       const { id, created_at, updated_at, ...rest } = row as MenuItem & {
         created_at?: string;
         updated_at?: string;
@@ -94,12 +133,76 @@ function AdminMenus() {
       if (error) {
         setErr(error.message);
         setSaving(false);
-        return;
+        return false;
       }
     }
-    setMsg("Menu structure saved.");
+    dirty.current = false;
+    setSavedAt(new Date().toLocaleTimeString());
+    if (!silent) setMsg("Menu structure saved.");
     setSaving(false);
+    return true;
   };
+
+  const saveAll = () => persistRows(rows);
+
+  // Debounced autosave — every edit is written ~1s after you stop typing.
+  useEffect(() => {
+    if (skipAutoSave.current) {
+      skipAutoSave.current = false;
+      return;
+    }
+    if (!autoSave || loading || !rows.length) return;
+    const t = setTimeout(() => {
+      void persistRows(rows, true);
+    }, 1000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, autoSave, loading]);
+
+  const undo = async () => {
+    const prev = past.current.pop();
+    if (!prev) return;
+    future.current = [rows, ...future.current].slice(0, 50);
+    skipAutoSave.current = !autoSave;
+    setRowsState(prev);
+    setHistTick((t) => t + 1);
+    setAnnouncement("Change undone");
+    if (autoSave) await persistRows(prev, true);
+  };
+
+  const redo = async () => {
+    const [next, ...rest] = future.current;
+    if (!next) return;
+    future.current = rest;
+    past.current = [...past.current, rows];
+    skipAutoSave.current = !autoSave;
+    setRowsState(next);
+    setHistTick((t) => t + 1);
+    setAnnouncement("Change redone");
+    if (autoSave) await persistRows(next, true);
+  };
+
+  // Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z (or Ctrl+Y)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod) return;
+      const k = e.key.toLowerCase();
+      if (k === "z" && !e.shiftKey) {
+        e.preventDefault();
+        void undo();
+      } else if ((k === "z" && e.shiftKey) || k === "y") {
+        e.preventDefault();
+        void redo();
+      } else if (k === "s") {
+        e.preventDefault();
+        void saveAll();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
 
   const addItem = async (location: "header" | "footer", parent?: MenuItem) => {
     const depth = parent ? (parent.depth ?? 0) + 1 : 0;
@@ -255,9 +358,62 @@ function AdminMenus() {
     const idx = siblings.findIndex((s) => s.id === node.id);
     const dt = dropTarget?.id === node.id ? dropTarget.mode : null;
 
+    const posLabel = `${node.label}, level ${depth + 1}, item ${idx + 1} of ${siblings.length}`;
+
+    const onRowKeyDown = (e: React.KeyboardEvent) => {
+      if ((e.target as HTMLElement).closest("input,select,textarea,button")) return;
+      const alt = e.altKey;
+      switch (e.key) {
+        case "ArrowUp":
+          if (alt) {
+            e.preventDefault();
+            void move(node, siblings, -1);
+            setAnnouncement(`${node.label} moved up`);
+          }
+          break;
+        case "ArrowDown":
+          if (alt) {
+            e.preventDefault();
+            void move(node, siblings, 1);
+            setAnnouncement(`${node.label} moved down`);
+          }
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          if (alt) {
+            void reparent(node, siblings, "in", parent);
+            setAnnouncement(`${node.label} nested as submenu`);
+          } else if (hasKids) setCollapsed((c) => ({ ...c, [node.id]: false }));
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          if (alt) {
+            void reparent(node, siblings, "out", parent);
+            setAnnouncement(`${node.label} moved one level up`);
+          } else if (hasKids) setCollapsed((c) => ({ ...c, [node.id]: true }));
+          break;
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          setEditingId(isEditing ? null : node.id);
+          break;
+        default:
+          break;
+      }
+    };
+
     return (
-      <li key={node.id}>
+      <li key={node.id} role="none">
         <div
+          role="treeitem"
+          tabIndex={0}
+          aria-level={depth + 1}
+          aria-posinset={idx + 1}
+          aria-setsize={siblings.length}
+          aria-expanded={hasKids ? !isCollapsed : undefined}
+          aria-selected={isEditing}
+          aria-label={posLabel}
+          onKeyDown={onRowKeyDown}
           draggable
           onDragStart={(e) => {
             dragIdRef.current = node.id;
@@ -281,14 +437,18 @@ function AdminMenus() {
             dragIdRef.current = null;
             if (id) void applyDrop(id, node.id, mode);
           }}
-          className={`flex flex-wrap items-center gap-2 border-b border-border/50 px-3 py-2 transition hover:bg-secondary/40 ${
+          className={`flex flex-wrap items-center gap-2 border-b border-border/50 px-3 py-2 transition hover:bg-secondary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset ${
             dragId === node.id ? "opacity-40" : ""
           } ${dt === "before" ? "border-t-2 border-t-primary" : ""} ${
             dt === "after" ? "border-b-2 border-b-primary" : ""
           } ${dt === "inside" ? "bg-primary/10 ring-1 ring-inset ring-primary/40" : ""}`}
           style={{ paddingLeft: 12 + depth * 26 }}
         >
-          <GripVertical className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground/60 active:cursor-grabbing" />
+          <GripVertical
+            aria-hidden
+            className="h-4 w-4 shrink-0 cursor-grab text-muted-foreground/60 active:cursor-grabbing"
+          />
+
           <button
             type="button"
             onClick={() => setCollapsed((c) => ({ ...c, [node.id]: !c[node.id] }))}
@@ -543,6 +703,27 @@ function AdminMenus() {
               </div>
             </div>
 
+            <div>
+              <label className={labelCls} htmlFor={`vis-${node.id}`}>
+                <Users className="mr-1 inline h-3 w-3" /> Visible to (role rule)
+              </label>
+              <select
+                id={`vis-${node.id}`}
+                className={inputCls}
+                value={(node.visible_to as string) ?? "all"}
+                onChange={(e) => patch(node.id, "visible_to", e.target.value)}
+              >
+                {VISIBILITY.map((v) => (
+                  <option key={v.key} value={v.key}>
+                    {v.label} — {v.labelBn}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Admin-only items are hidden from everyone except users with the admin role.
+              </p>
+            </div>
+
             <div className="flex items-end gap-4">
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -565,7 +746,7 @@ function AdminMenus() {
         )}
 
         {hasKids && !isCollapsed && (
-          <ul>{node.children.map((c) => renderNode(c, node.children, location, node))}</ul>
+          <ul role="group">{node.children.map((c) => renderNode(c, node.children, location, node))}</ul>
         )}
       </li>
     );
@@ -588,7 +769,12 @@ function AdminMenus() {
         </div>
         <div className="overflow-hidden rounded-xl border border-border bg-card">
           {tree.length ? (
-            <ul>{tree.map((n) => renderNode(n, tree, location))}</ul>
+            <ul
+              role="tree"
+              aria-label={`${title} structure. Use arrow keys to expand, Alt plus arrows to move or nest items.`}
+            >
+              {tree.map((n) => renderNode(n, tree, location))}
+            </ul>
           ) : (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">No links yet.</p>
           )}
@@ -597,14 +783,41 @@ function AdminMenus() {
     );
   };
 
+
+  const canUndo = past.current.length > 0;
+  const canRedo = future.current.length > 0;
+  void histTick; // re-render trigger for the undo/redo buttons
+
   return (
     <div>
       <AdminPageHeader
         title="Menus"
         titleBn="মেনু, সাব-মেনু ও ফুটার"
-        description="Drag rows to reorder or nest (drop on the middle of a row to make it a submenu). Edit labels, links, icons and colours in EN/BN — the live preview on the right shows exactly how the website menu will look."
+        description="Drag rows to reorder or nest (drop on the middle of a row to make it a submenu). Keyboard: focus a row, then Alt+↑/↓ to move, Alt+←/→ to change level, ←/→ to collapse or expand, Enter to edit. Changes autosave; Ctrl/Cmd+Z undoes."
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex overflow-hidden rounded-lg border border-border">
+              <button
+                onClick={() => void undo()}
+                disabled={!canUndo}
+                aria-label="Undo last menu change"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-secondary disabled:opacity-40"
+              >
+                <Undo2 className="h-4 w-4" /> Undo
+              </button>
+              <button
+                onClick={() => void redo()}
+                disabled={!canRedo}
+                aria-label="Redo menu change"
+                className="inline-flex items-center gap-1.5 border-l border-border px-3 py-2 text-sm hover:bg-secondary disabled:opacity-40"
+              >
+                <Redo2 className="h-4 w-4" /> Redo
+              </button>
+            </div>
+            <label className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm">
+              <input type="checkbox" checked={autoSave} onChange={(e) => setAutoSave(e.target.checked)} />
+              Autosave
+            </label>
             <button
               onClick={() => setShowPreview((v) => !v)}
               className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-secondary"
@@ -613,7 +826,7 @@ function AdminMenus() {
               {showPreview ? "Hide preview" : "Live preview"}
             </button>
             <button
-              onClick={saveAll}
+              onClick={() => void saveAll()}
               disabled={saving}
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
             >
@@ -622,11 +835,32 @@ function AdminMenus() {
           </div>
         }
       />
+
+      <p aria-live="polite" className="sr-only">
+        {announcement}
+      </p>
+
+      <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground" aria-live="polite">
+        {saving ? (
+          <>
+            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving…
+          </>
+        ) : savedAt ? (
+          <>
+            <Check className="h-3.5 w-3.5 text-primary" /> All changes saved at {savedAt}
+          </>
+        ) : autoSave ? (
+          <>Autosave is on — edits save about a second after you stop typing.</>
+        ) : (
+          <>Autosave is off — use “Save all”.</>
+        )}
+      </div>
+
       {err && <p className="mb-4 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
       {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
-      <div className={showPreview ? "grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]" : ""}>
+      <div className={showPreview ? "grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]" : ""}>
         <div className="min-w-0">
           {section("header", "Header navigation", "হেডার মেনু")}
           {section("footer", "Footer links", "ফুটার লিংক")}
@@ -635,30 +869,117 @@ function AdminMenus() {
         {showPreview && (
           <aside className="xl:sticky xl:top-4 xl:self-start">
             <div className="rounded-xl border border-border bg-card p-4">
-              <div className="mb-3 flex items-center justify-between">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                 <h3 className="inline-flex items-center gap-2 text-sm font-semibold">
-                  <Monitor className="h-4 w-4" /> Live menu preview
+                  {previewMobile ? <Smartphone className="h-4 w-4" /> : <Monitor className="h-4 w-4" />} Live menu
+                  preview
                 </h3>
-                <button
-                  onClick={() => setPreviewBn((v) => !v)}
-                  className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold hover:bg-secondary"
-                >
-                  {previewBn ? "বাংলা" : "EN"}
-                </button>
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex overflow-hidden rounded-full border border-border text-[11px] font-semibold">
+                    <button
+                      onClick={() => setPreviewMobile(false)}
+                      aria-pressed={!previewMobile}
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 ${!previewMobile ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}
+                    >
+                      <Monitor className="h-3.5 w-3.5" /> Desktop
+                    </button>
+                    <button
+                      onClick={() => setPreviewMobile(true)}
+                      aria-pressed={previewMobile}
+                      className={`inline-flex items-center gap-1 border-l border-border px-2.5 py-1 ${previewMobile ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}
+                    >
+                      <Smartphone className="h-3.5 w-3.5" /> Mobile
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => setPreviewBn((v) => !v)}
+                    aria-label="Toggle preview language"
+                    className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold hover:bg-secondary"
+                  >
+                    {previewBn ? "বাংলা" : "EN"}
+                  </button>
+                </div>
               </div>
-              <MenuPreview tree={trees.header} bn={previewBn} title="Header" />
-              <div className="mt-4">
-                <MenuPreview tree={trees.footer} bn={previewBn} title="Footer" footer />
-              </div>
+
+              {previewMobile ? (
+                <div className="mx-auto w-[320px] rounded-[2rem] border-4 border-foreground/80 bg-background p-2 shadow-lg">
+                  <div className="mx-auto mb-2 h-1.5 w-16 rounded-full bg-foreground/30" />
+                  <div className="max-h-[520px] overflow-y-auto">
+                    <MobileMenuPreview tree={trees.header} bn={previewBn} title="Header" />
+                    <div className="mt-3">
+                      <MobileMenuPreview tree={trees.footer} bn={previewBn} title="Footer" />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <MenuPreview tree={trees.header} bn={previewBn} title="Header" />
+                  <div className="mt-4">
+                    <MenuPreview tree={trees.footer} bn={previewBn} title="Footer" footer />
+                  </div>
+                </>
+              )}
             </div>
           </aside>
         )}
       </div>
     </div>
   );
+
 }
 
 /* ------------------------------ live preview ------------------------------ */
+
+/** App-style mobile drawer preview (mirrors the public mobile nav panel). */
+function MobileMenuPreview({ tree, bn, title }: { tree: MenuNode[]; bn: boolean; title: string }) {
+  const visible = tree.filter((n) => n.is_published !== false);
+  const text = (n: MenuNode) => (bn && n.label_bn) || n.label;
+  return (
+    <div className="rounded-2xl border border-border bg-background p-3">
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">{title}</p>
+      {visible.length === 0 ? (
+        <p className="py-4 text-center text-xs text-muted-foreground">No live items.</p>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {visible.map((n) => {
+            const kids = n.children.filter((c) => c.is_published !== false);
+            return (
+              <div key={n.id}>
+                <div className="flex min-h-10 items-center justify-between rounded-xl px-3 py-2 text-[14px] font-medium hover:bg-secondary">
+                  <span className="flex items-center gap-2">
+                    <MenuIcon name={n.icon} className="h-4 w-4" />
+                    {text(n)}
+                  </span>
+                  {kids.length > 0 && <ChevronDown className="h-4 w-4 opacity-60" />}
+                </div>
+                {kids.length > 0 && (
+                  <div className="ml-3 flex flex-col gap-0.5 border-l border-border pl-3">
+                    {kids.map((c) => (
+                      <div key={c.id}>
+                        <div className="flex min-h-9 items-center gap-2 rounded-xl px-2 py-1.5 text-[13px] text-muted-foreground">
+                          <MenuIcon name={c.icon} className="h-3.5 w-3.5" />
+                          {text(c)}
+                        </div>
+                        {c.children
+                          .filter((g) => g.is_published !== false)
+                          .map((g) => (
+                            <div key={g.id} className="ml-4 py-0.5 text-[11px] text-muted-foreground/80">
+                              {text(g)}
+                            </div>
+                          ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function MenuPreview({
   tree,
