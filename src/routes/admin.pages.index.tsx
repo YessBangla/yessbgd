@@ -341,8 +341,9 @@ function AdminPagesList() {
         )}
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[820px] text-sm">
+        <div className="w-full overflow-x-auto">
+          <table className="w-full min-w-[820px] table-auto text-sm">
+
             <thead>
               <tr className="border-b border-border/70 bg-secondary/40 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 <th className="w-10 px-4 py-3">
