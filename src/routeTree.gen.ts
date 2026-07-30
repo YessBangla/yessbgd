@@ -37,6 +37,7 @@ import { Route as AboutMethodologyRouteImport } from './routes/about.methodology
 import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
 import { Route as AboutAwardsRouteImport } from './routes/about.awards'
 import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
+import { Route as ApiPublicBootstrapAdminRouteImport } from './routes/api/public/bootstrap-admin'
 import { Route as AdminCmsTypeRouteImport } from './routes/admin.cms.$type'
 import { Route as AdminCmsTypeIdRouteImport } from './routes/admin.cms.$type.$id'
 
@@ -180,6 +181,11 @@ const AboutPillarRoute = AboutPillarRouteImport.update({
   path: '/$pillar',
   getParentRoute: () => AboutRoute,
 } as any)
+const ApiPublicBootstrapAdminRoute = ApiPublicBootstrapAdminRouteImport.update({
+  id: '/api/public/bootstrap-admin',
+  path: '/api/public/bootstrap-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminCmsTypeRoute = AdminCmsTypeRouteImport.update({
   id: '/$type',
   path: '/$type',
@@ -221,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/api/public/bootstrap-admin': typeof ApiPublicBootstrapAdminRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesByTo {
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/api/public/bootstrap-admin': typeof ApiPublicBootstrapAdminRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesById {
@@ -286,6 +294,7 @@ export interface FileRoutesById {
   '/ventures/$slug': typeof VenturesSlugRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/api/public/bootstrap-admin': typeof ApiPublicBootstrapAdminRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRouteTypes {
@@ -320,6 +329,7 @@ export interface FileRouteTypes {
     | '/ventures/$slug'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/api/public/bootstrap-admin'
     | '/admin/cms/$type/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/ventures/$slug'
     | '/ventures'
     | '/admin/cms/$type'
+    | '/api/public/bootstrap-admin'
     | '/admin/cms/$type/$id'
   id:
     | '__root__'
@@ -384,6 +395,7 @@ export interface FileRouteTypes {
     | '/ventures/$slug'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/api/public/bootstrap-admin'
     | '/admin/cms/$type/$id'
   fileRoutesById: FileRoutesById
 }
@@ -407,6 +419,7 @@ export interface RootRouteChildren {
   AdminMessagesRoute: typeof AdminMessagesRoute
   VenturesSlugRoute: typeof VenturesSlugRoute
   VenturesIndexRoute: typeof VenturesIndexRoute
+  ApiPublicBootstrapAdminRoute: typeof ApiPublicBootstrapAdminRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -607,6 +620,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutPillarRouteImport
       parentRoute: typeof AboutRoute
     }
+    '/api/public/bootstrap-admin': {
+      id: '/api/public/bootstrap-admin'
+      path: '/api/public/bootstrap-admin'
+      fullPath: '/api/public/bootstrap-admin'
+      preLoaderRoute: typeof ApiPublicBootstrapAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/cms/$type': {
       id: '/admin/cms/$type'
       path: '/$type'
@@ -733,16 +753,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMessagesRoute: AdminMessagesRoute,
   VenturesSlugRoute: VenturesSlugRoute,
   VenturesIndexRoute: VenturesIndexRoute,
+  ApiPublicBootstrapAdminRoute: ApiPublicBootstrapAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
