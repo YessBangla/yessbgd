@@ -172,7 +172,13 @@ const MobilePanel = memo(function MobilePanel({
 
 export function Header() {
   const ventures = useVentures();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const menu = useMenu("header");
+  const bn = i18n.language?.startsWith("bn");
+  const navLinks: { id: string; label: string; href: string }[] = menu.length
+    ? menu.map((m) => ({ id: m.id, label: (bn && m.label_bn) || m.label, href: m.href }))
+    : nav.map((n) => ({ id: n.to, label: t(`nav.${n.key}`), href: n.to }));
+
   const [open, setOpen] = useState(false);
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
