@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PageHero } from "@/components/PageHero";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { CMS_TYPES } from "@/lib/cmsSchema";
 import { syncStaticContentToCms } from "@/lib/dynamicContent";
 import { ArrowRight, Database, FileText, Briefcase, Layers } from "lucide-react";
@@ -53,13 +53,9 @@ function AdminCmsIndex() {
 
   return (
     <>
-      <PageHero
-        eyebrow="Admin"
-        title="Content management"
-        subtitle="ভেঞ্চার, সার্ভিস, ইন্ডাস্ট্রি ও ইনসাইট — সরাসরি ডাটাবেজ থেকে সম্পাদনা করুন।"
-      />
-      <section className="pb-24">
-        <div className="container-tight">
+      <AdminPageHeader title="Content management" description="ভেঞ্চার, সার্ভিস, ইন্ডাস্ট্রি ও ইনসাইট — সরাসরি ডাটাবেজ থেকে সম্পাদনা করুন।" />
+      <section>
+        <div>
           <div className="grid gap-4 sm:grid-cols-2">
             {Object.entries(CMS_TYPES).map(([key, cfg]) => {
               const Icon = ICONS[key] ?? Database;
@@ -119,21 +115,6 @@ function AdminCmsIndex() {
               {syncing ? "Importing…" : "Import / sync static content"}
             </button>
             {syncMsg && <p className="mt-3 text-xs text-muted-foreground">{syncMsg}</p>}
-          </div>
-
-          <div className="mt-8 flex flex-wrap gap-3 text-sm">
-            <Link to="/admin" className="text-muted-foreground underline-offset-4 hover:underline">
-              ← Dashboard
-            </Link>
-            <Link to="/admin/applications" className="text-muted-foreground underline-offset-4 hover:underline">
-              Job applications
-            </Link>
-            <Link to="/admin/messages" className="text-muted-foreground underline-offset-4 hover:underline">
-              Contact messages
-            </Link>
-            <Link to="/admin/audit" className="text-muted-foreground underline-offset-4 hover:underline">
-              Audit log
-            </Link>
           </div>
 
         </div>

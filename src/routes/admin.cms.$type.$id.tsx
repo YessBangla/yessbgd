@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PageHero } from "@/components/PageHero";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { getCmsConfig, type CmsField } from "@/lib/cmsSchema";
 import { ArrowLeft, Save, AlertCircle } from "lucide-react";
 
@@ -81,8 +81,8 @@ function AdminCmsEdit() {
 
   if (!cfg) {
     return (
-      <section className="pb-24 pt-12">
-        <div className="container-tight">
+      <section>
+        <div>
           <p className="text-sm text-destructive">Unknown CMS type: {type}</p>
           <Link to="/admin/cms" className="mt-4 inline-block text-sm text-primary">
             ← Back
@@ -143,13 +143,12 @@ function AdminCmsEdit() {
 
   return (
     <>
-      <PageHero
-        eyebrow={`Admin · ${cfg.label}`}
+      <AdminPageHeader
         title={isNew ? `New ${cfg.label.slice(0, -1)}` : "Edit entry"}
-        subtitle={cfg.description}
+        description={cfg.description}
       />
-      <section className="pb-24">
-        <div className="container-tight max-w-3xl">
+      <section>
+        <div className="max-w-3xl">
           <Link
             to="/admin/cms/$type"
             params={{ type }}

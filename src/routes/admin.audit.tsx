@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PageHero } from "@/components/PageHero";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { LogOut, RefreshCw, Filter } from "lucide-react";
 
 export const Route = createFileRoute("/admin/audit")({
@@ -108,37 +108,16 @@ function AdminAudit() {
   if (!authChecked) {
     return (
       <section className="py-24">
-        <div className="container-tight">Loading…</div>
+        <div>Loading…</div>
       </section>
     );
   }
 
   return (
     <>
-      <PageHero
-        eyebrow="Admin"
-        title="Audit log"
-        subtitle="Every database change to applications, messages, and roles. Last 500 events."
-      />
-      <section className="pb-24">
-        <div className="container-tight">
-          <div className="mb-4 flex flex-wrap gap-2 text-sm">
-            <Link to="/admin" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Dashboard
-            </Link>
-            <Link to="/admin/applications" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Applications
-            </Link>
-            <Link to="/admin/messages" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Messages
-            </Link>
-            <Link to="/admin/audit" className="rounded-full border border-primary bg-primary/10 px-3 py-1.5 font-semibold text-primary">
-              Audit log
-            </Link>
-            <Link to="/admin/cms" className="rounded-full border border-border px-3 py-1.5 font-semibold hover:bg-secondary">
-              Content (CMS)
-            </Link>
-          </div>
+      <AdminPageHeader title="Audit log" description="Every database change to applications, messages, and roles. Last 500 events." />
+      <section>
+        <div>
 
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="text-sm text-muted-foreground">

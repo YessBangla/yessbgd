@@ -19,6 +19,7 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ApplicationStatusRouteImport } from './routes/application-status'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenturesIndexRouteImport } from './routes/ventures.index'
@@ -91,6 +92,11 @@ const ApplicationStatusRoute = ApplicationStatusRouteImport.update({
   path: '/application-status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -107,9 +113,9 @@ const VenturesIndexRoute = VenturesIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const VenturesSlugRoute = VenturesSlugRouteImport.update({
   id: '/ventures/$slug',
@@ -137,29 +143,29 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   getParentRoute: () => CareersRoute,
 } as any)
 const AdminMessagesRoute = AdminMessagesRouteImport.update({
-  id: '/admin/messages',
-  path: '/admin/messages',
-  getParentRoute: () => rootRouteImport,
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminCmsRoute = AdminCmsRouteImport.update({
-  id: '/admin/cms',
-  path: '/admin/cms',
-  getParentRoute: () => rootRouteImport,
+  id: '/cms',
+  path: '/cms',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAuditRoute = AdminAuditRouteImport.update({
-  id: '/admin/audit',
-  path: '/admin/audit',
-  getParentRoute: () => rootRouteImport,
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
-  id: '/admin/applications',
-  path: '/admin/applications',
-  getParentRoute: () => rootRouteImport,
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AboutStandardsRoute = AboutStandardsRouteImport.update({
   id: '/standards',
@@ -200,6 +206,7 @@ const AdminCmsTypeIdRoute = AdminCmsTypeIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
@@ -267,6 +274,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/application-status': typeof ApplicationStatusRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
@@ -302,6 +310,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/application-status'
     | '/careers'
     | '/contact'
@@ -368,6 +377,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/application-status'
     | '/careers'
     | '/contact'
@@ -402,6 +412,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   ApplicationStatusRoute: typeof ApplicationStatusRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
@@ -412,13 +423,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   TermsRoute: typeof TermsRoute
-  AdminApplicationsRoute: typeof AdminApplicationsRoute
-  AdminAuditRoute: typeof AdminAuditRoute
-  AdminCmsRoute: typeof AdminCmsRouteWithChildren
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminMessagesRoute: typeof AdminMessagesRoute
   VenturesSlugRoute: typeof VenturesSlugRoute
-  AdminIndexRoute: typeof AdminIndexRoute
   VenturesIndexRoute: typeof VenturesIndexRoute
 }
 
@@ -494,6 +499,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplicationStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -517,10 +529,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/': {
       id: '/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/ventures/$slug': {
       id: '/ventures/$slug'
@@ -559,38 +571,38 @@ declare module '@tanstack/react-router' {
     }
     '/admin/messages': {
       id: '/admin/messages'
-      path: '/admin/messages'
+      path: '/messages'
       fullPath: '/admin/messages'
       preLoaderRoute: typeof AdminMessagesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/login': {
       id: '/admin/login'
-      path: '/admin/login'
+      path: '/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/cms': {
       id: '/admin/cms'
-      path: '/admin/cms'
+      path: '/cms'
       fullPath: '/admin/cms'
       preLoaderRoute: typeof AdminCmsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/audit': {
       id: '/admin/audit'
-      path: '/admin/audit'
+      path: '/audit'
       fullPath: '/admin/audit'
       preLoaderRoute: typeof AdminAuditRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/applications': {
       id: '/admin/applications'
-      path: '/admin/applications'
+      path: '/applications'
       fullPath: '/admin/applications'
       preLoaderRoute: typeof AdminApplicationsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/about/standards': {
       id: '/about/standards'
@@ -662,6 +674,50 @@ const AboutRouteChildren: AboutRouteChildren = {
 
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
+interface AdminCmsTypeRouteChildren {
+  AdminCmsTypeIdRoute: typeof AdminCmsTypeIdRoute
+}
+
+const AdminCmsTypeRouteChildren: AdminCmsTypeRouteChildren = {
+  AdminCmsTypeIdRoute: AdminCmsTypeIdRoute,
+}
+
+const AdminCmsTypeRouteWithChildren = AdminCmsTypeRoute._addFileChildren(
+  AdminCmsTypeRouteChildren,
+)
+
+interface AdminCmsRouteChildren {
+  AdminCmsTypeRoute: typeof AdminCmsTypeRouteWithChildren
+}
+
+const AdminCmsRouteChildren: AdminCmsRouteChildren = {
+  AdminCmsTypeRoute: AdminCmsTypeRouteWithChildren,
+}
+
+const AdminCmsRouteWithChildren = AdminCmsRoute._addFileChildren(
+  AdminCmsRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminApplicationsRoute: typeof AdminApplicationsRoute
+  AdminAuditRoute: typeof AdminAuditRoute
+  AdminCmsRoute: typeof AdminCmsRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminMessagesRoute: typeof AdminMessagesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminApplicationsRoute: AdminApplicationsRoute,
+  AdminAuditRoute: AdminAuditRoute,
+  AdminCmsRoute: AdminCmsRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminMessagesRoute: AdminMessagesRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface CareersRouteChildren {
   CareersSlugRoute: typeof CareersSlugRoute
 }
@@ -709,33 +765,10 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
   ServicesRouteChildren,
 )
 
-interface AdminCmsTypeRouteChildren {
-  AdminCmsTypeIdRoute: typeof AdminCmsTypeIdRoute
-}
-
-const AdminCmsTypeRouteChildren: AdminCmsTypeRouteChildren = {
-  AdminCmsTypeIdRoute: AdminCmsTypeIdRoute,
-}
-
-const AdminCmsTypeRouteWithChildren = AdminCmsTypeRoute._addFileChildren(
-  AdminCmsTypeRouteChildren,
-)
-
-interface AdminCmsRouteChildren {
-  AdminCmsTypeRoute: typeof AdminCmsTypeRouteWithChildren
-}
-
-const AdminCmsRouteChildren: AdminCmsRouteChildren = {
-  AdminCmsTypeRoute: AdminCmsTypeRouteWithChildren,
-}
-
-const AdminCmsRouteWithChildren = AdminCmsRoute._addFileChildren(
-  AdminCmsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   ApplicationStatusRoute: ApplicationStatusRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
@@ -746,13 +779,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRouteWithChildren,
   TermsRoute: TermsRoute,
-  AdminApplicationsRoute: AdminApplicationsRoute,
-  AdminAuditRoute: AdminAuditRoute,
-  AdminCmsRoute: AdminCmsRouteWithChildren,
-  AdminLoginRoute: AdminLoginRoute,
-  AdminMessagesRoute: AdminMessagesRoute,
   VenturesSlugRoute: VenturesSlugRoute,
-  AdminIndexRoute: AdminIndexRoute,
   VenturesIndexRoute: VenturesIndexRoute,
 }
 export const routeTree = rootRouteImport

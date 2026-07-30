@@ -1,4 +1,4 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, HeadContent, Scripts, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import appCss from "../styles.css?url";
@@ -83,6 +83,8 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { i18n } = useTranslation();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
   const [queryClient] = useState(
     () => new QueryClient({ defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } } }),
   );
@@ -99,19 +101,25 @@ function RootComponent() {
   }, [i18n.resolvedLanguage, i18n.language]);
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="relative flex min-h-screen flex-col app-shell">
-        <WaterBackground />
-        <Header />
-        <main className="flex-1">
-          <RouteTransition>
-            <Outlet />
-          </RouteTransition>
-        </main>
-        <Footer />
-        <ScrollUpDown />
-        <LiquidGlassToggle />
-        <MobileTabBar />
-      </div>
+      {isAdmin ? (
+        <div className="relative min-h-screen">
+          <Outlet />
+        </div>
+      ) : (
+        <div className="relative flex min-h-screen flex-col app-shell">
+          <WaterBackground />
+          <Header />
+          <main className="flex-1">
+            <RouteTransition>
+              <Outlet />
+            </RouteTransition>
+          </main>
+          <Footer />
+          <ScrollUpDown />
+          <LiquidGlassToggle />
+          <MobileTabBar />
+        </div>
+      )}
     </QueryClientProvider>
   );
 
