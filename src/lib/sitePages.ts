@@ -1,4 +1,5 @@
 // Site page registry — every public page is described by a row in
+import { resolveMediaUrl } from "@/lib/mediaAssets";
 // `cms_site_pages` so the dashboard can edit its hero, body, images and SEO
 // in both English and Bangla, and create brand-new custom pages.
 import { useQuery } from "@tanstack/react-query";
@@ -113,7 +114,7 @@ export function usePageOverride(page: string): HeroOverride {
     title: pick(data.hero_title, data.hero_title_bn, isBn),
     subtitle: pick(data.hero_subtitle, data.hero_subtitle_bn, isBn),
     body: pick(data.body, data.body_bn, isBn),
-    image: data.hero_image ?? undefined,
+    image: data.hero_image ? resolveMediaUrl(data.hero_image, data.hero_image) : undefined,
   };
 }
 
