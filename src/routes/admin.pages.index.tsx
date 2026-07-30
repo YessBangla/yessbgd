@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { useSitePages } from "@/lib/sitePages";
+import { useDashboardRole, ROLE_LABEL } from "@/lib/adminAccess";
 import { buildMenuTree, type MenuItem, type MenuNode } from "@/lib/siteContent";
 import {
   Plus,
@@ -15,10 +16,14 @@ import {
   Pencil,
   ExternalLink,
   ChevronDown,
+  ChevronUp,
   Eye,
   EyeOff,
+  GripVertical,
+  Lock,
   ListTree,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/admin/pages/")({
   head: () => ({
