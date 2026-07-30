@@ -127,6 +127,7 @@ function AdminPagesList() {
   };
 
   const addSubmenu = async (parent: MenuNode, label: string, labelBn: string, href: string) => {
+    if (!canMenus) return;
     const siblings = menuItems.filter((m) => (m.parent_id ?? null) === parent.id);
     const { error } = await supabase.from("cms_menu_items").insert({
       location: parent.location,
@@ -144,11 +145,13 @@ function AdminPagesList() {
   };
 
   const toggleMenuPublished = async (id: string, next: boolean) => {
+    if (!canMenus) return;
     await supabase.from("cms_menu_items").update({ is_published: next } as never).eq("id", id);
     await refreshMenus();
   };
 
   const renameMenuItem = async (item: MenuNode) => {
+    if (!canMenus) return;
     const label = window.prompt("Menu label (EN) · মেনু লেবেল", item.label);
     if (label === null) return;
     const labelBn = window.prompt("মেনু লেবেল (BN)", item.label_bn ?? "");
@@ -160,6 +163,7 @@ function AdminPagesList() {
   };
 
   const deleteMenuItem = async (item: MenuNode) => {
+    if (!canMenus) return;
     if (!window.confirm(`Remove menu item “${item.label}”? · মেনু আইটেম মুছবেন?`)) return;
     await supabase.from("cms_menu_items").delete().eq("id", item.id);
     await refreshMenus();
@@ -167,6 +171,7 @@ function AdminPagesList() {
 
   /** Persist a new sibling order (array of menu item ids, top → bottom). */
   const reorderMenuItems = async (ids: string[]) => {
+    if (!canMenus) return;
     for (let i = 0; i < ids.length; i++) {
       const { error } = await supabase
         .from("cms_menu_items")
@@ -185,6 +190,7 @@ function AdminPagesList() {
   };
 
   const create = async () => {
+    if (!canPages) { setErr('আপনার পেইজ তৈরির অনুমতি নেই।'); return; }
     const slug = slugify(form.slug || form.name);
     if (!slug || !form.name.trim()) {
       setErr("Name and slug are required.");
@@ -255,11 +261,13 @@ function AdminPagesList() {
   };
 
   const togglePublish = async (id: string, next: boolean) => {
+    if (!canPages) return;
     await supabase.from("cms_site_pages").update({ is_published: next } as never).eq("id", id);
     await invalidate();
   };
 
   const remove = async (id: string, name: string) => {
+    if (!canPages) return;
     if (!window.confirm(`Delete the page “${name}”? This cannot be undone.`)) return;
     await supabase.from("cms_site_pages").delete().eq("id", id);
     setSelected((s) => s.filter((x) => x !== id));
@@ -267,6 +275,7 @@ function AdminPagesList() {
   };
 
   const bulk = async (action: "publish" | "hide" | "delete") => {
+    if (!canPages) return;
     setBulkOpen(false);
     if (selected.length === 0) return;
     if (action === "delete") {
@@ -320,6 +329,12 @@ function AdminPagesList() {
         description="Every page of the website, including the home page. Edit hero copy, images, body text and SEO — or create a brand new page."
       />
 
+      {!canPages && (
+        <p className="mb-4 flex items-center gap-2 rounded-md border border-border bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
+          <Lock className="h-4 w-4" />
+          আপনার ভূমিকা ({ROLE_LABEL[role].bn}) পেইজ সম্পাদনা করতে পারে না — শুধু দেখার অনুমতি আছে।
+        </p>
+      )}
       {err && <p className="mb-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {notice && <p className="mb-4 rounded-md bg-admin-accent/10 px-3 py-2 text-sm text-admin-accent">{notice}</p>}
 
