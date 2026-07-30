@@ -128,6 +128,47 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
       return { ...c, columns };
     });
 
+  /* ------------------------------ drag & drop ---------------------------- */
+  const moveColumnTo = (from: number, to: number) =>
+    setCfg((c) => {
+      if (from === to || to < 0 || to >= c.columns.length) return c;
+      const columns = [...c.columns];
+      columns.splice(to, 0, columns.splice(from, 1)[0]);
+      return { ...c, columns };
+    });
+
+  /* -------------------------------- presets ------------------------------ */
+  const applyTemplate = (id: string) => {
+    const tpl = FOOTER_TEMPLATES.find((t) => t.id === id);
+    if (!tpl || !canEdit) return;
+    setCfg((c) => ({ ...tpl.apply(c), saved_presets: c.saved_presets ?? [] }));
+  };
+
+  const saveCurrentPreset = () => {
+    const name = presetName.trim();
+    if (!name || !canEdit) return;
+    setCfg((c) => {
+      const { saved_presets: _drop, ...snapshot } = c;
+      const others = (c.saved_presets ?? []).filter((p) => p.name !== name);
+      return { ...c, saved_presets: [...others, { name, config: snapshot }] };
+    });
+    setPresetName("");
+  };
+
+  const applySavedPreset = (name: string) => {
+    if (!canEdit) return;
+    setCfg((c) => {
+      const found = (c.saved_presets ?? []).find((p) => p.name === name);
+      if (!found) return c;
+      return { ...normaliseFooterConfig(found.config), saved_presets: c.saved_presets ?? [] };
+    });
+  };
+
+  const deleteSavedPreset = (name: string) =>
+    setCfg((c) => ({ ...c, saved_presets: (c.saved_presets ?? []).filter((p) => p.name !== name) }));
+
+
+
   const setLink = (colIdx: number, linkIdx: number, patch: Partial<FooterLink>) =>
     setCfg((c) => ({
       ...c,
