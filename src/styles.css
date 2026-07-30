@@ -1062,3 +1062,42 @@
   border: 1px solid var(--border);
   box-shadow: 0 1px 2px oklch(0.30 0.024 254 / 0.06), 0 8px 24px -16px oklch(0.30 0.024 254 / 0.18);
 }
+
+/* ── Admin console: blue "liquid glass" canvas (dashboard reference) ───── */
+.admin-scope {
+  --admin-canvas: oklch(0.62 0.062 266);
+  --admin-glass: oklch(1 0 0 / 0.16);
+  --admin-glass-strong: oklch(1 0 0 / 0.26);
+  --admin-glass-border: oklch(1 0 0 / 0.30);
+  background-image:
+    radial-gradient(90rem 60rem at 12% -10%, oklch(0.74 0.070 266 / 0.55), transparent 60%),
+    radial-gradient(70rem 50rem at 100% 110%, oklch(0.52 0.075 268 / 0.55), transparent 60%);
+  background-attachment: fixed;
+}
+.dark .admin-scope {
+  --admin-canvas: oklch(0.24 0.038 266);
+  --admin-glass: oklch(1 0 0 / 0.07);
+  --admin-glass-strong: oklch(1 0 0 / 0.12);
+  --admin-glass-border: oklch(1 0 0 / 0.14);
+  background-image:
+    radial-gradient(90rem 60rem at 12% -10%, oklch(0.36 0.055 266 / 0.7), transparent 60%),
+    radial-gradient(70rem 50rem at 100% 110%, oklch(0.20 0.040 268 / 0.7), transparent 60%);
+}
+
+/* Frosted panels inside the console. */
+.admin-scope .glass-card,
+.admin-scope .glass,
+.admin-scope .glass-strong,
+.admin-scope .admin-glass {
+  background-color: var(--admin-glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--admin-glass-border);
+  box-shadow: 0 1px 0 oklch(1 0 0 / 0.25) inset, 0 18px 40px -24px oklch(0.20 0.04 266 / 0.6);
+}
+.admin-scope .admin-glass-strong {
+  background-color: var(--admin-glass-strong);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--admin-glass-border);
+}
