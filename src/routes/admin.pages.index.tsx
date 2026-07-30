@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { useSitePages } from "@/lib/sitePages";
+import { useDashboardRole, ROLE_LABEL } from "@/lib/adminAccess";
 import { buildMenuTree, type MenuItem, type MenuNode } from "@/lib/siteContent";
 import {
   Plus,
@@ -15,10 +16,14 @@ import {
   Pencil,
   ExternalLink,
   ChevronDown,
+  ChevronUp,
   Eye,
   EyeOff,
+  GripVertical,
+  Lock,
   ListTree,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/admin/pages/")({
   head: () => ({
@@ -45,7 +50,12 @@ type TypeFilter = "all" | "custom" | "system";
 function AdminPagesList() {
   const { data, isLoading, isFetching, refetch } = useSitePages();
   const qc = useQueryClient();
+  const { role, can } = useDashboardRole();
+  const canPages = can("pages");
+  const canMenus = can("menus");
   const [creating, setCreating] = useState(false);
+
+
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", nameBn: "", slug: "" });
@@ -117,6 +127,7 @@ function AdminPagesList() {
   };
 
   const addSubmenu = async (parent: MenuNode, label: string, labelBn: string, href: string) => {
+    if (!canMenus) return;
     const siblings = menuItems.filter((m) => (m.parent_id ?? null) === parent.id);
     const { error } = await supabase.from("cms_menu_items").insert({
       location: parent.location,
@@ -134,11 +145,13 @@ function AdminPagesList() {
   };
 
   const toggleMenuPublished = async (id: string, next: boolean) => {
+    if (!canMenus) return;
     await supabase.from("cms_menu_items").update({ is_published: next } as never).eq("id", id);
     await refreshMenus();
   };
 
   const renameMenuItem = async (item: MenuNode) => {
+    if (!canMenus) return;
     const label = window.prompt("Menu label (EN) · মেনু লেবেল", item.label);
     if (label === null) return;
     const labelBn = window.prompt("মেনু লেবেল (BN)", item.label_bn ?? "");
@@ -150,10 +163,25 @@ function AdminPagesList() {
   };
 
   const deleteMenuItem = async (item: MenuNode) => {
+    if (!canMenus) return;
     if (!window.confirm(`Remove menu item “${item.label}”? · মেনু আইটেম মুছবেন?`)) return;
     await supabase.from("cms_menu_items").delete().eq("id", item.id);
     await refreshMenus();
   };
+
+  /** Persist a new sibling order (array of menu item ids, top → bottom). */
+  const reorderMenuItems = async (ids: string[]) => {
+    if (!canMenus) return;
+    for (let i = 0; i < ids.length; i++) {
+      const { error } = await supabase
+        .from("cms_menu_items")
+        .update({ sort_order: i + 1 } as never)
+        .eq("id", ids[i]);
+      if (error) setErr(error.message);
+    }
+    await refreshMenus();
+  };
+
 
 
   const invalidate = async () => {
@@ -162,6 +190,7 @@ function AdminPagesList() {
   };
 
   const create = async () => {
+    if (!canPages) { setErr('আপনার পেইজ তৈরির অনুমতি নেই।'); return; }
     const slug = slugify(form.slug || form.name);
     if (!slug || !form.name.trim()) {
       setErr("Name and slug are required.");
@@ -232,11 +261,13 @@ function AdminPagesList() {
   };
 
   const togglePublish = async (id: string, next: boolean) => {
+    if (!canPages) return;
     await supabase.from("cms_site_pages").update({ is_published: next } as never).eq("id", id);
     await invalidate();
   };
 
   const remove = async (id: string, name: string) => {
+    if (!canPages) return;
     if (!window.confirm(`Delete the page “${name}”? This cannot be undone.`)) return;
     await supabase.from("cms_site_pages").delete().eq("id", id);
     setSelected((s) => s.filter((x) => x !== id));
@@ -244,6 +275,7 @@ function AdminPagesList() {
   };
 
   const bulk = async (action: "publish" | "hide" | "delete") => {
+    if (!canPages) return;
     setBulkOpen(false);
     if (selected.length === 0) return;
     if (action === "delete") {
@@ -297,6 +329,12 @@ function AdminPagesList() {
         description="Every page of the website, including the home page. Edit hero copy, images, body text and SEO — or create a brand new page."
       />
 
+      {!canPages && (
+        <p className="mb-4 flex items-center gap-2 rounded-md border border-border bg-secondary/40 px-3 py-2 text-sm text-muted-foreground">
+          <Lock className="h-4 w-4" />
+          আপনার ভূমিকা ({ROLE_LABEL[role].bn}) পেইজ সম্পাদনা করতে পারে না — শুধু দেখার অনুমতি আছে।
+        </p>
+      )}
       {err && <p className="mb-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {notice && <p className="mb-4 rounded-md bg-admin-accent/10 px-3 py-2 text-sm text-admin-accent">{notice}</p>}
 
@@ -679,11 +717,15 @@ function AdminPagesList() {
                         pagePath={p.path}
                         attached={attached}
                         pages={(data ?? []).map((x) => ({ name: x.name, path: x.path }))}
+                        canEdit={canMenus}
+                        roleLabel={ROLE_LABEL[role].bn}
                         onAdd={addSubmenu}
                         onRename={renameMenuItem}
                         onDelete={deleteMenuItem}
                         onTogglePublished={toggleMenuPublished}
+                        onReorder={reorderMenuItems}
                       />
+
                     </td>
                   </tr>
                 )}
@@ -755,30 +797,40 @@ function AdminPagesList() {
 /* ---------------------------------------------------------------------------
    Submenu panel shown when a page row is expanded — lists every menu entry
    that points at this page plus its child items, and lets an editor add,
-   rename, hide or remove submenus without leaving the Pages list.
+   rename, reorder (drag-drop + keyboard), hide or remove submenus without
+   leaving the Pages list. Editing is gated on the `menus` capability.
 --------------------------------------------------------------------------- */
 function PageSubmenus({
   pagePath,
   attached,
   pages,
+  canEdit,
+  roleLabel,
   onAdd,
   onRename,
   onDelete,
   onTogglePublished,
+  onReorder,
 }: {
   pagePath: string;
   attached: { node: MenuNode; location: string }[];
   pages: { name: string; path: string }[];
+  canEdit: boolean;
+  roleLabel: string;
   onAdd: (parent: MenuNode, label: string, labelBn: string, href: string) => Promise<void>;
   onRename: (item: MenuNode) => Promise<void>;
   onDelete: (item: MenuNode) => Promise<void>;
   onTogglePublished: (id: string, next: boolean) => Promise<void>;
+  onReorder: (ids: string[]) => Promise<void>;
 }) {
   const [addFor, setAddFor] = useState<string | null>(null);
   const [label, setLabel] = useState("");
   const [labelBn, setLabelBn] = useState("");
   const [href, setHref] = useState(pages[0]?.path ?? "/");
   const [busy, setBusy] = useState(false);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [overId, setOverId] = useState<string | null>(null);
+  const [status, setStatus] = useState("");
 
   const cls = "rounded-md border border-border bg-background px-2.5 py-1.5 text-sm outline-none focus:border-primary";
 
@@ -792,39 +844,112 @@ function PageSubmenus({
     setAddFor(null);
   };
 
-  const renderChild = (n: MenuNode, depth: number) => (
-    <Fragment key={n.id}>
-      <li className="flex flex-wrap items-center gap-2 py-1.5" style={{ paddingLeft: depth * 18 }}>
-        <span className="text-muted-foreground">↳</span>
-        <span className="font-medium">{n.label}</span>
-        {n.label_bn && <span className="text-xs text-muted-foreground">{n.label_bn}</span>}
-        <code className="rounded bg-secondary px-1.5 py-0.5 text-[11px] text-muted-foreground">{n.href}</code>
-        <span
-          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
-            n.is_published === false ? "bg-secondary text-muted-foreground" : "bg-admin-success text-admin-success-foreground"
-          }`}
+  /** Move an item within its sibling list by `delta` positions. */
+  const move = async (siblings: MenuNode[], id: string, delta: number) => {
+    const from = siblings.findIndex((s) => s.id === id);
+    const to = from + delta;
+    if (from < 0 || to < 0 || to >= siblings.length) return;
+    const ids = siblings.map((s) => s.id);
+    ids.splice(to, 0, ids.splice(from, 1)[0]);
+    setStatus(`${siblings[from].label} moved to position ${to + 1} of ${siblings.length}`);
+    await onReorder(ids);
+  };
+
+  const dropOn = async (siblings: MenuNode[], targetId: string) => {
+    if (!dragId || dragId === targetId) return;
+    const ids = siblings.map((s) => s.id);
+    const from = ids.indexOf(dragId);
+    const to = ids.indexOf(targetId);
+    if (from < 0 || to < 0) return; // only reorder within the same parent
+    ids.splice(to, 0, ids.splice(from, 1)[0]);
+    setStatus(`Moved to position ${to + 1} of ${ids.length}`);
+    setDragId(null);
+    setOverId(null);
+    await onReorder(ids);
+  };
+
+  const renderChild = (n: MenuNode, siblings: MenuNode[], depth: number) => {
+    const index = siblings.findIndex((s) => s.id === n.id);
+    return (
+      <Fragment key={n.id}>
+        <li
+          draggable={canEdit}
+          onDragStart={() => setDragId(n.id)}
+          onDragEnd={() => { setDragId(null); setOverId(null); }}
+          onDragOver={(e) => {
+            if (!canEdit || !dragId) return;
+            if (!siblings.some((s) => s.id === dragId)) return;
+            e.preventDefault();
+            setOverId(n.id);
+          }}
+          onDrop={(e) => { e.preventDefault(); void dropOn(siblings, n.id); }}
+          className={`flex flex-wrap items-center gap-2 py-1.5 ${
+            overId === n.id ? "rounded bg-admin-accent/10 ring-1 ring-admin-accent" : ""
+          } ${dragId === n.id ? "opacity-60" : ""}`}
+          style={{ paddingLeft: depth * 18 }}
         >
-          {n.is_published === false ? "Hidden" : "Published"}
-        </span>
-        <div className="ml-auto flex items-center gap-1">
-          <button onClick={() => onRename(n)} title="Rename" className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary">
-            <Pencil className="h-3 w-3" />
-          </button>
-          <button
-            onClick={() => onTogglePublished(n.id, n.is_published === false)}
-            title={n.is_published === false ? "Publish" : "Hide"}
-            className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary"
+          {canEdit ? (
+            <span
+              className="cursor-grab text-muted-foreground active:cursor-grabbing"
+              title="Drag to reorder · টেনে ক্রম বদলান"
+              aria-hidden
+            >
+              <GripVertical className="h-3.5 w-3.5" />
+            </span>
+          ) : (
+            <span className="text-muted-foreground">↳</span>
+          )}
+          <span className="font-medium">{n.label}</span>
+          {n.label_bn && <span className="text-xs text-muted-foreground">{n.label_bn}</span>}
+          <code className="rounded bg-secondary px-1.5 py-0.5 text-[11px] text-muted-foreground">{n.href}</code>
+          <span
+            className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
+              n.is_published === false ? "bg-secondary text-muted-foreground" : "bg-admin-success text-admin-success-foreground"
+            }`}
           >
-            {n.is_published === false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-          </button>
-          <button onClick={() => onDelete(n)} title="Remove" className="grid h-7 w-7 place-items-center rounded border border-border text-destructive hover:bg-destructive/10">
-            <Trash2 className="h-3 w-3" />
-          </button>
-        </div>
-      </li>
-      {n.children.map((c) => renderChild(c, depth + 1))}
-    </Fragment>
-  );
+            {n.is_published === false ? "Hidden" : "Published"}
+          </span>
+          {canEdit && (
+            <div className="ml-auto flex items-center gap-1">
+              <button
+                onClick={() => void move(siblings, n.id, -1)}
+                disabled={index <= 0}
+                title="Move up · উপরে"
+                aria-label={`Move ${n.label} up`}
+                className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary disabled:opacity-35"
+              >
+                <ChevronUp className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => void move(siblings, n.id, 1)}
+                disabled={index === siblings.length - 1}
+                title="Move down · নিচে"
+                aria-label={`Move ${n.label} down`}
+                className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary disabled:opacity-35"
+              >
+                <ChevronDown className="h-3 w-3" />
+              </button>
+              <button onClick={() => onRename(n)} title="Rename" aria-label={`Rename ${n.label}`} className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary">
+                <Pencil className="h-3 w-3" />
+              </button>
+              <button
+                onClick={() => onTogglePublished(n.id, n.is_published === false)}
+                title={n.is_published === false ? "Publish" : "Hide"}
+                aria-label={`${n.is_published === false ? "Publish" : "Hide"} ${n.label}`}
+                className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary"
+              >
+                {n.is_published === false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+              </button>
+              <button onClick={() => onDelete(n)} title="Remove" aria-label={`Remove ${n.label}`} className="grid h-7 w-7 place-items-center rounded border border-border text-destructive hover:bg-destructive/10">
+                <Trash2 className="h-3 w-3" />
+              </button>
+            </div>
+          )}
+        </li>
+        {n.children.map((c) => renderChild(c, n.children, depth + 1))}
+      </Fragment>
+    );
+  };
 
   if (attached.length === 0) {
     return (
@@ -838,6 +963,13 @@ function PageSubmenus({
 
   return (
     <div className="space-y-4">
+      <p className="sr-only" aria-live="polite">{status}</p>
+      {!canEdit && (
+        <p className="flex items-center gap-2 rounded-md border border-border bg-secondary/40 px-3 py-2 text-xs text-muted-foreground">
+          <Lock className="h-3.5 w-3.5" />
+          মেনু সম্পাদনার অনুমতি নেই ({roleLabel}) — শুধু দেখতে পারবেন।
+        </p>
+      )}
       {attached.map(({ node, location }) => (
         <div key={node.id} className="rounded-lg border border-border bg-card p-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -846,19 +978,21 @@ function PageSubmenus({
             <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
               {location} menu
             </span>
-            <button
-              onClick={() => setAddFor(addFor === node.id ? null : node.id)}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-admin-accent px-2.5 py-1.5 text-xs font-semibold text-admin-accent-foreground"
-            >
-              <Plus className="h-3 w-3" /> Add submenu · সাবমেনু
-            </button>
+            {canEdit && (
+              <button
+                onClick={() => setAddFor(addFor === node.id ? null : node.id)}
+                className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-admin-accent px-2.5 py-1.5 text-xs font-semibold text-admin-accent-foreground"
+              >
+                <Plus className="h-3 w-3" /> Add submenu · সাবমেনু
+              </button>
+            )}
           </div>
 
-          {addFor === node.id && (
+          {canEdit && addFor === node.id && (
             <div className="mt-3 flex flex-wrap items-end gap-2 rounded-md bg-secondary/40 p-3">
-              <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Label (EN)" className={cls} />
-              <input value={labelBn} onChange={(e) => setLabelBn(e.target.value)} placeholder="লেবেল (BN)" className={cls} />
-              <select value={href} onChange={(e) => setHref(e.target.value)} className={cls}>
+              <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Label (EN)" aria-label="Submenu label (EN)" className={cls} />
+              <input value={labelBn} onChange={(e) => setLabelBn(e.target.value)} placeholder="লেবেল (BN)" aria-label="Submenu label (BN)" className={cls} />
+              <select value={href} onChange={(e) => setHref(e.target.value)} aria-label="Submenu link" className={cls}>
                 {pages.map((pg) => (
                   <option key={pg.path} value={pg.path}>
                     {pg.name} — {pg.path}
@@ -878,7 +1012,9 @@ function PageSubmenus({
           {node.children.length === 0 ? (
             <p className="mt-2 text-xs text-muted-foreground">No submenu items yet · কোনো সাবমেনু নেই।</p>
           ) : (
-            <ul className="mt-2 divide-y divide-border/50 text-sm">{node.children.map((c) => renderChild(c, 0))}</ul>
+            <ul className="mt-2 divide-y divide-border/50 text-sm">
+              {node.children.map((c) => renderChild(c, node.children, 0))}
+            </ul>
           )}
         </div>
       ))}
