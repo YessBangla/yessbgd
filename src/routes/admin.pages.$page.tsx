@@ -91,6 +91,11 @@ function AdminPageEditor() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
+    if (tabFromUrl) setTab(tabFromUrl);
+  }, [tabFromUrl]);
+
+
+  useEffect(() => {
     if (data) setRow(data);
   }, [data]);
 
