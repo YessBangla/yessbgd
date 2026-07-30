@@ -44,6 +44,7 @@ import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
 import { Route as AboutAwardsRouteImport } from './routes/about.awards'
 import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
 import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
+import { Route as AdminPagesPageRouteImport } from './routes/admin.pages.$page'
 import { Route as AdminCmsTypeRouteImport } from './routes/admin.cms.$type'
 import { Route as AdminCmsTypeIdRouteImport } from './routes/admin.cms.$type.$id'
 
@@ -222,6 +223,11 @@ const AdminPagesIndexRoute = AdminPagesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminPagesRoute,
 } as any)
+const AdminPagesPageRoute = AdminPagesPageRouteImport.update({
+  id: '/$page',
+  path: '/$page',
+  getParentRoute: () => AdminPagesRoute,
+} as any)
 const AdminCmsTypeRoute = AdminCmsTypeRouteImport.update({
   id: '/$type',
   path: '/$type',
@@ -269,6 +275,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/$page': typeof AdminPagesPageRoute
   '/admin/pages/': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
@@ -306,6 +313,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/ventures': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/$page': typeof AdminPagesPageRoute
   '/admin/pages': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
@@ -346,6 +354,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/$page': typeof AdminPagesPageRoute
   '/admin/pages/': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
@@ -387,6 +396,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/admin/pages/$page'
     | '/admin/pages/'
     | '/admin/cms/$type/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -424,6 +434,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/ventures'
     | '/admin/cms/$type'
+    | '/admin/pages/$page'
     | '/admin/pages'
     | '/admin/cms/$type/$id'
   id:
@@ -463,6 +474,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/admin/pages/$page'
     | '/admin/pages/'
     | '/admin/cms/$type/$id'
   fileRoutesById: FileRoutesById
@@ -732,6 +744,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPagesIndexRouteImport
       parentRoute: typeof AdminPagesRoute
     }
+    '/admin/pages/$page': {
+      id: '/admin/pages/$page'
+      path: '/$page'
+      fullPath: '/admin/pages/$page'
+      preLoaderRoute: typeof AdminPagesPageRouteImport
+      parentRoute: typeof AdminPagesRoute
+    }
     '/admin/cms/$type': {
       id: '/admin/cms/$type'
       path: '/$type'
@@ -792,10 +811,12 @@ const AdminCmsRouteWithChildren = AdminCmsRoute._addFileChildren(
 )
 
 interface AdminPagesRouteChildren {
+  AdminPagesPageRoute: typeof AdminPagesPageRoute
   AdminPagesIndexRoute: typeof AdminPagesIndexRoute
 }
 
 const AdminPagesRouteChildren: AdminPagesRouteChildren = {
+  AdminPagesPageRoute: AdminPagesPageRoute,
   AdminPagesIndexRoute: AdminPagesIndexRoute,
 }
 
