@@ -17,7 +17,11 @@ import {
   ChevronRight,
   ExternalLink,
   UserRound,
+  ListTree,
+  Image as ImageIcon,
+  Settings,
 } from "lucide-react";
+
 
 type NavLeaf = {
   label: string;
