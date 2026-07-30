@@ -231,10 +231,10 @@
   --text-xl:   clamp(1.1875rem, 1.05rem + 0.6vw,  1.375rem);
 
   /* ADMIN DASHBOARD TOKENS — corporate slate console (Laravel/Filament feel) */
-  --admin-sidebar: oklch(0.30 0.024 254);
+  --admin-sidebar: oklch(0.42 0.075 258);
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
-  --admin-sidebar-muted: oklch(0.76 0.014 254);
-  --admin-sidebar-hover: oklch(0.36 0.028 254);
+  --admin-sidebar-muted: oklch(0.84 0.032 258);
+  --admin-sidebar-hover: oklch(0.49 0.085 258);
   --admin-topbar: oklch(0.24 0.024 254);
   --admin-canvas: oklch(0.975 0.004 254);
   --admin-accent: oklch(0.55 0.185 258);
@@ -271,10 +271,10 @@
   --glass-border: oklch(1 0 0 / 0.10);
 
   /* Admin console — dark mode */
-  --admin-sidebar: oklch(0.20 0.018 254);
+  --admin-sidebar: oklch(0.34 0.062 258);
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
-  --admin-sidebar-muted: oklch(0.70 0.014 254);
-  --admin-sidebar-hover: oklch(0.26 0.022 254);
+  --admin-sidebar-muted: oklch(0.80 0.030 258);
+  --admin-sidebar-hover: oklch(0.41 0.072 258);
   --admin-topbar: oklch(0.17 0.016 254);
   --admin-canvas: oklch(0.15 0.012 254);
   --admin-accent: oklch(0.62 0.170 258);
@@ -994,10 +994,10 @@
   --gradient-hero: none;
   --shadow-glow: 0 8px 24px -10px oklch(0.30 0.024 254 / 0.28);
 
-  --admin-sidebar: oklch(0.30 0.024 254);
+  --admin-sidebar: oklch(0.42 0.075 258);
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
-  --admin-sidebar-muted: oklch(0.76 0.014 254);
-  --admin-sidebar-hover: oklch(0.36 0.028 254);
+  --admin-sidebar-muted: oklch(0.84 0.032 258);
+  --admin-sidebar-hover: oklch(0.49 0.085 258);
   --admin-topbar: oklch(0.24 0.024 254);
   --admin-canvas: oklch(0.975 0.004 254);
   --admin-accent: oklch(0.55 0.185 258);
@@ -1040,10 +1040,10 @@
   --gradient-primary: linear-gradient(135deg, oklch(0.62 0.170 258) 0%, oklch(0.72 0.130 250) 100%);
   --shadow-glow: 0 8px 24px -10px oklch(0 0 0 / 0.55);
 
-  --admin-sidebar: oklch(0.20 0.018 254);
+  --admin-sidebar: oklch(0.34 0.062 258);
   --admin-sidebar-foreground: oklch(0.95 0.008 254);
-  --admin-sidebar-muted: oklch(0.70 0.014 254);
-  --admin-sidebar-hover: oklch(0.26 0.022 254);
+  --admin-sidebar-muted: oklch(0.80 0.030 258);
+  --admin-sidebar-hover: oklch(0.41 0.072 258);
   --admin-topbar: oklch(0.17 0.016 254);
   --admin-canvas: oklch(0.15 0.012 254);
   --admin-accent: oklch(0.62 0.170 258);
