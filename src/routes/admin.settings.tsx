@@ -263,6 +263,8 @@ function AdminSettings() {
 
       <BrandingLogoCard onSaved={() => void load()} />
 
+      <FooterSettingsCard />
+
       <div className="space-y-8">
         {groups.map((g) => {
           const gt = GROUP_TITLES[g] ?? { en: g, bn: "" };
