@@ -306,7 +306,7 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
   );
 
   return (
-    <div className="flex min-h-screen bg-admin-canvas">
+    <div className="admin-scope flex min-h-screen bg-admin-canvas">
       {/* Desktop sidebar */}
       <aside
         className={`sticky top-0 hidden h-screen shrink-0 transition-all lg:block ${
