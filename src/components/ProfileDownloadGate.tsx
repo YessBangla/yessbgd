@@ -55,7 +55,10 @@ export function ProfileDownloadGate({
   const [step, setStep] = useState<Step>("confirm");
   const [digits, setDigits] = useState<string[]>(["", "", "", ""]);
   const [error, setError] = useState<string | null>(null);
+  const [downloadState, setDownloadState] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
+
   const inputs = useRef<Array<HTMLInputElement | null>>([]);
   const headingId = useId();
   const descId = useId();
