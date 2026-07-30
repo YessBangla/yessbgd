@@ -153,8 +153,10 @@ function AdminPageEditor() {
   const tabs: { key: typeof tab; label: string; labelBn: string }[] = [
     { key: "content", label: "Content & images", labelBn: "কনটেন্ট ও ছবি" },
     { key: "sections", label: `Sections (${sections.length})`, labelBn: "সেকশন" },
+    { key: "navigation", label: "Navigation & submenu", labelBn: "মেনু ও সাবমেনু" },
     { key: "seo", label: "SEO & sharing", labelBn: "এসইও" },
   ];
+
 
   return (
     <div>
