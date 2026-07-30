@@ -86,11 +86,14 @@ export const FOOTER_DEFAULTS: FooterConfig = {
     background: "gradient",
     spacing: "normal",
     columns: 4,
+    mobile_columns: 1,
+    mobile_align: "left",
     heading: "uppercase",
     border_top: true,
     show_bottom_bar: true,
     align_center: false,
   },
+
   columns: [
     {
       type: "brand",
