@@ -7,7 +7,12 @@ import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
 export function Footer() {
   const ventures = useVentures();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const footerLinks = useMenu("footer");
+  const bn = i18n.language?.startsWith("bn");
+  const email = useSettingText("contact_email", COMPANY_CONTACT.email);
+  const address = useSettingText("contact_address", COMPANY_CONTACT.office);
+
   return (
     <footer
       data-on-dark
