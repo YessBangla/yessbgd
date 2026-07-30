@@ -210,8 +210,75 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
       {err && <p className="mb-3 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-3 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
 
+      {/* -------------------------------------------------------- presets -- */}
+      <div className="mb-4 rounded-lg border border-border bg-background/60 p-3">
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Templates <span className="font-normal normal-case tracking-normal">· টেমপ্লেট প্রিসেট</span>
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          {FOOTER_TEMPLATES.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => applyTemplate(t.id)}
+              disabled={!canEdit}
+              className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold hover:bg-secondary disabled:opacity-50"
+            >
+              {t.label} · {t.label_bn}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <input
+            value={presetName}
+            onChange={(e) => setPresetName(e.target.value)}
+            placeholder="My preset name · প্রিসেটের নাম"
+            aria-label="Preset name"
+            className={`${smallInput} max-w-[14rem]`}
+          />
+          <button
+            type="button"
+            onClick={saveCurrentPreset}
+            disabled={!canEdit || !presetName.trim()}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold hover:bg-secondary disabled:opacity-50"
+          >
+            <Bookmark className="h-3 w-3" /> Save current · সেভ করুন
+          </button>
+        </div>
+
+        {(cfg.saved_presets ?? []).length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {(cfg.saved_presets ?? []).map((p) => (
+              <span
+                key={p.name}
+                className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-1 text-xs"
+              >
+                <button type="button" onClick={() => applySavedPreset(p.name)} className="font-semibold hover:text-primary">
+                  {p.name}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => deleteSavedPreset(p.name)}
+                  aria-label={`Delete preset ${p.name}`}
+                  className="text-destructive"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ------------------------------------------------------- preview --- */}
+      <div className="mb-4">
+        <FooterLivePreview cfg={cfg} />
+      </div>
+
       {/* ---------------------------------------------------------- style -- */}
       <div className="grid gap-3 rounded-lg border border-border bg-background/60 p-3 sm:grid-cols-2 lg:grid-cols-4">
+
         <Field label="Background" labelBn="ব্যাকগ্রাউন্ড">
           <select
             value={cfg.style.background}
