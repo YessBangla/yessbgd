@@ -4,6 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { MediaPicker } from "@/components/admin/MediaPicker";
+import { PageMenuPanel } from "@/components/admin/PageMenuPanel";
+
 import { SITE_PAGE_FIELDS, useSitePage, type SitePage } from "@/lib/sitePages";
 import { ArrowLeft, Save, Loader2, Plus, Trash2, ExternalLink } from "lucide-react";
 
