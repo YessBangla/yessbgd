@@ -122,8 +122,11 @@ function AdminCmsIndex() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3 text-sm">
+            <Link to="/admin" className="text-muted-foreground underline-offset-4 hover:underline">
+              ← Dashboard
+            </Link>
             <Link to="/admin/applications" className="text-muted-foreground underline-offset-4 hover:underline">
-              ← Job applications
+              Job applications
             </Link>
             <Link to="/admin/messages" className="text-muted-foreground underline-offset-4 hover:underline">
               Contact messages
