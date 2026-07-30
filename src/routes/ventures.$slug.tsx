@@ -40,6 +40,7 @@ import {
   getVentureFaqs,
   ventures,
 } from "@/data/ventures";
+import { useVentures } from "@/lib/dynamicContent";
 import {
   Accordion,
   AccordionContent,
@@ -119,7 +120,9 @@ export const Route = createFileRoute("/ventures/$slug")({
 });
 
 function VenturePage() {
-  const { venture: v } = Route.useLoaderData();
+  const ventures = useVentures();
+  const { venture: staticVenture } = Route.useLoaderData();
+  const v = ventures.find((x) => x.slug === staticVenture.slug) ?? staticVenture;
   const Icon = v.icon;
   const cs = getVentureCase(v);
   const milestones = getVentureMilestones(v);

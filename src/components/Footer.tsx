@@ -2,10 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
-import { ventures } from "@/data/ventures";
+import { useVentures } from "@/lib/dynamicContent";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 
 export function Footer() {
+  const ventures = useVentures();
   const { t } = useTranslation();
   return (
     <footer

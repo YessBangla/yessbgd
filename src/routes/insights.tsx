@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Calendar, Mail } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
-import { insights } from "@/data/insights";
+import { useInsights } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
@@ -25,6 +25,7 @@ const posts = insights.slice(1);
 const categories = ["All", "Strategy", "Technology", "E-commerce", "Leadership", "IT Services", "Design"];
 
 function Insights() {
+  const insights = useInsights();
   const { t } = useTranslation();
   return (
     <>

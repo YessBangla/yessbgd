@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, Sparkles, ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { getIndustry, industries, type IndustryItem } from "@/data/industries";
+import { useIndustry } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/industries/$slug")({
   loader: ({ params }) => {
@@ -38,7 +39,8 @@ export const Route = createFileRoute("/industries/$slug")({
 
 function IndustryDetail() {
   const { t } = useTranslation();
-  const { industry: i } = Route.useLoaderData() as { industry: IndustryItem };
+  const { industry: staticIndustry } = Route.useLoaderData() as { industry: IndustryItem };
+  const i = useIndustry(staticIndustry.slug) ?? staticIndustry;
   const Icon = i.icon;
 
   return (

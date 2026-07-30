@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { getService, services, type ServiceItem } from "@/data/services";
+import { useService } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }) => {
@@ -38,7 +39,8 @@ export const Route = createFileRoute("/services/$slug")({
 
 function ServiceDetail() {
   const { t } = useTranslation();
-  const { service: s } = Route.useLoaderData() as { service: ServiceItem };
+  const { service: staticService } = Route.useLoaderData() as { service: ServiceItem };
+  const s = useService(staticService.slug) ?? staticService;
   const Icon = s.icon;
 
   return (

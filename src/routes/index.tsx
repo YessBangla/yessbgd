@@ -16,7 +16,7 @@ import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
-import { ventures } from "@/data/ventures";
+import { useVentures } from "@/lib/dynamicContent";
 import {
   ArrowRight,
   Tv,
@@ -91,6 +91,7 @@ type LocalizedItem = { title: string; desc: string };
 type Testimonial = { name: string; role: string; quote: string };
 
 function Index() {
+  const ventures = useVentures();
   const { t, i18n: i18nInst } = useTranslation();
   const isBn = (i18nInst?.language || i18n.language || "en").startsWith("bn");
   const [hydrated, setHydrated] = useState(false);

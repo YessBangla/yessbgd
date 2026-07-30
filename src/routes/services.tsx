@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
-import { services } from "@/data/services";
+import { useServices } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -106,6 +106,7 @@ const caseStudies: CaseStudy[] = [
 ];
 
 function Services() {
+  const services = useServices();
   const { t } = useTranslation();
   return (
     <>
