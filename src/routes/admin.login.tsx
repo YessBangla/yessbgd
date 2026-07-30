@@ -355,7 +355,7 @@ function AdminLogin() {
             ) : null}
           </form>
 
-          <p className="mt-6 flex items-center gap-2 text-[11px] text-white/40">
+          <p className="mt-6 flex items-center gap-2 text-[11px] text-muted-foreground">
             <ShieldCheck className="h-3.5 w-3.5" /> Sessions are encrypted, repeated failures are throttled, and every
             admin action is logged.
           </p>
