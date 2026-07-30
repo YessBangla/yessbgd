@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/PageHero";
 import { CMS_TYPES } from "@/lib/cmsSchema";
+import { syncStaticContentToCms } from "@/lib/dynamicContent";
 import { ArrowRight, Database, FileText, Briefcase, Layers } from "lucide-react";
 
 export const Route = createFileRoute("/admin/cms")({
@@ -26,6 +27,8 @@ function AdminCmsIndex() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [syncing, setSyncing] = useState(false);
+  const [syncMsg, setSyncMsg] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
