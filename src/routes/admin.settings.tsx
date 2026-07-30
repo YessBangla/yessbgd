@@ -170,6 +170,8 @@ function AdminSettings() {
     setMsg(null);
     try {
       for (const row of rows) {
+        // Footer is managed by its own editor card below.
+        if (row.key === "footer_config") continue;
         const spec = FRIENDLY[row.key];
         let parsed: unknown;
         if (spec) {
