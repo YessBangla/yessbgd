@@ -263,7 +263,7 @@ function AdminApplications() {
   const minBytes = minKB.trim() === "" ? null : Math.max(0, Number(minKB)) * 1024;
   const maxBytes = maxKB.trim() === "" ? null : Math.max(0, Number(maxKB)) * 1024;
   const q = query.trim().toLowerCase();
-  const filtered = (items ?? []).filter((a) => {
+  const base = (items ?? []).filter((a) => {
     if (kind !== "all" && classifyResume(a) !== kind) return false;
     if (minBytes !== null && !Number.isNaN(minBytes) && a.resume_size < minBytes) return false;
     if (maxBytes !== null && !Number.isNaN(maxBytes) && a.resume_size > maxBytes) return false;
@@ -273,12 +273,22 @@ function AdminApplications() {
     }
     return true;
   });
+  const filtered = selectedDate ? base.filter((a) => dayKey(a.created_at) === selectedDate) : base;
+  const groups: { key: string; items: Application[] }[] = [];
+  for (const a of filtered) {
+    const k = dayKey(a.created_at);
+    const last = groups[groups.length - 1];
+    if (last && last.key === k) last.items.push(a);
+    else groups.push({ key: k, items: [a] });
+  }
   const clearFilters = () => {
     setQuery("");
     setKind("all");
     setMinKB("");
     setMaxKB("");
+    setSelectedDate(null);
   };
+
 
   return (
     <>
