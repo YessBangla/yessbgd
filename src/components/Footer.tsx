@@ -27,7 +27,7 @@ const SOCIAL_ICON = {
   linkedin: Linkedin,
 } as const;
 
-export function Footer() {
+export function Footer({ configOverride }: { configOverride?: FooterConfig } = {}) {
   const ventures = useVentures();
   const { t, i18n } = useTranslation();
   const footerLinks = useMenu("footer");
@@ -36,7 +36,9 @@ export function Footer() {
   const address = useSettingText("contact_address", COMPANY_CONTACT.office);
   const headerLogo = useSettingText("logo_url", "");
   const logo = resolveMediaUrl(useSettingText("footer_logo_url", "") || headerLogo, fallbackLogo);
-  const cfg = useFooterConfig();
+  const liveCfg = useFooterConfig();
+  const cfg = configOverride ?? liveCfg;
+
 
   const pick = (en?: string, bnText?: string) => (bn && bnText ? bnText : en ?? "");
   const headingCls = `font-display text-sm font-semibold ${
