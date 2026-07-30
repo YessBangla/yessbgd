@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
+import { BrandingLogoCard } from "@/components/admin/BrandingLogoCard";
 import { Save, Plus, Trash2, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/settings")({
