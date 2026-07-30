@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { useSitePages } from "@/lib/sitePages";
+import { buildMenuTree, type MenuItem, type MenuNode } from "@/lib/siteContent";
 import {
   Plus,
   Loader2,
@@ -16,6 +17,7 @@ import {
   ChevronDown,
   Eye,
   EyeOff,
+  ListTree,
 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/pages/")({
