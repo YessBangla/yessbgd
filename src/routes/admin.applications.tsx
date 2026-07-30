@@ -80,6 +80,21 @@ function classifyResume(a: Application): Exclude<ResumeKind, "all"> {
   return "other";
 }
 
+function dayKey(iso: string) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function dayLabel(key: string) {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 function AdminApplications() {
   const navigate = useNavigate();
   const [items, setItems] = useState<Application[] | null>(null);
@@ -89,6 +104,8 @@ function AdminApplications() {
   const [kind, setKind] = useState<ResumeKind>("all");
   const [minKB, setMinKB] = useState<string>("");
   const [maxKB, setMaxKB] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
 
   const load = async () => {
     setError(null);
@@ -246,7 +263,7 @@ function AdminApplications() {
   const minBytes = minKB.trim() === "" ? null : Math.max(0, Number(minKB)) * 1024;
   const maxBytes = maxKB.trim() === "" ? null : Math.max(0, Number(maxKB)) * 1024;
   const q = query.trim().toLowerCase();
-  const filtered = (items ?? []).filter((a) => {
+  const base = (items ?? []).filter((a) => {
     if (kind !== "all" && classifyResume(a) !== kind) return false;
     if (minBytes !== null && !Number.isNaN(minBytes) && a.resume_size < minBytes) return false;
     if (maxBytes !== null && !Number.isNaN(maxBytes) && a.resume_size > maxBytes) return false;
@@ -256,12 +273,22 @@ function AdminApplications() {
     }
     return true;
   });
+  const filtered = selectedDate ? base.filter((a) => dayKey(a.created_at) === selectedDate) : base;
+  const groups: { key: string; items: Application[] }[] = [];
+  for (const a of filtered) {
+    const k = dayKey(a.created_at);
+    const last = groups[groups.length - 1];
+    if (last && last.key === k) last.items.push(a);
+    else groups.push({ key: k, items: [a] });
+  }
   const clearFilters = () => {
     setQuery("");
     setKind("all");
     setMinKB("");
     setMaxKB("");
+    setSelectedDate(null);
   };
+
 
   return (
     <>
@@ -394,8 +421,39 @@ function AdminApplications() {
             </div>
           )}
 
-          <div className="grid gap-4">
-            {filtered.map((a) => (
+          <div className="grid gap-8">
+            {groups.map((g) => (
+              <section key={g.key}>
+                <div className="mb-3 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedDate(selectedDate === g.key ? null : g.key)}
+                    aria-pressed={selectedDate === g.key}
+                    className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition ${
+                      selectedDate === g.key
+                        ? "border-primary bg-primary/15 text-primary"
+                        : "border-border hover:border-primary/50 hover:text-primary"
+                    }`}
+                  >
+                    {dayLabel(g.key)}
+                    <span className="rounded-full bg-secondary/60 px-2 py-0.5 text-[10px] font-semibold">
+                      {g.items.length}
+                    </span>
+                  </button>
+                  {selectedDate === g.key && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedDate(null)}
+                      className="text-xs font-semibold text-muted-foreground underline"
+                    >
+                      Show all dates
+                    </button>
+                  )}
+                  <div className="h-px flex-1 bg-border" />
+                </div>
+                <div className="grid gap-4">
+                {g.items.map((a) => (
+
               <article key={a.id} className="rounded-2xl glass-card p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
@@ -489,8 +547,12 @@ function AdminApplications() {
                   <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/85">{a.cover_letter}</p>
                 </details>
               </article>
+                ))}
+                </div>
+              </section>
             ))}
           </div>
+
         </div>
       </section>
     </>
