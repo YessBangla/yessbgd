@@ -31,6 +31,16 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-surface: var(--surface);
+  --color-admin-sidebar: var(--admin-sidebar);
+  --color-admin-sidebar-foreground: var(--admin-sidebar-foreground);
+  --color-admin-sidebar-muted: var(--admin-sidebar-muted);
+  --color-admin-sidebar-hover: var(--admin-sidebar-hover);
+  --color-admin-topbar: var(--admin-topbar);
+  --color-admin-canvas: var(--admin-canvas);
+  --color-admin-accent: var(--admin-accent);
+  --color-admin-accent-foreground: var(--admin-accent-foreground);
+  --color-admin-success: var(--admin-success);
+  --color-admin-success-foreground: var(--admin-success-foreground);
   --font-display: "SF Pro Display", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, sans-serif;
 }
