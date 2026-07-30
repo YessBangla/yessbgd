@@ -953,3 +953,112 @@
     bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom) + 0.5rem) !important;
   }
 }
+
+/* ==========================================================================
+   ADMIN CONSOLE — LOCKED CORPORATE PALETTE
+   The dashboard must stay a neutral slate/indigo corporate console regardless
+   of the public site's Liquid Glass palette presets or theme experiments.
+   Every token the admin UI touches is re-declared here, so palette changes on
+   :root / .dark can never leak into /admin.
+   ========================================================================== */
+.admin-scope {
+  --background: oklch(0.975 0.004 254);
+  --foreground: oklch(0.24 0.022 254);
+  --surface: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.022 254);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.022 254);
+  --primary: oklch(0.55 0.185 258);
+  --primary-foreground: oklch(0.99 0 0);
+  --primary-glow: oklch(0.65 0.150 258);
+  --secondary: oklch(0.955 0.006 254);
+  --secondary-foreground: oklch(0.30 0.024 254);
+  --accent: oklch(0.93 0.020 258);
+  --accent-foreground: oklch(0.30 0.024 254);
+  --muted: oklch(0.955 0.006 254);
+  --muted-foreground: oklch(0.52 0.018 254);
+  --destructive: oklch(0.58 0.195 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.30 0.024 254 / 0.14);
+  --input: oklch(0.30 0.024 254 / 0.18);
+  --ring: oklch(0.55 0.185 258);
+
+  --glass-bg: oklch(1 0 0);
+  --glass-bg-strong: oklch(1 0 0);
+  --glass-border: oklch(0.30 0.024 254 / 0.14);
+  --glass-border-soft: oklch(0.30 0.024 254 / 0.10);
+
+  --gradient-primary: linear-gradient(135deg, oklch(0.55 0.185 258) 0%, oklch(0.66 0.145 250) 100%);
+  --gradient-mesh: none;
+  --gradient-hero: none;
+  --shadow-glow: 0 8px 24px -10px oklch(0.30 0.024 254 / 0.28);
+
+  --admin-sidebar: oklch(0.30 0.024 254);
+  --admin-sidebar-foreground: oklch(0.95 0.008 254);
+  --admin-sidebar-muted: oklch(0.76 0.014 254);
+  --admin-sidebar-hover: oklch(0.36 0.028 254);
+  --admin-topbar: oklch(0.24 0.024 254);
+  --admin-canvas: oklch(0.975 0.004 254);
+  --admin-accent: oklch(0.55 0.185 258);
+  --admin-accent-foreground: oklch(0.99 0 0);
+  --admin-success: oklch(0.62 0.155 152);
+  --admin-success-foreground: oklch(0.99 0 0);
+
+  color: var(--foreground);
+  background-color: var(--admin-canvas);
+}
+
+.dark .admin-scope {
+  --background: oklch(0.15 0.012 254);
+  --foreground: oklch(0.96 0.006 254);
+  --surface: oklch(0.19 0.016 254);
+  --card: oklch(0.19 0.016 254);
+  --card-foreground: oklch(0.96 0.006 254);
+  --popover: oklch(0.19 0.016 254);
+  --popover-foreground: oklch(0.96 0.006 254);
+  --primary: oklch(0.66 0.165 258);
+  --primary-foreground: oklch(0.15 0.012 254);
+  --primary-glow: oklch(0.74 0.130 254);
+  --secondary: oklch(0.23 0.018 254);
+  --secondary-foreground: oklch(0.96 0.006 254);
+  --accent: oklch(0.26 0.026 258);
+  --accent-foreground: oklch(0.96 0.006 254);
+  --muted: oklch(0.23 0.018 254);
+  --muted-foreground: oklch(0.72 0.014 254);
+  --destructive: oklch(0.64 0.180 27);
+  --destructive-foreground: oklch(0.15 0.012 254);
+  --border: oklch(1 0 0 / 0.10);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.66 0.165 258);
+
+  --glass-bg: oklch(0.19 0.016 254);
+  --glass-bg-strong: oklch(0.19 0.016 254);
+  --glass-border: oklch(1 0 0 / 0.10);
+  --glass-border-soft: oklch(1 0 0 / 0.08);
+
+  --gradient-primary: linear-gradient(135deg, oklch(0.62 0.170 258) 0%, oklch(0.72 0.130 250) 100%);
+  --shadow-glow: 0 8px 24px -10px oklch(0 0 0 / 0.55);
+
+  --admin-sidebar: oklch(0.20 0.018 254);
+  --admin-sidebar-foreground: oklch(0.95 0.008 254);
+  --admin-sidebar-muted: oklch(0.70 0.014 254);
+  --admin-sidebar-hover: oklch(0.26 0.022 254);
+  --admin-topbar: oklch(0.17 0.016 254);
+  --admin-canvas: oklch(0.15 0.012 254);
+  --admin-accent: oklch(0.62 0.170 258);
+  --admin-accent-foreground: oklch(0.99 0 0);
+  --admin-success: oklch(0.66 0.150 152);
+  --admin-success-foreground: oklch(0.15 0.012 254);
+}
+
+/* Flat corporate cards inside the console: no site glass blur / tint. */
+.admin-scope .glass-card,
+.admin-scope .glass,
+.admin-scope .glass-strong {
+  background-color: var(--card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px oklch(0.30 0.024 254 / 0.06), 0 8px 24px -16px oklch(0.30 0.024 254 / 0.18);
+}
