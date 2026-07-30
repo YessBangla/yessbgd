@@ -100,6 +100,9 @@ export function ProfileDownloadGate({
       setStep("confirm");
       setDigits(["", "", "", ""]);
       setError(null);
+      setDownloadState("idle");
+      setDownloadError(null);
+
     }, 220);
   };
 
