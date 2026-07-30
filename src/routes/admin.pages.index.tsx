@@ -50,7 +50,10 @@ type TypeFilter = "all" | "custom" | "system";
 function AdminPagesList() {
   const { data, isLoading, isFetching, refetch } = useSitePages();
   const qc = useQueryClient();
-  const [creating, setCreating] = useState(false);
+  const { role, can } = useDashboardRole();
+  const canPages = can("pages");
+  const canMenus = can("menus");
+
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", nameBn: "", slug: "" });
