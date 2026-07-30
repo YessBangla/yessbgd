@@ -962,47 +962,47 @@
    :root / .dark can never leak into /admin.
    ========================================================================== */
 .admin-scope {
-  --background: oklch(0.975 0.004 254);
-  --foreground: oklch(0.24 0.022 254);
+  --background: oklch(0.975 0.006 70);
+  --foreground: oklch(0.26 0.020 55);
   --surface: oklch(1 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.022 254);
+  --card-foreground: oklch(0.26 0.020 55);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.022 254);
-  --primary: oklch(0.55 0.185 258);
+  --popover-foreground: oklch(0.26 0.020 55);
+  --primary: oklch(0.655 0.185 42);
   --primary-foreground: oklch(0.99 0 0);
-  --primary-glow: oklch(0.65 0.150 258);
-  --secondary: oklch(0.955 0.006 254);
-  --secondary-foreground: oklch(0.30 0.024 254);
-  --accent: oklch(0.93 0.020 258);
-  --accent-foreground: oklch(0.30 0.024 254);
-  --muted: oklch(0.955 0.006 254);
-  --muted-foreground: oklch(0.52 0.018 254);
-  --destructive: oklch(0.58 0.195 27);
+  --primary-glow: oklch(0.76 0.155 55);
+  --secondary: oklch(0.955 0.010 70);
+  --secondary-foreground: oklch(0.32 0.022 55);
+  --accent: oklch(0.93 0.035 60);
+  --accent-foreground: oklch(0.32 0.022 55);
+  --muted: oklch(0.955 0.010 70);
+  --muted-foreground: oklch(0.53 0.018 60);
+  --destructive: oklch(0.56 0.195 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.30 0.024 254 / 0.14);
-  --input: oklch(0.30 0.024 254 / 0.18);
-  --ring: oklch(0.55 0.185 258);
+  --border: oklch(0.32 0.022 55 / 0.14);
+  --input: oklch(0.32 0.022 55 / 0.18);
+  --ring: oklch(0.655 0.185 42);
 
   --glass-bg: oklch(1 0 0);
   --glass-bg-strong: oklch(1 0 0);
-  --glass-border: oklch(0.30 0.024 254 / 0.14);
-  --glass-border-soft: oklch(0.30 0.024 254 / 0.10);
+  --glass-border: oklch(0.32 0.022 55 / 0.14);
+  --glass-border-soft: oklch(0.32 0.022 55 / 0.10);
 
-  --gradient-primary: linear-gradient(135deg, oklch(0.55 0.185 258) 0%, oklch(0.66 0.145 250) 100%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.655 0.185 42) 0%, oklch(0.75 0.160 62) 100%);
   --gradient-mesh: none;
   --gradient-hero: none;
-  --shadow-glow: 0 8px 24px -10px oklch(0.30 0.024 254 / 0.28);
+  --shadow-glow: 0 8px 24px -10px oklch(0.40 0.10 45 / 0.30);
 
-  --admin-sidebar: oklch(0.52 0.105 262);
-  --admin-sidebar-foreground: oklch(0.95 0.008 254);
-  --admin-sidebar-muted: oklch(0.90 0.030 262);
-  --admin-sidebar-hover: oklch(0.58 0.110 262);
-  --admin-topbar: oklch(0.46 0.100 262);
-  --admin-canvas: oklch(0.975 0.004 254);
-  --admin-accent: oklch(0.55 0.185 258);
+  --admin-sidebar: oklch(0.965 0.012 68);
+  --admin-sidebar-foreground: oklch(0.30 0.022 55);
+  --admin-sidebar-muted: oklch(0.52 0.020 60);
+  --admin-sidebar-hover: oklch(0.92 0.032 60);
+  --admin-topbar: oklch(0.975 0.010 68);
+  --admin-canvas: oklch(0.945 0.014 66);
+  --admin-accent: oklch(0.655 0.185 42);
   --admin-accent-foreground: oklch(0.99 0 0);
-  --admin-success: oklch(0.62 0.155 152);
+  --admin-success: oklch(0.62 0.145 152);
   --admin-success-foreground: oklch(0.99 0 0);
 
   color: var(--foreground);
@@ -1010,47 +1010,48 @@
 }
 
 .dark .admin-scope {
-  --background: oklch(0.15 0.012 254);
-  --foreground: oklch(0.96 0.006 254);
-  --surface: oklch(0.19 0.016 254);
-  --card: oklch(0.19 0.016 254);
-  --card-foreground: oklch(0.96 0.006 254);
-  --popover: oklch(0.19 0.016 254);
-  --popover-foreground: oklch(0.96 0.006 254);
-  --primary: oklch(0.66 0.165 258);
-  --primary-foreground: oklch(0.15 0.012 254);
-  --primary-glow: oklch(0.74 0.130 254);
-  --secondary: oklch(0.23 0.018 254);
-  --secondary-foreground: oklch(0.96 0.006 254);
-  --accent: oklch(0.26 0.026 258);
-  --accent-foreground: oklch(0.96 0.006 254);
-  --muted: oklch(0.23 0.018 254);
-  --muted-foreground: oklch(0.72 0.014 254);
-  --destructive: oklch(0.64 0.180 27);
-  --destructive-foreground: oklch(0.15 0.012 254);
+  --background: oklch(0.17 0.014 55);
+  --foreground: oklch(0.96 0.008 70);
+  --surface: oklch(0.21 0.018 55);
+  --card: oklch(0.21 0.018 55);
+  --card-foreground: oklch(0.96 0.008 70);
+  --popover: oklch(0.21 0.018 55);
+  --popover-foreground: oklch(0.96 0.008 70);
+  --primary: oklch(0.72 0.165 46);
+  --primary-foreground: oklch(0.17 0.014 55);
+  --primary-glow: oklch(0.80 0.140 62);
+  --secondary: oklch(0.25 0.020 55);
+  --secondary-foreground: oklch(0.96 0.008 70);
+  --accent: oklch(0.29 0.032 50);
+  --accent-foreground: oklch(0.96 0.008 70);
+  --muted: oklch(0.25 0.020 55);
+  --muted-foreground: oklch(0.74 0.016 65);
+  --destructive: oklch(0.62 0.180 25);
+  --destructive-foreground: oklch(0.17 0.014 55);
   --border: oklch(1 0 0 / 0.10);
   --input: oklch(1 0 0 / 0.12);
-  --ring: oklch(0.66 0.165 258);
+  --ring: oklch(0.72 0.165 46);
 
-  --glass-bg: oklch(0.19 0.016 254);
-  --glass-bg-strong: oklch(0.19 0.016 254);
+  --glass-bg: oklch(0.21 0.018 55);
+  --glass-bg-strong: oklch(0.21 0.018 55);
   --glass-border: oklch(1 0 0 / 0.10);
   --glass-border-soft: oklch(1 0 0 / 0.08);
 
-  --gradient-primary: linear-gradient(135deg, oklch(0.62 0.170 258) 0%, oklch(0.72 0.130 250) 100%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.68 0.175 42) 0%, oklch(0.78 0.145 62) 100%);
   --shadow-glow: 0 8px 24px -10px oklch(0 0 0 / 0.55);
 
-  --admin-sidebar: oklch(0.46 0.100 262);
-  --admin-sidebar-foreground: oklch(0.95 0.008 254);
-  --admin-sidebar-muted: oklch(0.88 0.030 262);
-  --admin-sidebar-hover: oklch(0.53 0.105 262);
-  --admin-topbar: oklch(0.40 0.092 262);
-  --admin-canvas: oklch(0.15 0.012 254);
-  --admin-accent: oklch(0.62 0.170 258);
-  --admin-accent-foreground: oklch(0.99 0 0);
-  --admin-success: oklch(0.66 0.150 152);
-  --admin-success-foreground: oklch(0.15 0.012 254);
+  --admin-sidebar: oklch(0.22 0.020 52);
+  --admin-sidebar-foreground: oklch(0.95 0.010 70);
+  --admin-sidebar-muted: oklch(0.76 0.020 62);
+  --admin-sidebar-hover: oklch(0.28 0.032 50);
+  --admin-topbar: oklch(0.20 0.018 52);
+  --admin-canvas: oklch(0.18 0.016 55);
+  --admin-accent: oklch(0.70 0.175 44);
+  --admin-accent-foreground: oklch(0.16 0.014 55);
+  --admin-success: oklch(0.66 0.145 152);
+  --admin-success-foreground: oklch(0.16 0.014 55);
 }
+
 
 /* Flat corporate cards inside the console: no site glass blur / tint. */
 .admin-scope .glass-card,
