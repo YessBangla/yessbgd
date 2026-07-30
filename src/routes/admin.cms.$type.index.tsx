@@ -5,7 +5,7 @@ import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { getCmsConfig } from "@/lib/cmsSchema";
 import { Plus, Eye, EyeOff, Trash2, Pencil, ArrowLeft } from "lucide-react";
 
-export const Route = createFileRoute("/admin/cms/$type")({
+export const Route = createFileRoute("/admin/cms/$type/")({
   head: () => ({
     meta: [
       { title: "CMS — Admin" },

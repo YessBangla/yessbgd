@@ -6,7 +6,7 @@ import { CMS_TYPES } from "@/lib/cmsSchema";
 import { syncStaticContentToCms } from "@/lib/dynamicContent";
 import { ArrowRight, Database, FileText, Briefcase, Layers } from "lucide-react";
 
-export const Route = createFileRoute("/admin/cms")({
+export const Route = createFileRoute("/admin/cms/")({
   head: () => ({
     meta: [
       { title: "Content management — Admin" },
