@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
+import { useMenu, useSettingText } from "@/lib/siteContent";
+
 
 export function Footer() {
   const ventures = useVentures();
