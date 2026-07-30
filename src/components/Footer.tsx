@@ -111,7 +111,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
-                <span>{COMPANY_CONTACT.office}</span>
+                <span>{address}</span>
               </li>
               <li className="flex gap-3">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
@@ -121,7 +121,8 @@ export function Footer() {
               </li>
               <li className="flex gap-3">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
-                <a href={`mailto:${COMPANY_CONTACT.email}`} className="hover:text-primary">{COMPANY_CONTACT.email}</a>
+                <a href={`mailto:${email}`} className="hover:text-primary">{email}</a>
+
               </li>
             </ul>
 
