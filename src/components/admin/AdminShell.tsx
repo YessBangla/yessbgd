@@ -204,9 +204,11 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
                   <Link
                     to={group.to}
                     title={collapsed ? group.title : undefined}
-                    className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition ${
+                    data-active={active ? "true" : undefined}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition ${
                       active
-                        ? "bg-admin-accent font-semibold text-admin-accent-foreground"
+                        ? "bg-admin-accent font-semibold text-admin-accent-foreground shadow-sm before:absolute before:inset-y-1.5 before:-left-0.5 before:w-1 before:rounded-full before:bg-admin-accent-foreground"
                         : "text-admin-sidebar-foreground/85 hover:bg-admin-sidebar-hover"
                     }`}
                   >
@@ -230,9 +232,10 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
                     setOpenGroups((p) => ({ ...p, [group.title]: !open }));
                   }}
                   aria-expanded={open}
-                  className={`flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm transition ${
-                    active && !open
-                      ? "bg-admin-sidebar-hover font-semibold"
+                  data-active={active ? "true" : undefined}
+                  className={`relative flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm transition ${
+                    active
+                      ? "bg-admin-sidebar-hover font-semibold text-admin-sidebar-foreground before:absolute before:inset-y-1.5 before:-left-0.5 before:w-1 before:rounded-full before:bg-admin-accent"
                       : "text-admin-sidebar-foreground/85 hover:bg-admin-sidebar-hover"
                   }`}
                 >
@@ -259,13 +262,17 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
                           <Link
                             to={item.to}
                             params={item.params}
-                            className={`flex items-center gap-2.5 rounded-md py-2 pl-9 pr-3 text-[13px] transition ${
+                            data-active={itemActive ? "true" : undefined}
+                            aria-current={itemActive ? "page" : undefined}
+                            className={`relative flex items-center gap-2.5 rounded-md py-2 pl-9 pr-3 text-[13px] transition ${
                               itemActive
-                                ? "bg-admin-accent/90 font-semibold text-admin-accent-foreground"
+                                ? "bg-admin-accent font-semibold text-admin-accent-foreground shadow-sm before:absolute before:inset-y-1 before:left-3 before:w-1 before:rounded-full before:bg-admin-accent-foreground"
                                 : "text-admin-sidebar-muted hover:bg-admin-sidebar-hover hover:text-admin-sidebar-foreground"
                             }`}
                           >
-                            <Circle className="h-2 w-2 shrink-0" />
+                            <Circle
+                              className={`h-2 w-2 shrink-0 ${itemActive ? "fill-current" : ""}`}
+                            />
                             <span className="truncate">{item.label}</span>
                           </Link>
                         </li>
