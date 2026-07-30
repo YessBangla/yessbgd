@@ -289,6 +289,7 @@ export function Header() {
   const { t, i18n } = useTranslation();
   const { tree, previewing } = useHeaderMenu();
   const bn = !!i18n.language?.startsWith("bn");
+  const logo = resolveMediaUrl(useSettingText("logo_url", ""), fallbackLogo);
 
   const navNodes: MenuNode[] = tree.length
     ? tree
