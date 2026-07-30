@@ -5,6 +5,15 @@ import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { buildMenuTree, type MenuItem, type MenuNode } from "@/lib/siteContent";
 import { useInternalLinkOptions } from "@/lib/internalLinks";
 import {
+  DEFAULT_MENU_LOCK,
+  MENU_LOCK_SETTING_KEY,
+  normalizeHeaderOrder,
+  readMenuLock,
+  validateHeaderMenu,
+  type MenuLockValue,
+} from "@/lib/menuLock";
+import { clearMenuPreview, setMenuPreview } from "@/lib/menuPreview";
+import {
   MENU_ACCENTS,
   MENU_ICON_NAMES,
   MENU_STYLES,
@@ -33,6 +42,11 @@ import {
   Redo2,
   Check,
   Users,
+  Lock,
+  Unlock,
+  AlertTriangle,
+  ExternalLink,
+  Wand2,
 } from "lucide-react";
 
 
@@ -78,6 +92,9 @@ function AdminMenus() {
   const [dropTarget, setDropTarget] = useState<{ id: string; mode: DropMode } | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const linkOptions = useInternalLinkOptions();
+  const [lock, setLock] = useState<MenuLockValue>(DEFAULT_MENU_LOCK);
+  const [lockRowId, setLockRowId] = useState<string | null>(null);
+  const [previewing, setPreviewing] = useState(false);
   const dragIdRef = useRef<string | null>(null);
 
   // ---- undo / redo history -------------------------------------------------
@@ -115,7 +132,44 @@ function AdminMenus() {
 
   useEffect(() => {
     void load();
+    void (async () => {
+      const { data } = await supabase
+        .from("cms_settings")
+        .select("id,value")
+        .eq("key", MENU_LOCK_SETTING_KEY)
+        .maybeSingle();
+      if (data) {
+        setLockRowId((data as { id: string }).id);
+        setLock(readMenuLock((data as { value: unknown }).value));
+      }
+    })();
   }, []);
+
+  /** Persist the header ordering lock into cms_settings. */
+  const saveLock = async (next: MenuLockValue) => {
+    setLock(next);
+    if (lockRowId) {
+      const { error } = await supabase
+        .from("cms_settings")
+        .update({ value: next } as never)
+        .eq("id", lockRowId);
+      if (error) setErr(error.message);
+      return;
+    }
+    const { data, error } = await supabase
+      .from("cms_settings")
+      .insert({
+        key: MENU_LOCK_SETTING_KEY,
+        label: "Header menu lock",
+        group: "navigation",
+        value: next,
+        sort_order: 99,
+      } as never)
+      .select("id")
+      .maybeSingle();
+    if (error) setErr(error.message);
+    else if (data) setLockRowId((data as { id: string }).id);
+  };
 
   const patch = (id: string, key: keyof MenuItem, value: unknown) =>
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [key]: value } : r)));
