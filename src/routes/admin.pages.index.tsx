@@ -52,7 +52,9 @@ function AdminPagesList() {
   const qc = useQueryClient();
   const { role, can } = useDashboardRole();
   const canPages = can("pages");
+  const canMenus = can("menus");
   const [creating, setCreating] = useState(false);
+
 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
