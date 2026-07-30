@@ -7,9 +7,23 @@
  */
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Save, Plus, Trash2, LayoutPanelTop, Eye, EyeOff, ChevronUp, ChevronDown } from "lucide-react";
+import {
+  Loader2,
+  Save,
+  Plus,
+  Trash2,
+  LayoutPanelTop,
+  Eye,
+  EyeOff,
+  ChevronUp,
+  ChevronDown,
+  GripVertical,
+  Bookmark,
+} from "lucide-react";
+import { FooterLivePreview } from "@/components/admin/FooterLivePreview";
 import {
   FOOTER_DEFAULTS,
+  FOOTER_TEMPLATES,
   normaliseFooterConfig,
   type FooterColumn,
   type FooterColumnType,
@@ -17,6 +31,7 @@ import {
   type FooterLink,
   type FooterSocial,
 } from "@/lib/footerConfig";
+
 
 const input =
   "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary";
