@@ -32,6 +32,7 @@ import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminPagesRouteImport } from './routes/admin.pages'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
+import { Route as AdminMenusRouteImport } from './routes/admin.menus'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminCmsRouteImport } from './routes/admin.cms'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
@@ -159,6 +160,11 @@ const AdminMessagesRoute = AdminMessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminMenusRoute = AdminMenusRouteImport.update({
+  id: '/menus',
+  path: '/menus',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/cms'
     | '/admin/login'
+    | '/admin/menus'
     | '/admin/messages'
     | '/admin/pages'
     | '/admin/settings'
@@ -383,6 +393,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/cms'
     | '/admin/login'
+    | '/admin/menus'
     | '/admin/messages'
     | '/admin/pages'
     | '/admin/settings'
@@ -419,6 +430,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/cms'
     | '/admin/login'
+    | '/admin/menus'
     | '/admin/messages'
     | '/admin/pages'
     | '/admin/settings'
@@ -614,6 +626,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMessagesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/menus': {
+      id: '/admin/menus'
+      path: '/menus'
+      fullPath: '/admin/menus'
+      preLoaderRoute: typeof AdminMenusRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -741,6 +760,7 @@ interface AdminRouteChildren {
   AdminAuditRoute: typeof AdminAuditRoute
   AdminCmsRoute: typeof AdminCmsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminMenusRoute: typeof AdminMenusRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminPagesRoute: typeof AdminPagesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
@@ -752,6 +772,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAuditRoute: AdminAuditRoute,
   AdminCmsRoute: AdminCmsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
+  AdminMenusRoute: AdminMenusRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   AdminPagesRoute: AdminPagesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
