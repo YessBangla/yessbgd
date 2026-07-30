@@ -8,12 +8,16 @@ import { useMenu, useSettingText } from "@/lib/siteContent";
 import { resolveMediaUrl } from "@/lib/mediaAssets";
 import {
   useFooterConfig,
+  footerAlignClass,
   FOOTER_BACKGROUND_CLASS,
   FOOTER_COLUMNS_CLASS,
+  FOOTER_MOBILE_COLUMNS_CLASS,
   FOOTER_SPACING_CLASS,
   type FooterColumn,
+  type FooterConfig,
   type FooterLink,
 } from "@/lib/footerConfig";
+
 
 const SOCIAL_ICON = {
   facebook: Facebook,
