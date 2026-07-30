@@ -525,7 +525,7 @@ function AdminDashboard() {
 
         <section className="rounded-2xl glass-card p-5">
           <h2 className="mb-4 font-display text-base font-semibold">Monthly performance</h2>
-          <div className="flex h-40 items-end gap-3">
+          <div className="flex h-40 items-stretch gap-3">
             {bars.months.map((m) => (
               <div key={m.key} className="group flex flex-1 flex-col items-center justify-end gap-2">
                 <span className="text-[10px] font-semibold text-muted-foreground opacity-0 transition group-hover:opacity-100">
