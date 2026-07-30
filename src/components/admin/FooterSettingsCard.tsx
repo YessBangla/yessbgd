@@ -7,9 +7,23 @@
  */
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Save, Plus, Trash2, LayoutPanelTop, Eye, EyeOff, ChevronUp, ChevronDown } from "lucide-react";
+import {
+  Loader2,
+  Save,
+  Plus,
+  Trash2,
+  LayoutPanelTop,
+  Eye,
+  EyeOff,
+  ChevronUp,
+  ChevronDown,
+  GripVertical,
+  Bookmark,
+} from "lucide-react";
+import { FooterLivePreview } from "@/components/admin/FooterLivePreview";
 import {
   FOOTER_DEFAULTS,
+  FOOTER_TEMPLATES,
   normaliseFooterConfig,
   type FooterColumn,
   type FooterColumnType,
@@ -17,6 +31,7 @@ import {
   type FooterLink,
   type FooterSocial,
 } from "@/lib/footerConfig";
+
 
 const input =
   "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary";
@@ -69,6 +84,10 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [presetName, setPresetName] = useState("");
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOver, setDragOver] = useState<number | null>(null);
+
 
   useEffect(() => {
     void (async () => {
@@ -113,6 +132,47 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
       return { ...c, columns };
     });
 
+  /* ------------------------------ drag & drop ---------------------------- */
+  const moveColumnTo = (from: number, to: number) =>
+    setCfg((c) => {
+      if (from === to || to < 0 || to >= c.columns.length) return c;
+      const columns = [...c.columns];
+      columns.splice(to, 0, columns.splice(from, 1)[0]);
+      return { ...c, columns };
+    });
+
+  /* -------------------------------- presets ------------------------------ */
+  const applyTemplate = (id: string) => {
+    const tpl = FOOTER_TEMPLATES.find((t) => t.id === id);
+    if (!tpl || !canEdit) return;
+    setCfg((c) => ({ ...tpl.apply(c), saved_presets: c.saved_presets ?? [] }));
+  };
+
+  const saveCurrentPreset = () => {
+    const name = presetName.trim();
+    if (!name || !canEdit) return;
+    setCfg((c) => {
+      const { saved_presets: _drop, ...snapshot } = c;
+      const others = (c.saved_presets ?? []).filter((p) => p.name !== name);
+      return { ...c, saved_presets: [...others, { name, config: snapshot }] };
+    });
+    setPresetName("");
+  };
+
+  const applySavedPreset = (name: string) => {
+    if (!canEdit) return;
+    setCfg((c) => {
+      const found = (c.saved_presets ?? []).find((p) => p.name === name);
+      if (!found) return c;
+      return { ...normaliseFooterConfig(found.config), saved_presets: c.saved_presets ?? [] };
+    });
+  };
+
+  const deleteSavedPreset = (name: string) =>
+    setCfg((c) => ({ ...c, saved_presets: (c.saved_presets ?? []).filter((p) => p.name !== name) }));
+
+
+
   const setLink = (colIdx: number, linkIdx: number, patch: Partial<FooterLink>) =>
     setCfg((c) => ({
       ...c,
@@ -150,8 +210,75 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
       {err && <p className="mb-3 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-3 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
 
+      {/* -------------------------------------------------------- presets -- */}
+      <div className="mb-4 rounded-lg border border-border bg-background/60 p-3">
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Templates <span className="font-normal normal-case tracking-normal">· টেমপ্লেট প্রিসেট</span>
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          {FOOTER_TEMPLATES.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => applyTemplate(t.id)}
+              disabled={!canEdit}
+              className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold hover:bg-secondary disabled:opacity-50"
+            >
+              {t.label} · {t.label_bn}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <input
+            value={presetName}
+            onChange={(e) => setPresetName(e.target.value)}
+            placeholder="My preset name · প্রিসেটের নাম"
+            aria-label="Preset name"
+            className={`${smallInput} max-w-[14rem]`}
+          />
+          <button
+            type="button"
+            onClick={saveCurrentPreset}
+            disabled={!canEdit || !presetName.trim()}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold hover:bg-secondary disabled:opacity-50"
+          >
+            <Bookmark className="h-3 w-3" /> Save current · সেভ করুন
+          </button>
+        </div>
+
+        {(cfg.saved_presets ?? []).length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {(cfg.saved_presets ?? []).map((p) => (
+              <span
+                key={p.name}
+                className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-1 text-xs"
+              >
+                <button type="button" onClick={() => applySavedPreset(p.name)} className="font-semibold hover:text-primary">
+                  {p.name}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => deleteSavedPreset(p.name)}
+                  aria-label={`Delete preset ${p.name}`}
+                  className="text-destructive"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ------------------------------------------------------- preview --- */}
+      <div className="mb-4">
+        <FooterLivePreview cfg={cfg} />
+      </div>
+
       {/* ---------------------------------------------------------- style -- */}
       <div className="grid gap-3 rounded-lg border border-border bg-background/60 p-3 sm:grid-cols-2 lg:grid-cols-4">
+
         <Field label="Background" labelBn="ব্যাকগ্রাউন্ড">
           <select
             value={cfg.style.background}
@@ -198,6 +325,26 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
             <option value="normal">Normal case</option>
           </select>
         </Field>
+        <Field label="Mobile columns" labelBn="মোবাইল কলাম">
+          <select
+            value={cfg.style.mobile_columns}
+            onChange={(e) => setStyle("mobile_columns", Number(e.target.value) as FooterConfig["style"]["mobile_columns"])}
+            className={input}
+          >
+            <option value={1}>1 column · এক কলাম</option>
+            <option value={2}>2 columns · দুই কলাম</option>
+          </select>
+        </Field>
+        <Field label="Mobile alignment" labelBn="মোবাইল অ্যালাইনমেন্ট">
+          <select
+            value={cfg.style.mobile_align}
+            onChange={(e) => setStyle("mobile_align", e.target.value as FooterConfig["style"]["mobile_align"])}
+            className={input}
+          >
+            <option value="left">Left · বামে</option>
+            <option value="center">Center · মাঝে</option>
+          </select>
+        </Field>
         <div className="flex flex-wrap items-center gap-4 sm:col-span-2 lg:col-span-4">
           <Toggle checked={cfg.style.border_top} onChange={(v) => setStyle("border_top", v)} label="Top border · উপরের বর্ডার" />
           <Toggle
@@ -205,22 +352,56 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
             onChange={(v) => setStyle("show_bottom_bar", v)}
             label="Bottom bar · নিচের বার"
           />
-          <Toggle checked={cfg.style.align_center} onChange={(v) => setStyle("align_center", v)} label="Centre align · মাঝে" />
+          <Toggle
+            checked={cfg.style.align_center}
+            onChange={(v) => setStyle("align_center", v)}
+            label="Centre align (desktop) · ডেস্কটপে মাঝে"
+          />
         </div>
       </div>
 
       {/* -------------------------------------------------------- columns -- */}
-      <div className="mt-4 grid gap-3 lg:grid-cols-2">
+      <p className="mt-4 text-[11px] text-muted-foreground">
+        রো-গুলো ড্র্যাগ করে ক্রম বদলান · drag the rows to reorder
+      </p>
+      <div className="mt-2 grid gap-3 lg:grid-cols-2">
         {cfg.columns.map((col, i) => (
           <div
             key={i}
-            className={`rounded-lg border border-border bg-background/60 p-3 ${
-              i >= cfg.style.columns ? "opacity-50" : ""
-            }`}
+            onDragOver={(e) => {
+              if (dragIndex === null) return;
+              e.preventDefault();
+              setDragOver(i);
+            }}
+            onDragLeave={() => setDragOver((v) => (v === i ? null : v))}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (dragIndex !== null && canEdit) moveColumnTo(dragIndex, i);
+              setDragIndex(null);
+              setDragOver(null);
+            }}
+            className={`rounded-lg border bg-background/60 p-3 transition-colors ${
+              dragOver === i && dragIndex !== null ? "border-primary ring-2 ring-primary/30" : "border-border"
+            } ${dragIndex === i ? "opacity-60" : ""} ${i >= cfg.style.columns ? "opacity-50" : ""}`}
           >
             <div className="mb-3 flex flex-wrap items-center gap-2">
+              <span
+                draggable={canEdit}
+                onDragStart={() => setDragIndex(i)}
+                onDragEnd={() => {
+                  setDragIndex(null);
+                  setDragOver(null);
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Drag row ${i + 1} to reorder`}
+                className="grid h-7 w-7 cursor-grab place-items-center rounded border border-border text-muted-foreground active:cursor-grabbing"
+              >
+                <GripVertical className="h-3.5 w-3.5" />
+              </span>
               <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold">Row {i + 1}</span>
               {i >= cfg.style.columns && (
+
                 <span className="text-[11px] text-muted-foreground">দেখানো হচ্ছে না (কলাম সংখ্যা বাড়ান)</span>
               )}
               <div className="ml-auto flex items-center gap-1">

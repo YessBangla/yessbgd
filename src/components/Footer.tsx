@@ -8,12 +8,16 @@ import { useMenu, useSettingText } from "@/lib/siteContent";
 import { resolveMediaUrl } from "@/lib/mediaAssets";
 import {
   useFooterConfig,
+  footerAlignClass,
   FOOTER_BACKGROUND_CLASS,
   FOOTER_COLUMNS_CLASS,
+  FOOTER_MOBILE_COLUMNS_CLASS,
   FOOTER_SPACING_CLASS,
   type FooterColumn,
+  type FooterConfig,
   type FooterLink,
 } from "@/lib/footerConfig";
+
 
 const SOCIAL_ICON = {
   facebook: Facebook,
@@ -23,7 +27,7 @@ const SOCIAL_ICON = {
   linkedin: Linkedin,
 } as const;
 
-export function Footer() {
+export function Footer({ configOverride }: { configOverride?: FooterConfig } = {}) {
   const ventures = useVentures();
   const { t, i18n } = useTranslation();
   const footerLinks = useMenu("footer");
@@ -32,7 +36,9 @@ export function Footer() {
   const address = useSettingText("contact_address", COMPANY_CONTACT.office);
   const headerLogo = useSettingText("logo_url", "");
   const logo = resolveMediaUrl(useSettingText("footer_logo_url", "") || headerLogo, fallbackLogo);
-  const cfg = useFooterConfig();
+  const liveCfg = useFooterConfig();
+  const cfg = configOverride ?? liveCfg;
+
 
   const pick = (en?: string, bnText?: string) => (bn && bnText ? bnText : en ?? "");
   const headingCls = `font-display text-sm font-semibold ${
@@ -88,7 +94,12 @@ export function Footer() {
             {pick(col.text, col.text_bn) || t("footer.tagline")}
           </p>
           {col.show_social !== false && cfg.social.length > 0 && (
-            <div className={`mt-5 flex gap-2 ${cfg.style.align_center ? "justify-center" : ""}`}>
+            <div
+              className={`mt-5 flex gap-2 ${
+                cfg.style.mobile_align === "center" ? "justify-center" : "justify-start"
+              } ${cfg.style.align_center ? "md:justify-center" : "md:justify-start"}`}
+            >
+
               {cfg.social.map((s, i) => {
                 const Icon = SOCIAL_ICON[s.network] ?? Facebook;
                 return (
@@ -229,18 +240,19 @@ export function Footer() {
   return (
     <footer
       data-on-dark
-      className={`mt-24 ${cfg.style.border_top ? "border-t border-glass-border-soft" : ""} ${
-        FOOTER_BACKGROUND_CLASS[cfg.style.background]
-      }`}
+      className={`${configOverride ? "" : "mt-24"} ${
+        cfg.style.border_top ? "border-t border-glass-border-soft" : ""
+      } ${FOOTER_BACKGROUND_CLASS[cfg.style.background]}`}
     >
       <div className={`container-tight ${FOOTER_SPACING_CLASS[cfg.style.spacing]}`}>
         <div
-          className={`grid gap-10 ${FOOTER_COLUMNS_CLASS[cfg.style.columns]} ${
-            cfg.style.align_center ? "text-center" : ""
-          }`}
+          className={`grid gap-10 ${FOOTER_MOBILE_COLUMNS_CLASS[cfg.style.mobile_columns]} ${
+            FOOTER_COLUMNS_CLASS[cfg.style.columns]
+          } ${footerAlignClass(cfg.style)}`}
         >
           {cfg.columns.slice(0, cfg.style.columns).map(renderColumn)}
         </div>
+
 
         {cfg.style.show_bottom_bar && (
           <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
