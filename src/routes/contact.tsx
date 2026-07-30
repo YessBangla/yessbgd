@@ -7,7 +7,7 @@ import { PageHero } from "@/components/PageHero";
 import { supabase } from "@/integrations/supabase/client";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 import { useSettingText } from "@/lib/siteContent";
-import { toMapEmbedSrc } from "@/routes/admin.settings";
+import { toMapEmbedSrc } from "@/lib/mapEmbed";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({

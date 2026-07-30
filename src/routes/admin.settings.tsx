@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { BrandingLogoCard } from "@/components/admin/BrandingLogoCard";
 import { Save, Plus, Trash2, Loader2, Code2, MapPin } from "lucide-react";
+import { toMapEmbedSrc } from "@/lib/mapEmbed";
 
 export const Route = createFileRoute("/admin/settings")({
   head: () => ({
@@ -123,18 +124,6 @@ const GROUP_TITLES: Record<string, { en: string; bn: string }> = {
   branding: { en: "Branding", bn: "ব্র্যান্ডিং" },
   custom: { en: "Custom", bn: "কাস্টম" },
 };
-
-/** Turn a plain address into an embeddable Google Maps URL. */
-export function toMapEmbedSrc(value: string): string {
-  const v = value.trim();
-  if (!v) return "";
-  if (/^https?:\/\/(www\.)?google\.[a-z.]+\/maps\/embed/i.test(v)) return v;
-  if (/^<iframe/i.test(v)) {
-    const m = v.match(/src="([^"]+)"/i);
-    if (m) return m[1];
-  }
-  return `https://www.google.com/maps?q=${encodeURIComponent(v)}&z=16&output=embed`;
-}
 
 function asObject(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" && !Array.isArray(value) ? { ...(value as Record<string, unknown>) } : {};
