@@ -94,6 +94,67 @@ function AdminPagesList() {
   const menuCountFor = (path: string) =>
     menuItems.filter((m) => (m.href ?? "").trim() === path.trim()).length;
 
+  /** Menu nodes (any location, any depth) that point at this page path. */
+  const menuNodesFor = (path: string) => {
+    const out: { node: MenuNode; location: string }[] = [];
+    for (const loc of ["header", "footer"]) {
+      const walk = (nodes: MenuNode[]) => {
+        for (const n of nodes) {
+          if ((n.href ?? "").trim() === path.trim()) out.push({ node: n, location: loc });
+          else walk(n.children);
+        }
+      };
+      walk(buildMenuTree(menuItems.filter((m) => m.location === loc)));
+    }
+    return out;
+  };
+
+  const refreshMenus = async () => {
+    await loadMenu();
+    await qc.invalidateQueries({ queryKey: ["cms", "menu", "header"] });
+    await qc.invalidateQueries({ queryKey: ["cms", "menu", "footer"] });
+  };
+
+  const addSubmenu = async (parent: MenuNode, label: string, labelBn: string, href: string) => {
+    const siblings = menuItems.filter((m) => (m.parent_id ?? null) === parent.id);
+    const { error } = await supabase.from("cms_menu_items").insert({
+      location: parent.location,
+      label: label.trim(),
+      label_bn: labelBn.trim() || null,
+      href: href.trim(),
+      parent_id: parent.id,
+      depth: (parent.depth ?? 0) + 1,
+      sort_order: siblings.length + 1,
+      is_published: true,
+      visible_to: "all",
+    } as never);
+    if (error) setErr(error.message);
+    else await refreshMenus();
+  };
+
+  const toggleMenuPublished = async (id: string, next: boolean) => {
+    await supabase.from("cms_menu_items").update({ is_published: next } as never).eq("id", id);
+    await refreshMenus();
+  };
+
+  const renameMenuItem = async (item: MenuNode) => {
+    const label = window.prompt("Menu label (EN) · মেনু লেবেল", item.label);
+    if (label === null) return;
+    const labelBn = window.prompt("মেনু লেবেল (BN)", item.label_bn ?? "");
+    await supabase
+      .from("cms_menu_items")
+      .update({ label: label.trim() || item.label, label_bn: (labelBn ?? "").trim() || null } as never)
+      .eq("id", item.id);
+    await refreshMenus();
+  };
+
+  const deleteMenuItem = async (item: MenuNode) => {
+    if (!window.confirm(`Remove menu item “${item.label}”? · মেনু আইটেম মুছবেন?`)) return;
+    await supabase.from("cms_menu_items").delete().eq("id", item.id);
+    await refreshMenus();
+  };
+
+
   const invalidate = async () => {
     await qc.invalidateQueries({ queryKey: ["cms", "site-pages"] });
     await refetch();
