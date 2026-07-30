@@ -236,6 +236,7 @@ function AdminPagesList() {
       />
 
       {err && <p className="mb-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
+      {notice && <p className="mb-4 rounded-md bg-admin-accent/10 px-3 py-2 text-sm text-admin-accent">{notice}</p>}
 
       <div className="rounded-xl border border-border bg-card shadow-sm">
         {/* Toolbar */}
