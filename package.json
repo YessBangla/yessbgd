@@ -20,7 +20,8 @@
     "test:pdf": "bun test tests/unit/ventureBrief.test.ts",
     "test:pdf-visual": "bun scripts/pdf-visual-regression.mjs",
     "test:pdf-visual:update": "bun scripts/pdf-visual-regression.mjs --update",
-    "bench:pdf": "bun scripts/pdf-perf-bench.mjs"
+    "bench:pdf": "bun scripts/pdf-perf-bench.mjs",
+    "test:admin": "playwright test --config playwright.admin.config.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
@@ -92,6 +93,7 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.8.1",
+    "@playwright/test": "^1.62.0",
     "@types/node": "^22.16.5",
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19.2.0",

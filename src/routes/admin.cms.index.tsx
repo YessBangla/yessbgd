@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { CMS_TYPES } from "@/lib/cmsSchema";
+import { AdminLoadingState } from "@/components/admin/AdminLoading";
 import { syncStaticContentToCms } from "@/lib/dynamicContent";
 import { ArrowRight, Database, FileText, Briefcase, Layers } from "lucide-react";
 
@@ -13,6 +14,9 @@ export const Route = createFileRoute("/admin/cms/")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
+  pendingMs: 150,
+  pendingMinMs: 200,
+  pendingComponent: () => <AdminLoadingState />,
   component: AdminCmsIndex,
 });
 
@@ -49,7 +53,7 @@ function AdminCmsIndex() {
     })();
   }, [navigate]);
 
-  if (!ready) return null;
+  if (!ready) return <AdminLoadingState />;
 
   return (
     <>
