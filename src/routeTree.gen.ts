@@ -30,6 +30,7 @@ import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminPagesRouteImport } from './routes/admin.pages'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminCmsRouteImport } from './routes/admin.cms'
@@ -148,6 +149,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPagesRoute = AdminPagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminMessagesRoute = AdminMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -233,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
+  '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
+  '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
+  '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -340,6 +349,7 @@ export interface FileRouteTypes {
     | '/admin/cms'
     | '/admin/login'
     | '/admin/messages'
+    | '/admin/pages'
     | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
@@ -374,6 +384,7 @@ export interface FileRouteTypes {
     | '/admin/cms'
     | '/admin/login'
     | '/admin/messages'
+    | '/admin/pages'
     | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
@@ -409,6 +420,7 @@ export interface FileRouteTypes {
     | '/admin/cms'
     | '/admin/login'
     | '/admin/messages'
+    | '/admin/pages'
     | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
@@ -588,6 +600,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/pages': {
+      id: '/admin/pages'
+      path: '/pages'
+      fullPath: '/admin/pages'
+      preLoaderRoute: typeof AdminPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/messages': {
       id: '/admin/messages'
       path: '/messages'
@@ -723,6 +742,7 @@ interface AdminRouteChildren {
   AdminCmsRoute: typeof AdminCmsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
+  AdminPagesRoute: typeof AdminPagesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -733,6 +753,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCmsRoute: AdminCmsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminMessagesRoute: AdminMessagesRoute,
+  AdminPagesRoute: AdminPagesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
