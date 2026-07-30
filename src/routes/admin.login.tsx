@@ -152,21 +152,21 @@ function AdminLogin() {
   };
 
   const field =
-    "w-full rounded-xl border border-white/15 bg-white/10 px-11 py-3 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/40 focus:bg-white/15 focus:ring-2 focus:ring-white/20";
+    "w-full rounded-xl border border-white/15 bg-white/10 px-11 py-3 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-[oklch(0.75_0.16_62_/_0.6)] focus:bg-white/15 focus:ring-2 focus:ring-[oklch(0.72_0.17_50_/_0.35)]";
 
 
   return (
-    <main className="admin-scope relative grid min-h-screen place-items-center overflow-hidden bg-[oklch(0.21_0.03_255)] px-4 py-10">
+    <main className="admin-scope relative grid min-h-screen place-items-center overflow-hidden bg-[oklch(0.19_0.022_52)] px-4 py-10">
       {/* ambient corporate mesh */}
       <div
         aria-hidden
         className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, oklch(0.55 0.12 235 / 0.55), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, oklch(0.66 0.185 42 / 0.55), transparent 70%)" }}
       />
       <div
         aria-hidden
         className="pointer-events-none absolute -bottom-52 -right-32 h-[560px] w-[560px] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, oklch(0.60 0.10 195 / 0.42), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, oklch(0.75 0.155 62 / 0.45), transparent 70%)" }}
       />
       <div
         aria-hidden
@@ -314,7 +314,7 @@ function AdminLogin() {
             <button
               type="submit"
               disabled={loading || (mode === "signin" && locked)}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[oklch(0.21_0.03_255)] shadow-lg transition hover:bg-white/90 disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,oklch(0.655_0.185_42)_0%,oklch(0.75_0.160_62)_100%)] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_-12px_oklch(0.55_0.16_45_/_0.8)] transition hover:brightness-105 disabled:opacity-60"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               {loading
