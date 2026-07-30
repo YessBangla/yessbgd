@@ -225,77 +225,141 @@ function AdminLogin() {
             <ArrowLeft className="h-3.5 w-3.5" /> Back to website
           </Link>
 
-          <h2 className="mt-6 text-2xl font-semibold text-white">Sign in</h2>
+          <h2 className="mt-6 text-2xl font-semibold text-white">
+            {mode === "signin" ? "Sign in" : mode === "forgot" ? "Reset password" : "Set a new password"}
+          </h2>
           <p className="mt-1 text-sm text-white/55">
-            Restricted area — অনুমোদিত কর্মীদের জন্য সংরক্ষিত।
+            {mode === "signin"
+              ? "Restricted area — অনুমোদিত কর্মীদের জন্য সংরক্ষিত।"
+              : mode === "forgot"
+                ? "We'll email you a secure reset link — রিসেট লিংক পাঠানো হবে।"
+                : "Choose a strong password of at least 8 characters."}
           </p>
 
           <form onSubmit={onSubmit} className="mt-7 space-y-4">
-            <div>
-              <label htmlFor="admin-email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/60">
-                Email
-              </label>
-              <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
-                <input
-                  id="admin-email"
-                  type="email"
-                  required
-                  autoComplete="username"
-                  placeholder="admin@yessbangla.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={field}
-                />
+            {mode !== "reset" && (
+              <div>
+                <label htmlFor="admin-email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/60">
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
+                  <input
+                    id="admin-email"
+                    type="email"
+                    required
+                    autoComplete="username"
+                    placeholder="admin@yessbangla.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={field}
+                  />
+                </div>
               </div>
-            </div>
-
-            <div>
-              <label htmlFor="admin-password" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/60">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
-                <input
-                  id="admin-password"
-                  type={showPw ? "text" : "password"}
-                  required
-                  autoComplete="current-password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={`${field} pr-11`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPw((v) => !v)}
-                  aria-label={showPw ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-white/50 transition hover:bg-white/10 hover:text-white"
-                >
-                  {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <p className="flex items-start gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">
-                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {error}
-              </p>
             )}
+
+            {mode !== "forgot" && (
+              <div>
+                <label htmlFor="admin-password" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/60">
+                  {mode === "reset" ? "New password" : "Password"}
+                </label>
+                <div className="relative">
+                  <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
+                  <input
+                    id="admin-password"
+                    type={showPw ? "text" : "password"}
+                    required
+                    autoComplete={mode === "reset" ? "new-password" : "current-password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`${field} pr-11`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw((v) => !v)}
+                    aria-label={showPw ? "Hide password" : "Show password"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-white/50 transition hover:bg-white/10 hover:text-white"
+                  >
+                    {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div aria-live="polite" className="space-y-2">
+              {error && (
+                <p className="flex items-start gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">
+                  <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {error}
+                </p>
+              )}
+              {status && !error && (
+                <p className="flex items-start gap-2 rounded-xl border border-emerald-300/30 bg-emerald-400/10 px-3 py-2 text-xs text-emerald-100">
+                  <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {status}
+                </p>
+              )}
+              {mode === "signin" && locked && (
+                <p className="flex items-start gap-2 rounded-xl border border-amber-300/30 bg-amber-400/10 px-3 py-2 text-xs text-amber-100">
+                  <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  Account temporarily locked after {MAX_ATTEMPTS} failed attempts. Try again in {remaining}s.
+                </p>
+              )}
+              {mode === "signin" && !locked && guard.fails > 0 && (
+                <p className="text-[11px] text-amber-200/80">
+                  {attemptsLeft} attempt{attemptsLeft === 1 ? "" : "s"} left before a temporary lockout.
+                </p>
+              )}
+            </div>
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || (mode === "signin" && locked)}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[oklch(0.21_0.03_255)] shadow-lg transition hover:bg-white/90 disabled:opacity-60"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {loading ? "Signing in…" : "Sign in to dashboard"}
+              {loading
+                ? "Working…"
+                : mode === "signin"
+                  ? locked
+                    ? `Locked — ${remaining}s`
+                    : "Sign in to dashboard"
+                  : mode === "forgot"
+                    ? "Send reset link"
+                    : "Update password"}
             </button>
+
+            {mode === "signin" ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("forgot");
+                  setError(null);
+                  setStatus(null);
+                }}
+                className="w-full text-center text-xs font-medium text-white/60 underline-offset-4 transition hover:text-white hover:underline"
+              >
+                Forgot password? — পাসওয়ার্ড ভুলে গেছেন?
+              </button>
+            ) : mode === "forgot" ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("signin");
+                  setError(null);
+                  setStatus(null);
+                }}
+                className="w-full text-center text-xs font-medium text-white/60 underline-offset-4 transition hover:text-white hover:underline"
+              >
+                Back to sign in
+              </button>
+            ) : null}
           </form>
 
           <p className="mt-6 flex items-center gap-2 text-[11px] text-white/40">
-            <ShieldCheck className="h-3.5 w-3.5" /> Sessions are encrypted and every admin action is logged.
+            <ShieldCheck className="h-3.5 w-3.5" /> Sessions are encrypted, repeated failures are throttled, and every
+            admin action is logged.
           </p>
+
         </section>
       </div>
     </main>
