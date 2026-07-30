@@ -5,6 +5,15 @@ import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { buildMenuTree, type MenuItem, type MenuNode } from "@/lib/siteContent";
 import { useInternalLinkOptions } from "@/lib/internalLinks";
 import {
+  DEFAULT_MENU_LOCK,
+  MENU_LOCK_SETTING_KEY,
+  normalizeHeaderOrder,
+  readMenuLock,
+  validateHeaderMenu,
+  type MenuLockValue,
+} from "@/lib/menuLock";
+import { clearMenuPreview, setMenuPreview } from "@/lib/menuPreview";
+import {
   MENU_ACCENTS,
   MENU_ICON_NAMES,
   MENU_STYLES,
@@ -33,6 +42,11 @@ import {
   Redo2,
   Check,
   Users,
+  Lock,
+  Unlock,
+  AlertTriangle,
+  ExternalLink,
+  Wand2,
 } from "lucide-react";
 
 
@@ -78,6 +92,9 @@ function AdminMenus() {
   const [dropTarget, setDropTarget] = useState<{ id: string; mode: DropMode } | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const linkOptions = useInternalLinkOptions();
+  const [lock, setLock] = useState<MenuLockValue>(DEFAULT_MENU_LOCK);
+  const [lockRowId, setLockRowId] = useState<string | null>(null);
+  const [previewing, setPreviewing] = useState(false);
   const dragIdRef = useRef<string | null>(null);
 
   // ---- undo / redo history -------------------------------------------------
@@ -115,7 +132,44 @@ function AdminMenus() {
 
   useEffect(() => {
     void load();
+    void (async () => {
+      const { data } = await supabase
+        .from("cms_settings")
+        .select("id,value")
+        .eq("key", MENU_LOCK_SETTING_KEY)
+        .maybeSingle();
+      if (data) {
+        setLockRowId((data as { id: string }).id);
+        setLock(readMenuLock((data as { value: unknown }).value));
+      }
+    })();
   }, []);
+
+  /** Persist the header ordering lock into cms_settings. */
+  const saveLock = async (next: MenuLockValue) => {
+    setLock(next);
+    if (lockRowId) {
+      const { error } = await supabase
+        .from("cms_settings")
+        .update({ value: next } as never)
+        .eq("id", lockRowId);
+      if (error) setErr(error.message);
+      return;
+    }
+    const { data, error } = await supabase
+      .from("cms_settings")
+      .insert({
+        key: MENU_LOCK_SETTING_KEY,
+        label: "Header menu lock",
+        group: "navigation",
+        value: next,
+        sort_order: 99,
+      } as never)
+      .select("id")
+      .maybeSingle();
+    if (error) setErr(error.message);
+    else if (data) setLockRowId((data as { id: string }).id);
+  };
 
   const patch = (id: string, key: keyof MenuItem, value: unknown) =>
     setRows((rs) => rs.map((r) => (r.id === id ? { ...r, [key]: value } : r)));
@@ -784,6 +838,23 @@ function AdminMenus() {
   };
 
 
+  // Keep the site-preview draft in sync with the editor while preview is active.
+  useEffect(() => {
+    if (previewing) setMenuPreview(rows);
+  }, [rows, previewing]);
+  useEffect(() => () => clearMenuPreview(), []);
+
+  const issues = useMemo(() => validateHeaderMenu(rows, lock), [rows, lock]);
+  const currentHeaderOrder = useMemo(
+    () =>
+      rows
+        .filter((r) => r.location === "header" && !r.parent_id)
+        .slice()
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map((r) => r.href),
+    [rows],
+  );
+
   const canUndo = past.current.length > 0;
   const canRedo = future.current.length > 0;
   void histTick; // re-render trigger for the undo/redo buttons
@@ -818,6 +889,30 @@ function AdminMenus() {
               <input type="checkbox" checked={autoSave} onChange={(e) => setAutoSave(e.target.checked)} />
               Autosave
             </label>
+            <button
+              onClick={() => {
+                if (previewing) {
+                  clearMenuPreview();
+                  setPreviewing(false);
+                  return;
+                }
+                setMenuPreview(rows);
+                setPreviewing(true);
+                window.open("/", "_blank", "noopener");
+              }}
+              className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${previewing ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-secondary"}`}
+            >
+              <ExternalLink className="h-4 w-4" />
+              {previewing ? "Stop site preview" : "Preview on site"}
+            </button>
+            <button
+              onClick={() => void saveLock({ ...lock, locked: !lock.locked })}
+              aria-pressed={lock.locked}
+              className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${lock.locked ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-secondary"}`}
+            >
+              {lock.locked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+              {lock.locked ? "Order locked" : "Order unlocked"}
+            </button>
             <button
               onClick={() => setShowPreview((v) => !v)}
               className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-secondary"
@@ -855,6 +950,13 @@ function AdminMenus() {
           <>Autosave is off — use “Save all”.</>
         )}
       </div>
+
+      <MenuLockPanel
+        issues={issues}
+        lock={lock}
+        onFixOrder={() => setRows((rs) => normalizeHeaderOrder(rs, lock))}
+        onCapture={() => void saveLock({ ...lock, order: currentHeaderOrder })}
+      />
 
       {err && <p className="mb-4 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
@@ -1136,4 +1238,67 @@ function flattenTree(
 
 function countDescendants(node: MenuNode): number {
   return node.children.reduce((n, c) => n + 1 + countDescendants(c), 0);
+}
+
+/* --------------------------- lock & validation UI -------------------------- */
+
+function MenuLockPanel({
+  issues,
+  lock,
+  onFixOrder,
+  onCapture,
+}: {
+  issues: ReturnType<typeof validateHeaderMenu>;
+  lock: MenuLockValue;
+  onFixOrder: () => void;
+  onCapture: () => void;
+}) {
+  const errors = issues.filter((i) => i.level === "error");
+  return (
+    <div
+      data-testid="menu-lock-panel"
+      className={`mb-4 rounded-xl border p-3 text-sm ${errors.length ? "border-destructive/40 bg-destructive/5" : "border-border bg-card"}`}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="inline-flex items-center gap-2 font-semibold">
+          {errors.length ? (
+            <AlertTriangle className="h-4 w-4 text-destructive" />
+          ) : lock.locked ? (
+            <Lock className="h-4 w-4 text-primary" />
+          ) : (
+            <Unlock className="h-4 w-4 text-muted-foreground" />
+          )}
+          Header structure {errors.length ? "needs attention" : "is consistent"}
+          <span className="font-normal text-muted-foreground">— হেডার কাঠামো যাচাই</span>
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={onFixOrder}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs hover:bg-secondary"
+          >
+            <Wand2 className="h-3.5 w-3.5" /> Restore locked order
+          </button>
+          <button
+            onClick={onCapture}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs hover:bg-secondary"
+          >
+            <Lock className="h-3.5 w-3.5" /> Lock current order
+          </button>
+        </div>
+      </div>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Locked order: {lock.order.join(" → ")}
+        {lock.locked ? " — the public header always renders in this order." : " — lock is off, the header follows CMS order."}
+      </p>
+      {issues.length > 0 && (
+        <ul className="mt-2 space-y-1 text-xs">
+          {issues.map((i, idx) => (
+            <li key={idx} className={i.level === "error" ? "text-destructive" : "text-muted-foreground"}>
+              • {i.message} <span className="opacity-70">{i.messageBn}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
