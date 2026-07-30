@@ -401,6 +401,46 @@ function AdminPagesList() {
                 </span>
               </label>
             </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Add to menu · মেনুতে যোগ করুন
+                </span>
+                <select
+                  value={menuLoc}
+                  onChange={(e) => setMenuLoc(e.target.value as "none" | "header" | "footer")}
+                  className={inputCls}
+                >
+                  <option value="none">Don&apos;t add · যোগ করবেন না</option>
+                  <option value="header">Header menu · হেডার</option>
+                  <option value="footer">Footer menu · ফুটার</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Place under (submenu) · কার নিচে
+                </span>
+                <select
+                  value={menuParent}
+                  onChange={(e) => setMenuParent(e.target.value)}
+                  disabled={menuLoc === "none"}
+                  className={`${inputCls} disabled:opacity-50`}
+                >
+                  <option value="">Top level · টপ লেভেল</option>
+                  {parentOptions.map((o) => (
+                    <option key={o.node.id} value={o.node.id}>
+                      {"— ".repeat(o.depth)}
+                      {o.node.label} {o.depth === 0 ? "(submenu)" : "(sub-submenu)"}
+                    </option>
+                  ))}
+                </select>
+                <span className="mt-1 block text-[11px] text-muted-foreground">
+                  সর্বোচ্চ ৩ লেভেল — পরে Navigation &amp; submenu ট্যাব থেকেও বদলানো যাবে।
+                </span>
+              </label>
+            </div>
+
             <div className="mt-4 flex gap-2">
               <button
                 onClick={create}
