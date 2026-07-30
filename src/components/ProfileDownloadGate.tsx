@@ -472,11 +472,45 @@ export function ProfileDownloadGate({
                   <a
                     href={downloadHref}
                     download={filename}
-                    onClick={() => setTimeout(closeAndReset, 600)}
+                    onClick={(e) => {
+                      // Some in-app / mobile browsers ignore the `download`
+                      // attribute and silently do nothing. Fetch the file and
+                      // save it via a blob URL instead, falling back to a plain
+                      // navigation if that is blocked too.
+                      e.preventDefault();
+                      void (async () => {
+                        try {
+                          const res = await fetch(downloadHref);
+                          if (!res.ok) throw new Error(String(res.status));
+                          const blob = await res.blob();
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = filename;
+                          document.body.appendChild(a);
+                          a.click();
+                          a.remove();
+                          setTimeout(() => URL.revokeObjectURL(url), 4000);
+                        } catch {
+                          window.open(downloadHref, "_blank", "noopener");
+                        }
+                        setTimeout(closeAndReset, 600);
+                      })();
+                    }}
                     className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
                   >
                     {t("gate.downloadPdf")} <ArrowRight className="h-4 w-4" aria-hidden />
                   </a>
+
+                  <a
+                    href={downloadHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 block text-center text-xs font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  >
+                    Open in browser · ব্রাউজারে খুলুন
+                  </a>
+
 
                   <p className="mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                     {t("gate.footer")}
