@@ -20,12 +20,12 @@ export const Route = createFileRoute("/insights")({
   component: Insights,
 });
 
-const featured = insights[0];
-const posts = insights.slice(1);
 const categories = ["All", "Strategy", "Technology", "E-commerce", "Leadership", "IT Services", "Design"];
 
 function Insights() {
   const insights = useInsights();
+  const featured = insights[0];
+  const posts = insights.slice(1);
   const { t } = useTranslation();
   return (
     <>
