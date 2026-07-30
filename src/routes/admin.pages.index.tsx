@@ -167,12 +167,16 @@ function AdminPagesList() {
 
   /** Persist a new sibling order (array of menu item ids, top → bottom). */
   const reorderMenuItems = async (ids: string[]) => {
-    const { error } = await supabase
-      .from("cms_menu_items")
-      .upsert(ids.map((id, i) => ({ id, sort_order: i + 1 })) as never, { onConflict: "id" });
-    if (error) setErr(error.message);
+    for (let i = 0; i < ids.length; i++) {
+      const { error } = await supabase
+        .from("cms_menu_items")
+        .update({ sort_order: i + 1 } as never)
+        .eq("id", ids[i]);
+      if (error) setErr(error.message);
+    }
     await refreshMenus();
   };
+
 
 
   const invalidate = async () => {
