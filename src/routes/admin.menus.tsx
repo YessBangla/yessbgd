@@ -310,14 +310,16 @@ function AdminMenus() {
             {depth === 0 ? "Menu" : depth === 1 ? "Sub" : "Sub·2"}
           </span>
 
-          <span className="flex min-w-0 flex-1 items-center gap-1.5 truncate text-sm font-medium">
+          <span className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden text-sm font-medium">
             {node.icon ? (
               <span style={{ color: accentColor(node.accent) }}>
                 <MenuIcon name={node.icon} className="h-4 w-4" />
               </span>
             ) : null}
-            <span style={{ color: accentColor(node.accent) }}>{node.label}</span>
-            {node.label_bn ? <span className="text-muted-foreground">/ {node.label_bn}</span> : null}
+            <span className="shrink-0" style={{ color: accentColor(node.accent) }}>{node.label}</span>
+            {node.label_bn ? (
+              <span className="max-w-[9rem] shrink-0 truncate text-muted-foreground">/ {node.label_bn}</span>
+            ) : null}
             {node.badge ? (
               <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
                 {node.badge}
