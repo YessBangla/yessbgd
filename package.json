@@ -20,7 +20,8 @@
     "test:pdf": "bun test tests/unit/ventureBrief.test.ts",
     "test:pdf-visual": "bun scripts/pdf-visual-regression.mjs",
     "test:pdf-visual:update": "bun scripts/pdf-visual-regression.mjs --update",
-    "bench:pdf": "bun scripts/pdf-perf-bench.mjs"
+    "bench:pdf": "bun scripts/pdf-perf-bench.mjs",
+    "test:admin": "playwright test --config playwright.admin.config.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
