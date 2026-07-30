@@ -17,7 +17,11 @@ import {
   ChevronRight,
   ExternalLink,
   UserRound,
+  ListTree,
+  Image as ImageIcon,
+  Settings,
 } from "lucide-react";
+
 
 type NavLeaf = {
   label: string;
@@ -58,6 +62,14 @@ function buildNav(): NavGroup[] {
       ],
     },
     {
+      title: "Appearance",
+      items: [
+        { label: "Pages & sections", labelBn: "পেজ ও সেকশন", to: "/admin/pages", icon: FileText },
+        { label: "Menus", labelBn: "মেনু ও ফুটার", to: "/admin/menus", icon: ListTree },
+        { label: "Media library", labelBn: "মিডিয়া", to: "/admin/media", icon: ImageIcon },
+      ],
+    },
+    {
       title: "Operations",
       items: [
         { label: "Job applications", labelBn: "চাকরির আবেদন", to: "/admin/applications", icon: Briefcase },
@@ -66,10 +78,14 @@ function buildNav(): NavGroup[] {
     },
     {
       title: "System",
-      items: [{ label: "Audit log", labelBn: "অডিট লগ", to: "/admin/audit", icon: ShieldCheck }],
+      items: [
+        { label: "Site settings", labelBn: "সাইট সেটিংস", to: "/admin/settings", icon: Settings },
+        { label: "Audit log", labelBn: "অডিট লগ", to: "/admin/audit", icon: ShieldCheck },
+      ],
     },
   ];
 }
+
 
 function useActivePath() {
   return useRouterState({ select: (s) => s.location.pathname });

@@ -29,7 +29,11 @@ import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminPagesRouteImport } from './routes/admin.pages'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
+import { Route as AdminMenusRouteImport } from './routes/admin.menus'
+import { Route as AdminMediaRouteImport } from './routes/admin.media'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminCmsRouteImport } from './routes/admin.cms'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
@@ -142,9 +146,29 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CareersRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPagesRoute = AdminPagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminMessagesRoute = AdminMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMenusRoute = AdminMenusRouteImport.update({
+  id: '/menus',
+  path: '/menus',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMediaRoute = AdminMediaRouteImport.update({
+  id: '/media',
+  path: '/media',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
@@ -226,7 +250,11 @@ export interface FileRoutesByFullPath {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/media': typeof AdminMediaRoute
+  '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
+  '/admin/pages': typeof AdminPagesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
@@ -259,7 +287,11 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/media': typeof AdminMediaRoute
+  '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
+  '/admin/pages': typeof AdminPagesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
@@ -294,7 +326,11 @@ export interface FileRoutesById {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/cms': typeof AdminCmsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/media': typeof AdminMediaRoute
+  '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
+  '/admin/pages': typeof AdminPagesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
@@ -330,7 +366,11 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/cms'
     | '/admin/login'
+    | '/admin/media'
+    | '/admin/menus'
     | '/admin/messages'
+    | '/admin/pages'
+    | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
     | '/insights/$slug'
@@ -363,7 +403,11 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/cms'
     | '/admin/login'
+    | '/admin/media'
+    | '/admin/menus'
     | '/admin/messages'
+    | '/admin/pages'
+    | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
     | '/insights/$slug'
@@ -397,7 +441,11 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/cms'
     | '/admin/login'
+    | '/admin/media'
+    | '/admin/menus'
     | '/admin/messages'
+    | '/admin/pages'
+    | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
     | '/insights/$slug'
@@ -569,11 +617,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof CareersRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pages': {
+      id: '/admin/pages'
+      path: '/pages'
+      fullPath: '/admin/pages'
+      preLoaderRoute: typeof AdminPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/messages': {
       id: '/admin/messages'
       path: '/messages'
       fullPath: '/admin/messages'
       preLoaderRoute: typeof AdminMessagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/menus': {
+      id: '/admin/menus'
+      path: '/menus'
+      fullPath: '/admin/menus'
+      preLoaderRoute: typeof AdminMenusRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/media': {
+      id: '/admin/media'
+      path: '/media'
+      fullPath: '/admin/media'
+      preLoaderRoute: typeof AdminMediaRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/login': {
@@ -703,7 +779,11 @@ interface AdminRouteChildren {
   AdminAuditRoute: typeof AdminAuditRoute
   AdminCmsRoute: typeof AdminCmsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminMediaRoute: typeof AdminMediaRoute
+  AdminMenusRoute: typeof AdminMenusRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
+  AdminPagesRoute: typeof AdminPagesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -712,7 +792,11 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAuditRoute: AdminAuditRoute,
   AdminCmsRoute: AdminCmsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
+  AdminMediaRoute: AdminMediaRoute,
+  AdminMenusRoute: AdminMenusRoute,
   AdminMessagesRoute: AdminMessagesRoute,
+  AdminPagesRoute: AdminPagesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -785,12 +869,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

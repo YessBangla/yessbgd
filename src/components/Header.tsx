@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useReducedMotion, type Transition } from "fram
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
+import { useMenu } from "@/lib/siteContent";
+
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { ThemePreviewSwitch } from "@/components/ThemePreviewSwitch";
 
@@ -172,7 +174,13 @@ const MobilePanel = memo(function MobilePanel({
 
 export function Header() {
   const ventures = useVentures();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const menu = useMenu("header");
+  const bn = i18n.language?.startsWith("bn");
+  const navLinks: { id: string; label: string; href: string }[] = menu.length
+    ? menu.map((m) => ({ id: m.id, label: (bn && m.label_bn) || m.label, href: m.href }))
+    : nav.map((n) => ({ id: n.to, label: t(`nav.${n.key}`), href: n.to }));
+
   const [open, setOpen] = useState(false);
   const [venturesOpen, setVenturesOpen] = useState(false);
   const [mobileVenturesOpen, setMobileVenturesOpen] = useState(false);
@@ -235,83 +243,71 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
-          <Link
-            to="/"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-            activeOptions={{ exact: true }}
-          >
-            {t("nav.home")}
-          </Link>
-          <Link
-            to="/about"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            {t("nav.about")}
-          </Link>
-          <Link
-            to="/services"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-            activeProps={{ className: "text-primary bg-secondary" }}
-          >
-            {t("nav.services")}
-          </Link>
-
-          <div
-            className="relative"
-            onMouseEnter={() => setVenturesOpen(true)}
-            onMouseLeave={() => setVenturesOpen(false)}
-          >
-            <Link
-              to="/ventures"
-              className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
-            >
-              {t("nav.ventures")} <ChevronDown className="h-3.5 w-3.5" />
-            </Link>
-            {venturesOpen && (
-              <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
-                <div className="glass-strong w-[640px] rounded-2xl border border-glass-border p-3 shadow-elegant">
-                  <div className="grid grid-cols-2 gap-1">
-                    {ventures.map((v) => {
-                      const Icon = v.icon;
-                      return (
-                        <Link
-                          key={v.slug}
-                          to="/ventures/$slug"
-                          params={{ slug: v.slug }}
-                          preload="intent"
-                          onClick={() => setVenturesOpen(false)}
-                          className="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
-                        >
-                          <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
-                            <Icon className="h-4.5 w-4.5" strokeWidth={1.6} />
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block text-sm font-semibold">{v.title}</span>
-                            <span className="block text-xs text-muted-foreground truncate">{v.category}</span>
-                          </span>
-                        </Link>
-                      );
-                    })}
+          {navLinks.map((item) =>
+            item.href === "/ventures" ? (
+              <div
+                key={item.id}
+                className="relative"
+                onMouseEnter={() => setVenturesOpen(true)}
+                onMouseLeave={() => setVenturesOpen(false)}
+              >
+                <Link
+                  to="/ventures"
+                  className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
+                >
+                  {item.label} <ChevronDown className="h-3.5 w-3.5" />
+                </Link>
+                {venturesOpen && (
+                  <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
+                    <div className="glass-strong w-[640px] rounded-2xl border border-glass-border p-3 shadow-elegant">
+                      <div className="grid grid-cols-2 gap-1">
+                        {ventures.map((v) => {
+                          const Icon = v.icon;
+                          return (
+                            <Link
+                              key={v.slug}
+                              to="/ventures/$slug"
+                              params={{ slug: v.slug }}
+                              preload="intent"
+                              onClick={() => setVenturesOpen(false)}
+                              className="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
+                            >
+                              <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${v.color} text-primary-foreground`}>
+                                <Icon className="h-4.5 w-4.5" strokeWidth={1.6} />
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block text-sm font-semibold">{v.title}</span>
+                                <span className="block text-xs text-muted-foreground truncate">{v.category}</span>
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                      <Link
+                        to="/projects"
+                        onClick={() => setVenturesOpen(false)}
+                        className="mt-2 block rounded-xl bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-primary"
+                      >
+                        {t("nav.viewAllVentures")}
+                      </Link>
+                    </div>
                   </div>
-                  <Link
-                    to="/projects"
-                    onClick={() => setVenturesOpen(false)}
-                    className="mt-2 block rounded-xl bg-secondary px-4 py-2.5 text-center text-sm font-semibold text-primary"
-                  >
-                    {t("nav.viewAllVentures")}
-                  </Link>
-                </div>
+                )}
               </div>
-            )}
-          </div>
-
-          <Link to="/industries" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.industries")}</Link>
-          <Link to="/insights" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.insights")}</Link>
-          <Link to="/careers" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.careers")}</Link>
-          <Link to="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground" activeProps={{ className: "text-primary bg-secondary" }}>{t("nav.contact")}</Link>
+            ) : (
+              <Link
+                key={item.id}
+                to={item.href}
+                className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+                activeProps={{ className: "text-primary bg-secondary" }}
+                activeOptions={item.href === "/" ? { exact: true } : undefined}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
+
 
         {/* Right cluster — language + CTA on desktop, compact toggle + hamburger on mobile.
             Keeping the hamburger inside this cluster prevents `justify-between`
