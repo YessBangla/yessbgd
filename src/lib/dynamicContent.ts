@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveMediaUrl } from "@/lib/mediaAssets";
 
 import { ventures as staticVentures, type Venture } from "@/data/ventures";
 import { services as staticServices, type ServiceItem } from "@/data/services";
@@ -48,22 +49,9 @@ function merge<T extends { slug: string }>(
 // Bundled venture artwork, keyed by file name. Lets the CMS store a friendly
 // path like "/src/assets/ventures/yess-food.jpg" (or just "yess-food.jpg")
 // while the site still serves the hashed, build-safe asset URL.
-const BUNDLED_IMAGES = import.meta.glob("@/assets/ventures/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
-
-const BUNDLED_BY_NAME: Record<string, string> = Object.fromEntries(
-  Object.entries(BUNDLED_IMAGES).map(([p, url]) => [p.split("/").pop() ?? p, url]),
-);
-
 /** Resolve a CMS image reference to a URL that works in dev and production. */
 export function resolveImage(value: unknown, fallback: string): string {
-  if (typeof value !== "string" || !value.trim()) return fallback;
-  const v = value.trim();
-  if (/^(https?:)?\/\//.test(v) || v.startsWith("data:")) return v;
-  const name = v.split("/").pop() ?? v;
-  return BUNDLED_BY_NAME[name] ?? (v.startsWith("/src/") ? fallback : v);
+  return resolveMediaUrl(value, fallback);
 }
 
 function toVenture(row: Record<string, unknown>, base: Venture | undefined): Venture {
