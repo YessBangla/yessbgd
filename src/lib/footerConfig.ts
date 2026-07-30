@@ -49,6 +49,10 @@ export type FooterStyle = {
   spacing: "compact" | "normal" | "spacious";
   /** Number of columns rendered on large screens. */
   columns: 1 | 2 | 3 | 4;
+  /** Number of columns rendered on phones. */
+  mobile_columns: 1 | 2;
+  /** Text alignment on phones. */
+  mobile_align: "left" | "center";
   /** Column heading case. */
   heading: "uppercase" | "normal";
   /** Top hairline border. */
@@ -59,6 +63,12 @@ export type FooterStyle = {
   align_center: boolean;
 };
 
+/** A user-saved snapshot of the footer configuration. */
+export type FooterPreset = {
+  name: string;
+  config: Omit<FooterConfig, "saved_presets">;
+};
+
 export type FooterConfig = {
   style: FooterStyle;
   columns: FooterColumn[];
@@ -66,7 +76,10 @@ export type FooterConfig = {
   bottom_links: FooterLink[];
   copyright: string;
   copyright_bn?: string;
+  /** Presets the user saved from the dashboard. */
+  saved_presets?: FooterPreset[];
 };
+
 
 export const FOOTER_DEFAULTS: FooterConfig = {
   style: {
