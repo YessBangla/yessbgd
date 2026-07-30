@@ -25,6 +25,10 @@ const STRAY = /new submenu|test item|untitled|lorem/i;
 async function topLevelHrefs(page: Page, testId: string) {
   const nav = page.getByTestId(testId);
   await expect(nav).toBeVisible();
+  // Wait until the CMS-driven menu has replaced the static fallback.
+  await expect
+    .poll(async () => nav.locator('a[href="/ventures"], button[aria-haspopup]').count(), { timeout: 15_000 })
+    .toBeGreaterThan(0);
   const items = nav.locator("a[href], button[aria-haspopup]");
   const count = await items.count();
   const out: string[] = [];
