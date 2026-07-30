@@ -540,6 +540,9 @@ export type Database = {
           message: string
           name: string
           phone: string | null
+          status: string
+          status_note: string | null
+          status_updated_at: string | null
           subject: string | null
         }
         Insert: {
@@ -549,6 +552,9 @@ export type Database = {
           message: string
           name: string
           phone?: string | null
+          status?: string
+          status_note?: string | null
+          status_updated_at?: string | null
           subject?: string | null
         }
         Update: {
@@ -558,6 +564,9 @@ export type Database = {
           message?: string
           name?: string
           phone?: string | null
+          status?: string
+          status_note?: string | null
+          status_updated_at?: string | null
           subject?: string | null
         }
         Relationships: []
@@ -619,6 +628,51 @@ export type Database = {
           status?: Database["public"]["Enums"]["application_status"]
           status_note?: string | null
           status_updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          items_per_page: number
+          job_title: string | null
+          language: string
+          notify_new_application: boolean
+          notify_new_message: boolean
+          phone: string | null
+          theme: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          items_per_page?: number
+          job_title?: string | null
+          language?: string
+          notify_new_application?: boolean
+          notify_new_message?: boolean
+          phone?: string | null
+          theme?: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          items_per_page?: number
+          job_title?: string | null
+          language?: string
+          notify_new_application?: boolean
+          notify_new_message?: boolean
+          phone?: string | null
+          theme?: string
+          updated_at?: string
         }
         Relationships: []
       }

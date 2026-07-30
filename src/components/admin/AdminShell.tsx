@@ -11,6 +11,8 @@ import {
   Layers,
   FileText,
   LogOut,
+  UserCog,
+
   Menu,
   X,
   ChevronDown,
@@ -287,7 +289,15 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
       </nav>
 
       <div className="border-t border-white/10 p-2">
+        <Link
+          to="/admin/profile"
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-admin-sidebar-muted hover:bg-admin-sidebar-hover hover:text-admin-sidebar-foreground"
+        >
+          <UserCog className="h-4 w-4 shrink-0" />
+          {!collapsed && <span>My profile · আমার প্রোফাইল</span>}
+        </Link>
         <button
+
           onClick={signOut}
           className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-admin-sidebar-muted hover:bg-admin-sidebar-hover hover:text-admin-sidebar-foreground"
         >
