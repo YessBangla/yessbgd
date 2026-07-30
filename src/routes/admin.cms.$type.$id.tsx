@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { getCmsConfig, type CmsField } from "@/lib/cmsSchema";
+import { AdminFormSkeleton, AdminLoadingState } from "@/components/admin/AdminLoading";
 import { ArrowLeft, Save, AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/admin/cms/$type/$id")({
@@ -12,6 +13,9 @@ export const Route = createFileRoute("/admin/cms/$type/$id")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
+  pendingMs: 150,
+  pendingMinMs: 200,
+  pendingComponent: () => <AdminLoadingState label="Loading entry…" />,
   component: AdminCmsEdit,
 });
 
@@ -157,7 +161,7 @@ function AdminCmsEdit() {
             <ArrowLeft className="h-4 w-4" /> Back to list
           </Link>
           {loading ? (
-            <p className="text-sm text-muted-foreground">Loading…</p>
+            <AdminFormSkeleton fields={Math.min(8, cfg.fields.length || 6)} />
           ) : (
             <form onSubmit={onSubmit} className="rounded-2xl glass-card p-6 sm:p-8 space-y-5">
               {cfg.fields.map((f) => (

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { getCmsConfig } from "@/lib/cmsSchema";
+import { AdminTableSkeleton, AdminLoadingState } from "@/components/admin/AdminLoading";
 import { Plus, Eye, EyeOff, Trash2, Pencil, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/admin/cms/$type/")({
@@ -12,6 +13,9 @@ export const Route = createFileRoute("/admin/cms/$type/")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
+  pendingMs: 150,
+  pendingMinMs: 200,
+  pendingComponent: () => <AdminLoadingState />,
   component: AdminCmsList,
 });
 
@@ -122,7 +126,7 @@ function AdminCmsList() {
           </div>
 
           {error && <p className="text-sm text-destructive">{error}</p>}
-          {!rows && <p className="text-sm text-muted-foreground">Loading…</p>}
+          {!rows && !error && <AdminTableSkeleton cols={cfg.listColumns.length + 2} />}
           {rows && filtered.length === 0 && (
             <div className="rounded-2xl glass-card p-8 text-center text-sm text-muted-foreground">
               কোন এন্ট্রি নেই। উপরে "New" বোতাম চেপে যোগ করুন।
