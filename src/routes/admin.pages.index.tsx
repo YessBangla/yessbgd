@@ -672,7 +672,25 @@ function AdminPagesList() {
                     </div>
                   </td>
                 </tr>
-              ))}
+                {isOpen && (
+                  <tr className="border-b border-border/50 bg-secondary/20">
+                    <td colSpan={6} className="px-4 py-4">
+                      <PageSubmenus
+                        pagePath={p.path}
+                        attached={attached}
+                        pages={(data ?? []).map((x) => ({ name: x.name, path: x.path }))}
+                        onAdd={addSubmenu}
+                        onRename={renameMenuItem}
+                        onDelete={deleteMenuItem}
+                        onTogglePublished={toggleMenuPublished}
+                      />
+                    </td>
+                  </tr>
+                )}
+                </Fragment>
+                );
+              })}
+
             </tbody>
           </table>
         </div>
