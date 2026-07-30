@@ -82,9 +82,7 @@ function toVenture(row: Record<string, unknown>, base: Venture | undefined): Ven
   } as Venture;
 }
 
-    icon: icon(row.icon, fallback.icon),
-  } as Venture;
-}
+
 
 export function useVentures(): Venture[] {
   const { data } = useQuery({
