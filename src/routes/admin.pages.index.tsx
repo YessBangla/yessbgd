@@ -542,6 +542,20 @@ function AdminPagesList() {
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </Link>
+                      <Link
+                        to="/admin/pages/$page"
+                        params={{ page: p.page }}
+                        search={{ tab: "navigation" as const }}
+                        title="Menu & submenu · মেনু ও সাবমেনু"
+                        className="relative grid h-8 w-8 place-items-center rounded border border-border text-muted-foreground hover:bg-secondary"
+                      >
+                        <ListTree className="h-3.5 w-3.5" />
+                        {menuCountFor(p.path) > 0 && (
+                          <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-admin-accent px-1 text-[9px] font-bold text-admin-accent-foreground">
+                            {menuCountFor(p.path)}
+                          </span>
+                        )}
+                      </Link>
                       <a
                         href={p.path}
                         target="_blank"
