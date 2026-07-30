@@ -5,7 +5,10 @@ import { AnimatePresence, motion, useReducedMotion, type Transition } from "fram
 import { useTranslation } from "react-i18next";
 import logo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
-import { useMenuTree, type MenuNode } from "@/lib/siteContent";
+import { type MenuNode } from "@/lib/siteContent";
+import { useHeaderMenu } from "@/lib/headerMenu";
+import { clearMenuPreview } from "@/lib/menuPreview";
+import { HeaderNavRail } from "@/components/HeaderNavRail";
 import { MenuIcon, menuItemAppearance } from "@/lib/menuStyles";
 
 import { LanguageSwitch } from "@/components/LanguageSwitch";
@@ -283,7 +286,7 @@ const MobilePanel = memo(function MobilePanel({
 export function Header() {
   const ventures = useVentures();
   const { t, i18n } = useTranslation();
-  const tree = useMenuTree("header");
+  const { tree, previewing } = useHeaderMenu();
   const bn = !!i18n.language?.startsWith("bn");
 
   const navNodes: MenuNode[] = tree.length
@@ -338,6 +341,21 @@ export function Header() {
 
   return (
     <header data-on-dark className="sticky top-0 z-50 glass-nav">
+      {previewing && (
+        <div
+          data-testid="menu-preview-banner"
+          className="flex items-center justify-center gap-3 bg-primary px-3 py-1.5 text-[12px] font-semibold text-primary-foreground"
+        >
+          <span>{t("nav.menuPreview", "Previewing unpublished menu changes")}</span>
+          <button
+            type="button"
+            onClick={() => clearMenuPreview()}
+            className="rounded-full bg-primary-foreground/20 px-2.5 py-0.5 text-[11px] font-semibold"
+          >
+            {t("nav.exitPreview", "Exit preview")}
+          </button>
+        </div>
+      )}
       <div className="container-tight relative flex h-16 items-center justify-between">
         <Link
           to="/"
@@ -361,7 +379,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main" data-testid="header-nav-desktop">
           {navNodes.map((item) => {
             const kids = item.children ?? [];
             const isVenturesMega = item.href === "/ventures" && kids.length === 0;
@@ -541,7 +559,7 @@ export function Header() {
             aria-controls="mobile-nav-panel"
             aria-haspopup="menu"
             onClick={toggleMenu}
-            className="relative grid h-10 w-10 place-items-center rounded-xl border border-border/70 bg-background/60 backdrop-blur lg:hidden overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="relative grid h-10 w-10 place-items-center rounded-xl border border-border/70 bg-background/60 backdrop-blur sm:hidden overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
           <AnimatePresence initial={false} mode="wait">
             <motion.span
@@ -572,6 +590,9 @@ export function Header() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Tablet/mobile: desktop-parity scrollable nav rail with tap dropdowns. */}
+      <HeaderNavRail tree={navNodes} bn={bn} />
     </header>
   );
 }
