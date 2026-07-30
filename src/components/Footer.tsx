@@ -240,18 +240,19 @@ export function Footer({ configOverride }: { configOverride?: FooterConfig } = {
   return (
     <footer
       data-on-dark
-      className={`mt-24 ${cfg.style.border_top ? "border-t border-glass-border-soft" : ""} ${
-        FOOTER_BACKGROUND_CLASS[cfg.style.background]
-      }`}
+      className={`${configOverride ? "" : "mt-24"} ${
+        cfg.style.border_top ? "border-t border-glass-border-soft" : ""
+      } ${FOOTER_BACKGROUND_CLASS[cfg.style.background]}`}
     >
       <div className={`container-tight ${FOOTER_SPACING_CLASS[cfg.style.spacing]}`}>
         <div
-          className={`grid gap-10 ${FOOTER_COLUMNS_CLASS[cfg.style.columns]} ${
-            cfg.style.align_center ? "text-center" : ""
-          }`}
+          className={`grid gap-10 ${FOOTER_MOBILE_COLUMNS_CLASS[cfg.style.mobile_columns]} ${
+            FOOTER_COLUMNS_CLASS[cfg.style.columns]
+          } ${footerAlignClass(cfg.style)}`}
         >
           {cfg.columns.slice(0, cfg.style.columns).map(renderColumn)}
         </div>
+
 
         {cfg.style.show_bottom_bar && (
           <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
