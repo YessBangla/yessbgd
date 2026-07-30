@@ -516,8 +516,12 @@ function AdminApplications() {
                   <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/85">{a.cover_letter}</p>
                 </details>
               </article>
+                ))}
+                </div>
+              </section>
             ))}
           </div>
+
         </div>
       </section>
     </>
