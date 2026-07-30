@@ -89,6 +89,35 @@ function AdminCmsIndex() {
               );
             })}
           </div>
+          <div className="mt-8 rounded-2xl glass-card p-6">
+            <div className="text-sm font-semibold">Static content → database</div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              সাইটের বিল্ট-ইন কনটেন্ট (১২ ভেঞ্চার, সার্ভিস, ইন্ডাস্ট্রি, ইনসাইট) ডাটাবেজে আমদানি করুন।
+              এরপর সব পেজ ডাটাবেজ থেকেই রেন্ডার হবে এবং এখান থেকেই সম্পাদনা করা যাবে।
+            </p>
+            <button
+              onClick={async () => {
+                setSyncing(true);
+                setSyncMsg(null);
+                try {
+                  const r = await syncStaticContentToCms();
+                  setSyncMsg(
+                    `✓ Imported — ventures ${r.ventures}, services ${r.services}, industries ${r.industries}, insights ${r.insights}`,
+                  );
+                } catch (e) {
+                  setSyncMsg(`✗ ${(e as Error).message}`);
+                } finally {
+                  setSyncing(false);
+                }
+              }}
+              disabled={syncing}
+              className="mt-4 rounded-full bg-gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow disabled:opacity-60"
+            >
+              {syncing ? "Importing…" : "Import / sync static content"}
+            </button>
+            {syncMsg && <p className="mt-3 text-xs text-muted-foreground">{syncMsg}</p>}
+          </div>
+
           <div className="mt-8 flex flex-wrap gap-3 text-sm">
             <Link to="/admin/applications" className="text-muted-foreground underline-offset-4 hover:underline">
               ← Job applications
@@ -100,6 +129,7 @@ function AdminCmsIndex() {
               Audit log
             </Link>
           </div>
+
         </div>
       </section>
     </>
