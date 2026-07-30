@@ -784,14 +784,40 @@ function AdminMenus() {
   };
 
 
+  const canUndo = past.current.length > 0;
+  const canRedo = future.current.length > 0;
+  void histTick; // re-render trigger for the undo/redo buttons
+
   return (
     <div>
       <AdminPageHeader
         title="Menus"
         titleBn="মেনু, সাব-মেনু ও ফুটার"
-        description="Drag rows to reorder or nest (drop on the middle of a row to make it a submenu). Edit labels, links, icons and colours in EN/BN — the live preview on the right shows exactly how the website menu will look."
+        description="Drag rows to reorder or nest (drop on the middle of a row to make it a submenu). Keyboard: focus a row, then Alt+↑/↓ to move, Alt+←/→ to change level, ←/→ to collapse or expand, Enter to edit. Changes autosave; Ctrl/Cmd+Z undoes."
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex overflow-hidden rounded-lg border border-border">
+              <button
+                onClick={() => void undo()}
+                disabled={!canUndo}
+                aria-label="Undo last menu change"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-secondary disabled:opacity-40"
+              >
+                <Undo2 className="h-4 w-4" /> Undo
+              </button>
+              <button
+                onClick={() => void redo()}
+                disabled={!canRedo}
+                aria-label="Redo menu change"
+                className="inline-flex items-center gap-1.5 border-l border-border px-3 py-2 text-sm hover:bg-secondary disabled:opacity-40"
+              >
+                <Redo2 className="h-4 w-4" /> Redo
+              </button>
+            </div>
+            <label className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm">
+              <input type="checkbox" checked={autoSave} onChange={(e) => setAutoSave(e.target.checked)} />
+              Autosave
+            </label>
             <button
               onClick={() => setShowPreview((v) => !v)}
               className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-secondary"
@@ -800,7 +826,7 @@ function AdminMenus() {
               {showPreview ? "Hide preview" : "Live preview"}
             </button>
             <button
-              onClick={saveAll}
+              onClick={() => void saveAll()}
               disabled={saving}
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
             >
@@ -809,11 +835,32 @@ function AdminMenus() {
           </div>
         }
       />
+
+      <p aria-live="polite" className="sr-only">
+        {announcement}
+      </p>
+
+      <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground" aria-live="polite">
+        {saving ? (
+          <>
+            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Saving…
+          </>
+        ) : savedAt ? (
+          <>
+            <Check className="h-3.5 w-3.5 text-primary" /> All changes saved at {savedAt}
+          </>
+        ) : autoSave ? (
+          <>Autosave is on — edits save about a second after you stop typing.</>
+        ) : (
+          <>Autosave is off — use “Save all”.</>
+        )}
+      </div>
+
       {err && <p className="mb-4 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
       {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
-      <div className={showPreview ? "grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]" : ""}>
+      <div className={showPreview ? "grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]" : ""}>
         <div className="min-w-0">
           {section("header", "Header navigation", "হেডার মেনু")}
           {section("footer", "Footer links", "ফুটার লিংক")}
@@ -822,27 +869,63 @@ function AdminMenus() {
         {showPreview && (
           <aside className="xl:sticky xl:top-4 xl:self-start">
             <div className="rounded-xl border border-border bg-card p-4">
-              <div className="mb-3 flex items-center justify-between">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                 <h3 className="inline-flex items-center gap-2 text-sm font-semibold">
-                  <Monitor className="h-4 w-4" /> Live menu preview
+                  {previewMobile ? <Smartphone className="h-4 w-4" /> : <Monitor className="h-4 w-4" />} Live menu
+                  preview
                 </h3>
-                <button
-                  onClick={() => setPreviewBn((v) => !v)}
-                  className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold hover:bg-secondary"
-                >
-                  {previewBn ? "বাংলা" : "EN"}
-                </button>
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex overflow-hidden rounded-full border border-border text-[11px] font-semibold">
+                    <button
+                      onClick={() => setPreviewMobile(false)}
+                      aria-pressed={!previewMobile}
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 ${!previewMobile ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}
+                    >
+                      <Monitor className="h-3.5 w-3.5" /> Desktop
+                    </button>
+                    <button
+                      onClick={() => setPreviewMobile(true)}
+                      aria-pressed={previewMobile}
+                      className={`inline-flex items-center gap-1 border-l border-border px-2.5 py-1 ${previewMobile ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}
+                    >
+                      <Smartphone className="h-3.5 w-3.5" /> Mobile
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => setPreviewBn((v) => !v)}
+                    aria-label="Toggle preview language"
+                    className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold hover:bg-secondary"
+                  >
+                    {previewBn ? "বাংলা" : "EN"}
+                  </button>
+                </div>
               </div>
-              <MenuPreview tree={trees.header} bn={previewBn} title="Header" />
-              <div className="mt-4">
-                <MenuPreview tree={trees.footer} bn={previewBn} title="Footer" footer />
-              </div>
+
+              {previewMobile ? (
+                <div className="mx-auto w-[320px] rounded-[2rem] border-4 border-foreground/80 bg-background p-2 shadow-lg">
+                  <div className="mx-auto mb-2 h-1.5 w-16 rounded-full bg-foreground/30" />
+                  <div className="max-h-[520px] overflow-y-auto">
+                    <MobileMenuPreview tree={trees.header} bn={previewBn} title="Header" />
+                    <div className="mt-3">
+                      <MobileMenuPreview tree={trees.footer} bn={previewBn} title="Footer" />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <MenuPreview tree={trees.header} bn={previewBn} title="Header" />
+                  <div className="mt-4">
+                    <MenuPreview tree={trees.footer} bn={previewBn} title="Footer" footer />
+                  </div>
+                </>
+              )}
             </div>
           </aside>
         )}
       </div>
     </div>
   );
+
 }
 
 /* ------------------------------ live preview ------------------------------ */
