@@ -421,8 +421,39 @@ function AdminApplications() {
             </div>
           )}
 
-          <div className="grid gap-4">
-            {filtered.map((a) => (
+          <div className="grid gap-8">
+            {groups.map((g) => (
+              <section key={g.key}>
+                <div className="mb-3 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedDate(selectedDate === g.key ? null : g.key)}
+                    aria-pressed={selectedDate === g.key}
+                    className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition ${
+                      selectedDate === g.key
+                        ? "border-primary bg-primary/15 text-primary"
+                        : "border-border hover:border-primary/50 hover:text-primary"
+                    }`}
+                  >
+                    {dayLabel(g.key)}
+                    <span className="rounded-full bg-secondary/60 px-2 py-0.5 text-[10px] font-semibold">
+                      {g.items.length}
+                    </span>
+                  </button>
+                  {selectedDate === g.key && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedDate(null)}
+                      className="text-xs font-semibold text-muted-foreground underline"
+                    >
+                      Show all dates
+                    </button>
+                  )}
+                  <div className="h-px flex-1 bg-border" />
+                </div>
+                <div className="grid gap-4">
+                {g.items.map((a) => (
+
               <article key={a.id} className="rounded-2xl glass-card p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
