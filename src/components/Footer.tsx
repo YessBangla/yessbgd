@@ -1,12 +1,27 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Twitter, Youtube, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Twitter, Youtube, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import fallbackLogo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 import { useMenu, useSettingText } from "@/lib/siteContent";
 import { resolveMediaUrl } from "@/lib/mediaAssets";
+import {
+  useFooterConfig,
+  FOOTER_BACKGROUND_CLASS,
+  FOOTER_COLUMNS_CLASS,
+  FOOTER_SPACING_CLASS,
+  type FooterColumn,
+  type FooterLink,
+} from "@/lib/footerConfig";
 
+const SOCIAL_ICON = {
+  facebook: Facebook,
+  twitter: Twitter,
+  youtube: Youtube,
+  instagram: Instagram,
+  linkedin: Linkedin,
+} as const;
 
 export function Footer() {
   const ventures = useVentures();
@@ -17,15 +32,40 @@ export function Footer() {
   const address = useSettingText("contact_address", COMPANY_CONTACT.office);
   const headerLogo = useSettingText("logo_url", "");
   const logo = resolveMediaUrl(useSettingText("footer_logo_url", "") || headerLogo, fallbackLogo);
+  const cfg = useFooterConfig();
 
-  return (
-    <footer
-      data-on-dark
-      className="mt-24 border-t border-glass-border-soft bg-gradient-to-b from-transparent to-secondary/30 backdrop-blur-xl dark:bg-[oklch(0.18_0.04_260)]"
-    >
-      <div className="container-tight py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
+  const pick = (en?: string, bnText?: string) => (bn && bnText ? bnText : en ?? "");
+  const headingCls = `font-display text-sm font-semibold ${
+    cfg.style.heading === "uppercase" ? "uppercase tracking-wider" : "tracking-tight"
+  }`;
+
+  const linkList = (links: FooterLink[]) => (
+    <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+      {links.map((l, i) => (
+        <li key={`${l.href}-${i}`}>
+          {l.external ? (
+            <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+              {pick(l.label, l.label_bn)}
+            </a>
+          ) : (
+            <Link to={l.href} className="hover:text-primary">
+              {pick(l.label, l.label_bn)}
+            </Link>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+
+  const renderColumn = (col: FooterColumn, index: number) => {
+    if (col.hidden) return null;
+
+    const heading = pick(col.title, col.title_bn);
+
+    if (col.type === "brand") {
+      return (
+        <div key={index}>
+          {col.show_logo !== false && (
             <Link to="/" className="inline-flex items-center" aria-label={t("nav.homeAria")}>
               <span className="logo-plate" role="img" aria-label="YESS Bangla">
                 <img
@@ -42,93 +82,113 @@ export function Footer() {
                 />
               </span>
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              {t("footer.tagline")}
-            </p>
-            <div className="mt-5 flex gap-2">
-              {[
-                { Icon: Facebook, href: "https://www.facebook.com/yessbanglaltd" },
-                { Icon: Twitter, href: "https://x.com/YessBangla" },
-                { Icon: Youtube, href: "https://www.youtube.com/@yessbangla" },
-                { Icon: Instagram, href: "https://www.linkedin.com/" },
-              ].map(({ Icon, href }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+          )}
+          {heading && <h4 className={`mt-4 ${headingCls}`}>{heading}</h4>}
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            {pick(col.text, col.text_bn) || t("footer.tagline")}
+          </p>
+          {col.show_social !== false && cfg.social.length > 0 && (
+            <div className={`mt-5 flex gap-2 ${cfg.style.align_center ? "justify-center" : ""}`}>
+              {cfg.social.map((s, i) => {
+                const Icon = SOCIAL_ICON[s.network] ?? Facebook;
+                return (
+                  <a
+                    key={`${s.network}-${i}`}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.network}
+                    className="grid h-9 w-9 place-items-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                );
+              })}
             </div>
-          </div>
+          )}
+        </div>
+      );
+    }
 
-          <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.company")}</h4>
+    if (col.type === "links") {
+      const manual = col.links ?? [];
+      const items: FooterLink[] =
+        col.use_menu !== false && footerLinks.length > 0
+          ? footerLinks.map((l) => ({
+              label: l.label,
+              label_bn: l.label_bn ?? undefined,
+              href: l.href,
+              external: Boolean(l.is_external),
+            }))
+          : manual;
+      return (
+        <div key={index}>
+          <h4 className={headingCls}>{heading || t("footer.company")}</h4>
+          {items.length > 0 ? (
+            linkList(items)
+          ) : (
             <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              {footerLinks.length > 0 ? (
-                footerLinks.map((l) => (
-                  <li key={l.id}>
-                    {l.is_external ? (
-                      <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
-                        {(bn && l.label_bn) || l.label}
-                      </a>
-                    ) : (
-                      <Link to={l.href} className="hover:text-primary">
-                        {(bn && l.label_bn) || l.label}
-                      </Link>
-                    )}
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li><Link to="/about" className="hover:text-primary">{t("footer.links.about")}</Link></li>
-                  <li><Link to="/industries" className="hover:text-primary">{t("footer.links.industries")}</Link></li>
-                  <li><Link to="/projects" className="hover:text-primary">{t("footer.links.projects")}</Link></li>
-                  <li><Link to="/careers" className="hover:text-primary">{t("footer.links.careers")}</Link></li>
-                  <li><Link to="/contact" className="hover:text-primary">{t("footer.links.contact")}</Link></li>
-                </>
-              )}
+              <li><Link to="/about" className="hover:text-primary">{t("footer.links.about")}</Link></li>
+              <li><Link to="/industries" className="hover:text-primary">{t("footer.links.industries")}</Link></li>
+              <li><Link to="/projects" className="hover:text-primary">{t("footer.links.projects")}</Link></li>
+              <li><Link to="/careers" className="hover:text-primary">{t("footer.links.careers")}</Link></li>
+              <li><Link to="/contact" className="hover:text-primary">{t("footer.links.contact")}</Link></li>
             </ul>
-          </div>
+          )}
+        </div>
+      );
+    }
 
+    if (col.type === "ventures") {
+      return (
+        <div key={index}>
+          <h4 className={headingCls}>{heading || t("footer.ourVentures")}</h4>
+          <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+            {ventures.slice(0, 8).map((v) => (
+              <li key={v.slug}>
+                <Link to="/ventures/$slug" params={{ slug: v.slug }} className="hover:text-primary">
+                  {v.title}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link to="/ventures" className="font-semibold text-primary hover:underline">
+                {t("footer.links.viewAll")}
+              </Link>
+            </li>
+          </ul>
+        </div>
+      );
+    }
 
-          <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.ourVentures")}</h4>
-            <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-              {ventures.slice(0, 8).map((v) => (
-                <li key={v.slug}>
-                  <Link to="/ventures/$slug" params={{ slug: v.slug }} className="hover:text-primary">
-                    {v.title}
-                  </Link>
-                </li>
-              ))}
-              <li><Link to="/ventures" className="font-semibold text-primary hover:underline">{t("footer.links.viewAll")}</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider">{t("footer.getInTouch")}</h4>
-            <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+    if (col.type === "contact") {
+      return (
+        <div key={index}>
+          <h4 className={headingCls}>{heading || t("footer.getInTouch")}</h4>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+            {col.show_address !== false && (
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
                 <span>{address}</span>
               </li>
+            )}
+            {col.show_phone !== false && (
               <li className="flex gap-3">
                 <Phone className="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
                 <a href={phoneHref} className="tabular-nums hover:text-primary" aria-label={`Call ${COMPANY_CONTACT.phone.display}`}>
                   {COMPANY_CONTACT.phone.display}
                 </a>
               </li>
+            )}
+            {col.show_email !== false && (
               <li className="flex gap-3">
                 <Mail className="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
                 <a href={`mailto:${email}`} className="hover:text-primary">{email}</a>
-
               </li>
-            </ul>
+            )}
+          </ul>
 
+          {col.show_newsletter !== false && (
             <form
               onSubmit={(e) => e.preventDefault()}
               className="mt-5 flex overflow-hidden rounded-full border border-border bg-card"
@@ -140,24 +200,66 @@ export function Footer() {
                 aria-label={t("footer.newsletterAria")}
                 className="flex-1 bg-transparent px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground"
               />
-              <button
-                type="submit"
-                className="bg-gradient-primary px-4 text-sm font-semibold text-primary-foreground"
-              >
+              <button type="submit" className="bg-gradient-primary px-4 text-sm font-semibold text-primary-foreground">
                 {t("footer.subscribe")}
               </button>
             </form>
-          </div>
+          )}
+        </div>
+      );
+    }
+
+    // Free text column
+    return (
+      <div key={index}>
+        {heading && <h4 className={headingCls}>{heading}</h4>}
+        <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+          {pick(col.text, col.text_bn)}
+        </p>
+        {(col.links?.length ?? 0) > 0 && linkList(col.links ?? [])}
+      </div>
+    );
+  };
+
+  const year = new Date().getFullYear();
+  const copyright =
+    pick(cfg.copyright, cfg.copyright_bn) ||
+    `© ${year} YESS Bangla Private Limited. ${t("footer.rights")}`;
+
+  return (
+    <footer
+      data-on-dark
+      className={`mt-24 ${cfg.style.border_top ? "border-t border-glass-border-soft" : ""} ${
+        FOOTER_BACKGROUND_CLASS[cfg.style.background]
+      }`}
+    >
+      <div className={`container-tight ${FOOTER_SPACING_CLASS[cfg.style.spacing]}`}>
+        <div
+          className={`grid gap-10 ${FOOTER_COLUMNS_CLASS[cfg.style.columns]} ${
+            cfg.style.align_center ? "text-center" : ""
+          }`}
+        >
+          {cfg.columns.slice(0, cfg.style.columns).map(renderColumn)}
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
-          <p>© {new Date().getFullYear()} YESS Bangla Private Limited. {t("footer.rights")}</p>
-          <div className="flex items-center gap-5">
-            <Link to="/privacy" className="hover:text-primary">{t("footer.links.privacy")}</Link>
-            <Link to="/terms" className="hover:text-primary">{t("footer.links.terms")}</Link>
-            <Link to="/faq" className="hover:text-primary">{t("footer.links.faq")}</Link>
+        {cfg.style.show_bottom_bar && (
+          <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
+            <p>{copyright}</p>
+            <div className="flex flex-wrap items-center justify-center gap-5">
+              {cfg.bottom_links.map((l, i) =>
+                l.external ? (
+                  <a key={i} href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                    {pick(l.label, l.label_bn)}
+                  </a>
+                ) : (
+                  <Link key={i} to={l.href} className="hover:text-primary">
+                    {pick(l.label, l.label_bn)}
+                  </Link>
+                ),
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </footer>
   );

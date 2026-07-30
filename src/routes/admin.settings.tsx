@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { BrandingLogoCard } from "@/components/admin/BrandingLogoCard";
+import { FooterSettingsCard } from "@/components/admin/FooterSettingsCard";
 import { Save, Plus, Trash2, Loader2, Code2, MapPin } from "lucide-react";
 import { toMapEmbedSrc } from "@/lib/mapEmbed";
 
@@ -170,6 +171,8 @@ function AdminSettings() {
     setMsg(null);
     try {
       for (const row of rows) {
+        // Footer is managed by its own editor card below.
+        if (row.key === "footer_config") continue;
         const spec = FRIENDLY[row.key];
         let parsed: unknown;
         if (spec) {
@@ -219,7 +222,14 @@ function AdminSettings() {
     setValues((s) => ({ ...s, [key]: { ...(s[key] ?? {}), [prop]: v } }));
 
   const friendlyRows = rows.filter((r) => FRIENDLY[r.key]);
-  const rawRows = rows.filter((r) => !FRIENDLY[r.key] && r.key !== "logo_url" && r.key !== "logo_url_dark" && r.key !== "footer_logo_url");
+  const rawRows = rows.filter(
+    (r) =>
+      !FRIENDLY[r.key] &&
+      r.key !== "logo_url" &&
+      r.key !== "logo_url_dark" &&
+      r.key !== "footer_logo_url" &&
+      r.key !== "footer_config",
+  );
   const groups = Array.from(new Set(friendlyRows.map((r) => r.group ?? "general")));
   const mapPreview = toMapEmbedSrc(values.contact_map?.text ?? "");
 
@@ -253,6 +263,8 @@ function AdminSettings() {
       {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
       <BrandingLogoCard onSaved={() => void load()} />
+
+      <FooterSettingsCard />
 
       <div className="space-y-8">
         {groups.map((g) => {
