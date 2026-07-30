@@ -16,6 +16,7 @@ import { HeroOverlays } from "@/components/HeroOverlays";
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
+import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
 import {
   ArrowRight,
@@ -92,6 +93,7 @@ type Testimonial = { name: string; role: string; quote: string };
 
 function Index() {
   const ventures = useVentures();
+  const cmsHome = usePageOverride("home");
   const { t, i18n: i18nInst } = useTranslation();
   const isBn = (i18nInst?.language || i18n.language || "en").startsWith("bn");
   const [hydrated, setHydrated] = useState(false);
@@ -160,7 +162,7 @@ function Index() {
               }}
             >
               <span aria-hidden className="h-px w-6 sm:w-8 bg-background/45" />
-              <span>{t("home.hero.eyebrow")}</span>
+              <span>{cmsHome.eyebrow ?? t("home.hero.eyebrow")}</span>
               <span aria-hidden className="hidden sm:inline h-px w-8 bg-background/45" />
             </div>
 
@@ -185,27 +187,34 @@ function Index() {
             >
               {/* Editorial three-line cadence — YESS acronym expanded:
                   Y outh E ntrepreneurship · S mart S uccess · with our
-                  Excellence & Solutions. */}
-              <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
-              <span
-                className="block text-background/95"
-                style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
-              >
-                {t("home.hero.h1Line2Pre")}{" "}
-                <span
-                  className="font-light text-background/90"
-                  style={{ letterSpacing: "-0.008em" }}
-                >
-                  {t("home.hero.h1Line2Smart")}
-                </span>
-              </span>
-              <span
-                className="water-text-accent block"
-                style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
-              >
-                {t("home.hero.h1Line3Pre")}{" "}
-                <span className="sm:whitespace-nowrap">{t("home.hero.h1Line3Tail")}</span>
-              </span>
+                  Excellence & Solutions. Overridden wholesale when an editor
+                  sets a hero title in the dashboard. */}
+              {cmsHome.title ? (
+                <span className="water-text block">{cmsHome.title}</span>
+              ) : (
+                <>
+                  <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
+                  <span
+                    className="block text-background/95"
+                    style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
+                  >
+                    {t("home.hero.h1Line2Pre")}{" "}
+                    <span
+                      className="font-light text-background/90"
+                      style={{ letterSpacing: "-0.008em" }}
+                    >
+                      {t("home.hero.h1Line2Smart")}
+                    </span>
+                  </span>
+                  <span
+                    className="water-text-accent block"
+                    style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
+                  >
+                    {t("home.hero.h1Line3Pre")}{" "}
+                    <span className="sm:whitespace-nowrap">{t("home.hero.h1Line3Tail")}</span>
+                  </span>
+                </>
+              )}
             </h1>
 
             {/* Lede paragraph */}
@@ -221,11 +230,16 @@ function Index() {
                 wordSpacing: "normal",
               }}
             >
-              <span className="font-medium text-background/95">{t("home.hero.ledeBrand")}</span>{" "}
-              {t("home.hero.ledeBody")}
-              <span className="md:whitespace-nowrap"> {t("home.hero.ledeStandard")}</span>
-              <span className="md:whitespace-nowrap"> {t("home.hero.ledeOrigin")}</span>
+              {cmsHome.subtitle ?? (
+                <>
+                  <span className="font-medium text-background/95">{t("home.hero.ledeBrand")}</span>{" "}
+                  {t("home.hero.ledeBody")}
+                  <span className="md:whitespace-nowrap"> {t("home.hero.ledeStandard")}</span>
+                  <span className="md:whitespace-nowrap"> {t("home.hero.ledeOrigin")}</span>
+                </>
+              )}
             </p>
+
 
             {/* CTA row — stacks full-width on small phones for tap-target
                 clarity, settles into a flex row from sm:+ */}

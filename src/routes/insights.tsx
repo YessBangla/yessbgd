@@ -30,6 +30,7 @@ function Insights() {
   return (
     <>
       <PageHero
+        page="insights"
         eyebrow={t("pages.insights.eyebrow")}
         title={t("pages.insights.title")}
         subtitle={t("pages.insights.subtitle")}

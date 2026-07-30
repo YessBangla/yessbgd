@@ -26,6 +26,7 @@ import { Route as VenturesIndexRouteImport } from './routes/ventures.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as VenturesSlugRouteImport } from './routes/ventures.$slug'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
@@ -43,6 +44,8 @@ import { Route as AboutMethodologyRouteImport } from './routes/about.methodology
 import { Route as AboutLeadershipRouteImport } from './routes/about.leadership'
 import { Route as AboutAwardsRouteImport } from './routes/about.awards'
 import { Route as AboutPillarRouteImport } from './routes/about.$pillar'
+import { Route as AdminPagesIndexRouteImport } from './routes/admin.pages.index'
+import { Route as AdminPagesPageRouteImport } from './routes/admin.pages.$page'
 import { Route as AdminCmsTypeRouteImport } from './routes/admin.cms.$type'
 import { Route as AdminCmsTypeIdRouteImport } from './routes/admin.cms.$type.$id'
 
@@ -131,6 +134,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ServicesRoute,
 } as any)
+const PSlugRoute = PSlugRouteImport.update({
+  id: '/p/$slug',
+  path: '/p/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -216,6 +224,16 @@ const AboutPillarRoute = AboutPillarRouteImport.update({
   path: '/$pillar',
   getParentRoute: () => AboutRoute,
 } as any)
+const AdminPagesIndexRoute = AdminPagesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminPagesRoute,
+} as any)
+const AdminPagesPageRoute = AdminPagesPageRouteImport.update({
+  id: '/$page',
+  path: '/$page',
+  getParentRoute: () => AdminPagesRoute,
+} as any)
 const AdminCmsTypeRoute = AdminCmsTypeRouteImport.update({
   id: '/$type',
   path: '/$type',
@@ -253,16 +271,19 @@ export interface FileRoutesByFullPath {
   '/admin/media': typeof AdminMediaRoute
   '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/pages': typeof AdminPagesRoute
+  '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/p/$slug': typeof PSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/$page': typeof AdminPagesPageRoute
+  '/admin/pages/': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesByTo {
@@ -290,16 +311,18 @@ export interface FileRoutesByTo {
   '/admin/media': typeof AdminMediaRoute
   '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/pages': typeof AdminPagesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/p/$slug': typeof PSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/ventures': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/$page': typeof AdminPagesPageRoute
+  '/admin/pages': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRoutesById {
@@ -329,16 +352,19 @@ export interface FileRoutesById {
   '/admin/media': typeof AdminMediaRoute
   '/admin/menus': typeof AdminMenusRoute
   '/admin/messages': typeof AdminMessagesRoute
-  '/admin/pages': typeof AdminPagesRoute
+  '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/p/$slug': typeof PSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/ventures/$slug': typeof VenturesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/ventures/': typeof VenturesIndexRoute
   '/admin/cms/$type': typeof AdminCmsTypeRouteWithChildren
+  '/admin/pages/$page': typeof AdminPagesPageRoute
+  '/admin/pages/': typeof AdminPagesIndexRoute
   '/admin/cms/$type/$id': typeof AdminCmsTypeIdRoute
 }
 export interface FileRouteTypes {
@@ -374,11 +400,14 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/industries/$slug'
     | '/insights/$slug'
+    | '/p/$slug'
     | '/services/$slug'
     | '/ventures/$slug'
     | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/admin/pages/$page'
+    | '/admin/pages/'
     | '/admin/cms/$type/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -406,16 +435,18 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/menus'
     | '/admin/messages'
-    | '/admin/pages'
     | '/admin/settings'
     | '/careers/$slug'
     | '/industries/$slug'
     | '/insights/$slug'
+    | '/p/$slug'
     | '/services/$slug'
     | '/ventures/$slug'
     | '/admin'
     | '/ventures'
     | '/admin/cms/$type'
+    | '/admin/pages/$page'
+    | '/admin/pages'
     | '/admin/cms/$type/$id'
   id:
     | '__root__'
@@ -449,11 +480,14 @@ export interface FileRouteTypes {
     | '/careers/$slug'
     | '/industries/$slug'
     | '/insights/$slug'
+    | '/p/$slug'
     | '/services/$slug'
     | '/ventures/$slug'
     | '/admin/'
     | '/ventures/'
     | '/admin/cms/$type'
+    | '/admin/pages/$page'
+    | '/admin/pages/'
     | '/admin/cms/$type/$id'
   fileRoutesById: FileRoutesById
 }
@@ -471,6 +505,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   TermsRoute: typeof TermsRoute
+  PSlugRoute: typeof PSlugRoute
   VenturesSlugRoute: typeof VenturesSlugRoute
   VenturesIndexRoute: typeof VenturesIndexRoute
 }
@@ -596,6 +631,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/p/$slug': {
+      id: '/p/$slug'
+      path: '/p/$slug'
+      fullPath: '/p/$slug'
+      preLoaderRoute: typeof PSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/insights/$slug': {
       id: '/insights/$slug'
       path: '/$slug'
@@ -715,6 +757,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutPillarRouteImport
       parentRoute: typeof AboutRoute
     }
+    '/admin/pages/': {
+      id: '/admin/pages/'
+      path: '/'
+      fullPath: '/admin/pages/'
+      preLoaderRoute: typeof AdminPagesIndexRouteImport
+      parentRoute: typeof AdminPagesRoute
+    }
+    '/admin/pages/$page': {
+      id: '/admin/pages/$page'
+      path: '/$page'
+      fullPath: '/admin/pages/$page'
+      preLoaderRoute: typeof AdminPagesPageRouteImport
+      parentRoute: typeof AdminPagesRoute
+    }
     '/admin/cms/$type': {
       id: '/admin/cms/$type'
       path: '/$type'
@@ -774,6 +830,20 @@ const AdminCmsRouteWithChildren = AdminCmsRoute._addFileChildren(
   AdminCmsRouteChildren,
 )
 
+interface AdminPagesRouteChildren {
+  AdminPagesPageRoute: typeof AdminPagesPageRoute
+  AdminPagesIndexRoute: typeof AdminPagesIndexRoute
+}
+
+const AdminPagesRouteChildren: AdminPagesRouteChildren = {
+  AdminPagesPageRoute: AdminPagesPageRoute,
+  AdminPagesIndexRoute: AdminPagesIndexRoute,
+}
+
+const AdminPagesRouteWithChildren = AdminPagesRoute._addFileChildren(
+  AdminPagesRouteChildren,
+)
+
 interface AdminRouteChildren {
   AdminApplicationsRoute: typeof AdminApplicationsRoute
   AdminAuditRoute: typeof AdminAuditRoute
@@ -782,7 +852,7 @@ interface AdminRouteChildren {
   AdminMediaRoute: typeof AdminMediaRoute
   AdminMenusRoute: typeof AdminMenusRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
-  AdminPagesRoute: typeof AdminPagesRoute
+  AdminPagesRoute: typeof AdminPagesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -795,7 +865,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminMediaRoute: AdminMediaRoute,
   AdminMenusRoute: AdminMenusRoute,
   AdminMessagesRoute: AdminMessagesRoute,
-  AdminPagesRoute: AdminPagesRoute,
+  AdminPagesRoute: AdminPagesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -863,6 +933,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRouteWithChildren,
   TermsRoute: TermsRoute,
+  PSlugRoute: PSlugRoute,
   VenturesSlugRoute: VenturesSlugRoute,
   VenturesIndexRoute: VenturesIndexRoute,
 }

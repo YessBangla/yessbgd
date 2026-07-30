@@ -359,6 +359,90 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_site_pages: {
+        Row: {
+          body: string | null
+          body_bn: string | null
+          created_at: string | null
+          data: Json | null
+          hero_eyebrow: string | null
+          hero_eyebrow_bn: string | null
+          hero_image: string | null
+          hero_subtitle: string | null
+          hero_subtitle_bn: string | null
+          hero_title: string | null
+          hero_title_bn: string | null
+          id: string
+          is_custom: boolean
+          is_published: boolean
+          name: string
+          name_bn: string | null
+          og_image: string | null
+          page: string
+          path: string
+          seo_description: string | null
+          seo_description_bn: string | null
+          seo_title: string | null
+          seo_title_bn: string | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          body?: string | null
+          body_bn?: string | null
+          created_at?: string | null
+          data?: Json | null
+          hero_eyebrow?: string | null
+          hero_eyebrow_bn?: string | null
+          hero_image?: string | null
+          hero_subtitle?: string | null
+          hero_subtitle_bn?: string | null
+          hero_title?: string | null
+          hero_title_bn?: string | null
+          id?: string
+          is_custom?: boolean
+          is_published?: boolean
+          name: string
+          name_bn?: string | null
+          og_image?: string | null
+          page: string
+          path: string
+          seo_description?: string | null
+          seo_description_bn?: string | null
+          seo_title?: string | null
+          seo_title_bn?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          body?: string | null
+          body_bn?: string | null
+          created_at?: string | null
+          data?: Json | null
+          hero_eyebrow?: string | null
+          hero_eyebrow_bn?: string | null
+          hero_image?: string | null
+          hero_subtitle?: string | null
+          hero_subtitle_bn?: string | null
+          hero_title?: string | null
+          hero_title_bn?: string | null
+          id?: string
+          is_custom?: boolean
+          is_published?: boolean
+          name?: string
+          name_bn?: string | null
+          og_image?: string | null
+          page?: string
+          path?: string
+          seo_description?: string | null
+          seo_description_bn?: string | null
+          seo_title?: string | null
+          seo_title_bn?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cms_ventures: {
         Row: {
           category: string | null

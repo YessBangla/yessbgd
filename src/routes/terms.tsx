@@ -103,6 +103,7 @@ function Terms() {
   return (
     <>
       <PageHero
+        page="terms"
         eyebrow={t("pages.terms.eyebrow")}
         title={t("pages.terms.title")}
         subtitle={t("pages.terms.subtitle")}

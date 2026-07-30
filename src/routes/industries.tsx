@@ -33,6 +33,7 @@ function Industries() {
   return (
     <>
       <PageHero
+        page="industries"
         eyebrow={t("pages.industries.eyebrow")}
         title={t("pages.industries.title")}
         subtitle={t("pages.industries.subtitle")}
