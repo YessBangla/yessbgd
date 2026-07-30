@@ -80,6 +80,21 @@ function classifyResume(a: Application): Exclude<ResumeKind, "all"> {
   return "other";
 }
 
+function dayKey(iso: string) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function dayLabel(key: string) {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 function AdminApplications() {
   const navigate = useNavigate();
   const [items, setItems] = useState<Application[] | null>(null);
@@ -89,6 +104,8 @@ function AdminApplications() {
   const [kind, setKind] = useState<ResumeKind>("all");
   const [minKB, setMinKB] = useState<string>("");
   const [maxKB, setMaxKB] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
 
   const load = async () => {
     setError(null);
