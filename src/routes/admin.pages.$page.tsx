@@ -9,7 +9,14 @@ import { PageMenuPanel } from "@/components/admin/PageMenuPanel";
 import { SITE_PAGE_FIELDS, useSitePage, type SitePage } from "@/lib/sitePages";
 import { ArrowLeft, Save, Loader2, Plus, Trash2, ExternalLink } from "lucide-react";
 
+type EditorTab = "content" | "sections" | "navigation" | "seo";
+const EDITOR_TABS: EditorTab[] = ["content", "sections", "navigation", "seo"];
+
 export const Route = createFileRoute("/admin/pages/$page")({
+  validateSearch: (search: Record<string, unknown>): { tab?: EditorTab } => {
+    const t = String(search.tab ?? "");
+    return EDITOR_TABS.includes(t as EditorTab) ? { tab: t as EditorTab } : {};
+  },
   head: () => ({
     meta: [
       { title: "Edit page — Admin" },
