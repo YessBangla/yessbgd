@@ -1,3 +1,4 @@
+import { resolveMediaUrl } from "@/lib/mediaAssets";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
@@ -64,7 +65,7 @@ function CustomPage() {
       {page.hero_image && (
         <div className="container-tight -mt-4 mb-14">
           <img
-            src={page.hero_image}
+            src={resolveMediaUrl(page.hero_image)}
             alt={heroTitle}
             className="w-full rounded-2xl border border-border/60 object-cover shadow-sm"
             loading="lazy"
@@ -100,7 +101,7 @@ function CustomPage() {
               </div>
               {s.image_url && (
                 <img
-                  src={s.image_url}
+                  src={resolveMediaUrl(s.image_url)}
                   alt={title || ""}
                   className="w-full rounded-2xl border border-border/60 object-cover"
                   loading="lazy"
