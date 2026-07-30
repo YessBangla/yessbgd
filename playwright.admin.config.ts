@@ -14,5 +14,8 @@ export default defineConfig({
     ...devices["Desktop Chrome"],
     baseURL: process.env.PREVIEW_URL ?? "http://localhost:8080",
     viewport: { width: 1440, height: 1000 },
+    launchOptions: process.env.PLAYWRIGHT_CHROMIUM_PATH
+      ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
+      : {},
   },
 });
