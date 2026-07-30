@@ -751,3 +751,137 @@ function AdminPagesList() {
     </div>
   );
 }
+
+/* ---------------------------------------------------------------------------
+   Submenu panel shown when a page row is expanded — lists every menu entry
+   that points at this page plus its child items, and lets an editor add,
+   rename, hide or remove submenus without leaving the Pages list.
+--------------------------------------------------------------------------- */
+function PageSubmenus({
+  pagePath,
+  attached,
+  pages,
+  onAdd,
+  onRename,
+  onDelete,
+  onTogglePublished,
+}: {
+  pagePath: string;
+  attached: { node: MenuNode; location: string }[];
+  pages: { name: string; path: string }[];
+  onAdd: (parent: MenuNode, label: string, labelBn: string, href: string) => Promise<void>;
+  onRename: (item: MenuNode) => Promise<void>;
+  onDelete: (item: MenuNode) => Promise<void>;
+  onTogglePublished: (id: string, next: boolean) => Promise<void>;
+}) {
+  const [addFor, setAddFor] = useState<string | null>(null);
+  const [label, setLabel] = useState("");
+  const [labelBn, setLabelBn] = useState("");
+  const [href, setHref] = useState(pages[0]?.path ?? "/");
+  const [busy, setBusy] = useState(false);
+
+  const cls = "rounded-md border border-border bg-background px-2.5 py-1.5 text-sm outline-none focus:border-primary";
+
+  const submit = async (parent: MenuNode) => {
+    if (!label.trim()) return;
+    setBusy(true);
+    await onAdd(parent, label, labelBn, href);
+    setBusy(false);
+    setLabel("");
+    setLabelBn("");
+    setAddFor(null);
+  };
+
+  const renderChild = (n: MenuNode, depth: number) => (
+    <Fragment key={n.id}>
+      <li className="flex flex-wrap items-center gap-2 py-1.5" style={{ paddingLeft: depth * 18 }}>
+        <span className="text-muted-foreground">↳</span>
+        <span className="font-medium">{n.label}</span>
+        {n.label_bn && <span className="text-xs text-muted-foreground">{n.label_bn}</span>}
+        <code className="rounded bg-secondary px-1.5 py-0.5 text-[11px] text-muted-foreground">{n.href}</code>
+        <span
+          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${
+            n.is_published === false ? "bg-secondary text-muted-foreground" : "bg-admin-success text-admin-success-foreground"
+          }`}
+        >
+          {n.is_published === false ? "Hidden" : "Published"}
+        </span>
+        <div className="ml-auto flex items-center gap-1">
+          <button onClick={() => onRename(n)} title="Rename" className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary">
+            <Pencil className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => onTogglePublished(n.id, n.is_published === false)}
+            title={n.is_published === false ? "Publish" : "Hide"}
+            className="grid h-7 w-7 place-items-center rounded border border-border hover:bg-secondary"
+          >
+            {n.is_published === false ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+          </button>
+          <button onClick={() => onDelete(n)} title="Remove" className="grid h-7 w-7 place-items-center rounded border border-border text-destructive hover:bg-destructive/10">
+            <Trash2 className="h-3 w-3" />
+          </button>
+        </div>
+      </li>
+      {n.children.map((c) => renderChild(c, depth + 1))}
+    </Fragment>
+  );
+
+  if (attached.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        This page isn&apos;t in any menu yet · এই পেইজটি এখনো কোনো মেনুতে নেই —{" "}
+        <span className="font-mono text-xs">{pagePath}</span>. Open the page editor&apos;s{" "}
+        <strong>Navigation &amp; submenu</strong> tab to add it.
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {attached.map(({ node, location }) => (
+        <div key={node.id} className="rounded-lg border border-border bg-card p-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <ListTree className="h-4 w-4 text-admin-accent" />
+            <span className="text-sm font-semibold">{node.label}</span>
+            <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+              {location} menu
+            </span>
+            <button
+              onClick={() => setAddFor(addFor === node.id ? null : node.id)}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-admin-accent px-2.5 py-1.5 text-xs font-semibold text-admin-accent-foreground"
+            >
+              <Plus className="h-3 w-3" /> Add submenu · সাবমেনু
+            </button>
+          </div>
+
+          {addFor === node.id && (
+            <div className="mt-3 flex flex-wrap items-end gap-2 rounded-md bg-secondary/40 p-3">
+              <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Label (EN)" className={cls} />
+              <input value={labelBn} onChange={(e) => setLabelBn(e.target.value)} placeholder="লেবেল (BN)" className={cls} />
+              <select value={href} onChange={(e) => setHref(e.target.value)} className={cls}>
+                {pages.map((pg) => (
+                  <option key={pg.path} value={pg.path}>
+                    {pg.name} — {pg.path}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => submit(node)}
+                disabled={busy || !label.trim()}
+                className="inline-flex items-center gap-1.5 rounded-md bg-admin-accent px-3 py-1.5 text-xs font-semibold text-admin-accent-foreground disabled:opacity-60"
+              >
+                {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />} Save
+              </button>
+            </div>
+          )}
+
+          {node.children.length === 0 ? (
+            <p className="mt-2 text-xs text-muted-foreground">No submenu items yet · কোনো সাবমেনু নেই।</p>
+          ) : (
+            <ul className="mt-2 divide-y divide-border/50 text-sm">{node.children.map((c) => renderChild(c, 0))}</ul>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
