@@ -94,6 +94,7 @@ function buildNav(): NavGroup[] {
       icon: Settings,
       items: [
         { label: "Settings", labelBn: "সাইট সেটিংস", to: "/admin/settings" },
+        { label: "Data backup", labelBn: "ডাটা ডাউনলোড/আপলোড", to: "/admin/data" },
         { label: "Audit log", labelBn: "অডিট লগ", to: "/admin/audit" },
       ],
     },
