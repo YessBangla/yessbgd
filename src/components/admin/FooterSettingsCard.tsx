@@ -5,7 +5,7 @@
  * legal links and the copyright line. Saves into the `footer_config` row of
  * `cms_settings`.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Loader2,
@@ -19,6 +19,11 @@ import {
   ChevronDown,
   GripVertical,
   Bookmark,
+  Download,
+  Upload,
+  Undo2,
+  Redo2,
+  RotateCcw,
 } from "lucide-react";
 import { FooterLivePreview } from "@/components/admin/FooterLivePreview";
 import {
