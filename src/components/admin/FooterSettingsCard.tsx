@@ -5,7 +5,7 @@
  * legal links and the copyright line. Saves into the `footer_config` row of
  * `cms_settings`.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Loader2,
@@ -19,6 +19,11 @@ import {
   ChevronDown,
   GripVertical,
   Bookmark,
+  Download,
+  Upload,
+  Undo2,
+  Redo2,
+  RotateCcw,
 } from "lucide-react";
 import { FooterLivePreview } from "@/components/admin/FooterLivePreview";
 import {
@@ -88,6 +93,85 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOver, setDragOver] = useState<number | null>(null);
 
+  /* ------------------------------ undo / redo ---------------------------- */
+  const past = useRef<FooterConfig[]>([]);
+  const future = useRef<FooterConfig[]>([]);
+  const skipHistory = useRef(true);
+  const lastCfg = useRef<FooterConfig>(FOOTER_DEFAULTS);
+  const [histTick, setHistTick] = useState(0);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (skipHistory.current) {
+      skipHistory.current = false;
+      lastCfg.current = cfg;
+      return;
+    }
+    if (cfg === lastCfg.current) return;
+    past.current = [...past.current.slice(-49), lastCfg.current];
+    future.current = [];
+    lastCfg.current = cfg;
+    setHistTick((n) => n + 1);
+  }, [cfg]);
+
+  /** Replace the config without recording an extra history entry. */
+  const applyHistory = (next: FooterConfig) => {
+    skipHistory.current = true;
+    lastCfg.current = next;
+    setCfg(next);
+    setHistTick((n) => n + 1);
+  };
+
+  const undo = () => {
+    const prev = past.current.pop();
+    if (!prev) return;
+    future.current = [lastCfg.current, ...future.current].slice(0, 50);
+    applyHistory(prev);
+  };
+
+  const redo = () => {
+    const next = future.current.shift();
+    if (!next) return;
+    past.current = [...past.current, lastCfg.current];
+    applyHistory(next);
+  };
+
+  /* ------------------------------ export / import ------------------------ */
+  const exportJson = () => {
+    const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `footer-config-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setMsg("Exported · JSON ডাউনলোড হয়েছে।");
+  };
+
+  const importJson = async (file: File) => {
+    setErr(null);
+    setMsg(null);
+    try {
+      const parsed = JSON.parse(await file.text());
+      setCfg((c) => ({ ...normaliseFooterConfig(parsed), saved_presets: c.saved_presets ?? [] }));
+      setMsg("Imported · JSON প্রয়োগ হয়েছে, প্রিভিউ আপডেট হয়েছে। সেভ করুন।");
+    } catch {
+      setErr("Invalid JSON file · সঠিক Footer JSON ফাইল নয়।");
+    }
+  };
+
+  /* --------------------------------- reset ------------------------------- */
+  const resetAll = () => {
+    if (!canEdit) return;
+    setCfg((c) => ({ ...normaliseFooterConfig(FOOTER_DEFAULTS), saved_presets: c.saved_presets ?? [] }));
+    setMsg("Reset to defaults · ডিফল্টে ফেরানো হয়েছে।");
+  };
+
+  const resetStyle = () => {
+    if (!canEdit) return;
+    setCfg((c) => ({ ...c, style: { ...FOOTER_DEFAULTS.style } }));
+    setMsg("Style reset · স্টাইল ডিফল্টে ফেরানো হয়েছে।");
+  };
 
   useEffect(() => {
     void (async () => {
@@ -95,6 +179,7 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
       if (error) setErr(error.message);
       if (data) {
         setRowId((data as { id: string }).id);
+        skipHistory.current = true;
         setCfg(normaliseFooterConfig((data as { value: unknown }).value));
       }
       setLoading(false);
@@ -191,6 +276,11 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
     );
   }
 
+  const canUndo = histTick >= 0 && past.current.length > 0;
+  const canRedo = histTick >= 0 && future.current.length > 0;
+  const toolBtn =
+    "inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold hover:bg-secondary disabled:opacity-50";
+
   return (
     <section className="mb-8 rounded-xl border border-border bg-card p-4">
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -206,6 +296,59 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save footer
         </button>
       </div>
+
+      {/* ------------------------------------------------------- toolbar --- */}
+      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-background/60 p-3">
+        <button type="button" onClick={undo} disabled={!canUndo || !canEdit} className={toolBtn} aria-label="Undo">
+          <Undo2 className="h-3.5 w-3.5" /> Undo · পূর্বাবস্থা
+        </button>
+        <button type="button" onClick={redo} disabled={!canRedo || !canEdit} className={toolBtn} aria-label="Redo">
+          <Redo2 className="h-3.5 w-3.5" /> Redo · পুনরায়
+        </button>
+
+        <span className="mx-1 hidden h-5 w-px bg-border sm:block" />
+
+        <button type="button" onClick={exportJson} className={toolBtn}>
+          <Download className="h-3.5 w-3.5" /> Export JSON · এক্সপোর্ট
+        </button>
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={!canEdit}
+          className={toolBtn}
+        >
+          <Upload className="h-3.5 w-3.5" /> Import JSON · ইম্পোর্ট
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="application/json,.json"
+          className="hidden"
+          aria-label="Import footer config JSON"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void importJson(f);
+            e.target.value = "";
+          }}
+        />
+
+        <span className="mx-1 hidden h-5 w-px bg-border sm:block" />
+
+        <button type="button" onClick={resetStyle} disabled={!canEdit} className={toolBtn}>
+          <RotateCcw className="h-3.5 w-3.5" /> Reset style · স্টাইল রিসেট
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (window.confirm("Reset the whole footer config to defaults? · পুরো ফুটার ডিফল্টে ফেরাবেন?")) resetAll();
+          }}
+          disabled={!canEdit}
+          className={`${toolBtn} border-destructive/40 text-destructive hover:bg-destructive/10`}
+        >
+          <RotateCcw className="h-3.5 w-3.5" /> Reset all · সব রিসেট
+        </button>
+      </div>
+
 
       {err && <p className="mb-3 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-3 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
