@@ -276,6 +276,11 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
     );
   }
 
+  const canUndo = histTick >= 0 && past.current.length > 0;
+  const canRedo = histTick >= 0 && future.current.length > 0;
+  const toolBtn =
+    "inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold hover:bg-secondary disabled:opacity-50";
+
   return (
     <section className="mb-8 rounded-xl border border-border bg-card p-4">
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -291,6 +296,59 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save footer
         </button>
       </div>
+
+      {/* ------------------------------------------------------- toolbar --- */}
+      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-background/60 p-3">
+        <button type="button" onClick={undo} disabled={!canUndo || !canEdit} className={toolBtn} aria-label="Undo">
+          <Undo2 className="h-3.5 w-3.5" /> Undo · পূর্বাবস্থা
+        </button>
+        <button type="button" onClick={redo} disabled={!canRedo || !canEdit} className={toolBtn} aria-label="Redo">
+          <Redo2 className="h-3.5 w-3.5" /> Redo · পুনরায়
+        </button>
+
+        <span className="mx-1 hidden h-5 w-px bg-border sm:block" />
+
+        <button type="button" onClick={exportJson} className={toolBtn}>
+          <Download className="h-3.5 w-3.5" /> Export JSON · এক্সপোর্ট
+        </button>
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          disabled={!canEdit}
+          className={toolBtn}
+        >
+          <Upload className="h-3.5 w-3.5" /> Import JSON · ইম্পোর্ট
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="application/json,.json"
+          className="hidden"
+          aria-label="Import footer config JSON"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void importJson(f);
+            e.target.value = "";
+          }}
+        />
+
+        <span className="mx-1 hidden h-5 w-px bg-border sm:block" />
+
+        <button type="button" onClick={resetStyle} disabled={!canEdit} className={toolBtn}>
+          <RotateCcw className="h-3.5 w-3.5" /> Reset style · স্টাইল রিসেট
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (window.confirm("Reset the whole footer config to defaults? · পুরো ফুটার ডিফল্টে ফেরাবেন?")) resetAll();
+          }}
+          disabled={!canEdit}
+          className={`${toolBtn} border-destructive/40 text-destructive hover:bg-destructive/10`}
+        >
+          <RotateCcw className="h-3.5 w-3.5" /> Reset all · সব রিসেট
+        </button>
+      </div>
+
 
       {err && <p className="mb-3 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</p>}
       {msg && <p className="mb-3 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">{msg}</p>}
