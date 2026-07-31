@@ -93,6 +93,85 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOver, setDragOver] = useState<number | null>(null);
 
+  /* ------------------------------ undo / redo ---------------------------- */
+  const past = useRef<FooterConfig[]>([]);
+  const future = useRef<FooterConfig[]>([]);
+  const skipHistory = useRef(true);
+  const lastCfg = useRef<FooterConfig>(FOOTER_DEFAULTS);
+  const [histTick, setHistTick] = useState(0);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (skipHistory.current) {
+      skipHistory.current = false;
+      lastCfg.current = cfg;
+      return;
+    }
+    if (cfg === lastCfg.current) return;
+    past.current = [...past.current.slice(-49), lastCfg.current];
+    future.current = [];
+    lastCfg.current = cfg;
+    setHistTick((n) => n + 1);
+  }, [cfg]);
+
+  /** Replace the config without recording an extra history entry. */
+  const applyHistory = (next: FooterConfig) => {
+    skipHistory.current = true;
+    lastCfg.current = next;
+    setCfg(next);
+    setHistTick((n) => n + 1);
+  };
+
+  const undo = () => {
+    const prev = past.current.pop();
+    if (!prev) return;
+    future.current = [lastCfg.current, ...future.current].slice(0, 50);
+    applyHistory(prev);
+  };
+
+  const redo = () => {
+    const next = future.current.shift();
+    if (!next) return;
+    past.current = [...past.current, lastCfg.current];
+    applyHistory(next);
+  };
+
+  /* ------------------------------ export / import ------------------------ */
+  const exportJson = () => {
+    const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `footer-config-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setMsg("Exported · JSON ডাউনলোড হয়েছে।");
+  };
+
+  const importJson = async (file: File) => {
+    setErr(null);
+    setMsg(null);
+    try {
+      const parsed = JSON.parse(await file.text());
+      setCfg((c) => ({ ...normaliseFooterConfig(parsed), saved_presets: c.saved_presets ?? [] }));
+      setMsg("Imported · JSON প্রয়োগ হয়েছে, প্রিভিউ আপডেট হয়েছে। সেভ করুন।");
+    } catch {
+      setErr("Invalid JSON file · সঠিক Footer JSON ফাইল নয়।");
+    }
+  };
+
+  /* --------------------------------- reset ------------------------------- */
+  const resetAll = () => {
+    if (!canEdit) return;
+    setCfg((c) => ({ ...normaliseFooterConfig(FOOTER_DEFAULTS), saved_presets: c.saved_presets ?? [] }));
+    setMsg("Reset to defaults · ডিফল্টে ফেরানো হয়েছে।");
+  };
+
+  const resetStyle = () => {
+    if (!canEdit) return;
+    setCfg((c) => ({ ...c, style: { ...FOOTER_DEFAULTS.style } }));
+    setMsg("Style reset · স্টাইল ডিফল্টে ফেরানো হয়েছে।");
+  };
 
   useEffect(() => {
     void (async () => {
@@ -100,6 +179,7 @@ export function FooterSettingsCard({ canEdit = true }: { canEdit?: boolean }) {
       if (error) setErr(error.message);
       if (data) {
         setRowId((data as { id: string }).id);
+        skipHistory.current = true;
         setCfg(normaliseFooterConfig((data as { value: unknown }).value));
       }
       setLoading(false);
