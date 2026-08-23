@@ -44,7 +44,7 @@ const TASKS: {
   cap: Capability;
   icon: typeof FilePlus2;
   title: string;
-  titleBn: string;
+  titleBn: string | React.ReactNode;
   help: string;
 }[] = [
   {
