@@ -57,7 +57,7 @@ const TASKS: {
         '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
         <br />
         <br />
-        do it
+        Load the security issues from the scan results and fix the selected issues.
       </>
     ),
     help: "হোম, About, Contact — যেকোনো পেজের লেখা ও ছবি বদলান।",
