@@ -44,7 +44,7 @@ const TASKS: {
   cap: Capability;
   icon: typeof FilePlus2;
   title: string;
-  titleBn: string;
+  titleBn: string | React.ReactNode;
   help: string;
 }[] = [
   {
@@ -52,7 +52,14 @@ const TASKS: {
     cap: "pages",
     icon: FilePlus2,
     title: "Edit a page",
-    titleBn: "পেজের লেখা বদলান",
+    titleBn: (
+      <>
+        '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
+        <br />
+        <br />
+        do it
+      </>
+    ),
     help: "হোম, About, Contact — যেকোনো পেজের লেখা ও ছবি বদলান।",
   },
   {
@@ -324,10 +331,7 @@ function AdminDashboard() {
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
                 <Icon className="h-5 w-5" />
               </span>
-              <div className="mt-3 text-base font-semibold">'''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
-                                        
-                                            
-                                            Website a Venture গুরো নেই কেন?</div>
+              <div className="mt-3 text-base font-semibold">{t.titleBn}</div>
               <div className="text-xs text-muted-foreground">{t.title}</div>
               <p className="mt-2 text-sm text-muted-foreground">{t.help}</p>
               <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
