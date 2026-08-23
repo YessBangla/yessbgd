@@ -52,7 +52,14 @@ const TASKS: {
     cap: "pages",
     icon: FilePlus2,
     title: "Edit a page",
-    titleBn: "পেজের লেখা বদলান",
+    titleBn: (
+      <>
+        '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
+        <br />
+        <br />
+        do it
+      </>
+    ),
     help: "হোম, About, Contact — যেকোনো পেজের লেখা ও ছবি বদলান।",
   },
   {
