@@ -355,7 +355,7 @@ function Index() {
                         decoding="async"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none"
                       />
-                      <span className="absolute left-2 top-2 rounded-md border border-background/30 bg-foreground/55 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-background backdrop-blur-sm">
+                      <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate whitespace-nowrap rounded-md border border-background/30 bg-foreground/55 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-background backdrop-blur-sm">
                         {v.category}
                       </span>
                     </span>
