@@ -561,6 +561,96 @@
   @media (prefers-reduced-motion: reduce) {
     .coin-emboss::after { transition: none; }
   }
+
+  /* Hero coin — a fully round, minted coin face.
+     Metallic radial face + raised bevel + milled edge dashes + inner
+     struck ring; the venture emblem sits "engraved" in the middle via
+     letterpress shading. Token-driven so both themes stay coherent. */
+  .hero-coin {
+    position: relative;
+    border-radius: 9999px;
+    background-image: radial-gradient(
+      circle at 32% 26%,
+      var(--background) 0%,
+      color-mix(in oklab, var(--muted) 62%, var(--background)) 58%,
+      color-mix(in oklab, var(--foreground) 16%, var(--muted)) 100%
+    );
+    box-shadow:
+      /* coin sits raised off the hero surface */
+      0 2px 0 color-mix(in oklab, var(--background) 55%, transparent),
+      0 18px 34px -16px color-mix(in oklab, var(--foreground) 60%, transparent),
+      /* rounded-metal bevel: highlight top/left, shade bottom/right */
+      inset 0 2px 3px color-mix(in oklab, var(--background) 92%, transparent),
+      inset 2px 0 3px color-mix(in oklab, var(--background) 55%, transparent),
+      inset 0 -4px 6px color-mix(in oklab, var(--foreground) 22%, transparent),
+      inset -3px 0 5px color-mix(in oklab, var(--foreground) 12%, transparent);
+    transition:
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      box-shadow 320ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  /* Milled edge — fine reeded dashes around the rim, like a real coin */
+  .hero-coin::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: repeating-conic-gradient(
+      color-mix(in oklab, var(--foreground) 26%, transparent) 0deg 2deg,
+      transparent 2deg 7deg
+    );
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
+    opacity: 0.55;
+  }
+  /* Struck inner ring + sweeping metal sheen */
+  .hero-coin::after {
+    content: "";
+    position: absolute;
+    inset: 11px;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow:
+      inset 0 1px 1px color-mix(in oklab, var(--foreground) 20%, transparent),
+      inset 0 -1px 1px color-mix(in oklab, var(--background) 85%, transparent),
+      0 1px 0 color-mix(in oklab, var(--background) 60%, transparent);
+    background-image: linear-gradient(
+      118deg,
+      color-mix(in oklab, var(--background) 30%, transparent) 0%,
+      transparent 30%,
+      transparent 68%,
+      color-mix(in oklab, var(--foreground) 7%, transparent) 100%
+    );
+    opacity: 0.6;
+    transition: opacity 300ms ease;
+  }
+  .group:hover .hero-coin {
+    transform: translateY(-4px);
+    box-shadow:
+      0 3px 0 color-mix(in oklab, var(--background) 55%, transparent),
+      0 26px 44px -18px color-mix(in oklab, var(--foreground) 65%, transparent),
+      inset 0 2px 3px color-mix(in oklab, var(--background) 92%, transparent),
+      inset 2px 0 3px color-mix(in oklab, var(--background) 55%, transparent),
+      inset 0 -4px 6px color-mix(in oklab, var(--foreground) 22%, transparent),
+      inset -3px 0 5px color-mix(in oklab, var(--foreground) 12%, transparent);
+  }
+  .group:hover .hero-coin::after { opacity: 1; }
+  /* Engraved (খোদাই) emblem — letterpress: dark cut + bright lower lip */
+  .coin-engrave {
+    color: color-mix(in oklab, var(--foreground) 66%, var(--background));
+    text-shadow:
+      0 -1px 1px color-mix(in oklab, var(--foreground) 30%, transparent),
+      0 1px 0 color-mix(in oklab, var(--background) 90%, transparent);
+  }
+  .coin-engrave svg {
+    filter:
+      drop-shadow(0 -1px 1px color-mix(in oklab, var(--foreground) 28%, transparent))
+      drop-shadow(0 1px 0 color-mix(in oklab, var(--background) 88%, transparent));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-coin, .hero-coin::after { transition: none; }
+    .group:hover .hero-coin { transform: none; }
+  }
   .text-balance { text-wrap: balance; }
 
   /* Glass utilities — Apple Liquid Glass style */
