@@ -256,6 +256,9 @@
     },
     "downloadCards": {
       "compareLabel": "Choose your edition",
+      "docxLabel": "Editable Word (.docx) versions — change any text in Word or Google Docs:",
+      "docxEnglish": "English DOCX",
+      "docxBangla": "Bangla DOCX",
       "english": {
         "badge": "EN · English",
         "kicker": "English Edition",
