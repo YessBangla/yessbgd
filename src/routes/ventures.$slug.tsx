@@ -978,6 +978,32 @@ function VenturePage() {
                   </span>
                 </a>
               </div>
+
+              {/* Editable Word (.docx) twins — partners can adjust wording in
+                  Word / Google Docs before printing. */}
+              <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-dashed border-border/70 bg-background/50 px-3 py-2.5">
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                  <FileText className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                  Editable Word (.docx) — change any text before print:
+                </span>
+                <a
+                  href={`/profiles/${v.slug}-profile.docx`}
+                  download={`${v.slug}-project-profile.docx`}
+                  aria-label={`Download ${v.title} project profile — English DOCX`}
+                  className="inline-flex items-center gap-1 rounded-full border border-border bg-background/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary"
+                >
+                  <FileText className="h-3 w-3" aria-hidden="true" /> English DOCX
+                </a>
+                <a
+                  href={`/profiles/${v.slug}-profile-bn.docx`}
+                  download={`${v.slug}-project-profile-bn.docx`}
+                  aria-label={`${v.title} প্রজেক্ট প্রোফাইল ডাউনলোড করুন — বাংলা DOCX`}
+                  lang="bn"
+                  className="inline-flex items-center gap-1 rounded-full border border-primary/40 bg-primary/[0.06] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-primary transition-all hover:-translate-y-0.5 hover:border-primary/70"
+                >
+                  <FileText className="h-3 w-3" aria-hidden="true" /> বাংলা DOCX
+                </a>
+              </div>
             </div>
           </div>
         </section>
