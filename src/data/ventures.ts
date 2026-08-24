@@ -1,4 +1,4 @@
-import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, ChefHat, LayoutGrid, Plane, type LucideIcon } from "lucide-react";
+import { Code2, Tv, PlayCircle, Newspaper, Leaf, Wrench, Server, CalendarHeart, Sparkles, ChefHat, LayoutGrid, Plane, Scale, type LucideIcon } from "lucide-react";
 
 import yessSoftImg from "@/assets/ventures/yess-soft.jpg";
 import akashTvImg from "@/assets/ventures/akash-tv.jpg";
@@ -12,6 +12,7 @@ import yessModelImg from "@/assets/ventures/yess-model.jpg";
 import yessFoodImg from "@/assets/ventures/yess-food.jpg";
 import yessTourismImg from "@/assets/ventures/yess-tourism.jpg";
 import yessAioImg from "@/assets/ventures/yess-all-in-one-solution.jpg";
+import yessLegalImg from "@/assets/ventures/yess-legal-advice.jpg";
 
 export type VentureCase = {
   challenge: string;
@@ -61,6 +62,8 @@ export type Venture = {
   logoUrl?: string;
   /** Optional public domain — the hero coin auto-pulls its live favicon. */
   domain?: string;
+  /** Live ventures vs. upcoming projects. Absent = active. */
+  status?: "active" | "upcoming";
   color: string;
   highlights: string[];
   services: string[];
@@ -80,6 +83,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-soft",
     title: "Yess Soft",
+    status: "active",
     domain: "yessbangla.top",
     logoUrl: "/coins/yess-soft.png",
     category: "Software & IT Solutions",
@@ -137,6 +141,7 @@ export const ventures: Venture[] = [
   {
     slug: "akash-tv",
     title: "Akash TV",
+    status: "upcoming",
     category: "Satellite Television",
     tagline: "Stories that connect a nation.",
     desc: "A modern satellite broadcast channel delivering news, entertainment, drama, talk shows and cultural programs across the country.",
@@ -192,6 +197,7 @@ export const ventures: Venture[] = [
   {
     slug: "akash-ott",
     title: "Akash OTT",
+    status: "active",
     domain: "akash.tv",
     logoUrl: "/coins/akash-ott.png",
     category: "Streaming Platform",
@@ -249,6 +255,7 @@ export const ventures: Venture[] = [
   {
     slug: "the-daily-akash",
     title: "The Daily Akash",
+    status: "active",
     domain: "akash.news",
     logoUrl: "/coins/the-daily-akash.png",
     category: "Digital Newspaper",
@@ -306,6 +313,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-organic-haat",
     title: "Yess Organic Haat",
+    status: "active",
     domain: "organichaat.top",
     logoUrl: "/coins/yess-organic-haat.png",
     category: "Organic Marketplace",
@@ -363,6 +371,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-service",
     title: "Shondhaan",
+    status: "active",
     domain: "shondhaan.com",
     logoUrl: "/coins/shondhaan.png",
     category: "Home & Professional Services",
@@ -420,6 +429,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-host",
     title: "Yess Host",
+    status: "active",
     category: "Hosting & Cloud Infrastructure",
     tagline: "Fast, secure hosting built for growth.",
     desc: "Reliable web hosting, domains, cloud servers and managed infrastructure for businesses of all sizes — backed by 24/7 expert support.",
@@ -475,6 +485,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-event",
     title: "Yess Event",
+    status: "active",
     category: "Event Management",
     tagline: "Unforgettable experiences, expertly delivered.",
     desc: "End-to-end event planning, production and management for corporate, cultural, brand activations and private occasions.",
@@ -530,6 +541,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-model",
     title: "Yess Model",
+    status: "upcoming",
     category: "Modeling & Talent Agency",
     tagline: "Where talent meets opportunity.",
     desc: "A modeling and talent agency discovering and nurturing fresh faces — connecting models, actors and creators with leading brands.",
@@ -585,6 +597,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-food",
     title: "Yess Food",
+    status: "upcoming",
     category: "Food & Beverage",
     tagline: "Authentic flavours, world-class quality.",
     desc: "Quality-driven food experiences — from cloud kitchens and signature dining concepts to packaged food brands.",
@@ -640,6 +653,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-tourism",
     title: "Yess Tourism",
+    status: "upcoming",
     category: "Travel & Tourism",
     tagline: "Curated journeys, beautifully delivered.",
     desc: "Bespoke holiday packages, business travel, hajj & umrah, visa support and inbound experiences — designed for comfort, value and unforgettable moments.",
@@ -751,6 +765,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-all-in-one-solution",
     title: "Yess All in One Solution",
+    status: "upcoming",
     category: "Integrated Business Solutions",
     tagline: "Every YESS service. One unified experience.",
     desc: "A unified platform bringing together every YESS service — software, media, lifestyle and professional services — for seamless business and personal needs.",
