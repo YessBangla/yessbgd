@@ -30,6 +30,8 @@ import { Reveal } from "@/components/Reveal";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { TourismExtras } from "@/components/TourismExtras";
 import { BriefDownloadControls } from "@/components/BriefDownloadControls";
+import { ProfilePreviewDialog } from "@/components/ProfilePreviewDialog";
+import { ProfileCustomExport } from "@/components/ProfileCustomExport";
 import { downloadVentureBrief } from "@/lib/ventureBrief";
 import {
   getVenture,
@@ -53,7 +55,9 @@ export const Route = createFileRoute("/ventures/$slug")({
   loader: ({ params }) => {
     const v = getVenture(params.slug);
     if (!v) throw notFound();
-    return { venture: v };
+    // Strip the React icon component — functions can't be SSR-serialized.
+    const { icon: _icon, ...rest } = v;
+    return { venture: rest };
   },
   head: ({ loaderData }) => {
     const v = loaderData?.venture;
@@ -123,7 +127,9 @@ export const Route = createFileRoute("/ventures/$slug")({
 function VenturePage() {
   const ventures = useVentures();
   const { venture: staticVenture } = Route.useLoaderData();
-  const v = ventures.find((x) => x.slug === staticVenture.slug) ?? staticVenture;
+  // Loader data omits the icon (not SSR-serializable) — the full static
+  // venture is the fallback, complete with its icon component.
+  const v = ventures.find((x) => x.slug === staticVenture.slug) ?? getVenture(staticVenture.slug)!;
   const Icon = v.icon;
   const cs = getVentureCase(v);
   const milestones = getVentureMilestones(v);
@@ -1003,6 +1009,16 @@ function VenturePage() {
                 >
                   <FileText className="h-3 w-3" aria-hidden="true" /> বাংলা DOCX
                 </a>
+                <span className="mx-1 hidden h-4 w-px bg-border sm:block" aria-hidden="true" />
+                <ProfilePreviewDialog
+                  title={v.title}
+                  pdfEn={`/profiles/${v.slug}-profile.pdf`}
+                  pdfBn={`/profiles/${v.slug}-profile-bn.pdf`}
+                  docxEn={`/profiles/${v.slug}-profile.docx`}
+                  docxBn={`/profiles/${v.slug}-profile-bn.docx`}
+                  triggerText="Preview · প্রিভিউ"
+                />
+                <ProfileCustomExport slug={v.slug} title={v.title} />
               </div>
             </div>
           </div>
