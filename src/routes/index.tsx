@@ -338,39 +338,42 @@ function Index() {
                   <ArrowRight aria-hidden="true" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
               </div>
-              <div className="grid grid-cols-2" style={{ gap: "var(--hero-rhythm-xs)" }}>
-                {heroVentures.map((v, i) => (
-                  <Link
-                    key={v.slug}
-                    to="/ventures/$slug"
-                    params={{ slug: v.slug }}
-                    preload="intent"
-                    className="coin-emboss group overflow-hidden rounded-xl bg-background/[0.97] text-foreground backdrop-blur transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-                  >
-                    <span className="relative block aspect-[16/10] overflow-hidden bg-muted">
-                      <img
-                        src={v.image}
-                        alt={v.title}
-                        loading={i === 0 ? "eager" : "lazy"}
-                        decoding="async"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none"
-                      />
-                      <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate whitespace-nowrap rounded-md border border-background/30 bg-foreground/55 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-background backdrop-blur-sm">
-                        {v.category}
+              <div className="grid grid-cols-2" style={{ gap: "var(--hero-rhythm-sm)" }}>
+                {heroVentures.map((v) => {
+                  const Icon = v.icon;
+                  return (
+                    <Link
+                      key={v.slug}
+                      to="/ventures/$slug"
+                      params={{ slug: v.slug }}
+                      preload="intent"
+                      className="group flex flex-col items-center text-center motion-reduce:transition-none"
+                      aria-label={`${v.title} — ${v.tagline}`}
+                    >
+                      {/* Minted coin face — engraved venture emblem in the middle */}
+                      <span className="hero-coin grid aspect-square w-full place-items-center">
+                        <span
+                          aria-hidden="true"
+                          className={`absolute inset-[13px] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
+                        />
+                        <span className="coin-engrave relative z-[1] flex flex-col items-center gap-1.5 px-4">
+                          <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />
+                          <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.12em] sm:text-[11px]">
+                            {v.title}
+                          </span>
+                        </span>
                       </span>
-                    </span>
-                    <span className="block border-t border-border/60 px-3 pb-3 pt-2.5">
-                      <span className="flex items-center justify-between gap-2">
-                        <span className="truncate text-[13px] font-semibold tracking-[-0.01em]">{v.title}</span>
+                      {/* Caption under the coin */}
+                      <span className="mt-2.5 flex max-w-full items-center justify-center gap-1 text-[11px] text-background/75 transition-colors duration-300 group-hover:text-background">
+                        <span className="truncate">{v.tagline}</span>
                         <ArrowUpRight
                           aria-hidden="true"
-                          className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-[transform,color] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary"
+                          className="h-3 w-3 shrink-0 opacity-0 transition-[opacity,transform] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100 motion-reduce:transition-none"
                         />
                       </span>
-                      <span className="mt-1 block truncate text-[11px] leading-snug text-muted-foreground">{v.tagline}</span>
-                    </span>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
