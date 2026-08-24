@@ -268,7 +268,7 @@ export async function buildCustomProfileDocx(opts: CustomProfileOptions): Promis
                   new Paragraph({
                     children: [
                       new TextRun({
-                        text: v,
+                        text: v ?? "—",
                         size: 21,
                         color: INK,
                         font: { ascii: font, hAnsi: font, cs: bn ? "Noto Sans Bengali" : font },
@@ -328,17 +328,16 @@ export async function buildCustomProfileDocx(opts: CustomProfileOptions): Promis
         body.push(h2(label(def)));
         c.highlights.forEach((h) => body.push(bullet(h)));
         break;
-      case "facts":
+      case "facts": {
         body.push(h2(label(def)));
-        body.push(
-          kvTable([
-            [bn ? "প্রতিষ্ঠিত" : "Founded", c.founded],
-            [bn ? "কার্যক্রম এলাকা" : "Reach", c.reach],
-            [bn ? "ওয়েব" : "Web", c.domain],
-          ]),
-          new Paragraph({ children: [] }),
-        );
+        const rows: [string, string][] = [
+          [bn ? "প্রতিষ্ঠিত" : "Founded", c.founded],
+          [bn ? "কার্যক্রম এলাকা" : "Reach", c.reach],
+        ];
+        if (c.domain) rows.push([bn ? "ওয়েব" : "Web", c.domain]);
+        body.push(kvTable(rows), new Paragraph({ children: [] }));
         break;
+      }
       case "audience":
         body.push(h2(label(def)), p(c.audience));
         break;
