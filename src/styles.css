@@ -669,7 +669,7 @@
   @media (max-width: 639.98px) {
     .coin-slot:nth-child(even) { transform: translateY(-8px); }
   }
-  .coin-float { display: block; }
+  .coin-float { display: flex; justify-content: center; width: 100%; }
   /* Slow buoyant bob — ±5px, long ease, phase-staggered per coin */
   @keyframes coin-bob {
     0%, 100% { transform: translateY(0); }
