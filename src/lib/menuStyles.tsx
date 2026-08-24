@@ -135,7 +135,7 @@ export function menuItemAppearance(
   accent?: string | null,
 ): { className: string; style: CSSProperties } {
   const c = accentColor(accent);
-  const base = "inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors";
+  const base = "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition-colors";
   switch (style as MenuStyleKey) {
     case "soft":
       return {
