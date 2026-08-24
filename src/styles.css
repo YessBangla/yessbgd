@@ -548,6 +548,16 @@
     transition: opacity 300ms ease;
   }
   .coin-emboss:hover::after { opacity: 1; }
+  /* Hover — coin lifts: deeper drop shadow, bevel lips stay intact */
+  .coin-emboss:hover {
+    box-shadow:
+      0 2px 0 color-mix(in oklab, var(--background) 70%, transparent),
+      0 22px 40px -16px color-mix(in oklab, var(--foreground) 50%, transparent),
+      inset 0 1px 0 color-mix(in oklab, var(--background) 95%, transparent),
+      inset 1px 0 0 color-mix(in oklab, var(--background) 55%, transparent),
+      inset 0 -2px 1px color-mix(in oklab, var(--foreground) 14%, transparent),
+      inset -1px 0 0 color-mix(in oklab, var(--foreground) 9%, transparent);
+  }
   @media (prefers-reduced-motion: reduce) {
     .coin-emboss::after { transition: none; }
   }

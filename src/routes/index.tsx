@@ -345,7 +345,7 @@ function Index() {
                     to="/ventures/$slug"
                     params={{ slug: v.slug }}
                     preload="intent"
-                    className="group overflow-hidden rounded-xl border border-background/15 bg-background/[0.97] text-foreground shadow-elegant backdrop-blur transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:border-background/30 hover:shadow-glow motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                    className="coin-emboss group overflow-hidden rounded-xl bg-background/[0.97] text-foreground backdrop-blur transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                   >
                     <span className="relative block aspect-[16/10] overflow-hidden bg-muted">
                       <img
