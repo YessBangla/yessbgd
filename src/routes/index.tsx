@@ -368,7 +368,6 @@ function Index() {
                   link, with the named link affordance beneath. */}
               <div className="grid grid-cols-4" style={{ gap: "clamp(10px, 1.8vw, 18px)" }}>
                 {heroVentures.map((v) => {
-                  const Icon = v.icon;
                   return (
                     <Link
                       key={v.slug}
@@ -378,25 +377,14 @@ function Index() {
                       className="group flex flex-col items-center text-center motion-reduce:transition-none"
                       aria-label={`${v.title} — ${v.tagline}`}
                     >
-                      {/* Minted coin face — engraved venture logo in the middle */}
+                      {/* Minted coin face — auto-set venture logo in the middle */}
                       <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center sm:max-w-[96px] lg:max-w-[104px]">
                         <span
                           aria-hidden="true"
                           className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
                         />
                         <span className="coin-engrave relative z-[1] grid place-items-center">
-                          {v.logoUrl ? (
-                            <img
-                              src={v.logoUrl}
-                              alt=""
-                              aria-hidden="true"
-                              loading="lazy"
-                              decoding="async"
-                              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
-                            />
-                          ) : (
-                            <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />
-                          )}
+                          <HeroCoinMark venture={v} />
                         </span>
                       </span>
                       {/* Named link under the coin */}
