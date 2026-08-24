@@ -154,6 +154,16 @@ def _base_document(font: str, bn: bool) -> Document:
 
 
 def _footer(doc: Document, text: str):
+    # The letterhead pad already carries the full contact band at the bottom
+    # of the page, so when it is present we close with a small endnote in the
+    # body instead of a footer line (which would print over the navy band).
+    if getattr(doc, "_has_letterhead", False):
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = p.add_run(text)
+        run.font.size = Pt(8)
+        run.font.color.rgb = MUTED
+        return
     p = doc.sections[0].footer.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = p.add_run(text)
