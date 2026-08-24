@@ -19,6 +19,8 @@ import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
 import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
+import { resolveCoinLogo } from "@/lib/coinLogo";
+import type { Venture } from "@/data/ventures";
 import {
   ArrowRight,
   ArrowUpRight,
