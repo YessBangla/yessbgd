@@ -350,12 +350,12 @@ export const ventures: Venture[] = [
   },
   {
     slug: "yess-service",
-    title: "Yess Service",
+    title: "Shondhaan",
     category: "Home & Professional Services",
     tagline: "Trusted experts, just a tap away.",
     desc: "On-demand professional services — from home maintenance and cleaning to expert consultations — delivered by vetted professionals.",
     longDesc:
-      "Yess Service brings the country's best home and professional service providers onto a single, dependable booking platform. Every technician is background-checked, trained and rated by customers — with a written service guarantee on every job.",
+      "Shondhaan brings the country's best home and professional service providers onto a single, dependable booking platform. Every technician is background-checked, trained and rated by customers — with a written service guarantee on every job.",
     image: yessServiceImg,
     icon: Wrench,
     color: "from-primary to-primary-glow",
@@ -378,7 +378,7 @@ export const ventures: Venture[] = [
       challenge:
         "Booking a trustworthy electrician, AC tech or deep-cleaner meant scrolling Facebook groups and praying — pricing was opaque and quality wildly inconsistent.",
       solution:
-        "Yess Service launched an instant-booking app with vetted, in-house-trained professionals, upfront pricing and a written satisfaction guarantee on every job.",
+        "Shondhaan launched an instant-booking app with vetted, in-house-trained professionals, upfront pricing and a written satisfaction guarantee on every job.",
       phases: [
         { title: "Discover", desc: "Customer & technician interviews, complaint mining and a service-catalogue blueprint." },
         { title: "Design", desc: "3-tap booking flow, transparent price cards, live ETA and a post-job rating loop." },
@@ -394,7 +394,7 @@ export const ventures: Venture[] = [
       ],
     },
     testimonial: {
-      quote: "We manage 140 apartments across Dhaka and Yess Service is now our default for AC, plumbing and deep-clean. Upfront pricing and the satisfaction guarantee ended the haggling — and the complaints.",
+      quote: "We manage 140 apartments across Dhaka and Shondhaan is now our default for AC, plumbing and deep-clean. Upfront pricing and the satisfaction guarantee ended the haggling — and the complaints.",
       author: "Tanvir Ahmed",
       role: "Operations Director",
       company: "Bproperty Facilities",
