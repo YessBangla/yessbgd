@@ -3,6 +3,7 @@ import { Facebook, Twitter, Youtube, Instagram, Linkedin, Mail, Phone, MapPin } 
 import { useTranslation } from "react-i18next";
 import fallbackLogo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
+import { activeVentures } from "@/data/ventures";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 import { useMenu, useSettingText } from "@/lib/siteContent";
 import { resolveMediaUrl } from "@/lib/mediaAssets";
@@ -155,7 +156,7 @@ export function Footer({ configOverride }: { configOverride?: FooterConfig } = {
         <div key={index}>
           <h4 className={headingCls}>{heading || t("footer.ourVentures")}</h4>
           <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-            {ventures.slice(0, 8).map((v) => (
+            {activeVentures(ventures).slice(0, 8).map((v) => (
               <li key={v.slug}>
                 <Link to="/ventures/$slug" params={{ slug: v.slug }} className="hover:text-primary">
                   {v.title}

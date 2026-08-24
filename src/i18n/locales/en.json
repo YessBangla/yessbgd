@@ -146,13 +146,15 @@
     },
     "venturesSection": {
       "eyebrow": "Our ventures",
-      "title": "Eleven ventures. One ecosystem.",
+      "title": "Eight ventures. One ecosystem.",
       "lede": "A connected portfolio of media, technology, commerce and education brands — each built to lead its category in Bangladesh.",
       "imageAlt": "Modern Dhaka skyline at golden hour — home to YESS Bangla ventures",
       "ribbonKicker": "From Dhaka, for Bangladesh",
       "ribbonTitle": "A connected portfolio reaching every corner of the country.",
       "explore": "Explore",
-      "readAbout": "Read about"
+      "readAbout": "Read about",
+      "upcomingKicker": "Upcoming projects — what we're building next",
+      "upcomingBadge": "Coming soon"
     },
     "testimonials": {
       "eyebrow": "Client stories",
@@ -309,7 +311,10 @@
     "ventures": {
       "eyebrow": "Portfolio",
       "title": "Our Ventures",
-      "subtitle": "A growing family of companies — each solving a meaningful problem in its industry."
+      "subtitle": "A growing family of companies — each solving a meaningful problem in its industry.",
+      "upcomingTitle": "Upcoming projects",
+      "upcomingBadge": "Coming soon",
+      "upcomingCta": "Preview the vision"
     },
     "applicationStatus": {
       "eyebrow": "Applicants",
