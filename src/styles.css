@@ -259,7 +259,7 @@
   /* Dark-theme accent must clear WCAG AA against the light hero surface
      (`bg-foreground` → near-white in dark mode). 0.75L was 2.33:1; the
      0.55L value below clears 3:1 for large text + iconography. */
-  --accent: oklch(0.68 0.100 78);
+  --accent: oklch(0.55 0.10 78);
   --accent-foreground: oklch(0.14 0.012 250);
   --muted: oklch(0.22 0.018 250);
   --muted-foreground: oklch(0.72 0.015 250);

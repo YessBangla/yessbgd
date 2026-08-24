@@ -232,9 +232,11 @@ export function WaterBackground() {
         ctx.globalCompositeOperation = "lighter";
         for (let i = ripples.length - 1; i >= 0; i--) {
           const rp = ripples[i];
-          const age = (now - rp.t) / 1400;
+          // Clamp age ≥ 0 — a ripple timestamped in the (near) future would
+          // otherwise push radius below 0 and throw in createRadialGradient.
+          const age = Math.max(0, (now - rp.t) / 1400);
           if (age >= 1) { ripples.splice(i, 1); continue; }
-          const radius = 20 + age * 220;
+          const radius = Math.max(1, 20 + age * 220);
           const alpha = (1 - age) * tuning.rippleAlpha;
           const grad = ctx.createRadialGradient(rp.x, rp.y, radius * 0.4, rp.x, rp.y, radius);
           grad.addColorStop(0, `oklch(0.85 0.08 ${rp.hue} / 0)`);

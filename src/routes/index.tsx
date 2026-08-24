@@ -21,6 +21,7 @@ import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
 import {
   ArrowRight,
+  ArrowUpRight,
   Tv,
   Newspaper,
   LayoutGrid,
@@ -316,36 +317,61 @@ function Index() {
             </div>
           </div>
 
-          {/* RIGHT — Venture brand cards in a 2×2 grid (reference: yessbd.com hero) */}
+          {/* RIGHT — Venture brand cards in a 2×2 grid (reference: yessbd.com hero).
+              Corporate index treatment: labelled grid header + uniform card anatomy
+              (category chip over image, divider, title + arrow affordance, tagline). */}
           <div className="relative lg:col-span-5 xl:col-span-5">
             <div
-              className="hero-fade ml-auto grid max-w-md grid-cols-2"
-              style={{ animationDelay: "240ms", gap: "var(--hero-rhythm-xs)" }}
+              className="hero-fade ml-auto max-w-md"
+              style={{ animationDelay: "240ms" }}
             >
-              {heroVentures.map((v, i) => (
+              {/* Grid header — corporate index label + view-all affordance */}
+              <div className="mb-3 flex items-end justify-between gap-3 border-b border-background/15 pb-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-background/70">
+                  {t("home.hero.venturesKicker")}
+                </p>
                 <Link
-                  key={v.slug}
-                  to="/ventures/$slug"
-                  params={{ slug: v.slug }}
-                  preload="intent"
-                  className="hero-float group overflow-hidden rounded-2xl border border-background/15 bg-background/95 text-foreground shadow-xl backdrop-blur transition-transform duration-300 hover:-translate-y-1"
-                  style={{ animationDelay: `${-i * 2.5}s` }}
+                  to="/ventures"
+                  className="group inline-flex shrink-0 items-center gap-1 text-[11px] font-semibold text-background/85 transition-colors hover:text-background"
                 >
-                  <span className="block aspect-[4/3] overflow-hidden bg-muted">
-                    <img
-                      src={v.image}
-                      alt={v.title}
-                      loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </span>
-                  <span className="block px-3 py-2.5">
-                    <span className="block truncate text-[13px] font-semibold">{v.title}</span>
-                    <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">{v.tagline}</span>
-                  </span>
+                  {t("home.hero.viewAll")}
+                  <ArrowRight aria-hidden="true" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
-              ))}
+              </div>
+              <div className="grid grid-cols-2" style={{ gap: "var(--hero-rhythm-xs)" }}>
+                {heroVentures.map((v, i) => (
+                  <Link
+                    key={v.slug}
+                    to="/ventures/$slug"
+                    params={{ slug: v.slug }}
+                    preload="intent"
+                    className="group overflow-hidden rounded-xl border border-background/15 bg-background/[0.97] text-foreground shadow-elegant backdrop-blur transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:border-background/30 hover:shadow-glow motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                  >
+                    <span className="relative block aspect-[16/10] overflow-hidden bg-muted">
+                      <img
+                        src={v.image}
+                        alt={v.title}
+                        loading={i === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none"
+                      />
+                      <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate whitespace-nowrap rounded-md border border-background/30 bg-foreground/55 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-background backdrop-blur-sm">
+                        {v.category}
+                      </span>
+                    </span>
+                    <span className="block border-t border-border/60 px-3 pb-3 pt-2.5">
+                      <span className="flex items-center justify-between gap-2">
+                        <span className="truncate text-[13px] font-semibold tracking-[-0.01em]">{v.title}</span>
+                        <ArrowUpRight
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-[transform,color] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary"
+                        />
+                      </span>
+                      <span className="mt-1 block truncate text-[11px] leading-snug text-muted-foreground">{v.tagline}</span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
