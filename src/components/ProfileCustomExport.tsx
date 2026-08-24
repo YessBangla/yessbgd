@@ -57,6 +57,7 @@ export function ProfileCustomExport({ slug, title }: ProfileCustomExportProps) {
 
   const handleDownload = async () => {
     if (noneSelected || busy) return;
+    console.log("custom export: start", { noneSelected, busy, count: selected.size });
     setBusy(true);
     try {
       await downloadCustomProfileDocx({
