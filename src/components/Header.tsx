@@ -353,7 +353,54 @@ export function Header() {
   const venturesActive = pathname === "/ventures" || pathname.startsWith("/ventures/") || pathname === "/projects";
 
   return (
-    <header data-on-dark className="sticky top-0 z-50 glass-nav">
+    <>
+      {/* Corporate topbar — desktop only. Scrolls away naturally while the
+          sticky glass navbar below stays pinned. */}
+      <div className="hidden bg-primary text-primary-foreground lg:block">
+        <div className="container-tight flex h-9 items-center justify-between gap-4 text-[12px] font-medium">
+          <div className="flex min-w-0 items-center gap-5">
+            <a
+              href={`mailto:${COMPANY_CONTACT.email}`}
+              className="inline-flex items-center gap-1.5 opacity-90 transition-opacity hover:opacity-100"
+            >
+              <Mail aria-hidden className="h-3.5 w-3.5" />
+              <span className="truncate">{COMPANY_CONTACT.email}</span>
+            </a>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 opacity-90 transition-opacity hover:opacity-100"
+            >
+              <Phone aria-hidden className="h-3.5 w-3.5" />
+              <span className="tabular-nums">WhatsApp: {COMPANY_CONTACT.phone.display}</span>
+            </a>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="opacity-80">{t("nav.topbarFollow", "Follow us")}</span>
+            <span aria-hidden className="h-3 w-px bg-primary-foreground/30" />
+            <div className="flex items-center gap-1.5">
+              {FOOTER_DEFAULTS.social.map((s) => {
+                const Icon = TOPBAR_SOCIAL_ICONS[s.network as keyof typeof TOPBAR_SOCIAL_ICONS];
+                if (!Icon) return null;
+                return (
+                  <a
+                    key={s.network}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.network}
+                    className="grid h-6 w-6 place-items-center rounded-full opacity-90 transition-all hover:scale-110 hover:bg-primary-foreground/15 hover:opacity-100"
+                  >
+                    <Icon aria-hidden className="h-3.5 w-3.5" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+      <header data-on-dark className="sticky top-0 z-50 glass-nav">
       {previewing && (
         <div
           data-testid="menu-preview-banner"
