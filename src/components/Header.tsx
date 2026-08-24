@@ -417,10 +417,10 @@ export function Header() {
           </button>
         </div>
       )}
-      <div className="container-tight relative flex h-16 items-center justify-between">
+      <div className="relative mx-auto grid h-16 w-full max-w-[1320px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
-          className="group relative flex items-center"
+          className="group relative flex min-w-0 shrink-0 items-center"
           aria-label={t("nav.homeAria")}
         >
           <span className="logo-halo pointer-events-none absolute inset-0 -z-10 rounded-2xl" aria-hidden />
@@ -439,7 +439,7 @@ export function Header() {
             />
           </span>
           {/* Brand name + tagline beside the logo (reference: yessbd.com navbar) */}
-          <span className="ml-3 hidden flex-col justify-center leading-tight min-[1440px]:flex">
+          <span className="ml-3 hidden min-w-0 flex-col justify-center whitespace-nowrap leading-tight min-[1440px]:flex">
             <span className="font-display text-[15px] font-bold tracking-tight text-foreground">
               {t("nav.brandName", "Yess Bangla Private Limited")}
             </span>
