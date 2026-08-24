@@ -3,14 +3,16 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight, CheckCircle2, Sparkles, ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
-import { getIndustry, industries, type IndustryItem } from "@/data/industries";
+import { getIndustry, industries } from "@/data/industries";
 import { useIndustry } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/industries/$slug")({
   loader: ({ params }) => {
     const industry = getIndustry(params.slug);
     if (!industry) throw notFound();
-    return { industry };
+    // Strip the React icon component — functions can't be SSR-serialized.
+    const { icon: _icon, ...rest } = industry;
+    return { industry: rest };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -39,8 +41,10 @@ export const Route = createFileRoute("/industries/$slug")({
 
 function IndustryDetail() {
   const { t } = useTranslation();
-  const { industry: staticIndustry } = Route.useLoaderData() as { industry: IndustryItem };
-  const i = useIndustry(staticIndustry.slug) ?? staticIndustry;
+  const { industry: staticIndustry } = Route.useLoaderData();
+  // Loader data omits the icon (not SSR-serializable) — fall back to the
+  // full static industry, complete with its icon component.
+  const i = useIndustry(staticIndustry.slug) ?? getIndustry(staticIndustry.slug)!;
   const Icon = i.icon;
 
   return (

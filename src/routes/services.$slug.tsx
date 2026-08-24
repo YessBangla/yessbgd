@@ -3,14 +3,16 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
-import { getService, services, type ServiceItem } from "@/data/services";
+import { getService, services } from "@/data/services";
 import { useService } from "@/lib/dynamicContent";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }) => {
     const service = getService(params.slug);
     if (!service) throw notFound();
-    return { service };
+    // Strip the React icon component — functions can't be SSR-serialized.
+    const { icon: _icon, ...rest } = service;
+    return { service: rest };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -39,8 +41,10 @@ export const Route = createFileRoute("/services/$slug")({
 
 function ServiceDetail() {
   const { t } = useTranslation();
-  const { service: staticService } = Route.useLoaderData() as { service: ServiceItem };
-  const s = useService(staticService.slug) ?? staticService;
+  const { service: staticService } = Route.useLoaderData();
+  // Loader data omits the icon (not SSR-serializable) — fall back to the
+  // full static service, complete with its icon component.
+  const s = useService(staticService.slug) ?? getService(staticService.slug)!;
   const Icon = s.icon;
 
   return (

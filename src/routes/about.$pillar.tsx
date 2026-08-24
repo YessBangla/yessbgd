@@ -9,7 +9,9 @@ export const Route = createFileRoute("/about/$pillar")({
   loader: ({ params }) => {
     const pillar = getPillar(params.pillar);
     if (!pillar) throw notFound();
-    return { pillar };
+    // Strip the React icon component — functions can't be SSR-serialized.
+    const { icon: _icon, ...rest } = pillar;
+    return { pillar: rest };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -38,7 +40,10 @@ export const Route = createFileRoute("/about/$pillar")({
 
 function PillarPage() {
   const { t } = useTranslation();
-  const { pillar } = Route.useLoaderData() as { pillar: (typeof aboutPillars)[number] };
+  const { pillar: staticPillar } = Route.useLoaderData();
+  // Loader data omits the icon (not SSR-serializable) — re-read the full
+  // static pillar, complete with its icon component.
+  const pillar = getPillar(staticPillar.slug)!;
   const Icon = pillar.icon;
 
   return (
