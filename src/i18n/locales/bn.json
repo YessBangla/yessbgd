@@ -256,6 +256,9 @@
     },
     "downloadCards": {
       "compareLabel": "আপনার সংস্করণ বেছে নিন",
+      "docxLabel": "সম্পাদনাযোগ্য Word (.docx) সংস্করণ — Word বা Google Docs-এ যেকোনো লেখা বদলান:",
+      "docxEnglish": "ইংরেজি DOCX",
+      "docxBangla": "বাংলা DOCX",
       "english": {
         "badge": "EN · English",
         "kicker": "English Edition",

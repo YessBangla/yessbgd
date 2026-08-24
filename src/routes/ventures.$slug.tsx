@@ -24,6 +24,7 @@ import {
   Heart,
   Briefcase,
   Download,
+  FileText,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";

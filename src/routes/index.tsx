@@ -50,6 +50,7 @@ import {
   Building2,
   HeartHandshake,
   Download,
+  FileText,
   Mail,
   Layers,
   Phone,
