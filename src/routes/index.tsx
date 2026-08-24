@@ -683,7 +683,7 @@ function Index() {
                 decoding="async"
                 className="block aspect-[4/3] w-full object-cover sm:aspect-[21/6]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
                 <p className="max-w-xl text-xs font-medium text-foreground sm:text-base">
                   {t("home.servicesSection.imageCaption")}
