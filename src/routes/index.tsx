@@ -16,7 +16,6 @@ import { HeroOverlays } from "@/components/HeroOverlays";
 
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
-import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
 import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
 import { resolveCoinLogo } from "@/lib/coinLogo";
@@ -54,7 +53,7 @@ import {
   Mail,
   Layers,
   Phone,
-  Lock as LockIcon,
+  
   Facebook,
   Twitter,
   Youtube,
