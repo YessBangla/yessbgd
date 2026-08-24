@@ -587,6 +587,32 @@ function Index() {
                 </a>
               </div>
 
+              {/* Editable Word (.docx) twins of both editions — for partners who
+                  need to adjust wording before print. */}
+              <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl border border-dashed border-border/70 bg-background/50 px-3 py-2.5">
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                  <FileText className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                  {t("home.downloadCards.docxLabel")}
+                </span>
+                <a
+                  href="/yess-bangla-company-profile.docx"
+                  download="yess-bangla-company-profile.docx"
+                  aria-label={`${t("home.downloadCards.docxEnglish")} — company profile`}
+                  className="inline-flex items-center gap-1 rounded-full border border-border bg-background/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary"
+                >
+                  <FileText className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.docxEnglish")}
+                </a>
+                <a
+                  href="/yess-bangla-company-profile-bn.docx"
+                  download="yess-bangla-company-profile-bn.docx"
+                  aria-label={`${t("home.downloadCards.docxBangla")} — কোম্পানি প্রফাইল`}
+                  lang="bn"
+                  className="inline-flex items-center gap-1 rounded-full border border-primary/40 bg-primary/[0.06] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-primary transition-all hover:-translate-y-0.5 hover:border-primary/70"
+                >
+                  <FileText className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.docxBangla")}
+                </a>
+              </div>
+
             </div>
           </div>
         </div>

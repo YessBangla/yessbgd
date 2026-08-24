@@ -917,7 +917,8 @@ function VenturePage() {
                   </h2>
                   <p className="mt-2 max-w-xl text-sm text-muted-foreground">
                     The official project profile on branded letterhead — accurate, board-ready and
-                    available in both English and Bangla editions.
+                    available in both English and Bangla editions, in print-ready PDF and
+                    fully editable Word (.docx) formats.
                   </p>
                 </div>
               </div>
