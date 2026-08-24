@@ -4,6 +4,7 @@ import { ArrowRight, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageHero } from "@/components/PageHero";
 import { useVentures } from "@/lib/dynamicContent";
+import { activeVentures, upcomingVentures } from "@/data/ventures";
 
 export const Route = createFileRoute("/ventures/")({
   head: () => ({
@@ -27,18 +28,22 @@ function VenturesPage() {
   const [service, setService] = useState<string>("all");
   const [sort, setSort] = useState<SortKey>("default");
 
+  // Main grid shows live ventures only; upcoming projects get their own section.
+  const active = useMemo(() => activeVentures(ventures), [ventures]);
+  const upcoming = useMemo(() => upcomingVentures(ventures), [ventures]);
+
   const categories = useMemo(
-    () => Array.from(new Set(ventures.map((v) => v.category))).sort(),
-    [],
+    () => Array.from(new Set(active.map((v) => v.category))).sort(),
+    [active],
   );
   const services = useMemo(
-    () => Array.from(new Set(ventures.flatMap((v) => v.services))).sort(),
-    [],
+    () => Array.from(new Set(active.flatMap((v) => v.services))).sort(),
+    [active],
   );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let list = ventures.filter((v) => {
+    let list = active.filter((v) => {
       if (category !== "all" && v.category !== category) return false;
       if (service !== "all" && !v.services.includes(service)) return false;
       if (!q) return true;
@@ -55,7 +60,7 @@ function VenturesPage() {
       return haystack.includes(q);
     });
 
-    const byYear = (v: typeof ventures[number]) =>
+    const byYear = (v: typeof active[number]) =>
       v.founded ? parseInt(v.founded, 10) : 0;
 
     if (sort === "az") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
@@ -64,7 +69,7 @@ function VenturesPage() {
     else if (sort === "oldest") list = [...list].sort((a, b) => byYear(a) - byYear(b));
 
     return list;
-  }, [query, category, service, sort]);
+  }, [query, category, service, sort, active]);
 
   const reset = () => {
     setQuery("");
@@ -153,7 +158,7 @@ function VenturesPage() {
               </button>
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
-              Showing <span className="font-semibold text-foreground">{filtered.length}</span> of {ventures.length} ventures
+              Showing <span className="font-semibold text-foreground">{filtered.length}</span> of {active.length} ventures
             </p>
           </div>
 
@@ -209,6 +214,58 @@ function VenturesPage() {
                   </Link>
                 );
               })}
+            </div>
+          )}
+
+          {/* UPCOMING PROJECTS — announced, not yet live */}
+          {upcoming.length > 0 && (
+            <div className="mt-14">
+              <div className="mb-6 flex flex-wrap items-center gap-3">
+                <h2 className="font-display text-xl font-semibold sm:text-2xl">{t("pages.ventures.upcomingTitle")}</h2>
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
+                  {t("pages.ventures.upcomingBadge")}
+                </span>
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {upcoming.map((v) => {
+                  const Icon = v.icon;
+                  return (
+                    <Link
+                      key={v.slug}
+                      to="/ventures/$slug"
+                      params={{ slug: v.slug }}
+                      className="group overflow-hidden rounded-2xl border border-dashed border-border bg-background/40 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <img
+                          src={v.image}
+                          alt={`${v.title} — ${v.category}`}
+                          width={1536}
+                          height={864}
+                          loading="lazy"
+                          className="h-full w-full object-cover opacity-80 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/10 to-transparent" />
+                        <span
+                          className={`absolute left-4 top-4 inline-grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br ${v.color} text-primary-foreground shadow-elegant`}
+                        >
+                          <Icon className="h-5 w-5" strokeWidth={1.5} />
+                        </span>
+                        <span className="absolute right-4 top-4 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary backdrop-blur">
+                          {t("pages.ventures.upcomingBadge")}
+                        </span>
+                      </div>
+                      <div className="p-5">
+                        <h3 className="font-display text-lg font-semibold">{v.title}</h3>
+                        <p className="mt-2 text-sm text-muted-foreground">{v.tagline}</p>
+                        <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                          {t("pages.ventures.upcomingCta")} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
