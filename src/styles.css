@@ -492,6 +492,65 @@
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .shadow-accent { box-shadow: var(--shadow-accent); }
   .shadow-elegant { box-shadow: var(--shadow-lg); }
+
+  /* Coin-embossed card — raised minted bevel.
+     Light falls from top-left: bright lip on top/left edges,
+     carved shade on bottom/right, plus an inset "rim" ring like
+     the milled edge of a pressed coin. Token-driven, both themes. */
+  .coin-emboss {
+    position: relative;
+    border: 1px solid color-mix(in oklab, var(--foreground) 14%, transparent);
+    background-image: linear-gradient(
+      150deg,
+      color-mix(in oklab, var(--background) 100%, transparent) 0%,
+      color-mix(in oklab, var(--muted) 55%, var(--background)) 100%
+    );
+    box-shadow:
+      /* outer depth — card sits raised off the hero surface */
+      0 1px 0 color-mix(in oklab, var(--background) 70%, transparent),
+      0 14px 28px -14px color-mix(in oklab, var(--foreground) 45%, transparent),
+      /* embossed bevel — highlight lip (top/left) */
+      inset 0 1px 0 color-mix(in oklab, var(--background) 95%, transparent),
+      inset 1px 0 0 color-mix(in oklab, var(--background) 55%, transparent),
+      /* embossed bevel — carved shade (bottom/right) */
+      inset 0 -2px 1px color-mix(in oklab, var(--foreground) 14%, transparent),
+      inset -1px 0 0 color-mix(in oklab, var(--foreground) 9%, transparent);
+  }
+  /* Minted rim — fine double ring pressed just inside the edge */
+  .coin-emboss::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklab, var(--foreground) 8%, transparent),
+      inset 0 1px 1px color-mix(in oklab, var(--background) 75%, transparent),
+      inset 0 -1px 1px color-mix(in oklab, var(--foreground) 6%, transparent);
+  }
+  /* Pressed-metal sheen that strengthens on hover */
+  .coin-emboss::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 10;
+    background-image: linear-gradient(
+      115deg,
+      color-mix(in oklab, var(--background) 22%, transparent) 0%,
+      transparent 28%,
+      transparent 72%,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 100%
+    );
+    opacity: 0.55;
+    transition: opacity 300ms ease;
+  }
+  .coin-emboss:hover::after { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .coin-emboss::after { transition: none; }
+  }
   .text-balance { text-wrap: balance; }
 
   /* Glass utilities — Apple Liquid Glass style */
