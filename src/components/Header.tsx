@@ -437,6 +437,15 @@ export function Header() {
               className="logo-mark h-8 w-auto max-w-[44vw] bg-transparent object-contain transition-transform duration-300 group-hover:scale-[1.04] [@media(min-width:380px)]:h-9 sm:h-10 lg:h-11 [@media(min-width:1440px)]:h-12"
             />
           </span>
+          {/* Brand name + tagline beside the logo (reference: yessbd.com navbar) */}
+          <span className="ml-3 hidden flex-col justify-center leading-tight min-[1440px]:flex">
+            <span className="font-display text-[15px] font-bold tracking-tight text-foreground">
+              {t("nav.brandName", "Yess Bangla Private Limited")}
+            </span>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              {t("nav.brandTagline", "Where Solution Begins")}
+            </span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main" data-testid="header-nav-desktop">
