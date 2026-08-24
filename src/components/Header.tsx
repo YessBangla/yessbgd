@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
-import { Menu, X, ChevronDown, Mail, Facebook, Twitter, Youtube, Linkedin } from "lucide-react";
+import { Menu, X, ChevronDown, Mail, Phone, Facebook, Twitter, Youtube, Linkedin } from "lucide-react";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
 import { FOOTER_DEFAULTS } from "@/lib/footerConfig";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
@@ -653,6 +653,7 @@ export function Header() {
 
       {/* Tablet/mobile: desktop-parity scrollable nav rail with tap dropdowns. */}
       <HeaderNavRail tree={navNodes} bn={bn} />
-    </header>
+      </header>
+    </>
   );
 }
