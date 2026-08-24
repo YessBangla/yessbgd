@@ -943,7 +943,7 @@ def build_en(v):
        spaceAfter=4, alignment=TA_LEFT)
     st("H3", fontName="YBSans-Bold", fontSize=11.5, leading=15, textColor=TEAL,
        spaceBefore=10, spaceAfter=4)
-    st("Bullet", fontName="YBSans", fontSize=10.5, leading=15.5, textColor=INK,
+    st("VBullet", fontName="YBSans", fontSize=10.5, leading=15.5, textColor=INK,
        leftIndent=14, bulletIndent=2, spaceAfter=2, alignment=TA_LEFT)
     st("DLTerm", fontName="YBSans-Bold", fontSize=10.5, leading=14, textColor=NAVY, spaceAfter=1)
     st("DLDef", fontName="YBSans", fontSize=10.5, leading=15.5, textColor=INK,
@@ -1054,7 +1054,7 @@ def build_en(v):
     # 02 Highlights
     story.append(heading("02", S[1][1], S[1][0]))
     for h in d["highlights"]:
-        story.append(Paragraph(h, ss["Bullet"], bulletText="•"))
+        story.append(Paragraph(h, ss["VBullet"], bulletText="•"))
     story.append(Spacer(1, 8))
 
     # 03 Services
