@@ -311,6 +311,62 @@ export const ventures: Venture[] = [
     },
   },
   {
+    slug: "yess-legal-advice",
+    title: "Yess Legal Advice",
+    status: "active",
+    category: "Legal Advisory",
+    tagline: "Trusted counsel for every stage of business.",
+    desc: "Corporate legal advisory — company formation, contracts, compliance, intellectual property and dispute support for businesses and individuals.",
+    longDesc:
+      "Yess Legal Advice is the group's counsel desk — a panel of barristers, advocates and company secretaries who handle everything from RJSC incorporation and trade licences to contract drafting, IP filings and regulatory compliance, so founders can build with confidence.",
+    image: yessLegalImg,
+    icon: Scale,
+    color: "from-primary to-accent",
+    highlights: [
+      "Company formation, RJSC & trade licence support",
+      "Contract drafting, review and negotiation",
+      "Trademark, copyright and IP protection",
+      "Regulatory compliance and dispute resolution",
+    ],
+    services: ["Company Formation", "Contracts & Agreements", "IP & Trademark", "Compliance & Disputes"],
+    audience: "Startups, SMEs, enterprises and individuals seeking dependable legal counsel.",
+    founded: "2024",
+    reach: "Clients across BD & the diaspora",
+    features: [
+      { title: "Fixed-fee packages", desc: "Transparent pricing for formation, contracts and filings — quoted before work begins." },
+      { title: "Senior advocates only", desc: "Every matter is led by a bar enrolled advocate — no juniors learning on your file." },
+      { title: "Business-first counsel", desc: "Advice written for operators, not academics — risk flagged, options ranked, next steps clear." },
+    ],
+    caseStudy: {
+      challenge:
+        "A fast-growing e-commerce group was signing supplier contracts without review, had no trademark on its own brand, and faced a regulatory notice it didn't understand.",
+      solution:
+        "Yess Legal Advice ran a 360° legal audit, registered the group's trademarks, rebuilt its contract library and took over regulator correspondence under a monthly retainer.",
+      phases: [
+        { title: "Discover", desc: "Full legal audit — entity structure, licences, contracts, IP and pending notices." },
+        { title: "Design", desc: "A remediation roadmap ranked by risk, plus a standard contract and policy library." },
+        { title: "Build", desc: "Trademark filings, redrafted agreements, compliance calendar and board resolutions." },
+        { title: "Launch & grow", desc: "Monthly retainer counsel, quarterly compliance reviews and on-call dispute support." },
+      ],
+      techStack: ["RJSC e-Filing", "DPDT IP Portal", "Contract Lifecycle Mgmt", "e-Court Services"],
+      results: [
+        { label: "Contracts reviewed", value: "120+" },
+        { label: "Trademarks secured", value: "9" },
+        { label: "Regulatory exposure", value: "−100%" },
+        { label: "Advisory turnaround", value: "<48h" },
+      ],
+    },
+    testimonial: {
+      quote: "Yess Legal Advice rebuilt our entire contract library and had our trademarks filed within weeks. For the first time, legal feels like a growth partner — not a cost centre.",
+      author: "Farhana Karim",
+      role: "Managing Director",
+      company: "Nabanna Commerce Ltd.",
+      logoText: "NC",
+      timeframe: "Mar 2025 – Ongoing",
+      source: "Verified retainer client · Reference available on request",
+    },
+  },
+  {
     slug: "yess-organic-haat",
     title: "Yess Organic Haat",
     status: "active",
@@ -821,6 +877,11 @@ export const ventures: Venture[] = [
 ];
 
 export const getVenture = (slug: string) => ventures.find((v) => v.slug === slug);
+
+/** Live ventures (shown across nav, hero and listings) vs. upcoming projects. */
+export const isVentureUpcoming = (v: Venture) => v.status === "upcoming";
+export const activeVentures = (list: Venture[]) => list.filter((v) => !isVentureUpcoming(v));
+export const upcomingVentures = (list: Venture[]) => list.filter(isVentureUpcoming);
 
 // Pull 4 sibling images for a gallery strip when a venture has no curated gallery.
 export function getVentureGallery(v: Venture): string[] {
