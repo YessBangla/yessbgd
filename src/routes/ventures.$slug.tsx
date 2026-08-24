@@ -901,6 +901,86 @@ function VenturePage() {
         </div>
       </section>
 
+      {/* Project profile downloads — bilingual PDF editions (active ventures) */}
+      {v.status !== "upcoming" && (
+        <section className="pb-16">
+          <div className="container-tight">
+            <div className="rounded-3xl border border-border bg-background/70 p-6 backdrop-blur sm:p-8">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                    Project profile
+                  </p>
+                  <h2 className="mt-2 font-display text-2xl font-bold sm:text-3xl">
+                    Download the {v.title} profile.
+                  </h2>
+                  <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+                    The official project profile on branded letterhead — accurate, board-ready and
+                    available in both English and Bangla editions.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                <a
+                  href={`/profiles/${v.slug}-profile.pdf`}
+                  download={`${v.slug}-project-profile.pdf`}
+                  aria-label={`Download ${v.title} project profile — English PDF`}
+                  lang="en"
+                  className="group flex items-center justify-between gap-3 rounded-2xl border border-border bg-background/80 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-elegant sm:p-5"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                      <Download className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                        Project Profile
+                      </div>
+                      <div className="font-display text-sm font-semibold leading-snug sm:text-base">
+                        English edition
+                      </div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">
+                        PDF · A4 · Free download
+                      </div>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+                    EN
+                  </span>
+                </a>
+                <a
+                  href={`/profiles/${v.slug}-profile-bn.pdf`}
+                  download={`${v.slug}-project-profile-bn.pdf`}
+                  aria-label={`${v.title} প্রজেক্ট প্রোফাইল ডাউনলোড করুন — বাংলা পিডিএফ`}
+                  lang="bn"
+                  className="group flex items-center justify-between gap-3 rounded-2xl border-2 border-primary/50 bg-gradient-to-br from-primary/[0.08] via-background to-accent/[0.08] p-4 transition-all hover:-translate-y-0.5 hover:border-primary/80 hover:shadow-elegant sm:p-5"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow">
+                      <Download className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                        প্রজেক্ট প্রোফাইল
+                      </div>
+                      <div className="font-display text-sm font-semibold leading-snug sm:text-base">
+                        বাংলা সংস্করণ
+                      </div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">
+                        পিডিএফ · এ৪ · ফ্রি ডাউনলোড
+                      </div>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
+                    BN
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Final CTA */}
       <section className="py-16">
         <div className="container-tight">
