@@ -108,8 +108,31 @@ const impactMetrics: ImpactMetric[] = [
 type LocalizedItem = { title: string; desc: string };
 type Testimonial = { name: string; role: string; quote: string };
 
-/** Ventures featured in the hero 2×2 grid (matches the yessbd.com brand line-up). */
+/** Ventures featured in the hero coin row (matches the yessbd.com brand line-up). */
 const HERO_VENTURE_SLUGS = ["yess-soft", "yess-service", "yess-organic-haat", "akash-ott"];
+
+/** Coin emblem — auto-resolves the venture logo: explicit logoUrl → live
+    domain favicon → engraved Lucide icon. A failed favicon image falls back
+    to the icon so the coin never renders blank. */
+function HeroCoinMark({ venture }: { venture: Venture }) {
+  const Icon = venture.icon;
+  const src = resolveCoinLogo(venture);
+  const [failed, setFailed] = useState(false);
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+        className="h-9 w-9 rounded-full object-contain sm:h-10 sm:w-10"
+      />
+    );
+  }
+  return <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />;
+}
 
 function Index() {
   const ventures = useVentures();
