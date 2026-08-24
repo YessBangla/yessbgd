@@ -127,7 +127,7 @@ function HeroCoinMark({ venture }: { venture: Venture }) {
         loading="lazy"
         decoding="async"
         onError={() => setFailed(true)}
-        className="h-9 w-9 rounded-full object-contain sm:h-10 sm:w-10"
+        className="h-11 w-11 rounded-full object-contain sm:h-12 sm:w-12"
       />
     );
   }
