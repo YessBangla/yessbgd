@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
 import { useOffscreenPause } from "@/hooks/useOffscreenPause";
@@ -50,8 +51,21 @@ import {
   Layers,
   Phone,
   Lock as LockIcon,
+  Facebook,
+  Twitter,
+  Youtube,
+  Linkedin,
 } from "lucide-react";
 import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
+import { FOOTER_DEFAULTS } from "@/lib/footerConfig";
+
+/** Floating social rail icon map — mirrors the footer network list. */
+const SOCIAL_ICONS = {
+  facebook: Facebook,
+  twitter: Twitter,
+  youtube: Youtube,
+  linkedin: Linkedin,
+} as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -136,20 +150,6 @@ function Index() {
         >
           {/* LEFT — Headline column */}
           <div className="lg:col-span-7 xl:col-span-7">
-            {/* Eyebrow chip */}
-            {/* Eyebrow chip — flex-wraps gracefully on ≤360px viewports
-                so the trust signals never overflow the container. */}
-            <div className="hero-fade inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-full border border-background/20 bg-background/5 px-3.5 py-1.5 text-[10.5px] sm:text-[11px] font-medium uppercase tracking-[0.22em] text-background/85 backdrop-blur">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
-                <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
-              </span>
-              <span className="whitespace-nowrap">{t("home.hero.chipLocation")}</span>
-              <span aria-hidden className="hidden h-3 w-px bg-background/25 sm:inline" />
-              <span className="inline-flex items-center gap-1 whitespace-nowrap text-background/70">
-                <Star className="h-3 w-3 fill-accent text-accent" /> {t("home.hero.chipRating")}
-              </span>
-            </div>
 
             {/* Section label — international editorial eyebrow */}
             <div
@@ -195,7 +195,7 @@ function Index() {
                 <>
                   <span className="water-text block whitespace-nowrap">{t("home.hero.h1Line1")}</span>
                   <span
-                    className="block text-background/95"
+                    className="block text-gradient-hero"
                     style={{ marginTop: "0.06em", letterSpacing: "-0.018em" }}
                   >
                     {t("home.hero.h1Line2Pre")}{" "}
@@ -207,7 +207,7 @@ function Index() {
                     </span>
                   </span>
                   <span
-                    className="water-text-accent block"
+                    className="block text-background/95"
                     style={{ marginTop: "0.06em", letterSpacing: "-0.024em" }}
                   >
                     {t("home.hero.h1Line3Pre")}{" "}
@@ -257,7 +257,7 @@ function Index() {
               <Link
                 to="/contact"
                 aria-label={t("home.hero.ctaPrimaryAria")}
-                className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-background px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] font-semibold tracking-[-0.005em] text-foreground shadow-xl ring-1 ring-background/15 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-background/95 focus:outline-none focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-[3px] focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-primary px-7 sm:px-8 py-3.5 sm:py-4 text-[15px] font-semibold tracking-[-0.005em] text-primary-foreground shadow-xl ring-1 ring-primary/40 transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-0.5 hover:shadow-2xl hover:bg-primary/90 focus:outline-none focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent focus-visible:ring-offset-[3px] focus-visible:ring-offset-foreground motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 {t("home.hero.ctaPrimary")}
                 <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none" />
@@ -308,76 +308,40 @@ function Index() {
             </div>
           </div>
 
-          {/* RIGHT — Floating editorial cards */}
+          {/* RIGHT — Venture brand cards in a 2×2 grid (reference: yessbd.com hero) */}
           <div className="relative lg:col-span-5 xl:col-span-5">
             <div
-              className="hero-fade ml-auto max-w-sm flex flex-col"
+              className="hero-fade ml-auto grid max-w-md grid-cols-2"
               style={{ animationDelay: "240ms", gap: "var(--hero-rhythm-xs)" }}
             >
-              <div className="hero-float rounded-2xl border border-background/15 bg-foreground/40 p-5 backdrop-blur-xl" style={{ animationDelay: "0s" }}>
-                <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-accent-foreground shadow-lg">
-                    <TrendingUp className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <div className="text-[11px] uppercase tracking-wider text-background/60">{t("home.hero.cardOutcomeLabel")}</div>
-                    <div className="font-display text-2xl font-semibold leading-none text-background">{t("home.hero.cardOutcomeValue")}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="hero-float rounded-2xl border border-background/15 bg-foreground/40 p-5 backdrop-blur-xl" style={{ animationDelay: "-2.5s" }}>
-                <div className="flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-background text-foreground shadow-lg">
-                    <Award className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[11px] uppercase tracking-wider text-background/60">{t("home.hero.cardTrustedLabel")}</div>
-                    <div className="font-display text-base font-semibold leading-tight text-background">{t("home.hero.cardTrustedValue")}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="hero-float rounded-2xl border border-background/15 bg-foreground/40 p-5 backdrop-blur-xl" style={{ animationDelay: "-5s" }}>
-                <div className="flex items-center gap-1 text-accent">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-current" />
-                  ))}
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-background/85">
-                  &ldquo;{t("home.hero.cardQuote")}&rdquo;
-                </p>
-                <p className="mt-2 text-[11px] uppercase tracking-wider text-background/55">
-                  {t("home.hero.cardQuoteRole")}
-                </p>
-              </div>
+              {ventures.slice(0, 4).map((v, i) => (
+                <Link
+                  key={v.slug}
+                  to="/ventures/$slug"
+                  params={{ slug: v.slug }}
+                  preload="intent"
+                  className="hero-float group overflow-hidden rounded-2xl border border-background/15 bg-background/95 text-foreground shadow-xl backdrop-blur transition-transform duration-300 hover:-translate-y-1"
+                  style={{ animationDelay: `${-i * 2.5}s` }}
+                >
+                  <span className="block aspect-[4/3] overflow-hidden bg-muted">
+                    <img
+                      src={v.image}
+                      alt={v.title}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </span>
+                  <span className="block px-3 py-2.5">
+                    <span className="block truncate text-[13px] font-semibold">{v.title}</span>
+                    <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">{v.tagline}</span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Bottom KPI strip */}
-        <div className="relative border-t border-background/10 bg-foreground/40 backdrop-blur-md">
-          <div className="container-tight grid grid-cols-2 gap-y-4 py-4 sm:grid-cols-4">
-            {[
-              { id: "projects",  target: 250, format: { plus: true } as const },
-              { id: "clients",   target: 120, format: { plus: true } as const },
-              { id: "districts", target: 64 },
-              { id: "years",     target: 11,  format: { plus: true } as const },
-            ].map((s, i) => (
-              <div
-                key={s.id}
-                className={"min-w-0 px-4 sm:px-6 " + (i > 0 ? "sm:border-l sm:border-background/10" : "")}
-              >
-                <div className="flex h-8 items-baseline font-display text-2xl font-semibold leading-none tracking-tight text-background tabular-nums sm:text-3xl">
-                  {hydrated ? <CountUp target={s.target} format={s.format} /> : <CountUpSkeleton />}
-                </div>
-                <div className="mt-2 text-[10px] uppercase tracking-[0.18em] text-background/55 sm:text-[11px]">
-                  {t(`home.hero.kpi.${s.id}`)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* QUICK CTA STRIP — translated chrome + clearly labelled bilingual download cards.
@@ -614,6 +578,15 @@ function Index() {
                   decoding="async"
                   className="block aspect-[4/3] w-full rounded-xl object-cover sm:rounded-[1.35rem]"
                 />
+                {/* Glass stat chip — mirrors the reference "Completed Projects" overlay */}
+                <div className="absolute bottom-3 left-3 flex items-center gap-3 rounded-2xl border border-border/50 bg-background/85 px-4 py-3 shadow-lg backdrop-blur-md sm:bottom-5 sm:left-5">
+                  <div className="font-display text-2xl font-semibold tabular-nums text-primary">
+                    {hydrated ? <CountUp target={250} format={{ plus: true } as const} /> : <CountUpSkeleton />}
+                  </div>
+                  <div className="max-w-[10ch] text-[11px] font-medium leading-tight text-foreground/80">
+                    {t("home.hero.kpi.projects")}
+                  </div>
+                </div>
               </div>
             </div>
           </Reveal>
@@ -651,12 +624,21 @@ function Index() {
               })}
             </Stagger>
 
-            <Link
-              to="/about"
-              className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary"
-            >
-              {t("home.about.readMore")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link
+                to="/about"
+                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-primary/90"
+              >
+                {t("home.about.readMore")}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                to="/ventures"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-primary/40 px-6 py-3 text-sm font-semibold text-primary transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary/5"
+              >
+                {t("home.about.viewPortfolio", "View portfolio")}
+              </Link>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -829,33 +811,35 @@ function Index() {
 
           <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {ventures.map((v) => {
-              const VIcon = v.icon;
               return (
                 <StaggerItem key={v.slug}>
                   <Link
                     to="/ventures/$slug"
                     params={{ slug: v.slug }}
                     aria-label={`${t("home.venturesSection.readAbout")} ${v.title}`}
-                    className="group relative block h-full w-full overflow-hidden rounded-2xl glass-card p-5 text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6"
+                    className="group relative block h-full w-full overflow-hidden rounded-2xl glass-card text-left transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
-                    <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-accent/8 transition-transform group-hover:scale-125" />
-                    <div className="relative flex items-start gap-4">
-                      <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${v.color} text-primary-foreground shadow-glow`}>
-                        <VIcon className="h-6 w-6" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <h3 className="font-display text-base font-semibold leading-tight sm:text-lg">{v.title}</h3>
-                          <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                            {v.category.split(" ")[0]}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
-                        <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
-                          {t("home.venturesSection.explore")} {v.title} <ArrowRight className="h-3.5 w-3.5" />
+                    <span className="block aspect-[16/9] overflow-hidden bg-muted">
+                      <img
+                        src={v.image}
+                        alt={v.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </span>
+                    <span className="relative block p-5 sm:p-6">
+                      <span className="flex items-center justify-between gap-2">
+                        <span className="font-display text-base font-semibold leading-tight sm:text-lg">{v.title}</span>
+                        <span className="shrink-0 rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          {v.category.split(" ")[0]}
                         </span>
-                      </div>
-                    </div>
+                      </span>
+                      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{v.desc}</p>
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-all group-hover:gap-2.5 sm:mt-4">
+                        {t("home.venturesSection.explore")} {v.title} <ArrowRight className="h-3.5 w-3.5" />
+                      </span>
+                    </span>
                   </Link>
                 </StaggerItem>
               );
@@ -903,15 +887,15 @@ function Index() {
       <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-10 md:p-16">
-              <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-primary opacity-20 blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-accent opacity-20 blur-3xl" />
+            <div className="relative overflow-hidden rounded-3xl p-8 sm:p-10 md:p-16">
+              <img src={contactImg} alt="" aria-hidden="true" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-foreground/85" />
               <div className="relative grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div>
-                  <h2 className="font-display font-semibold tracking-tight">
+                  <h2 className="font-display font-semibold tracking-tight text-background">
                     {t("home.finalCta.title")}
                   </h2>
-                  <p className="mt-3 text-muted-foreground">
+                  <p className="mt-3 text-background/80">
                     {t("home.finalCta.lede")}
                   </p>
                 </div>
@@ -919,14 +903,14 @@ function Index() {
                   <a
                     href={phoneHref}
                     aria-label={t("home.finalCta.callAria", { phone: COMPANY_CONTACT.phone.display })}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background shadow-md transition-transform hover:scale-[1.03]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-background/60 px-6 py-3 text-sm font-semibold text-background backdrop-blur transition-all hover:scale-[1.03] hover:bg-background/10"
                   >
                     <Phone className="h-4 w-4" aria-hidden="true" />
                     <span className="tabular-nums">{COMPANY_CONTACT.phone.display}</span>
                   </a>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.03]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:scale-[1.03] hover:bg-primary/90"
                   >
                     {t("home.finalCta.sendMessage")}
                   </Link>
@@ -937,6 +921,34 @@ function Index() {
         </div>
       </section>
 
+      {/* FLOATING SOCIAL RAIL — desktop only, mirrors the reference site.
+          Portalled to <body> so an ancestor's contain/transform can never
+          break position:fixed. */}
+      {hydrated &&
+        createPortal(
+          <nav
+            aria-label={t("nav.topbarFollow", "Follow us")}
+            className="fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-2 lg:flex"
+          >
+            {FOOTER_DEFAULTS.social.map((s) => {
+              const Icon = SOCIAL_ICONS[s.network as keyof typeof SOCIAL_ICONS];
+              if (!Icon) return null;
+              return (
+                <a
+                  key={s.network}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.network}
+                  className="grid h-9 w-9 place-items-center rounded-full border border-border/60 bg-background/80 text-muted-foreground shadow-md backdrop-blur transition-all hover:scale-110 hover:bg-primary hover:text-primary-foreground"
+                >
+                  <Icon aria-hidden className="h-4 w-4" />
+                </a>
+              );
+            })}
+          </nav>,
+          document.body,
+        )}
     </>
   );
 }

@@ -1127,3 +1127,19 @@
 @media (prefers-reduced-motion: reduce) {
   .skip-link { transition: none; }
 }
+
+/* Hero teal-gradient headline accent — two-tone hero headline
+   (white line + brand-teal gradient line), reference: yessbd.com.
+   Stops are derived from --primary so the utility follows the theme;
+   the white mixes keep it luminous on the always-dark hero surface. */
+@utility text-gradient-hero {
+  color: color-mix(in oklab, var(--primary) 55%, white);
+  background-image: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--primary) 45%, white) 0%,
+    color-mix(in oklab, var(--primary) 75%, white) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
