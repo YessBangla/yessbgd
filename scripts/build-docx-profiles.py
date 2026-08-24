@@ -7,6 +7,10 @@ Purpose: the PDFs are the polished, print-ready versions; these .docx files
 are the *editable* twins so management can change wording in Word / Google
 Docs / LibreOffice and re-export.
 
+Every document paints the official letterhead pad as a full-page background
+(floating image anchored to the page, behind the text, driven from the
+section header so it repeats on every page — the same chrome the PDFs use).
+
 Reuses the SAME content sources as the PDF generators, so both formats stay
 in sync:
   - Company profile EN/BN ...... SECTIONS from build-company-profile[-bn].py
@@ -30,11 +34,13 @@ import sys
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml.ns import qn
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls, qn
 from docx.shared import Mm, Pt, RGBColor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROFILES_DIR = os.path.join(ROOT, "public", "profiles")
+LETTERHEAD = os.path.join(ROOT, "public", "yess-bangla-letterhead.jpeg")
 
 NAVY = RGBColor(0x0F, 0x23, 0x50)
 GOLD = RGBColor(0xB9, 0x89, 0x2F)
@@ -53,6 +59,62 @@ def _load_module(name: str, path: str):
     return mod
 
 
+def _letterhead_background(sec) -> bool:
+    """
+    Float the official letterhead pad behind the body text on every page.
+
+    Implemented as a page-anchored floating image inside the section header
+    with behindDoc="1" (Word repeats header art on every page of the section).
+    Widens margins so body text clears the printed header band and the navy
+    contact band, mirroring the PDF generators (L/R 22mm, top 47mm, bottom 32mm).
+    Returns False (and keeps plain margins) when the pad asset is missing.
+    """
+    if not os.path.exists(LETTERHEAD):
+        return False
+
+    sec.left_margin = sec.right_margin = Mm(22)
+    sec.top_margin = Mm(48)
+    sec.bottom_margin = Mm(33)
+
+    header = sec.header
+    header.is_linked_to_previous = False
+    rId, _img = header.part.get_or_add_image(LETTERHEAD)
+    cx, cy = Mm(210), Mm(297)  # full A4 page, in EMU
+
+    anchor = parse_xml(
+        f'<w:r {nsdecls("w", "wp", "a", "pic", "r")}>'
+        "<w:drawing>"
+        '<wp:anchor behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"'
+        ' relativeHeight="0" simplePos="0">'
+        '<wp:simplePos x="0" y="0"/>'
+        '<wp:positionH relativeFrom="page"><wp:posOffset>0</wp:posOffset></wp:positionH>'
+        '<wp:positionV relativeFrom="page"><wp:posOffset>0</wp:posOffset></wp:positionV>'
+        f'<wp:extent cx="{cx}" cy="{cy}"/>'
+        '<wp:effectExtent l="0" t="0" r="0" b="0"/>'
+        "<wp:wrapNone/>"
+        '<wp:docPr id="1" name="YessLetterhead" descr="Yess Bangla official letterhead pad"/>'
+        "<wp:cNvGraphicFramePr/>"
+        '<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">'
+        "<pic:pic>"
+        "<pic:nvPicPr>"
+        '<pic:cNvPr id="0" name="yess-bangla-letterhead.jpeg"/>'
+        "<pic:cNvPicPr/>"
+        "</pic:nvPicPr>"
+        f'<pic:blipFill><a:blip r:embed="{rId}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+        "<pic:spPr>"
+        f'<a:xfrm><a:off x="0" y="0"/><a:ext cx="{cx}" cy="{cy}"/></a:xfrm>'
+        '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>'
+        "</pic:spPr>"
+        "</pic:pic>"
+        "</a:graphicData></a:graphic>"
+        "</wp:anchor>"
+        "</w:drawing>"
+        "</w:r>"
+    )
+    header.paragraphs[0]._p.append(anchor)
+    return True
+
+
 def _base_document(font: str, bn: bool) -> Document:
     doc = Document()
     # Page setup: A4 with comfortable margins.
@@ -60,6 +122,8 @@ def _base_document(font: str, bn: bool) -> Document:
     sec.page_width, sec.page_height = Mm(210), Mm(297)
     sec.top_margin = sec.bottom_margin = Mm(22)
     sec.left_margin = sec.right_margin = Mm(20)
+    # Letterhead background swaps in wider margins itself.
+    doc._has_letterhead = _letterhead_background(sec)
 
     normal = doc.styles["Normal"]
     normal.font.name = font
@@ -90,6 +154,16 @@ def _base_document(font: str, bn: bool) -> Document:
 
 
 def _footer(doc: Document, text: str):
+    # The letterhead pad already carries the full contact band at the bottom
+    # of the page, so when it is present we close with a small endnote in the
+    # body instead of a footer line (which would print over the navy band).
+    if getattr(doc, "_has_letterhead", False):
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = p.add_run(text)
+        run.font.size = Pt(8)
+        run.font.color.rgb = MUTED
+        return
     p = doc.sections[0].footer.paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = p.add_run(text)
