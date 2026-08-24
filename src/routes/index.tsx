@@ -19,6 +19,8 @@ import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
 import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
 import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
+import { resolveCoinLogo } from "@/lib/coinLogo";
+import type { Venture } from "@/data/ventures";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -106,8 +108,31 @@ const impactMetrics: ImpactMetric[] = [
 type LocalizedItem = { title: string; desc: string };
 type Testimonial = { name: string; role: string; quote: string };
 
-/** Ventures featured in the hero 2×2 grid (matches the yessbd.com brand line-up). */
+/** Ventures featured in the hero coin row (matches the yessbd.com brand line-up). */
 const HERO_VENTURE_SLUGS = ["yess-soft", "yess-service", "yess-organic-haat", "akash-ott"];
+
+/** Coin emblem — auto-resolves the venture logo: explicit logoUrl → live
+    domain favicon → engraved Lucide icon. A failed favicon image falls back
+    to the icon so the coin never renders blank. */
+function HeroCoinMark({ venture }: { venture: Venture }) {
+  const Icon = venture.icon;
+  const src = resolveCoinLogo(venture);
+  const [failed, setFailed] = useState(false);
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+        className="h-9 w-9 rounded-full object-contain sm:h-10 sm:w-10"
+      />
+    );
+  }
+  return <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />;
+}
 
 function Index() {
   const ventures = useVentures();
@@ -343,7 +368,6 @@ function Index() {
                   link, with the named link affordance beneath. */}
               <div className="grid grid-cols-4" style={{ gap: "clamp(10px, 1.8vw, 18px)" }}>
                 {heroVentures.map((v) => {
-                  const Icon = v.icon;
                   return (
                     <Link
                       key={v.slug}
@@ -353,25 +377,14 @@ function Index() {
                       className="group flex flex-col items-center text-center motion-reduce:transition-none"
                       aria-label={`${v.title} — ${v.tagline}`}
                     >
-                      {/* Minted coin face — engraved venture logo in the middle */}
+                      {/* Minted coin face — auto-set venture logo in the middle */}
                       <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center sm:max-w-[96px] lg:max-w-[104px]">
                         <span
                           aria-hidden="true"
                           className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
                         />
                         <span className="coin-engrave relative z-[1] grid place-items-center">
-                          {v.logoUrl ? (
-                            <img
-                              src={v.logoUrl}
-                              alt=""
-                              aria-hidden="true"
-                              loading="lazy"
-                              decoding="async"
-                              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
-                            />
-                          ) : (
-                            <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />
-                          )}
+                          <HeroCoinMark venture={v} />
                         </span>
                       </span>
                       {/* Named link under the coin */}

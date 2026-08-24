@@ -59,6 +59,8 @@ export type Venture = {
   icon: LucideIcon;
   /** Optional brand logo image URL. Falls back to the icon monogram. */
   logoUrl?: string;
+  /** Optional public domain — the hero coin auto-pulls its live favicon. */
+  domain?: string;
   color: string;
   highlights: string[];
   services: string[];
@@ -188,6 +190,7 @@ export const ventures: Venture[] = [
   {
     slug: "akash-ott",
     title: "Akash OTT",
+    domain: "akash.tv",
     category: "Streaming Platform",
     tagline: "Your favourite shows, anytime — on any screen.",
     desc: "An on-demand streaming platform with films, web originals, live TV and exclusive premieres tailored for Bangla-speaking audiences worldwide.",
@@ -353,6 +356,7 @@ export const ventures: Venture[] = [
   {
     slug: "yess-service",
     title: "Shondhaan",
+    domain: "shondhaan.com",
     category: "Home & Professional Services",
     tagline: "Trusted experts, just a tap away.",
     desc: "On-demand professional services — from home maintenance and cleaning to expert consultations — delivered by vetted professionals.",

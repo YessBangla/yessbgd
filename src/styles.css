@@ -651,6 +651,10 @@
       drop-shadow(0 -1px 1px color-mix(in oklab, var(--foreground) 28%, transparent))
       drop-shadow(0 1px 0 color-mix(in oklab, var(--background) 88%, transparent));
   }
+  /* Auto-set brand logos/favicons keep their colours; just a struck-in depth shadow */
+  .coin-engrave img {
+    filter: drop-shadow(0 1px 1px color-mix(in oklab, var(--foreground) 32%, transparent));
+  }
   @media (prefers-reduced-motion: reduce) {
     .hero-coin, .hero-coin::after { transition: none; }
     .group:hover .hero-coin { transform: none; }
