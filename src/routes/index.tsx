@@ -105,8 +105,16 @@ const impactMetrics: ImpactMetric[] = [
 type LocalizedItem = { title: string; desc: string };
 type Testimonial = { name: string; role: string; quote: string };
 
+/** Ventures featured in the hero 2×2 grid (matches the yessbd.com brand line-up). */
+const HERO_VENTURE_SLUGS = ["yess-soft", "yess-service", "yess-organic-haat", "akash-ott"];
+
 function Index() {
   const ventures = useVentures();
+  // Featured hero cards: preferred brands first, then fill from the rest.
+  const heroVentures = [
+    ...HERO_VENTURE_SLUGS.map((s) => ventures.find((v) => v.slug === s)).filter((v) => v != null),
+    ...ventures.filter((v) => !HERO_VENTURE_SLUGS.includes(v.slug)),
+  ].slice(0, 4);
   const cmsHome = usePageOverride("home");
   const { t, i18n: i18nInst } = useTranslation();
   const isBn = (i18nInst?.language || i18n.language || "en").startsWith("bn");
@@ -314,7 +322,7 @@ function Index() {
               className="hero-fade ml-auto grid max-w-md grid-cols-2"
               style={{ animationDelay: "240ms", gap: "var(--hero-rhythm-xs)" }}
             >
-              {ventures.slice(0, 4).map((v, i) => (
+              {heroVentures.map((v, i) => (
                 <Link
                   key={v.slug}
                   to="/ventures/$slug"
