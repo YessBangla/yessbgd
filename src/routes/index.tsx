@@ -16,7 +16,6 @@ import { HeroOverlays } from "@/components/HeroOverlays";
 
 import { CountUp, CountUpSkeleton } from "@/components/CountUp";
 import { SectionHeader, SectionDivider } from "@/components/SectionHeader";
-import { ProfileDownloadGate } from "@/components/ProfileDownloadGate";
 import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
 import { resolveCoinLogo } from "@/lib/coinLogo";
@@ -54,7 +53,7 @@ import {
   Mail,
   Layers,
   Phone,
-  Lock as LockIcon,
+  
   Facebook,
   Twitter,
   Youtube,
@@ -520,89 +519,71 @@ function Index() {
                 {t("home.downloadCards.compareLabel")}
               </p>
               <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-0">
-                <ProfileDownloadGate
-                  edition="en"
-                  editionLabel={t("home.downloadCards.english.kicker")}
-                  versionLabel={t("home.downloadCards.english.version")}
-                  metaLabel={t("home.downloadCards.english.gateMeta")}
-                  trigger={({ open }) => (
-                    <button
-                      type="button"
-                      onClick={open}
-                      aria-label={t("home.downloadCards.english.ariaButton")}
-                      lang="en"
-                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#7a9ce0]/25 via-[#5b7fd1]/15 to-[#3b5ea8]/10 p-4 text-left text-foreground shadow-[0_8px_32px_-12px_rgba(59,94,168,0.35)] backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-white/30 hover:from-[#7a9ce0]/35 hover:via-[#5b7fd1]/20 hover:to-[#3b5ea8]/15 hover:shadow-[0_16px_40px_-12px_rgba(59,94,168,0.5)] sm:p-5"
-                    >
-                      {/* Decorative gradient orb for premium feel */}
-                      <div aria-hidden="true" className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-white/30 to-[#7a9ce0]/0 blur-2xl" />
-                      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                      {/* Prominent flag + lang badge — sized larger on mobile */}
-                      <div className="relative flex items-center justify-between gap-2">
-                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-white/80 to-white/40 text-[#3b5ea8] shadow-sm ring-1 ring-white/50 sm:h-10 sm:w-10">
-                          <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                        </div>
-                        <span className="inline-flex items-center gap-1 rounded-full border border-[#7a9ce0]/40 bg-background/70 text-[#3b5ea8] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm backdrop-blur sm:px-2.5 sm:text-[12px]">
-                          <span aria-hidden="true" className="text-base leading-none">🇬🇧</span> EN
-                        </span>
-                      </div>
-                      <div className="relative mt-5 sm:mt-6">
-                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3b5ea8]/80">
-                          {t("home.downloadCards.english.kicker")}
-                        </div>
-                        <div className="mt-1 font-display text-[13px] font-semibold leading-snug bg-gradient-to-r from-[#1e3a7a] to-[#3b5ea8] bg-clip-text text-transparent sm:text-base">
-                          {t("home.downloadCards.english.title")}
-                        </div>
-                        <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
-                          {t("home.downloadCards.english.meta")}
-                        </div>
-                        <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/40 bg-gradient-to-r from-white/70 to-white/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#3b5ea8] shadow-sm sm:mt-3 sm:text-[10px]">
-                          <LockIcon className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.english.lock")}
-                        </div>
-                      </div>
-                    </button>
-                  )}
-                />
+                <a
+                  href="/yess-bangla-company-profile.pdf"
+                  download="yess-bangla-company-profile.pdf"
+                  aria-label={t("home.downloadCards.english.ariaButton")}
+                  lang="en"
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#7a9ce0]/25 via-[#5b7fd1]/15 to-[#3b5ea8]/10 p-4 text-left text-foreground shadow-[0_8px_32px_-12px_rgba(59,94,168,0.35)] backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-white/30 hover:from-[#7a9ce0]/35 hover:via-[#5b7fd1]/20 hover:to-[#3b5ea8]/15 hover:shadow-[0_16px_40px_-12px_rgba(59,94,168,0.5)] sm:p-5"
+                >
+                  {/* Decorative gradient orb for premium feel */}
+                  <div aria-hidden="true" className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-white/30 to-[#7a9ce0]/0 blur-2xl" />
+                  <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                  {/* Prominent flag + lang badge — sized larger on mobile */}
+                  <div className="relative flex items-center justify-between gap-2">
+                    <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-white/80 to-white/40 text-[#3b5ea8] shadow-sm ring-1 ring-white/50 sm:h-10 sm:w-10">
+                      <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+                    </div>
+                    <span className="inline-flex items-center gap-1 rounded-full border border-[#7a9ce0]/40 bg-background/70 text-[#3b5ea8] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm backdrop-blur sm:px-2.5 sm:text-[12px]">
+                      <span aria-hidden="true" className="text-base leading-none">🇬🇧</span> EN
+                    </span>
+                  </div>
+                  <div className="relative mt-5 sm:mt-6">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#3b5ea8]/80">
+                      {t("home.downloadCards.english.kicker")}
+                    </div>
+                    <div className="mt-1 font-display text-[13px] font-semibold leading-snug bg-gradient-to-r from-[#1e3a7a] to-[#3b5ea8] bg-clip-text text-transparent sm:text-base">
+                      {t("home.downloadCards.english.title")}
+                    </div>
+                    <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
+                      {t("home.downloadCards.english.meta")}
+                    </div>
+                    <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-white/40 bg-gradient-to-r from-white/70 to-white/50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#3b5ea8] shadow-sm sm:mt-3 sm:text-[10px]">
+                      <Download className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.english.lock")}
+                    </div>
+                  </div>
+                </a>
 
-                <ProfileDownloadGate
-                  edition="bn"
+                <a
                   href="/yess-bangla-company-profile-bn.pdf"
-                  filename="yess-bangla-company-profile-bn.pdf"
-                  editionLabel={t("home.downloadCards.bangla.kicker")}
-                  versionLabel={t("home.downloadCards.bangla.version")}
-                  metaLabel={t("home.downloadCards.bangla.gateMeta")}
-                  trigger={({ open }) => (
-                    <button
-                      type="button"
-                      onClick={open}
-                      aria-label={t("home.downloadCards.bangla.ariaButton")}
-                      lang="bn"
-                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary/50 bg-gradient-to-br from-primary/[0.10] via-background to-accent/[0.10] p-4 text-left transition-all hover:-translate-y-1 hover:border-primary/80 hover:shadow-xl sm:p-5"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow sm:h-10 sm:w-10">
-                          <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                        </div>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm sm:px-2.5 sm:text-[12px]">
-                          <span aria-hidden="true" className="text-base leading-none">🇧🇩</span> BN
-                        </span>
-                      </div>
-                      <div className="mt-5 sm:mt-6">
-                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/80">
-                          {t("home.downloadCards.bangla.kicker")}
-                        </div>
-                        <div className="mt-1 font-display text-[13px] font-semibold leading-snug sm:text-base">
-                          {t("home.downloadCards.bangla.title")}
-                        </div>
-                        <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
-                          {t("home.downloadCards.bangla.meta")}
-                        </div>
-                        <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-primary sm:mt-3 sm:text-[10px]">
-                          <LockIcon className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.bangla.lock")}
-                        </div>
-                      </div>
-                    </button>
-                  )}
-                />
+                  download="yess-bangla-company-profile-bn.pdf"
+                  aria-label={t("home.downloadCards.bangla.ariaButton")}
+                  lang="bn"
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary/50 bg-gradient-to-br from-primary/[0.10] via-background to-accent/[0.10] p-4 text-left transition-all hover:-translate-y-1 hover:border-primary/80 hover:shadow-xl sm:p-5"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-glow sm:h-10 sm:w-10">
+                      <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+                    </div>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground px-2 py-1 text-[11px] font-bold uppercase tracking-[0.14em] shadow-sm sm:px-2.5 sm:text-[12px]">
+                      <span aria-hidden="true" className="text-base leading-none">🇧🇩</span> BN
+                    </span>
+                  </div>
+                  <div className="mt-5 sm:mt-6">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/80">
+                      {t("home.downloadCards.bangla.kicker")}
+                    </div>
+                    <div className="mt-1 font-display text-[13px] font-semibold leading-snug sm:text-base">
+                      {t("home.downloadCards.bangla.title")}
+                    </div>
+                    <div className="mt-1 text-[10px] text-muted-foreground sm:text-xs">
+                      {t("home.downloadCards.bangla.meta")}
+                    </div>
+                    <div className="mt-2 inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background/70 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-primary sm:mt-3 sm:text-[10px]">
+                      <Download className="h-3 w-3" aria-hidden="true" /> {t("home.downloadCards.bangla.lock")}
+                    </div>
+                  </div>
+                </a>
               </div>
 
             </div>
