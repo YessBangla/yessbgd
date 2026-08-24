@@ -57,7 +57,7 @@ const TASKS: {
         '''Do not make any visual modifications. The phrases I write are commands to understand what I want, not to be written down. Understand their content well, then execute what is required.'''
         <br />
         <br />
-        Improve the Ventures section layout and styling so it looks modern and well-organized.
+        Organized Manu Bar
       </>
     ),
     help: "হোম, About, Contact — যেকোনো পেজের লেখা ও ছবি বদলান।",
