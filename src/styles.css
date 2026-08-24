@@ -603,11 +603,11 @@
             mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
     opacity: 0.55;
   }
-  /* Struck inner ring + sweeping metal sheen */
+  /* Struck inner ring + sweeping metal sheen — inset scales with coin size */
   .hero-coin::after {
     content: "";
     position: absolute;
-    inset: 11px;
+    inset: max(8px, 10%);
     border-radius: inherit;
     pointer-events: none;
     box-shadow:
@@ -625,16 +625,20 @@
     transition: opacity 300ms ease;
   }
   .group:hover .hero-coin {
-    transform: translateY(-4px);
+    transform: translateY(-3px) scale(1.04);
     box-shadow:
-      0 3px 0 color-mix(in oklab, var(--background) 55%, transparent),
-      0 26px 44px -18px color-mix(in oklab, var(--foreground) 65%, transparent),
+      0 2px 0 color-mix(in oklab, var(--background) 55%, transparent),
+      0 20px 36px -16px color-mix(in oklab, var(--foreground) 65%, transparent),
       inset 0 2px 3px color-mix(in oklab, var(--background) 92%, transparent),
       inset 2px 0 3px color-mix(in oklab, var(--background) 55%, transparent),
       inset 0 -4px 6px color-mix(in oklab, var(--foreground) 22%, transparent),
       inset -3px 0 5px color-mix(in oklab, var(--foreground) 12%, transparent);
   }
   .group:hover .hero-coin::after { opacity: 1; }
+  .group:focus-visible .hero-coin {
+    outline: 2px solid color-mix(in oklab, var(--background) 80%, transparent);
+    outline-offset: 3px;
+  }
   /* Engraved (খোদাই) emblem — letterpress: dark cut + bright lower lip */
   .coin-engrave {
     color: color-mix(in oklab, var(--foreground) 66%, var(--background));

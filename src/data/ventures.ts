@@ -57,6 +57,8 @@ export type Venture = {
   longDesc: string;
   image: string;
   icon: LucideIcon;
+  /** Optional brand logo image URL. Falls back to the icon monogram. */
+  logoUrl?: string;
   color: string;
   highlights: string[];
   services: string[];
