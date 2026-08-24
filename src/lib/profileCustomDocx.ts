@@ -268,7 +268,7 @@ export async function buildCustomProfileDocx(opts: CustomProfileOptions): Promis
                   new Paragraph({
                     children: [
                       new TextRun({
-                        text: v,
+                        text: v ?? "—",
                         size: 21,
                         color: INK,
                         font: { ascii: font, hAnsi: font, cs: bn ? "Noto Sans Bengali" : font },
