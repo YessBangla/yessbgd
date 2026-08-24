@@ -599,7 +599,7 @@ function Index() {
       <SectionDivider />
 
       {/* ABOUT STRIP — who we are */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight grid gap-8 sm:gap-12 lg:grid-cols-12 lg:items-center lg:gap-14">
           <Reveal className="lg:col-span-5">
             <div className="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
@@ -664,7 +664,7 @@ function Index() {
       <SectionDivider />
 
       {/* SERVICES — what we offer */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <SectionHeader
             eyebrow={t("home.servicesSection.eyebrow")}
@@ -683,7 +683,7 @@ function Index() {
                 decoding="async"
                 className="block aspect-[4/3] w-full object-cover sm:aspect-[21/6]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
                 <p className="max-w-xl text-xs font-medium text-foreground sm:text-base">
                   {t("home.servicesSection.imageCaption")}
@@ -727,7 +727,7 @@ function Index() {
       <SectionDivider />
 
       {/* IMPACT & METRICS — proof, placed right after capability pitch */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <SectionHeader
             eyebrow={t("home.impact.eyebrow")}
@@ -766,7 +766,7 @@ function Index() {
       <SectionDivider />
 
       {/* PROCESS — how we work, before showcasing breadth */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <SectionHeader
             eyebrow={t("home.process.eyebrow")}
@@ -796,7 +796,7 @@ function Index() {
       <SectionDivider />
 
       {/* VENTURES SHOWCASE — 11 ventures, breadth of ecosystem */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <SectionHeader
             eyebrow={t("home.venturesSection.eyebrow")}
@@ -867,7 +867,7 @@ function Index() {
       <SectionDivider />
 
       {/* TESTIMONIALS — voice of the customer */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <SectionHeader
             eyebrow={t("home.testimonials.eyebrow")}
@@ -900,7 +900,7 @@ function Index() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-12 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-14 lg:py-16">
         <div className="container-tight">
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-10 md:p-16">
