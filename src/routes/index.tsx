@@ -367,32 +367,43 @@ function Index() {
                   <ArrowRight aria-hidden="true" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
               </div>
-              {/* Coin row — four smaller minted coins side by side; each coin
-                  carries the venture logo (engraved) and the whole coin is the
-                  link, with the named link affordance beneath. */}
-              <div className="grid grid-cols-4" style={{ gap: "clamp(10px, 1.8vw, 18px)" }}>
-                {heroVentures.map((v) => {
+              {/* Coin row — minted venture coins floating on a calm water
+                  surface. Even coins sit a step higher (gentle wave arc) so the
+                  row reads as a composed editorial element, not a rigid strip;
+                  each coin bobs slowly with a staggered phase and casts a soft
+                  water reflection beneath. All animation is transform-only and
+                  disabled under prefers-reduced-motion. */}
+              <div className="coin-row grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(14px, 2.4vw, 26px)" }}>
+                {heroVentures.map((v, i) => {
                   return (
                     <Link
                       key={v.slug}
                       to="/ventures/$slug"
                       params={{ slug: v.slug }}
                       preload="intent"
-                      className="group flex flex-col items-center text-center motion-reduce:transition-none"
+                      className="coin-slot group flex flex-col items-center text-center motion-reduce:transition-none"
+                      style={{ "--coin-i": i } as React.CSSProperties}
                       aria-label={`${v.title} — ${v.tagline}`}
                     >
-                      {/* Minted coin face — auto-set venture logo in the middle */}
-                      <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center sm:max-w-[96px] lg:max-w-[104px]">
-                        <span
-                          aria-hidden="true"
-                          className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
-                        />
-                        <span className="coin-engrave relative z-[1] grid place-items-center">
-                          <HeroCoinMark venture={v} />
+                      {/* Floating assembly — bob + reflection stay in sync */}
+                      <span className="coin-float relative">
+                        {/* Minted coin face — auto-set venture logo in the middle */}
+                        <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center overflow-hidden sm:max-w-[96px] lg:max-w-[104px]">
+                          <span
+                            aria-hidden="true"
+                            className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
+                          />
+                          <span className="coin-engrave relative z-[1] grid place-items-center">
+                            <HeroCoinMark venture={v} />
+                          </span>
+                          {/* Light gliding across the water-polished face */}
+                          <span aria-hidden="true" className="coin-sheen" />
                         </span>
+                        {/* Soft water reflection pooled under the coin */}
+                        <span aria-hidden="true" className="coin-pool" />
                       </span>
                       {/* Named link under the coin */}
-                      <span className="mt-2 flex max-w-full items-center justify-center gap-1 text-[10px] font-semibold leading-tight text-background/80 transition-colors duration-300 group-hover:text-background sm:text-[11px]">
+                      <span className="mt-2.5 flex max-w-full items-center justify-center gap-1 text-[10px] font-semibold leading-tight text-background/80 transition-colors duration-300 group-hover:text-background sm:text-[11px]">
                         <span className="line-clamp-2">{v.title}</span>
                         <ArrowUpRight
                           aria-hidden="true"
