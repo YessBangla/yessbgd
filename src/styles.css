@@ -655,9 +655,86 @@
   .coin-engrave img {
     filter: drop-shadow(0 1px 1px color-mix(in oklab, var(--foreground) 32%, transparent));
   }
+
+  /* ---- Water-float choreography -------------------------------------------
+     Perf contract (see hero overlay rules): transform-only animations, no
+     per-frame filter/opacity. Every layer shares one duration and a negative
+     per-coin phase delay so bob, sheen and reflection stay in sync. */
+  .coin-row { padding-block: 6px 14px; }
+  /* Gentle wave arc — even coins ride one swell higher (sm and up, where the
+     row is horizontal; on the 2-col mobile grid it reads as a diagonal wave) */
+  @media (min-width: 640px) {
+    .coin-slot:nth-child(even) { transform: translateY(-14px); }
+  }
+  @media (max-width: 639.98px) {
+    .coin-slot:nth-child(even) { transform: translateY(-8px); }
+  }
+  .coin-float { display: flex; justify-content: center; width: 100%; }
+  /* Slow buoyant bob — ±5px, long ease, phase-staggered per coin */
+  @keyframes coin-bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+  .coin-float {
+    animation: coin-bob 6.4s ease-in-out infinite;
+    animation-delay: calc(var(--coin-i, 0) * -1.6s);
+    will-change: transform;
+  }
+  /* Water reflection — a soft ellipse pooled under each coin; squeezes
+     slightly as the coin rises, in the same rhythm as the bob */
+  .coin-pool {
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    width: 72%;
+    height: 12px;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in oklab, var(--foreground) 30%, transparent) 0%,
+      transparent 68%
+    );
+    filter: blur(4px); /* static blur — never animated */
+  }
+  @keyframes coin-pool-squeeze {
+    0%, 100% { transform: translateX(-50%) scaleX(1); }
+    50%      { transform: translateX(-50%) scaleX(0.86); }
+  }
+  .coin-pool {
+    animation: coin-pool-squeeze 6.4s ease-in-out infinite;
+    animation-delay: calc(var(--coin-i, 0) * -1.6s);
+  }
+  /* Sheen — a narrow band of light gliding across the polished face, like
+     sun off calm water. Pure translateX sweep, clipped by the coin's
+     overflow:hidden; mostly parked off-face so the look stays quiet. */
+  .coin-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 38%,
+      color-mix(in oklab, var(--background) 55%, transparent) 50%,
+      transparent 62%
+    );
+    transform: translateX(-160%);
+  }
+  @keyframes coin-sheen-sweep {
+    0%   { transform: translateX(-160%); }
+    38%  { transform: translateX(160%); }
+    100% { transform: translateX(160%); }
+  }
+  .coin-sheen {
+    animation: coin-sheen-sweep 6.4s linear infinite;
+    animation-delay: calc(var(--coin-i, 0) * -1.6s);
+  }
   @media (prefers-reduced-motion: reduce) {
     .hero-coin, .hero-coin::after { transition: none; }
     .group:hover .hero-coin { transform: none; }
+    .coin-float, .coin-pool, .coin-sheen { animation: none; }
+    .coin-slot:nth-child(even) { transform: none; }
   }
   .text-balance { text-wrap: balance; }
 
