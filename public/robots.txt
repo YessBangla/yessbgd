@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yessbangla.com/sitemap.xml
+Sitemap: https://yessbd.com/sitemap.xml
