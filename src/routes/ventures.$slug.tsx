@@ -144,6 +144,8 @@ function VenturePage() {
             alt={`${v.title} — ${v.category}`}
             width={1536}
             height={864}
+            decoding="async"
+            fetchPriority="high"
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
@@ -763,6 +765,8 @@ function VenturePage() {
                       <img
                         src={t.logoUrl}
                         alt={`${t.company ?? t.author} logo`}
+                        loading="lazy"
+                        decoding="async"
                         className="h-12 w-12 rounded-xl bg-background/95 object-contain p-1.5 shadow"
                       />
                     ) : (
