@@ -449,7 +449,11 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main" data-testid="header-nav-desktop">
+        <nav
+          className="hidden min-w-0 max-w-full items-center gap-0.5 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:flex lg:justify-self-center"
+          aria-label="Main"
+          data-testid="header-nav-desktop"
+        >
           {navNodes.map((item) => {
             const kids = item.children ?? [];
             const isVenturesMega = item.href === "/ventures" && kids.length === 0;
@@ -468,7 +472,7 @@ export function Header() {
                     aria-haspopup="true"
                     aria-expanded={openId === item.id}
                     onFocus={() => setOpenId(item.id)}
-                    className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
+                    className={`inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground ${venturesActive ? "text-primary bg-secondary" : "text-foreground/80"}`}
                   >
                     {label(item, bn)} <ChevronDown className="h-3.5 w-3.5" />
                   </Link>
@@ -603,19 +607,21 @@ export function Header() {
 
 
         {/* Right cluster — language + CTA on desktop, compact toggle + hamburger on mobile. */}
-        <div className="flex items-center gap-2">
-          <div className="hidden sm:inline-flex">
+        <div className="flex shrink-0 items-center gap-2 justify-self-end">
+          <div className="hidden shrink-0 sm:inline-flex">
             <LanguageSwitch variant="pill" />
           </div>
-          <div className="sm:hidden">
+          <div className="shrink-0 sm:hidden">
             <LanguageSwitch variant="compact" />
           </div>
           {/* Theme tri-switch (Light / Dark / System) — visible on both mobile top bar and desktop menubar */}
-          <ThemePreviewSwitch />
-          <div className="hidden lg:block">
+          <div className="shrink-0">
+            <ThemePreviewSwitch />
+          </div>
+          <div className="hidden shrink-0 xl:block">
             <Link
               to="/contact"
-              className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
+              className="inline-flex items-center whitespace-nowrap rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:scale-[1.03] hover:shadow-md"
             >
               {t("nav.letsTalk")}
             </Link>
