@@ -1,6 +1,8 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Mail, Facebook, Twitter, Youtube, Linkedin } from "lucide-react";
+import { COMPANY_CONTACT, phoneHref } from "@/lib/companyContact";
+import { FOOTER_DEFAULTS } from "@/lib/footerConfig";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import fallbackLogo from "@/assets/yess-bangla-logo.png";
@@ -26,6 +28,15 @@ const nav = [
   { to: "/careers", key: "careers" },
   { to: "/contact", key: "contact" },
 ] as const;
+
+// Corporate topbar social icons — mirrors the footer network list.
+const TOPBAR_SOCIAL_ICONS = {
+  facebook: Facebook,
+  twitter: Twitter,
+  youtube: Youtube,
+  linkedin: Linkedin,
+} as const;
+const whatsappHref = `https://wa.me/${COMPANY_CONTACT.phone.tel.replace(/^\+/, "")}`;
 
 const label = (n: MenuNode, bn: boolean) => (bn && n.label_bn) || n.label;
 const badgeOf = (n: MenuNode, bn: boolean) => (bn && n.badge_bn) || n.badge;
