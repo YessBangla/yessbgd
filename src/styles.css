@@ -1101,3 +1101,29 @@
   border: 1px solid var(--admin-glass-border);
 }
 
+
+/* ── Accessibility: visible focus ring + skip link ─────────────────────── */
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring, oklch(0.55 0.15 250));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: top 0.2s ease;
+}
+.skip-link:focus-visible {
+  top: 1rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}
