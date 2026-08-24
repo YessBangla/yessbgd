@@ -80,6 +80,8 @@ export const ventures: Venture[] = [
   {
     slug: "yess-soft",
     title: "Yess Soft",
+    domain: "yessbangla.top",
+    logoUrl: "/coins/yess-soft.png",
     category: "Software & IT Solutions",
     tagline: "Engineering software that scales with your ambition.",
     desc: "Custom software, web & mobile applications, ERP, CRM and enterprise systems built for modern businesses across Bangladesh and beyond.",
@@ -191,6 +193,7 @@ export const ventures: Venture[] = [
     slug: "akash-ott",
     title: "Akash OTT",
     domain: "akash.tv",
+    logoUrl: "/coins/akash-ott.png",
     category: "Streaming Platform",
     tagline: "Your favourite shows, anytime — on any screen.",
     desc: "An on-demand streaming platform with films, web originals, live TV and exclusive premieres tailored for Bangla-speaking audiences worldwide.",
@@ -246,6 +249,8 @@ export const ventures: Venture[] = [
   {
     slug: "the-daily-akash",
     title: "The Daily Akash",
+    domain: "akash.news",
+    logoUrl: "/coins/the-daily-akash.png",
     category: "Digital Newspaper",
     tagline: "Trusted journalism for a modern Bangladesh.",
     desc: "A digital-first newspaper delivering breaking news, in-depth analysis, business, sports and lifestyle stories that matter — every day.",
@@ -301,6 +306,8 @@ export const ventures: Venture[] = [
   {
     slug: "yess-organic-haat",
     title: "Yess Organic Haat",
+    domain: "organichaat.top",
+    logoUrl: "/coins/yess-organic-haat.png",
     category: "Organic Marketplace",
     tagline: "Pure. Local. Delivered to your door.",
     desc: "Farm-to-table organic food and lifestyle products sourced directly from verified local producers and delivered fresh.",
@@ -357,6 +364,7 @@ export const ventures: Venture[] = [
     slug: "yess-service",
     title: "Shondhaan",
     domain: "shondhaan.com",
+    logoUrl: "/coins/shondhaan.png",
     category: "Home & Professional Services",
     tagline: "Trusted experts, just a tap away.",
     desc: "On-demand professional services — from home maintenance and cleaning to expert consultations — delivered by vetted professionals.",
