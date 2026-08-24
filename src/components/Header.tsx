@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion, type Transition } from "fram
 import { useTranslation } from "react-i18next";
 import fallbackLogo from "@/assets/yess-bangla-logo.png";
 import { useVentures } from "@/lib/dynamicContent";
+import { activeVentures } from "@/data/ventures";
 import { type MenuNode, useSettingText } from "@/lib/siteContent";
 import { resolveMediaUrl } from "@/lib/mediaAssets";
 import { useHeaderMenu } from "@/lib/headerMenu";
@@ -94,7 +95,7 @@ const MobilePanel = memo(function MobilePanel({
       >
         <div className="min-h-0">
           <div className="ml-2 flex flex-col gap-0.5 border-l border-border pl-3 py-1">
-            {ventures.map((v) => {
+            {activeVentures(ventures).map((v) => {
               const Icon = v.icon;
               return (
                 <Link
@@ -475,7 +476,7 @@ export function Header() {
                     <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2">
                       <div className="glass-strong w-[640px] rounded-2xl border border-glass-border p-3 shadow-elegant">
                         <div className="grid grid-cols-2 gap-1">
-                          {ventures.map((v) => {
+                          {activeVentures(ventures).map((v) => {
                             const Icon = v.icon;
                             return (
                               <Link

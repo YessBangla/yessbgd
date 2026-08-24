@@ -21,6 +21,7 @@ import { usePageOverride } from "@/lib/sitePages";
 import { useVentures } from "@/lib/dynamicContent";
 import { resolveCoinLogo } from "@/lib/coinLogo";
 import type { Venture } from "@/data/ventures";
+import { activeVentures, upcomingVentures } from "@/data/ventures";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -136,10 +137,13 @@ function HeroCoinMark({ venture }: { venture: Venture }) {
 
 function Index() {
   const ventures = useVentures();
+  // Live ventures only — upcoming projects are listed separately below.
+  const live = activeVentures(ventures);
+  const upcoming = upcomingVentures(ventures);
   // Featured hero cards: preferred brands first, then fill from the rest.
   const heroVentures = [
-    ...HERO_VENTURE_SLUGS.map((s) => ventures.find((v) => v.slug === s)).filter((v) => v != null),
-    ...ventures.filter((v) => !HERO_VENTURE_SLUGS.includes(v.slug)),
+    ...HERO_VENTURE_SLUGS.map((s) => live.find((v) => v.slug === s)).filter((v) => v != null),
+    ...live.filter((v) => !HERO_VENTURE_SLUGS.includes(v.slug)),
   ].slice(0, 4);
   const cmsHome = usePageOverride("home");
   const { t, i18n: i18nInst } = useTranslation();
@@ -428,7 +432,7 @@ function Index() {
                 {/* Compact ventures showcase — small thumbnails sized to area, with one-line summary.
                     Replaces the previous theme-preview switch in this CTA block. */}
                 <ul className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-                  {ventures.slice(0, 6).map((v) => (
+                  {live.slice(0, 6).map((v) => (
                     <li key={v.slug}>
                       <Link
                         to="/ventures/$slug"
@@ -871,7 +875,7 @@ function Index() {
           </Reveal>
 
           <Stagger className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {ventures.map((v) => {
+            {live.map((v) => {
               return (
                 <StaggerItem key={v.slug}>
                   <Link
@@ -906,6 +910,43 @@ function Index() {
               );
             })}
           </Stagger>
+
+          {/* UPCOMING PROJECTS — announced, not yet live */}
+          {upcoming.length > 0 && (
+            <Reveal className="mt-10 sm:mt-12">
+              <div className="rounded-2xl border border-dashed border-border/70 bg-muted/30 p-5 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {t("home.venturesSection.upcomingKicker")}
+                  </p>
+                  <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    {t("home.venturesSection.upcomingBadge")}
+                  </span>
+                </div>
+                <ul className="mt-4 flex flex-wrap gap-2.5">
+                  {upcoming.map((v) => {
+                    const Icon = v.icon;
+                    return (
+                      <li key={v.slug}>
+                        <Link
+                          to="/ventures/$slug"
+                          params={{ slug: v.slug }}
+                          preload="intent"
+                          aria-label={`${t("home.venturesSection.readAbout")} ${v.title}`}
+                          className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 py-1.5 pl-1.5 pr-3.5 text-[12px] font-medium text-foreground/85 backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:text-foreground hover:shadow-md"
+                        >
+                          <span className={`grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br ${v.color} text-primary-foreground`}>
+                            <Icon className="h-3 w-3" strokeWidth={1.8} />
+                          </span>
+                          {v.title}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 

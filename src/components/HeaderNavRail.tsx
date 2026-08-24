@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { MenuNode } from "@/lib/siteContent";
 import { MenuIcon } from "@/lib/menuStyles";
 import { useVentures } from "@/lib/dynamicContent";
+import { activeVentures } from "@/data/ventures";
 
 /**
  * Desktop-parity navigation rail for tablet/mobile breakpoints.
@@ -94,7 +95,7 @@ export function HeaderNavRail({ tree, bn }: { tree: MenuNode[]; bn: boolean }) {
                 {isVenturesMega ? (
                   <>
                     <div className="grid gap-1 sm:grid-cols-2">
-                      {ventures.map((v) => {
+                      {activeVentures(ventures).map((v) => {
                         const Icon = v.icon;
                         return (
                           <Link
