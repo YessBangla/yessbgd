@@ -338,7 +338,10 @@ function Index() {
                   <ArrowRight aria-hidden="true" className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
               </div>
-              <div className="grid grid-cols-2" style={{ gap: "var(--hero-rhythm-sm)" }}>
+              {/* Coin row — four smaller minted coins side by side; each coin
+                  carries the venture logo (engraved) and the whole coin is the
+                  link, with the named link affordance beneath. */}
+              <div className="grid grid-cols-4" style={{ gap: "clamp(10px, 1.8vw, 18px)" }}>
                 {heroVentures.map((v) => {
                   const Icon = v.icon;
                   return (
@@ -350,22 +353,30 @@ function Index() {
                       className="group flex flex-col items-center text-center motion-reduce:transition-none"
                       aria-label={`${v.title} — ${v.tagline}`}
                     >
-                      {/* Minted coin face — engraved venture emblem in the middle */}
-                      <span className="hero-coin grid aspect-square w-full place-items-center">
+                      {/* Minted coin face — engraved venture logo in the middle */}
+                      <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center sm:max-w-[96px] lg:max-w-[104px]">
                         <span
                           aria-hidden="true"
-                          className={`absolute inset-[13px] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
+                          className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
                         />
-                        <span className="coin-engrave relative z-[1] flex flex-col items-center gap-1.5 px-4">
-                          <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />
-                          <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.12em] sm:text-[11px]">
-                            {v.title}
-                          </span>
+                        <span className="coin-engrave relative z-[1] grid place-items-center">
+                          {v.logoUrl ? (
+                            <img
+                              src={v.logoUrl}
+                              alt=""
+                              aria-hidden="true"
+                              loading="lazy"
+                              decoding="async"
+                              className="h-8 w-8 object-contain sm:h-9 sm:w-9"
+                            />
+                          ) : (
+                            <Icon aria-hidden="true" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.5} />
+                          )}
                         </span>
                       </span>
-                      {/* Caption under the coin */}
-                      <span className="mt-2.5 flex max-w-full items-center justify-center gap-1 text-[11px] text-background/75 transition-colors duration-300 group-hover:text-background">
-                        <span className="truncate">{v.tagline}</span>
+                      {/* Named link under the coin */}
+                      <span className="mt-2 flex max-w-full items-center justify-center gap-1 text-[10px] font-semibold leading-tight text-background/80 transition-colors duration-300 group-hover:text-background sm:text-[11px]">
+                        <span className="line-clamp-2">{v.title}</span>
                         <ArrowUpRight
                           aria-hidden="true"
                           className="h-3 w-3 shrink-0 opacity-0 transition-[opacity,transform] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100 motion-reduce:transition-none"
