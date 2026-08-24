@@ -7,6 +7,10 @@ Purpose: the PDFs are the polished, print-ready versions; these .docx files
 are the *editable* twins so management can change wording in Word / Google
 Docs / LibreOffice and re-export.
 
+Every document paints the official letterhead pad as a full-page background
+(floating image anchored to the page, behind the text, driven from the
+section header so it repeats on every page — the same chrome the PDFs use).
+
 Reuses the SAME content sources as the PDF generators, so both formats stay
 in sync:
   - Company profile EN/BN ...... SECTIONS from build-company-profile[-bn].py
@@ -30,11 +34,13 @@ import sys
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml.ns import qn
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls, qn
 from docx.shared import Mm, Pt, RGBColor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROFILES_DIR = os.path.join(ROOT, "public", "profiles")
+LETTERHEAD = os.path.join(ROOT, "public", "yess-bangla-letterhead.jpeg")
 
 NAVY = RGBColor(0x0F, 0x23, 0x50)
 GOLD = RGBColor(0xB9, 0x89, 0x2F)
