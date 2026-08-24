@@ -48,7 +48,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 LETTERHEAD = "/dev-server/public/yess-bangla-letterhead.jpeg"
 PDF_OUT = "/dev-server/public/yess-bangla-company-profile.pdf"
 
-VERSION = "v1.2"
+VERSION = "v2.0"
 GENERATED = datetime.date.today().strftime("%d %B %Y")
 DOC_TITLE = "Yess Bangla — Company Profile"
 DOC_AUTHOR = "Yess Bangla Private Limited"
@@ -91,7 +91,7 @@ SECTIONS = [
     {"id": "sec01", "number": "01", "title": "Message from the Management",
      "kicker": "Foreword",
      "body": [
-        ("p", "At Yess Bangla, we believe a modern Bangladesh deserves a modern enterprise group — one that combines the discipline of international business with deep local insight. Over the past several years we have built a portfolio of complementary ventures spanning software, broadcast television, OTT streaming, digital journalism, organic commerce, professional services, hosting, events, talent and food — all engineered to operate to international standards while remaining rooted in the communities we serve."),
+        ("p", "At Yess Bangla, we believe a modern Bangladesh deserves a modern enterprise group — one that combines the discipline of international business with deep local insight. Over the past several years we have built a portfolio of complementary ventures spanning software, OTT streaming, digital journalism, legal advisory, organic commerce, hosting, on-demand services and events — with satellite television, travel, food and talent brands in development — all engineered to operate to international standards while remaining rooted in the communities we serve."),
         ("p", "Our promise to clients, partners, regulators and audiences is simple: integrity in every transaction, craft in every product, and responsibility in every public action. We invest in our people, in our technology stack and in long-term relationships because that is how durable companies are built."),
         ("p", "Whether you are a multinational evaluating a partner in South Asia, a Bangladeshi enterprise modernising your operations, or an investor considering long-term collaboration, this document offers a faithful account of who we are, what we do, and the standards we hold ourselves to."),
         ("sig", "— The Board of Directors, Yess Bangla Private Limited"),
@@ -99,12 +99,12 @@ SECTIONS = [
     {"id": "sec02", "number": "02", "title": "About Yess Bangla",
      "kicker": "The group",
      "body": [
-        ("p", "Yess Bangla Private Limited is a Bangladesh-incorporated private company headquartered in Mirpur, Dhaka. The group operates eleven wholly-owned and managed ventures spanning four strategic domains: Technology, Media &amp; Broadcasting, Commerce &amp; Lifestyle, and Professional Services."),
+        ("p", "Yess Bangla Private Limited is a Bangladesh-incorporated private company headquartered in Mirpur, Dhaka. The group operates eight active ventures and a development pipeline of five more brands spanning four strategic domains: Technology &amp; Digital, Media &amp; News, Commerce &amp; Lifestyle, and Professional Services."),
         ("p", "We design, build and operate digital products and services for enterprise clients, government bodies, broadcasters, advertisers and consumers. The group&#8217;s combined infrastructure — engineering teams, broadcast facilities, editorial newsroom, cloud platform, logistics network and event production capability — gives us the unusual ability to take an idea from concept to nationwide rollout entirely in-house."),
         ("h3", "At a glance"),
         ("kv", [
             ("Headquarters", "Dhaka, Bangladesh"),
-            ("Group ventures", "11 specialised brands"),
+            ("Group ventures", "8 operating · 5 in development"),
             ("Domains", "Technology · Media · Commerce · Services"),
             ("Engagement model", "Project, retainer, managed services, partnership"),
             ("Reach", "Nationwide Bangladesh, with diaspora &amp; export channels"),
@@ -139,29 +139,32 @@ SECTIONS = [
         ("table", {
             "header": ["Domain", "Ventures", "Function"],
             "rows": [
-                ["Technology", "Yess Soft · Yess Host", "Software engineering, web/mobile, ERP/CRM, cloud hosting"],
-                ["Media &amp; Broadcasting", "Akash TV · Akash OTT · The Daily Akash", "Satellite TV, OTT streaming, digital newspaper"],
-                ["Commerce &amp; Lifestyle", "Yess Organic Haat · Yess Food · Yess Model", "Organic marketplace, F&amp;B, talent agency"],
-                ["Professional Services", "Yess Service · Yess Event · Yess All in One Solution", "Home services, event management, integrated solutions"],
+                ["Technology &amp; Digital", "Yess Soft · Yess Host · Shondhaan", "Software engineering, web/mobile, ERP/CRM, cloud hosting, service marketplace"],
+                ["Media &amp; News", "Akash OTT · The Daily Akash · Akash TV (upcoming)", "OTT streaming, digital newspaper, satellite TV (in development)"],
+                ["Commerce &amp; Lifestyle", "Yess Organic Haat · Yess Tourism (upcoming) · Yess Food (upcoming)", "Organic marketplace, curated travel, F&amp;B"],
+                ["Professional Services", "Yess Legal Advice · Yess Event · Yess Model (upcoming)", "Legal counsel, event management, talent agency"],
             ],
         }),
      ]},
     {"id": "sec05", "number": "05", "title": "Business Verticals &amp; Ventures",
-     "kicker": "Eleven brands, one group",
+     "kicker": "Eight brands live, five more coming",
      "body": [
-        ("p", "Each Yess Bangla venture is a stand-alone brand with its own clients, products and editorial or product roadmap. Together they form an integrated portfolio that can address almost any modern business or consumer need."),
+        ("p", "Each Yess Bangla venture is a stand-alone brand with its own clients, products and editorial or product roadmap. Together they form an integrated portfolio that can address almost any modern business or consumer need. Eight brands are live today; five more are in active development."),
         ("dl", [
             ("Yess Soft — Software &amp; IT Solutions", "Custom software, web and mobile applications, ERP, CRM and enterprise systems built for modern businesses across Bangladesh and beyond."),
-            ("Akash TV — Satellite Television", "A leading Bangla-language satellite channel delivering news, entertainment, talk shows and cultural programming to millions of viewers."),
+            ("Shondhaan — On-Demand Home &amp; Professional Services", "Bangladesh&#8217;s trusted on-demand services platform connecting vetted electricians, plumbers, technicians, cleaners and tutors with households and businesses — backed by service guarantees and instant digital booking."),
             ("Akash OTT — Streaming Platform", "A multi-device streaming service offering on-demand entertainment, originals, live channels and curated catalogues for Bangladeshi audiences worldwide."),
             ("The Daily Akash — Digital Newspaper", "An independent, digital-first national daily covering politics, business, sport, culture and technology with verified journalism and original reporting."),
+            ("Yess Legal Advice — Legal &amp; Business Counsel", "Accessible legal advisory for individuals, startups and enterprises — company formation, contracts, compliance and dispute support from qualified counsel."),
             ("Yess Organic Haat — Organic Marketplace", "A direct-to-consumer organic marketplace connecting verified Bangladeshi farmers with urban households through cold-chain logistics and quality assurance."),
-            ("Yess Service — Home &amp; Professional Services", "An on-demand network of vetted electricians, plumbers, technicians, cleaners and tutors, backed by service guarantees and digital booking."),
-            ("Yess Host — Hosting &amp; Cloud Infrastructure", "Managed shared, VPS, cloud and dedicated hosting with local data residency, 24/7 monitoring and enterprise-grade security."),
+                        ("Yess Host — Hosting &amp; Cloud Infrastructure", "Managed shared, VPS, cloud and dedicated hosting with local data residency, 24/7 monitoring and enterprise-grade security."),
+            ("Yess Event — Event Management", "Full-service event production for corporate launches, conferences, broadcast events, weddings and government programmes."),
         ]),
         ("pagebreak", None),
+        ("h3", "Upcoming brands — in development"),
         ("dl", [
-            ("Yess Event — Event Management", "Full-service event production for corporate launches, conferences, broadcast events, weddings and government programmes."),
+            ("Akash TV — Satellite Television", "A Bangla-language satellite channel in development, set to deliver news, entertainment, talk shows and cultural programming to millions of viewers."),
+            ("Yess Tourism — Travel &amp; Hospitality", "Curated domestic and international travel packages with transparent pricing, guided experiences and doorstep service."),
             ("Yess Model — Modeling &amp; Talent Agency", "A talent agency representing models, presenters and creators across advertising, broadcast, fashion and digital campaigns."),
             ("Yess Food — Food &amp; Beverage", "An F&amp;B brand bringing authentic Bangladeshi flavours to modern outlets and packaged formats, with rigorous quality and hygiene standards."),
             ("Yess All in One Solution — Integrated Business Solutions", "A single point of contact for clients who want to combine multiple Yess Bangla services into a coordinated programme of work."),
@@ -172,12 +175,12 @@ SECTIONS = [
      "body": [
         ("dl", [
             ("Software engineering", "Custom enterprise software, ERP, CRM, e-commerce, fintech, EdTech and bespoke web/mobile apps."),
-            ("Broadcast media", "Satellite television production, news bulletins, talk shows, cultural programming and broadcast advertising."),
+            ("On-demand services", "Vetted home and business services, digital booking, service guarantees and workforce quality assurance."),
             ("Digital streaming", "OTT platform engineering, content packaging, DRM, monetisation, multi-device playback and subscriber operations."),
             ("Editorial &amp; journalism", "National digital newsroom, investigative reporting, multimedia storytelling and editorial standards aligned with international press codes."),
             ("Cloud &amp; infrastructure", "Managed hosting, cloud architecture, DevOps, cybersecurity, SLA-backed monitoring and disaster recovery."),
             ("E-commerce &amp; logistics", "Direct-to-consumer marketplaces, supplier onboarding, cold-chain handling, last-mile delivery and digital payments."),
-            ("Professional services", "On-demand home and business services, event production, talent management and integrated cross-venture programmes."),
+            ("Professional &amp; legal services", "Legal advisory, event production, talent management and integrated cross-venture programmes."),
             ("Brand, design &amp; content", "Identity systems, art direction, photography, video, motion graphics and integrated campaigns across earned and paid media."),
         ]),
      ]},
@@ -217,8 +220,8 @@ SECTIONS = [
                 ["Enterprise", "Banks, telcos, manufacturers, conglomerates", "Custom platforms, managed services, retainers"],
                 ["Government &amp; NGO", "Public agencies, development partners", "RFP delivery, civic media, infrastructure"],
                 ["SME &amp; startups", "Growth-stage Bangladeshi businesses", "Web, mobile, hosting, brand, content"],
-                ["Consumers", "Urban and peri-urban households", "TV, OTT, news, organic groceries, services"],
-                ["Advertisers", "Local and global brands", "On-air and digital media inventory across Akash TV / OTT / Daily Akash"],
+                ["Consumers", "Urban and peri-urban households", "OTT, news, organic groceries, on-demand services"],
+                ["Advertisers", "Local and global brands", "Digital media inventory across Akash OTT and The Daily Akash"],
             ],
         }),
      ]},
@@ -228,9 +231,9 @@ SECTIONS = [
         ("dl", [
             ("Foundation", "Yess Bangla Private Limited incorporated in Dhaka with a long-term vision of building an integrated Bangladeshi enterprise group."),
             ("Technology launch", "Yess Soft and Yess Host established to deliver enterprise software and managed hosting to Bangladeshi clients."),
-            ("Media expansion", "Akash TV satellite channel launched, followed by Akash OTT streaming and The Daily Akash digital newspaper."),
-            ("Commerce &amp; lifestyle", "Yess Organic Haat, Yess Food and Yess Model launched to bring quality consumer products and talent representation to market."),
-            ("Service network", "Yess Service, Yess Event and Yess All in One Solution rolled out to deliver on-demand professional services across Bangladesh."),
+            ("Media expansion", "Akash OTT streaming platform and The Daily Akash digital newspaper launched; Akash TV satellite channel enters development."),
+            ("Commerce &amp; lifestyle", "Yess Organic Haat launched to bring verified organic products to urban households; Yess Tourism, Yess Food and Yess Model enter development."),
+            ("Service network", "Shondhaan, Yess Event and Yess Legal Advice rolled out to deliver on-demand services, events and legal counsel across Bangladesh."),
             ("Group consolidation", "All ventures unified under a single brand governance framework with shared standards in finance, IT, legal and HR."),
         ]),
      ]},
@@ -240,7 +243,7 @@ SECTIONS = [
         ("p", "Yess Bangla treats responsible business as a core operating principle, not an afterthought. We invest a portion of group revenue into long-term programmes that strengthen the communities we serve."),
         ("dl", [
             ("Digital literacy", "Free workshops and training material to help students, women entrepreneurs and small business owners adopt digital tools."),
-            ("Public-interest journalism", "The Daily Akash and Akash TV commit airtime and column space to under-reported stories of national importance."),
+            ("Public-interest journalism", "The Daily Akash and Akash OTT commit column space and screen time to under-reported stories of national importance."),
             ("Farmer livelihoods", "Yess Organic Haat works directly with smallholder farmers, paying transparent prices and investing in cold-chain training."),
             ("Workforce inclusion", "Equal-opportunity recruitment, on-the-job training and pathways for fresh graduates from outside the capital."),
             ("Environment", "Energy-efficient infrastructure, paperless operations and active reduction of single-use packaging across our supply chain."),
@@ -281,7 +284,7 @@ SECTIONS = [
                 ["Group Managing Director", "Operating performance and cross-venture coordination"],
                 ["Chief Operating Officer", "Day-to-day operations, SLAs, vendor management"],
                 ["Chief Technology Officer", "Engineering standards, security, platform roadmap"],
-                ["Editor-in-Chief (Media)", "Editorial integrity across Akash TV, OTT and Daily Akash"],
+                ["Editor-in-Chief (Media)", "Editorial integrity across Akash OTT and The Daily Akash"],
                 ["Head of Finance", "Treasury, audit, statutory compliance"],
                 ["Head of People &amp; Culture", "Recruitment, training, welfare, diversity"],
                 ["Head of Brand &amp; Communications", "Group identity, PR, partnership marketing"],
@@ -293,7 +296,7 @@ SECTIONS = [
      "kicker": "Our differentiators",
      "body": [
         ("dl", [
-            ("One partner, many capabilities", "Software, broadcast, OTT, journalism, e-commerce, hosting, services and events under a single brand and contract framework."),
+            ("One partner, many capabilities", "Software, OTT, journalism, legal counsel, e-commerce, hosting, services and events under a single brand and contract framework."),
             ("Local depth, international standards", "Deep Bangladeshi market knowledge combined with internationally recognised engineering, editorial and operational practices."),
             ("Accountable governance", "Documented policies, statutory audit, named functional leads and a board that meets regularly."),
             ("End-to-end delivery", "From discovery and architecture through build, launch, operation and continuous improvement — all in-house."),
@@ -630,9 +633,9 @@ def build_pdf():
                             styles["CoverTitle"], anchor="cover",
                             outline_level=0, outline_text="Cover"))
     story.append(Paragraph(
-        "An integrated enterprise group delivering software, broadcast media, "
-        "digital streaming, journalism, organic commerce, professional "
-        "services and lifestyle brands across Bangladesh and beyond.",
+        "An integrated enterprise group delivering software, digital streaming, "
+        "journalism, legal counsel, organic commerce, hosting, on-demand "
+        "services and events across Bangladesh and beyond.",
         styles["CoverSubtitle"]))
     story.append(Spacer(1, 6 * mm))
 
@@ -664,8 +667,8 @@ def build_pdf():
         ("Cell", PHONE),
         ("Email", EMAIL),
         ("Web", WEB),
-        ("Sector", "Technology · Media · Broadcasting · E-commerce · Lifestyle services"),
-        ("Operating ventures", "11 specialised brands under one parent company"),
+        ("Sector", "Technology · Media · News · E-commerce · Professional services"),
+        ("Operating ventures", "8 operating brands · 5 in development"),
         ("Languages", "Bangla &amp; English (this edition: English)"),
         ("Document version", f"{VERSION} · Generated {GENERATED} · {EDITION}"),
     ])
