@@ -70,7 +70,8 @@ export function ProfileCustomExport({ slug, title }: ProfileCustomExportProps) {
           : "Custom profile DOCX downloaded.",
       );
       setOpen(false);
-    } catch {
+    } catch (err) {
+      console.error("custom profile export failed:", err);
       toast.error(
         lang === "bn"
           ? "এক্সপোর্ট ব্যর্থ হয়েছে — আবার চেষ্টা করুন।"
