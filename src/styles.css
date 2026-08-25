@@ -666,9 +666,63 @@
   @media (min-width: 640px) {
     .coin-slot:nth-child(even) { transform: translateY(-14px); }
   }
+  /* ---- Mobile: minted "coin plate" -----------------------------------------
+     On phones the four coins read as a single crafted object: a soft glass
+     plate with hairline cross-dividers, a stronger diagonal wave arc, and
+     slightly larger coin faces so the brand marks stay legible. */
   @media (max-width: 639.98px) {
-    .coin-slot:nth-child(even) { transform: translateY(-8px); }
+    .coin-plate {
+      position: relative;
+      border-radius: 26px;
+      padding: 22px 14px 16px;
+      background:
+        linear-gradient(
+          160deg,
+          color-mix(in oklab, var(--background) 16%, transparent) 0%,
+          color-mix(in oklab, var(--background) 6%, transparent) 55%,
+          color-mix(in oklab, var(--foreground) 8%, transparent) 100%
+        );
+      border: 1px solid color-mix(in oklab, var(--background) 22%, transparent);
+      box-shadow:
+        inset 0 1px 0 color-mix(in oklab, var(--background) 38%, transparent),
+        0 20px 40px -28px color-mix(in oklab, var(--foreground) 70%, transparent);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    /* Hairline cross-dividers between the four quadrants */
+    .coin-plate::before,
+    .coin-plate::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        transparent,
+        color-mix(in oklab, var(--background) 26%, transparent),
+        transparent
+      );
+    }
+    .coin-plate::before { left: 12%; right: 12%; top: 50%; height: 1px; }
+    .coin-plate::after {
+      top: 12%;
+      bottom: 12%;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        color-mix(in oklab, var(--background) 26%, transparent),
+        transparent
+      );
+    }
+    /* Diagonal wave arc: right column rides a swell higher, second row eases
+       back down — the cluster reads as a curve, not a rigid 2×2 block. */
+    .coin-slot:nth-child(1) { transform: translateY(4px); }
+    .coin-slot:nth-child(2) { transform: translateY(-14px); }
+    .coin-slot:nth-child(3) { transform: translateY(-2px); }
+    .coin-slot:nth-child(4) { transform: translateY(-18px); }
   }
+
   .coin-float { display: flex; justify-content: center; width: 100%; }
   /* Slow buoyant bob — ±5px, long ease, phase-staggered per coin */
   @keyframes coin-bob {
@@ -734,7 +788,7 @@
     .hero-coin, .hero-coin::after { transition: none; }
     .group:hover .hero-coin { transform: none; }
     .coin-float, .coin-pool, .coin-sheen { animation: none; }
-    .coin-slot:nth-child(even) { transform: none; }
+    .coin-slot { transform: none !important; }
   }
   .text-balance { text-wrap: balance; }
 

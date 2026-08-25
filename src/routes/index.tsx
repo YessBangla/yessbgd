@@ -373,7 +373,7 @@ function Index() {
                   each coin bobs slowly with a staggered phase and casts a soft
                   water reflection beneath. All animation is transform-only and
                   disabled under prefers-reduced-motion. */}
-              <div className="coin-row grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(14px, 2.4vw, 26px)" }}>
+              <div className="coin-plate coin-row grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(18px, 5vw, 26px)" }}>
                 {heroVentures.map((v, i) => {
                   return (
                     <Link
@@ -388,7 +388,7 @@ function Index() {
                       {/* Floating assembly — bob + reflection stay in sync */}
                       <span className="coin-float relative">
                         {/* Minted coin face — auto-set venture logo in the middle */}
-                        <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center overflow-hidden sm:max-w-[96px] lg:max-w-[104px]">
+                        <span className="hero-coin grid aspect-square w-full max-w-[96px] place-items-center overflow-hidden sm:max-w-[96px] lg:max-w-[104px]">
                           <span
                             aria-hidden="true"
                             className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
@@ -403,7 +403,7 @@ function Index() {
                         <span aria-hidden="true" className="coin-pool" />
                       </span>
                       {/* Named link under the coin */}
-                      <span className="mt-2.5 flex max-w-full items-center justify-center gap-1 text-[10px] font-semibold leading-tight text-background/80 transition-colors duration-300 group-hover:text-background sm:text-[11px]">
+                      <span className="mt-3 flex w-full min-w-0 items-center justify-center gap-1 px-1 text-[9.5px] font-semibold uppercase leading-tight tracking-[0.06em] text-background/85 transition-colors duration-300 group-hover:text-background sm:text-[11px] sm:normal-case sm:tracking-normal">
                         <span className="line-clamp-2">{v.title}</span>
                         <ArrowUpRight
                           aria-hidden="true"
