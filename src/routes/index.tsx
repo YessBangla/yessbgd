@@ -335,11 +335,11 @@ function Index() {
                 style={{ animationDelay: "360ms", marginTop: "var(--hero-rhythm-sm)" }}
               >
                 <div>
-                  <dt>{t("home.hero.whyTeams")}</dt>
+                  <dt>Standards</dt>
                   <dd>{t("home.hero.trustIso")}</dd>
                 </div>
                 <div>
-                  <dt>ISO / QA</dt>
+                  <dt>Experience</dt>
                   <dd>{t("home.hero.trustYears")}</dd>
                 </div>
                 <div>
