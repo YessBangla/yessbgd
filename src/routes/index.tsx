@@ -178,7 +178,7 @@ function Index() {
         <HeroOverlays imageSrc={heroImg} />
 
         <div
-          className="container-tight relative grid lg:grid-cols-12 lg:items-center"
+          className="hero-dossier container-tight relative grid lg:grid-cols-12 lg:items-center"
           style={{
             rowGap: "var(--hero-rhythm-md)",
             columnGap: "var(--hero-rhythm-lg)",
