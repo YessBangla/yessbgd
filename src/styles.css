@@ -788,7 +788,7 @@
     .hero-coin, .hero-coin::after { transition: none; }
     .group:hover .hero-coin { transform: none; }
     .coin-float, .coin-pool, .coin-sheen { animation: none; }
-    .coin-slot:nth-child(even) { transform: none; }
+    .coin-slot { transform: none !important; }
   }
   .text-balance { text-wrap: balance; }
 
