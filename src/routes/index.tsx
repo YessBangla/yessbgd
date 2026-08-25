@@ -329,9 +329,27 @@ function Index() {
                   className="hidden h-px flex-1 bg-background/15 sm:block"
                 />
               </div>
+              {/* Phones: spec-sheet data footer (label / value pairs) */}
+              <dl
+                className="dossier-specs hero-fade sm:hidden"
+                style={{ animationDelay: "360ms", marginTop: "var(--hero-rhythm-sm)" }}
+              >
+                <div>
+                  <dt>{t("home.hero.whyTeams")}</dt>
+                  <dd>{t("home.hero.trustIso")}</dd>
+                </div>
+                <div>
+                  <dt>ISO / QA</dt>
+                  <dd>{t("home.hero.trustYears")}</dd>
+                </div>
+                <div>
+                  <dt>Retention</dt>
+                  <dd>{t("home.hero.trustRetention")}</dd>
+                </div>
+              </dl>
               <div
                 data-testid="hero-trust-list"
-                className="hero-fade flex flex-wrap items-center text-[11px] sm:text-xs text-background/85"
+                className="hero-fade hidden flex-wrap items-center text-[11px] sm:flex sm:text-xs text-background/85"
                 style={{
                   animationDelay: "360ms",
                   marginTop: "var(--hero-rhythm-xs)",
@@ -343,6 +361,7 @@ function Index() {
                 <span className="inline-flex items-center gap-1.5"><Award className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustYears")}</span>
                 <span className="inline-flex items-center gap-1.5"><HeartHandshake className="h-3.5 w-3.5 text-accent" /> {t("home.hero.trustRetention")}</span>
               </div>
+
             </div>
           </div>
 
