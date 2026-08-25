@@ -403,7 +403,7 @@ function Index() {
                         <span aria-hidden="true" className="coin-pool" />
                       </span>
                       {/* Named link under the coin */}
-                      <span className="mt-2.5 flex max-w-full items-center justify-center gap-1 text-[10px] font-semibold leading-tight text-background/80 transition-colors duration-300 group-hover:text-background sm:text-[11px]">
+                      <span className="mt-3 flex max-w-full items-center justify-center gap-1 text-[11px] font-semibold uppercase leading-tight tracking-[0.08em] text-background/85 transition-colors duration-300 group-hover:text-background sm:text-[11px] sm:normal-case sm:tracking-normal">
                         <span className="line-clamp-2">{v.title}</span>
                         <ArrowUpRight
                           aria-hidden="true"
