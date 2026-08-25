@@ -388,7 +388,7 @@ function Index() {
                       {/* Floating assembly — bob + reflection stay in sync */}
                       <span className="coin-float relative">
                         {/* Minted coin face — auto-set venture logo in the middle */}
-                        <span className="hero-coin grid aspect-square w-full max-w-[88px] place-items-center overflow-hidden sm:max-w-[96px] lg:max-w-[104px]">
+                        <span className="hero-coin grid aspect-square w-full max-w-[96px] place-items-center overflow-hidden sm:max-w-[96px] lg:max-w-[104px]">
                           <span
                             aria-hidden="true"
                             className={`absolute inset-[12%] rounded-full bg-gradient-to-br ${v.color} opacity-15`}
