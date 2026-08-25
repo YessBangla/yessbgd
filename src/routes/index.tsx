@@ -373,7 +373,7 @@ function Index() {
                   each coin bobs slowly with a staggered phase and casts a soft
                   water reflection beneath. All animation is transform-only and
                   disabled under prefers-reduced-motion. */}
-              <div className="coin-row grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(14px, 2.4vw, 26px)" }}>
+              <div className="coin-plate coin-row grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(18px, 5vw, 26px)" }}>
                 {heroVentures.map((v, i) => {
                   return (
                     <Link
